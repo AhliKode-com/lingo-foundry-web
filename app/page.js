@@ -1,4 +1,10 @@
-// import Window from '@/components/window';
+/*
+ * @Author: danteclericuzio
+ * @Date: 2025-03-13 00:13:22
+ * @Last Modified by: danteclericuzio
+ * @Last Modified time: 2025-03-13 00:13:23
+ */
+
 import Carousel from '@/components/organisms/carousel';
 
 
