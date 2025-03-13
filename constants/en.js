@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 23:25:15
+ * @Last Modified time: 2025-03-14 00:37:03
  */
 
 export const Home = {
@@ -86,7 +86,7 @@ export const Home = {
         },
         businessAndLifestyle: {
             title: 'Business & Lifestyle',
-            nums: '2,736 COurses'
+            nums: '2,736 Courses'
         },
         englishWriting: {
             title: 'English Writing',
@@ -102,6 +102,17 @@ export const Home = {
         },
         seeAll: 'See All Popular Courses and Categories',
         browseAll: 'Browse All'
+    },
+    findTutor: {
+        title: 'Featured Courses',
+        subtitle: 'Explore our Popular Tutors',
+        categorySelection: {
+            all: 'All',
+            recommended: 'Recommended',
+            highestRatedTutor: 'Highest Rated Tutor',
+            newestTutor: 'Newest Tutor',
+            mostLessonCompleted: 'Most Lesson Completed'
+        }
     }
 }
 

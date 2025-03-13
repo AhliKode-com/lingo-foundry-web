@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:09:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 16:17:41
+ * @Last Modified time: 2025-03-14 00:46:54
  */
 
 export function OrangeText({text, position}) {
@@ -13,17 +13,17 @@ export function OrangeText({text, position}) {
     )
 }
 
-export function TitleText({text}) {
+export function TitleText({text, marginBottom}) {
     return (
         <span 
-            className="
+            className={`
                 z-20
                 text-[26px] sm:text-[34px] md:text-[44px]
                 font-bold
                 mx-auto
-                mb-[55px]
+                ${marginBottom}
                 animation-effect
-        ">
+            `}>
             {text}
         </span>
     )
