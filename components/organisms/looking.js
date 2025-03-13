@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 22:06:05
+ * @Last Modified time: 2025-03-14 00:47:50
  */
 
 import { OrangeText, TitleText } from '@/components/atoms/title';
@@ -18,7 +18,7 @@ export default function Looking() {
             <OrangeText text={looking.title} position="justify-center"/>
 
             <div className="w-full flex justify-center flex-col">
-                <TitleText text={looking.subtitle}/>
+                <TitleText text={looking.subtitle} marginBottom='mb-[55px]'/>
                 <div className="flex flex-col md:flex-row gap-[36px]">
                     <div className="items-center flex flex-col w-full md:h-[455px] py-[30px] md:py-[50px] px-[15px] md:px-[46px] drop-shadow-xl bg-[#FFFFFF] rounded-[10px] animation-effect">
                         <img src='/assets/teach.png' alt='teacher' className="w-[96px] h-[100px] mx-auto"/>

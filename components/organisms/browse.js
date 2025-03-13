@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 14:21:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 23:35:53
+ * @Last Modified time: 2025-03-14 00:47:43
  */
 
 import { TitleText } from '@/components/atoms/title';
@@ -40,7 +40,7 @@ export default function Browse() {
     ]
     return (
         <div className="bg-[#FFFFFF] w-full flex justify-center pt-[100px] flex-col">
-            <TitleText text={category.title}/>
+            <TitleText text={category.title} marginBottom='mb-[55px]'/>
             <div className='lingo-container px-[20px] mb-[55px] xl:px-0 z-10 animation-effect'>
                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[10px] sm:gap-[18px] md:gap-[24px] animation-effect'>
                     {box.map((item, index) => (
