@@ -2,8 +2,58 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 13:04:46
+ * @Last Modified time: 2025-03-13 21:26:42
  */
+
+export const Home = {
+    hero: {
+        title1: 'Learn Everyday & Any New Language Online with Top',
+        title2: 'Instructors.',
+        subtitle: 'Language learning made easy and fun—tailored just for you!',
+        placeholder: 'Try English Tutor',
+        buttonSearch: 'Search Now'
+    },
+    carousel: {
+        title: 'Our Language Tutors',
+        subtitle: '31 million teachers have been evaluated.',
+        englishTutors: {
+            title: 'English Tutors',
+            price: 'Rp. 50.000/Lesson'
+        },
+        japaneseTutors: {
+            title: 'Japanese Tutors',
+            price: 'Rp. 150.000/Lesson'
+        },
+        koreanTutors: {
+            title: 'Korean Tutors',
+            price: 'Rp. 250.000/Lesson'
+        },
+        italianTutors: {
+            title: 'Italian Tutors',
+            price: 'Rp. 350.000/Lesson'
+        },
+        thailandTutors: {
+            title: 'Thailand Tutors',
+            price: 'Rp. 450.000/Lesson'
+        },
+        russianTutors: {
+            title: 'Russian Tutors',
+            price: 'Rp. 550.000/Lesson'
+        }
+    },
+    looking: {
+        title: 'Teachers & Students',
+        subtitle: 'What you looking for?',
+        teachTitle: 'Do you want to teach here?',
+        learnTitle: 'Do you want to learn here?',
+        teachDesc: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed di nonumy eirmod tempor invidunt ut labore et dolore magn aliq erat.',
+        learnDesc: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed di nonumy eirmod tempor invidunt ut labore et dolore magn aliq erat.',
+        registerButton: 'Register Now'
+    },
+    browse: {
+        title: 'What you looking for?'
+    }
+}
 
 export const NavbarData = {
     links: [

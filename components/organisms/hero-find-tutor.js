@@ -2,12 +2,13 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 12:59:43
+ * @Last Modified time: 2025-03-13 14:14:43
  */
 
 
 export default function Hero() {
     return (
+      <div className="lingo-container flex h-full pt-[70px] sm:pt-[103.61px]">
         <div className="relative w-full flex flex-col">
             <img 
                 src="./assets/dot-plane.svg" 
@@ -62,5 +63,6 @@ export default function Hero() {
                 Search Now
             </button>
         </div>
+      </div>
     )
 }

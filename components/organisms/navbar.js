@@ -2,13 +2,13 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-12 16:57:16
+ * @Last Modified time: 2025-03-13 14:04:04
  */
 "use client"
 import { usePathname } from 'next/navigation';
 import React, {useState, useEffect} from 'react'
 
-import Buttons from '@/components/atoms/buttons'
+import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
 
 export default function Navbar() {
@@ -50,7 +50,7 @@ export default function Navbar() {
                 </div>
                 <div className='hidden md:flex items-center'>
                     <a href='/'>
-                        <Buttons text="Apply as Tutor"/>
+                        <OrangeButton text="Apply as Tutor"/>
                     </a>
                     {auth.map((link, index) => {
                         const marginClass = index === 0 ? 'mx-[30px]' : '';
@@ -94,7 +94,7 @@ export default function Navbar() {
                         </ul>
                         <div className='flex flex-col mt-6'>
                             <a href='/'>
-                                <Buttons text="Apply as Tutor"/>
+                                <OrangeButton text="Apply as Tutor"/>
                             </a>
                             <div className='flex mt-6 gap-6'>
                                 {auth.map((link, index) => {

@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 @layer components{
+  .soft-blur-overlay {
+    position: relative;
+    /* background: rgba(255, 240, 240, 0.7); */
+    backdrop-filter: blur(8px);
+  }
+
   .animation-effect{
     transition: all 0.3s ease;
   }
