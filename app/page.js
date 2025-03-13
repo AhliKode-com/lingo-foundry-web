@@ -2,11 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 00:13:22
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 01:53:49
+ * @Last Modified time: 2025-03-13 13:05:29
  */
 
 import Carousel from '@/components/organisms/carousel';
-import Hero from '@/components/molecules/hero';
+import HeroHome from '@/components/organisms/hero-home';
 
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
           
       {/* hero */}
       <div className="lingo-container flex h-full pt-[70px] sm:pt-[103.61px]">
-        <Hero/>
+        <HeroHome/>
       </div>
 
       {/* carousel */}

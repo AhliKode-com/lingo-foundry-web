@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-11 17:56:08
+ * @Last Modified time: 2025-03-13 13:04:46
  */
 
 export const NavbarData = {
@@ -16,7 +16,7 @@ export const NavbarData = {
             title: 'Home'
         },
         {
-            href: '/findTutors',
+            href: '/find-tutor',
             title: 'Find Tutors'
         },
         {

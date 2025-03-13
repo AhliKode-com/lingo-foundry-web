@@ -28,7 +28,7 @@ export default function Hero() {
                 lg:leading-[60px] xl:leading-[84px]
                 md:w-[520px] mt-[70px] 
                 animation-effect">
-            Learn Everyday & Any New Language Online with Top 
+            Learn Everyday & Any New Language Online with Top
             <span className="relative flex">
               <img 
                 src="./assets/circle.svg" 
