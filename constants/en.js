@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 21:26:42
+ * @Last Modified time: 2025-03-13 23:25:15
  */
 
 export const Home = {
@@ -50,8 +50,58 @@ export const Home = {
         learnDesc: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed di nonumy eirmod tempor invidunt ut labore et dolore magn aliq erat.',
         registerButton: 'Register Now'
     },
-    browse: {
-        title: 'What you looking for?'
+    category: {
+        title: 'What you looking for?',
+        english: {
+            title: 'English',
+            nums: '63,476 Courses'
+        },
+        englishBusiness: {
+            title: 'English Business',
+            nums: '52,822 Courses'
+        },
+        koreanGrammar: {
+            title: 'Korean Grammar',
+            nums: '33,841 Courses'
+        },
+        conversationalEnglish: {
+            title: 'Conversational English',
+            nums: '22,649 Courses'
+        },
+        franceForTourist: {
+            title: 'France for Tourist',
+            nums: '20,126 Courses'
+        },
+        thailand: {
+            title: 'Thailand',
+            nums: '13,932 Courses'
+        },
+        japanese: {
+            title: 'Japanese',
+            nums: '12,068 Courses'
+        },
+        italian: {
+            title: 'Italian',
+            nums: '6,196 Courses'
+        },
+        businessAndLifestyle: {
+            title: 'Business & Lifestyle',
+            nums: '2,736 COurses'
+        },
+        englishWriting: {
+            title: 'English Writing',
+            nums: '2,600 Courses'
+        },
+        englishForAdults: {
+            title: 'English For Adults',
+            nums: '1,678 Courses'
+        },
+        listeningAndSpeaking: {
+            title: 'Listening & Speaking',
+            nums: '959 Courses'
+        },
+        seeAll: 'See All Popular Courses and Categories',
+        browseAll: 'Browse All'
     }
 }
 
