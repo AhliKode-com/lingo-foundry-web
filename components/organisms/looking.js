@@ -2,11 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 00:47:50
+ * @Last Modified time: 2025-03-14 09:36:37
  */
 
 import { OrangeText, TitleText } from '@/components/atoms/title';
-import { OrangeButton, WhiteButton } from '../atoms/buttons';
+import { LookingCard } from '@/components/atoms/card';
 import { Home } from '@/constants/en';
 
 export default function Looking() {
@@ -20,34 +20,22 @@ export default function Looking() {
             <div className="w-full flex justify-center flex-col">
                 <TitleText text={looking.subtitle} marginBottom='mb-[55px]'/>
                 <div className="flex flex-col md:flex-row gap-[36px]">
-                    <div className="items-center flex flex-col w-full md:h-[455px] py-[30px] md:py-[50px] px-[15px] md:px-[46px] drop-shadow-xl bg-[#FFFFFF] rounded-[10px] animation-effect">
-                        <img src='/assets/teach.png' alt='teacher' className="w-[96px] h-[100px] mx-auto"/>
-                        <span 
-                        className="
-                            text-[16px] sm:text-[24px] md:text-[16px] lg:text-[24px] xl:text-[34px]
-                            font-bold
-                            my-[25px]
-                            animation-effect
-                        ">
-                            {looking.teachTitle}
-                        </span>
-                        <span className='text-[#707070] text-center mb-[32px]'>{looking.teachDesc}</span>
-                        <WhiteButton text={looking.registerButton}/>
-                    </div>
-                    <div className="items-center flex flex-col w-full md:h-[455px] py-[30px] md:py-[50px] px-[15px] md:px-[46px] drop-shadow-xl bg-[#FFFFFF] rounded-[10px] animation-effect">
-                        <img src='/assets/learn.png' alt='teacher' className="w-[96px] h-[100px] mx-auto"/>
-                        <span 
-                        className="
-                            text-[16px] sm:text-[24px] md:text-[16px] lg:text-[24px] xl:text-[34px]
-                            font-bold
-                            my-[25px]
-                            animation-effect
-                        ">
-                            {looking.learnTitle}
-                        </span>
-                        <span className='text-[#707070] text-center mb-[32px] text-[14px] sm:text-[16px] animation-effect'>{looking.learnDesc}</span>
-                        <OrangeButton text={looking.registerButton}/>
-                    </div>
+                    <LookingCard
+                        image="/assets/teach.png"
+                        alt="teacher"
+                        title={looking.teachTitle}
+                        desc={looking.teachDesc}
+                        buttonType="white"
+                        buttonText={looking.registerButton}
+                    />
+                    <LookingCard
+                        image="/assets/learn.png"
+                        alt="teacher"
+                        title={looking.learnTitle}
+                        desc={looking.learnDesc}
+                        buttonType="orange"
+                        buttonText={looking.registerButton}
+                    />
                 </div>
             </div>
             

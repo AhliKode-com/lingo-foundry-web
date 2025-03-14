@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 21:25:36
+ * @Last Modified time: 2025-03-14 08:48:56
  */
 
 "use client"
@@ -11,7 +11,7 @@ import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import { OrangeText } from '@/components/atoms/title';
 import { Home } from '@/constants/en';
 
-const Carousel = () => {
+export default function Carousel (){
     const { carousel } = Home;
     const slides = [
         { id: 1, src: './assets/man-1.png', alt: carousel.englishTutors.title, price: carousel.englishTutors.price },
@@ -120,5 +120,3 @@ const Carousel = () => {
         </div>
       )
 }
-
-export default Carousel

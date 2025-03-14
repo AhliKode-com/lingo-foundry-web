@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 00:37:03
+ * @Last Modified time: 2025-03-14 08:54:14
  */
 
 export const Home = {
@@ -113,6 +113,16 @@ export const Home = {
             newestTutor: 'Newest Tutor',
             mostLessonCompleted: 'Most Lesson Completed'
         }
+    },
+    whyChooseUs: {
+        title: 'Why Choose Lingo Foundry?',
+        flexibleTitle: 'Flexible scheduling',
+        flexibleDesc: 'Book and attend classes on your schedule',
+        lessonsTitle: 'Lessons made for you',
+        lessonsDesc: 'Customized lessons for your specific needs',
+        payTitle: 'Pay as you go',
+        payDesc: 'No contracts - buy lessons only when you need them',
+        whyButton: 'Start Finding Tutors'
     }
 }
 
