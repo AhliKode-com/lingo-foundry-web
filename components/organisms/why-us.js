@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 08:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 09:27:58
+ * @Last Modified time: 2025-03-14 17:23:48
  */
 
 import { OrangeButton } from "../atoms/buttons";
@@ -28,7 +28,7 @@ export default function Why() {
             <div className='lingo-container mb-[55px] sm:px-0 animation-effect relative'>
                 <img src="./assets/hero-decoration.png" alt="Hero swirl update" className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"/>
                 <div className="flex flex-col md:flex-row items-center gap-[10px] md:gap-[15px] xl:gap-[50px] w-full justify-center">
-                    <img src='./assets/hero-why.png' alt='why-us' className='hidden md:flex md:w-[550px] xl:w-[750px] animation-effect'/>
+                    <img src='./assets/hero-why.png' alt='why-us' className='hidden md:flex md:w-[490px] xl:w-[750px] animation-effect'/>
                     <div className="flex flex-col md:w-[350px]">
                         <TitleText text='Why Choose Lingo Foundry?'/>
                         <div className="flex flex-col gap-[30px] my-[30px]">

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 08:54:14
+ * @Last Modified time: 2025-03-14 17:16:07
  */
 
 export const Home = {
@@ -123,6 +123,24 @@ export const Home = {
         payTitle: 'Pay as you go',
         payDesc: 'No contracts - buy lessons only when you need them',
         whyButton: 'Start Finding Tutors'
+    },
+    how: {
+        title: "How it works",
+        oneHeadingBefore: "Find a tutor – You can book for trial for ",
+        oneHeadingHighlight: "up to 3 trials",
+        oneHeadingAfter: "",
+        oneDesc: "Browse tutors and see their background, experience and student feedback. You can book a trial up to 3 times. If you already took 1 trial and you’re not satisfied, you get access to try 2 more courses from different tutors.",
+        twoHeadingBefore: "Choose a time and book a class",
+        twoHeadingHighlight: "",
+        twoHeadingAfter: "",
+        twoDesc: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to 12 hours before your class.",
+        threeHeadingBefore: "Learn when you want, from where you want",
+        threeHeadingHighlight: "",
+        threeHeadingAfter: "",
+        threeDescBefore: "Take the lesson anywhere you want with your mobile device or computer. When it's time for your lesson, load your class via ",
+        threeDescHighlight: "Zoom",
+        threeDescAfter: " and start learning!",
+        threeDesc: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to 12 hours before your class."
     }
 }
 
