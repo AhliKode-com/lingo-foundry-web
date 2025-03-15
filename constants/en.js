@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 23:05:48
+ * @Last Modified time: 2025-03-15 17:31:18
  */
 
 export const Home = {
@@ -157,6 +157,15 @@ export const Home = {
         userThree: 'Stephen Brekke',
         occupationThree: 'Legacy Integration Producer',
         teacherThree: 'Kevin Duncan- IELTS Specialist',
+    },
+    heroBottom: {
+        title: 'You can be a great tutor',
+        list: [
+            'Set your own prices',
+            'Be your own boss',
+            'Work from home, and on your schedule'
+        ],
+        button: 'Join us'
     }
 }
 
