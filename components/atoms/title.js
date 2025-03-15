@@ -13,14 +13,14 @@ export function OrangeText({text, position}) {
     )
 }
 
-export function TitleText({text, marginBottom}) {
+export function TitleText({text, marginBottom, marginX}) {
     return (
         <span 
             className={`
                 z-20
                 text-[26px] sm:text-[34px] md:text-[44px]
                 font-bold
-                mx-auto
+                ${marginX}
                 ${marginBottom}
                 animation-effect
             `}>

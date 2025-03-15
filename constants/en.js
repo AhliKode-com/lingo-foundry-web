@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 17:16:07
+ * @Last Modified time: 2025-03-14 23:05:48
  */
 
 export const Home = {
@@ -51,7 +51,7 @@ export const Home = {
         registerButton: 'Register Now'
     },
     category: {
-        title: 'What you looking for?',
+        title: 'Browse top category',
         english: {
             title: 'English',
             nums: '63,476 Courses'
@@ -141,6 +141,22 @@ export const Home = {
         threeDescHighlight: "Zoom",
         threeDescAfter: " and start learning!",
         threeDesc: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to 12 hours before your class."
+    },
+    review: {
+        title: 'Hear What They Said',
+        readButton: 'Read All Reviews',
+        reviewOne: 'Website design did exactly what you said it does. Just what I was looking for. Nice work on your website design.',
+        userOne: 'Kyle Roberts DVM',
+        occupationOne: 'Customer Web Consultant',
+        teacherOne: 'David Duncan- IELTS Specialist',
+        reviewTwo: "I will let my mum know about this, she could really make use of software! Very easy to use. Since I invested in software I made over 100,000 dollars profits. I just can't get enough of software. I want to get a T-Shirt with software on it so I can show it off to everyone.",
+        userTwo: 'Sophia Anderson',
+        occupationTwo: 'Internal Implementation Officer',
+        teacherTwo: 'James Duncan- IELTS Specialist',
+        reviewThree: "If you want real marketing that works and effective implementation - mobile app's got you covered.",
+        userThree: 'Stephen Brekke',
+        occupationThree: 'Legacy Integration Producer',
+        teacherThree: 'Kevin Duncan- IELTS Specialist',
     }
 }
 

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 08:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 17:23:48
+ * @Last Modified time: 2025-03-14 21:18:55
  */
 
 import { OrangeButton } from "../atoms/buttons";
@@ -30,7 +30,7 @@ export default function Why() {
                 <div className="flex flex-col md:flex-row items-center gap-[10px] md:gap-[15px] xl:gap-[50px] w-full justify-center">
                     <img src='./assets/hero-why.png' alt='why-us' className='hidden md:flex md:w-[490px] xl:w-[750px] animation-effect'/>
                     <div className="flex flex-col md:w-[350px]">
-                        <TitleText text='Why Choose Lingo Foundry?'/>
+                        <TitleText text={whyChooseUs.title}/>
                         <div className="flex flex-col gap-[30px] my-[30px]">
                             {point.map((item, index) => (
                                 <div className="flex items-center gap-[10px]" key={index}>
