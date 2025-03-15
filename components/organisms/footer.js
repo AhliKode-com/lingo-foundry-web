@@ -2,10 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:30
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-12 16:51:31
+ * @Last Modified time: 2025-03-15 17:45:52
  */
 
 import { FooterData } from '@/constants/en'
+import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaGooglePlusG, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
@@ -25,52 +26,52 @@ export default function Footer() {
                         <div className='flex flex-col'>
                             {list1.map((item, index) => {
                                 return (
-                                    <a 
+                                    <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px]'
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 )}
                             )}
                         </div>
                         <div className='flex flex-col'>
                             {list2.map((item, index) => {
                                 return (
-                                    <a 
+                                    <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px]'
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 )}
                             )}
                         </div>
                         <div className='flex flex-col'>
                             {list3.map((item, index) => {
                                 return (
-                                    <a 
+                                    <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px]'
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 )}
                             )}
                         </div>
                         <div className='flex flex-col'>
                             {list4.map((item, index) => {
                                 return (
-                                    <a 
+                                    <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px]'
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 )}
                             )}
                         </div>
@@ -101,13 +102,13 @@ export default function Footer() {
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.contactUs}</span>
                             {contactUs.map((item, index) => {
                                 return (
-                                    <a 
+                                    <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px] text-[#A3A3A3]'
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 )}
                             )}
                         </div>
@@ -115,13 +116,13 @@ export default function Footer() {
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.quickLinks}</span>
                             {quickLinks.map((item, index) => {
                                 return (
-                                    <a 
+                                    <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px] text-[#A3A3A3]'
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 )}
                             )}
                         </div>
@@ -129,13 +130,13 @@ export default function Footer() {
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.feature}</span>
                             {features.map((item, index) => {
                                 return (
-                                    <a 
+                                    <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px] text-[#A3A3A3]'
                                     >
                                         {item.title}
-                                    </a>
+                                    </Link>
                                 )}
                             )}
                         </div>

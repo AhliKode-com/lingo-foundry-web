@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 14:04:04
+ * @Last Modified time: 2025-03-15 17:44:57
  */
 "use client"
 import { usePathname } from 'next/navigation';
@@ -10,6 +10,7 @@ import React, {useState, useEffect} from 'react'
 
 import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
+import Link from 'next/link';
 
 export default function Navbar() {
 
@@ -32,9 +33,9 @@ export default function Navbar() {
         <nav className="fixed z-50 bg-[#FFFFFF] w-full border-b-2 border-[#FF723A10] font-semibold">
             <div className="lingo-container flex justify-between items-center py-[5px] relative">
                 <img src="./assets/dot-nav.svg" alt="Dot" className="block absolute left-[150px] sm:left-[275px] top-[9px]"/>
-                <a className='cursor-pointer z-30' href='/'>
+                <Link className='cursor-pointer z-30' href='/'>
                     <img src="./assets/logo.png" alt="Logo" className="max-w-none w-[90px] md:w-[120px] animation-effect"/>
-                </a>
+                </Link>
                 <div className="hidden xl:flex">
                     <ul className="flex gap-11 text-[16px]">
                         {links.map((link, index) => {
@@ -42,26 +43,26 @@ export default function Navbar() {
                             const activeClass = pathname === link.href ? 'text-[#E15C31]' : '';
                             return (
                                 <li key={index} className={`${marginClass} ${activeClass}`}>
-                                    <a href={link.href}>{link.title}</a>
+                                    <Link href={link.href}>{link.title}</Link>
                                 </li>
                             );
                         })}
                     </ul>
                 </div>
                 <div className='hidden md:flex items-center'>
-                    <a href='/'>
+                    <Link href='/'>
                         <OrangeButton text="Apply as Tutor"/>
-                    </a>
+                    </Link>
                     {auth.map((link, index) => {
                         const marginClass = index === 0 ? 'mx-[30px]' : '';
                         return (
-                            <a 
+                            <Link 
                                 key={index} 
                                 className={`cursor-pointer ${marginClass}`}
                                 href={link.href}
                             >
                                 {link.title}
-                            </a>
+                            </Link>
                         )}
                     )}
                 </div>
@@ -87,25 +88,25 @@ export default function Navbar() {
                                 const activeClass = pathname === link.href ? 'text-[#E15C31]' : '';
                                 return (
                                     <li key={index} className={`${activeClass}`}>
-                                        <a href={link.href}>{link.title}</a>
+                                        <Link href={link.href}>{link.title}</Link>
                                     </li>
                                 );
                             })}
                         </ul>
                         <div className='flex flex-col mt-6'>
-                            <a href='/'>
+                            <Link href='/'>
                                 <OrangeButton text="Apply as Tutor"/>
-                            </a>
+                            </Link>
                             <div className='flex mt-6 gap-6'>
                                 {auth.map((link, index) => {
                                     return (
-                                        <a 
+                                        <Link
                                             key={index} 
                                             className='cursor-pointer'
                                             href={link.href}
                                         >
                                             {link.title}
-                                        </a>
+                                        </Link>
                                     )}
                                 )}
                             </div>
