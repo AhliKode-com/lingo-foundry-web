@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 17:21:51
+ * @Last Modified time: 2025-03-14 22:57:57
  */
 
 import { TitleText } from "@/components/atoms/title";
@@ -51,24 +51,24 @@ export default function How() {
       
     return (
         <div className="lingo-container py-[50px] flex flex-col justify-center">
-            <TitleText text={how.title} marginBottom='mb-[50px]'/>
+            <TitleText text={how.title} marginBottom='mb-[50px]' marginX='mx-auto'/>
             <div className="flex flex-col gap-[36px]">
                 {steps.map((step) => (
                     <div
                         key={step.id}
                         className="flex flex-col md:flex-row xl:mx-[130px] animation-effect items-center gap-[30px] md:gap-0"
                     >
-                        <div className="sm:w-1/2 flex justify-center">
+                        <div className="sm:w-1/2 flex justify-center animation-effect">
                             <img
                                 src={step.image}
                                 alt={step.altImage}
-                                className="md:w-[300px] lg:w-[421px] h-auto"
+                                className="md:w-[300px] lg:w-[421px] h-auto animation-effect"
                             />
                         </div>
-                        <div className="flex flex-row items-center gap-[20px] w-full md:w-1/2">
+                        <div className="flex flex-row items-center gap-[20px] w-full md:w-1/2 animation-effect">
                             <img src={step.icon} alt={step.altIcon} className="w-[50px]" />
-                            <div className="flex flex-col gap-[10px] xl:gap-[20px]">
-                                <span className="lg:text-[20px] xl:text-[24px] font-medium">
+                            <div className="flex flex-col gap-[10px] xl:gap-[20px] animation-effect">
+                                <span className="lg:text-[20px] xl:text-[24px] font-medium animation-effect">
                                     {step.headingBefore}
                                     {step.headingHighlight && (
                                         <span className="text-[#E35D33]">{step.headingHighlight}</span>
@@ -76,7 +76,7 @@ export default function How() {
                                     {step.headingAfter}
                                 </span>
                                 {step.descriptionBefore ? (
-                                    <span className="lg:text-[16px] xl:text-[20px] font-light">
+                                    <span className="lg:text-[16px] xl:text-[20px] font-light animation-effect">
                                         {step.descriptionBefore}
                                         <span className="font-bold text-[#E35D33]">
                                         {step.descriptionHighlight}
@@ -84,7 +84,7 @@ export default function How() {
                                         {step.descriptionAfter}
                                     </span>
                                 ) : (
-                                <span className="md:text-[14px] lg:text-[16px] xl:text-[20px] font-light">
+                                <span className="md:text-[14px] lg:text-[16px] xl:text-[20px] font-light animation-effect">
                                     {step.description}
                                 </span>
                                 )}
