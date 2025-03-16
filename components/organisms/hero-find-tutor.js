@@ -2,13 +2,15 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-13 14:14:43
+ * @Last Modified time: 2025-03-16 18:47:52
  */
 
+import { FindTutor } from "@/constants/en"
 
 export default function Hero() {
+    const { hero } = FindTutor
     return (
-      <div className="lingo-container flex h-full pt-[70px] sm:pt-[103.61px]">
+      <div className="lingo-container flex h-full pt-[70px] sm:pt-[103.61px] pb-[100px] sm:pb-[150px] animation-effect">
         <div className="relative w-full flex flex-col">
             <img 
                 src="./assets/dot-plane.svg" 
@@ -29,7 +31,7 @@ export default function Hero() {
                 lg:leading-[60px] xl:leading-[84px]
                 md:w-[520px] mt-[155px] 
                 animation-effect">
-            Online Tutoring or
+            {hero.title1}
             <span className="relative flex">
               <img 
                 src="./assets/circle.svg" 
@@ -40,9 +42,9 @@ export default function Hero() {
                 top-[0px]
                 left-[-10px]
                 animation-effect"/>
-              Tutors Near
+              {hero.title2}
             </span>
-            Me, Classes
+            {hero.title3}
           </h1>
           <h1 className="
           z-30
@@ -51,16 +53,16 @@ export default function Hero() {
             text-[14px] md:text-[16px] lg:text-[20px] 
             leading-[34px] 
             md:w-[480px] 
-            mt-[20px] md:mt-[40px] mb-[27px]">Language learning made easy and fun—tailored just for you!</h1>
+            mt-[20px] md:mt-[40px] mb-[27px]">{hero.subtitle}</h1>
           <div className="z-50 relative items-center flex md:w-[550px] lg:w-[614px] bg-[#FF723A10] rounded-[40px] border-[1px] border-[#C9C9C9] px-[31px] h-[50px] lg:h-[65px] animation-effect">
             <img src="./assets/check.svg" alt="Search" className="mr-[8px]"/>
-            <span className="animation-effect text-[14px] md:text-[16px]">Try English Tutor</span>
+            <span className="animation-effect text-[14px] md:text-[16px]">{hero.placeholder}</span>
             <button className="hidden md:block absolute right-0 bg-[#E35D33] px-[28px] h-[50px] lg:h-[65px] animation-effect rounded-[40px] text-white">
-                Search Now
+              {hero.buttonSearch}
             </button>
           </div>
           <button className="mt-[10px] block md:hidden bg-[#E35D33] px-[28px] h-[50px] lg:h-[65px] animation-effect rounded-[40px] text-white">
-                Search Now
+            {hero.buttonSearch}
             </button>
         </div>
       </div>
