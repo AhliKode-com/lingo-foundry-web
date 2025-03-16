@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-15 17:31:18
+ * @Last Modified time: 2025-03-16 18:46:37
  */
 
 export const Home = {
@@ -167,6 +167,17 @@ export const Home = {
         ],
         button: 'Join us'
     }
+}
+
+export const FindTutor = {
+    hero: {
+        title1: 'Online Tutoring or',
+        title2: 'Tutors Near',
+        title3: 'Me, Classes',
+        subtitle: 'Study language with a teacher who is just focused on you!',
+        placeholder: 'Try English Tutor',
+        buttonSearch: 'Search Now'
+    },
 }
 
 export const NavbarData = {
