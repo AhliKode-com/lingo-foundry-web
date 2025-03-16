@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-16 18:47:52
+ * @Last Modified time: 2025-03-16 19:58:25
  */
 
 import { FindTutor } from "@/constants/en"
@@ -54,7 +54,7 @@ export default function Hero() {
             leading-[34px] 
             md:w-[480px] 
             mt-[20px] md:mt-[40px] mb-[27px]">{hero.subtitle}</h1>
-          <div className="z-50 relative items-center flex md:w-[550px] lg:w-[614px] bg-[#FF723A10] rounded-[40px] border-[1px] border-[#C9C9C9] px-[31px] h-[50px] lg:h-[65px] animation-effect">
+          <div className="relative items-center flex md:w-[550px] lg:w-[614px] bg-[#FF723A10] rounded-[40px] border-[1px] border-[#C9C9C9] px-[31px] h-[50px] lg:h-[65px] animation-effect">
             <img src="./assets/check.svg" alt="Search" className="mr-[8px]"/>
             <span className="animation-effect text-[14px] md:text-[16px]">{hero.placeholder}</span>
             <button className="hidden md:block absolute right-0 bg-[#E35D33] px-[28px] h-[50px] lg:h-[65px] animation-effect rounded-[40px] text-white">
