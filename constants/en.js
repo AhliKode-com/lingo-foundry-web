@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-16 18:46:37
+ * @Last Modified time: 2025-03-16 19:43:33
  */
 
 export const Home = {
@@ -178,6 +178,17 @@ export const FindTutor = {
         placeholder: 'Try English Tutor',
         buttonSearch: 'Search Now'
     },
+    faq: {
+        title: 'Online Tutoring FAQ',
+        question1: 'Why is the sky blue?',
+        answer1: 'Proin quis elementum velit, eget efficitur nulla. Donec tellus massa, faucibus id nulla sit amet, feugiat viverra justo. Curabitur auctor nibh ut ante lacinia, ac finibus sem pulvinar. Suspendisse vestibulum in dolor eget sodales. Curabitur justo risus, vehicula ac mollis sit amet, gravida sed erat.',
+        question2: 'Why did the chicken cross the road?',
+        answer2: 'Because it wanted to get to the other side',
+        question3: 'How many licks does it take to get to the center of a tootsie pop?',
+        answer3: 'The world may never know',
+        question4: 'Where\'s Waldo?',
+        answer4: 'He\'s hiding in plain sight'
+    }
 }
 
 export const NavbarData = {
