@@ -2,8 +2,19 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:23
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 00:51:08
+ * @Last Modified time: 2025-03-18 00:32:37
  */
+
+export function StepButton({text, onClick, bgColor}) {
+    return (
+        <button
+          onClick={onClick}
+          className={`px-[35px] py-[10px] rounded-[10px] ${bgColor} text-white font-bold`}
+        >
+          {text}
+        </button>
+    )
+}
 
 export function OrangeButton({text}) {
     return (

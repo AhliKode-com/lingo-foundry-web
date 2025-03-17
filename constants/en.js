@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-16 19:43:33
+ * @Last Modified time: 2025-03-18 00:37:11
  */
 
 export const Home = {
@@ -409,3 +409,13 @@ export const FooterData = {
         }
     ]
 };
+
+export const multiStepPayment = {
+    tab: {
+        confirmPayment: "Confirm Payment",
+        bookClass: "Book Class",
+        takeClass: "Take Class via Zoom",
+        nextBtn: "Next",
+        prevBtn: "Prev",
+    },
+}
