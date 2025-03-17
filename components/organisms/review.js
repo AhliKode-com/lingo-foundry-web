@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-17 14:42:03
+ * @Last Modified time: 2025-03-17 14:53:23
  */
 
 import { TitleText } from '@/components/atoms/title';
@@ -68,8 +68,8 @@ export default function Review() {
                         {Array.from({ length: item.starCount }).map((_, i) => (
                         <img
                             key={i}
-                            src="./assets/star.svg"
-                            alt="star"
+                            src="./assets/star-review.svg"
+                            alt="star-review"
                             className="h-[20px] w-[20px]"
                         />
                         ))}
