@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:53:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 00:40:22
+ * @Last Modified time: 2025-03-18 00:50:03
  */
 
 
@@ -57,7 +57,9 @@ export default function ProcessBooking() {
                                         ? "text-[#E35D33]" 
                                         : isCompleted
                                         ? "text-[#E35D33]"
-                                        : "text-[#7A7A7A]"}`}>
+                                        : "text-[#7A7A7A]"}`
+                                    }
+                                >
                                     {step.label}
                                 </span>
                                 <div>
