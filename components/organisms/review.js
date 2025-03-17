@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-15 16:42:18
+ * @Last Modified time: 2025-03-17 14:42:03
  */
 
 import { TitleText } from '@/components/atoms/title';
@@ -15,7 +15,7 @@ export default function Review() {
     const reviewsData = [
         {
             id: 1,
-            userImage: "/assets/user-one.png",
+            userImage: "./assets/user-one.png",
             userAlt: "user-one",
             starCount: 5,
             reviewText: review.reviewOne,
@@ -25,7 +25,7 @@ export default function Review() {
         },
         {
             id: 2,
-            userImage: "/assets/user-two.png",
+            userImage: "./assets/user-two.png",
             userAlt: "user-two",
             starCount: 3,
             reviewText: review.reviewTwo,
@@ -35,7 +35,7 @@ export default function Review() {
         },
         {
             id: 3,
-            userImage: "/assets/user-three.png",
+            userImage: "./assets/user-three.png",
             userAlt: "user-three",
             starCount: 4,
             reviewText: review.reviewThree,
@@ -68,7 +68,7 @@ export default function Review() {
                         {Array.from({ length: item.starCount }).map((_, i) => (
                         <img
                             key={i}
-                            src="/assets/star.svg"
+                            src="./assets/star.svg"
                             alt="star"
                             className="h-[20px] w-[20px]"
                         />
@@ -84,7 +84,7 @@ export default function Review() {
                         </div>
                         <div className="flex w-[120px] gap-[10px]">
                         <img
-                            src="/assets/thumb-up.svg"
+                            src="./assets/thumb-up.svg"
                             alt="thumb-up"
                             className="h-[17px] w-[17px]"
                         />

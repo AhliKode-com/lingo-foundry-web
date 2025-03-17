@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 22:57:57
+ * @Last Modified time: 2025-03-17 14:41:52
  */
 
 import { TitleText } from "@/components/atoms/title";
@@ -14,9 +14,9 @@ export default function How() {
     const steps = [
         {
           id: 1,
-          image: "/assets/how/one.png",
+          image: "./assets/how/one.png",
           altImage: "one-pic",
-          icon: "/assets/how/one.svg",
+          icon: "./assets/how/one.svg",
           altIcon: "one-num",
           headingBefore: how.oneHeadingBefore,
           headingHighlight: how.oneHeadingHighlight,
@@ -25,9 +25,9 @@ export default function How() {
         },
         {
           id: 2,
-          image: "/assets/how/two.png",
+          image: "./assets/how/two.png",
           altImage: "two-pic",
-          icon: "/assets/how/two.svg",
+          icon: "./assets/how/two.svg",
           altIcon: "two-num",
           headingBefore: how.twoHeadingBefore,
           headingHighlight: how.twoHeadingHighlight,
@@ -36,9 +36,9 @@ export default function How() {
         },
         {
           id: 3,
-          image: "/assets/how/three.png",
+          image: "./assets/how/three.png",
           altImage: "three-pic",
-          icon: "/assets/how/three.svg",
+          icon: "./assets/how/three.svg",
           altIcon: "three-num",
           headingBefore: how.threeHeadingBefore,
           headingHighlight: how.threeHeadingHighlight,
