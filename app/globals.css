@@ -36,4 +36,5 @@
 html, body {
   box-sizing: border-box;
   font-family: var(--font-plus-jakarta-sans), sans-serif;
+  scroll-behavior: smooth !important;
 }

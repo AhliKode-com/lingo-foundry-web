@@ -5,10 +5,12 @@
  * @Last Modified time: 2025-03-14 21:17:55
  */
 
+import Image from "next/image"
 import CategorySelection from "@/components/atoms/category-selection";
 import { TitleText } from "@/components/atoms/title";
 import { OrangeText } from "@/components/atoms/title";
 import { Home } from "@/constants/en";
+import TutorProfileCard from "@/components/atoms/tutor-profile-card";
 
 export default function ExploreTutor() {
     const { findTutor } = Home;
@@ -19,6 +21,9 @@ export default function ExploreTutor() {
             <CategorySelection />
 
             {/* advis */}
+            <TutorProfileCard/>
+            <TutorProfileCard/>
+            <TutorProfileCard/>
         </div>
     )
 }
