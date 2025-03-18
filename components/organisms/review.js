@@ -2,12 +2,13 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-17 14:53:23
+ * @Last Modified time: 2025-03-18 16:37:36
  */
 
 import { TitleText } from '@/components/atoms/title';
 import { Home } from '@/constants/en';
 import { OrangeButton } from '@/components/atoms/buttons';
+import Image from 'next/image';
 
 export default function Review() {
     const { review } = Home
@@ -15,7 +16,7 @@ export default function Review() {
     const reviewsData = [
         {
             id: 1,
-            userImage: "./assets/user-one.png",
+            userImage: "/assets/user-one.png",
             userAlt: "user-one",
             starCount: 5,
             reviewText: review.reviewOne,
@@ -25,7 +26,7 @@ export default function Review() {
         },
         {
             id: 2,
-            userImage: "./assets/user-two.png",
+            userImage: "/assets/user-two.png",
             userAlt: "user-two",
             starCount: 3,
             reviewText: review.reviewTwo,
@@ -35,7 +36,7 @@ export default function Review() {
         },
         {
             id: 3,
-            userImage: "./assets/user-three.png",
+            userImage: "/assets/user-three.png",
             userAlt: "user-three",
             starCount: 4,
             reviewText: review.reviewThree,
@@ -59,18 +60,24 @@ export default function Review() {
                             px-[25px] pt-[75px] pb-[35px] bg-[#FFFFFF] rounded-[16px]
                             shadow-[0px_28.93px_61.56px_0px_rgba(21,21,21,0.12)]"
                 >
-                    <img
+                    <Image
                         src={item.userImage}
                         alt={item.userAlt}
+                        width={120}
+                        height={120}
                         className="absolute top-[-40px] w-[75px] h-[75px]"
+                        priority
                     />
                     <div className="absolute right-[25px] top-[25px] flex gap-[4px]">
                         {Array.from({ length: item.starCount }).map((_, i) => (
-                        <img
+                        <Image
                             key={i}
-                            src="./assets/star-review.svg"
+                            src="/assets/star-review.svg"
                             alt="star-review"
+                            width={120}
+                            height={120}
                             className="h-[20px] w-[20px]"
+                            priority
                         />
                         ))}
                     </div>
@@ -83,10 +90,13 @@ export default function Review() {
                         <span className="text-[10px]">{item.userOccupation}</span>
                         </div>
                         <div className="flex w-[120px] gap-[10px]">
-                        <img
+                        <Image
                             src="./assets/thumb-up.svg"
                             alt="thumb-up"
+                            width={120}
+                            height={120}
                             className="h-[17px] w-[17px]"
+                            priority
                         />
                         <span className="text-[12px] text-[#E35D33]">
                             {item.teacherName}

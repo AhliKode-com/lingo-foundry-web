@@ -2,10 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:30
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-15 17:45:52
+ * @Last Modified time: 2025-03-18 16:38:29
  */
 
 import { FooterData } from '@/constants/en'
+import Image from 'next/image';
 import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaGooglePlusG, FaWhatsapp } from "react-icons/fa";
 
@@ -81,7 +82,14 @@ export default function Footer() {
                         gap-[20px] sm:gap-0
                     '>
                         <div className='flex flex-col'>
-                            <img src="./assets/logo.png" alt="Logo" className="max-w-none w-[90px] md:w-[120px]"/>
+                            <Image 
+                                src="/assets/logo.png" 
+                                alt="Logo" 
+                                width={120}
+                                height={120}
+                                className="max-w-none w-[90px] md:w-[120px]"
+                                priority
+                            />
                             <span className='sm:w-[200px] my-4 text-[14px] md:text-[16px]'>{title.address}</span>
                             <div className='flex gap-[10px] text-[#E35D33]'>
                                 <div className='w-[39px] h-[39px] rounded-full bg-[#FF723A10] flex items-center justify-center'>

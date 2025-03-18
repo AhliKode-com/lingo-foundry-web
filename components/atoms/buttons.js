@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:23
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 00:32:37
+ * @Last Modified time: 2025-03-18 15:39:33
  */
 
 export function StepButton({text, onClick, bgColor}) {
@@ -16,9 +16,11 @@ export function StepButton({text, onClick, bgColor}) {
     )
 }
 
-export function OrangeButton({text}) {
+export function OrangeButton({text, marginTop, custom}) {
     return (
-        <button className="bg-[#E15C31] text-[14px] sm:text-[16px] px-[28px] py-[13px] rounded-[40px] text-white cursor-pointer animation-effect">
+        <button className={`
+          bg-[#E15C31] text-[14px] sm:text-[16px] px-[28px] py-[13px] rounded-[40px] text-white cursor-pointer animation-effect 
+          ${marginTop} ${custom}`}>
             {text}
         </button>
     )

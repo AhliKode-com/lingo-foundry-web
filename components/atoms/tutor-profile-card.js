@@ -1,16 +1,20 @@
+/*
+ * @Author: danteclericuzio
+ * @Date: 2025-03-18 13:16:49
+ * @Last Modified by: danteclericuzio
+ * @Last Modified time: 2025-03-18 15:01:00
+ */
+
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
 
-export default function TeacherProfileCard() {
-    const [isHovered, setIsHovered] = useState(false)
+export default function TeacherProfileCard({isOpen, onHover}) {
 
     return (
         <div
             className="relative flex justify-start mt-6"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={onHover}
         >
             {/* Teacher Card */}
             <div className="relative max-w-4xl w-full p-6 rounded-xl border border-gray-200 shadow-sm bg-white transition-all duration-300">
@@ -151,11 +155,13 @@ export default function TeacherProfileCard() {
 
                 {/* Schedule Panel */}
                 <div
-                    className={`absolute right-0 top-0 transform transition-all duration-300 bg-white border border-gray-200 rounded-xl shadow-lg w-[400px] z-10 ${
-                        isHovered
+                    className={`absolute right-0 top-0 transform transition-all duration-300 bg-white border border-gray-200 rounded-xl shadow-lg w-[400px] z-10 
+                        ${isOpen
                             ? "translate-x-[calc(100%+20px)] opacity-100 visible"
                             : "translate-x-[calc(100%-20px)] opacity-0 invisible pointer-events-none"
-                    }`}
+                          }
+                          
+                    `}
                 >
                     {/* Introduction Videos Carousel */}
                     <div className="p-4 pb-0">

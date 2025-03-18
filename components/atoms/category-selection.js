@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 00:14:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 00:35:04
+ * @Last Modified time: 2025-03-18 14:50:04
  */
 
 "use client"
@@ -24,7 +24,7 @@ export default function CategorySelection() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col items-center space-y-4 mb-[40px]">
       <div className="flex flex-wrap justify-center gap-3 mt-4">
         {categories.map((category) => (
             <CategoryButton

@@ -2,24 +2,25 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 08:48:56
+ * @Last Modified time: 2025-03-18 15:44:06
  */
 
 "use client"
+import Image from 'next/image';
 import { useState, useEffect } from 'react'
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
-import { OrangeText } from '@/components/atoms/title';
+import { OrangeText, TitleText } from '@/components/atoms/title';
 import { Home } from '@/constants/en';
 
 export default function Carousel (){
     const { carousel } = Home;
     const slides = [
-        { id: 1, src: './assets/man-1.png', alt: carousel.englishTutors.title, price: carousel.englishTutors.price },
-        { id: 2, src: './assets/man-2.png', alt: carousel.japaneseTutors.title, price: carousel.japaneseTutors.price },
-        { id: 3, src: './assets/women-1.png', alt: carousel.koreanTutors.title, price: carousel.koreanTutors.price },
-        { id: 4, src: './assets/women-2.png', alt: carousel.italianTutors.title, price: carousel.italianTutors.price },
-        { id: 5, src: './assets/men-3.jpg', alt: carousel.thailandTutors.title, price: carousel.thailandTutors.price },
-        { id: 6, src: './assets/women-3.jpg', alt: carousel.russianTutors.title, price: carousel.russianTutors.price }
+        { id: 1, src: '/assets/man-1.png', alt: carousel.englishTutors.title, price: carousel.englishTutors.price },
+        { id: 2, src: '/assets/man-2.png', alt: carousel.japaneseTutors.title, price: carousel.japaneseTutors.price },
+        { id: 3, src: '/assets/women-1.png', alt: carousel.koreanTutors.title, price: carousel.koreanTutors.price },
+        { id: 4, src: '/assets/women-2.png', alt: carousel.italianTutors.title, price: carousel.italianTutors.price },
+        { id: 5, src: '/assets/men-3.jpg', alt: carousel.thailandTutors.title, price: carousel.thailandTutors.price },
+        { id: 6, src: '/assets/women-3.jpg', alt: carousel.russianTutors.title, price: carousel.russianTutors.price }
     ]
 
     const extendedSlides = [...slides]
@@ -69,9 +70,7 @@ export default function Carousel (){
           <OrangeText text={carousel.title} position="justify-start"/>
           <div className="relative w-full mx-auto flex flex-col overflow-hidden">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-[18px] sm:text-[24px] md:text-[32px] animation-effect">
-                {carousel.subtitle}
-              </span>
+              <TitleText text={carousel.subtitle}/>
               <div className="flex gap-[10px]">
                 <button
                   onClick={prevSlide}
@@ -100,10 +99,13 @@ export default function Carousel (){
                   className="flex relative flex-shrink-0 animation-effect w-[200px] h-[240px] md:w-[250px] md:h-[290px]"
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded" />
-                  <img
+                  <Image
                     src={slide.src}
                     alt={slide.alt}
+                    width={120}
+                    height={120}
                     className="rounded object-cover w-full"
+                    priority
                   />
                   <div className="justify-center items-center flex flex-col whitespace-nowrap absolute bottom-[20px] left-1/2 -translate-x-1/2 text-white">
                     <span className="font-semibold text-[18px] md:text-[22px] lg:text-[24px] mb-[5px] animation-effect">
