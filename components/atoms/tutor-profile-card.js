@@ -26,7 +26,7 @@ export default function TeacherProfileCard() {
                                 className="object-cover"
                             />
                         </div>
-                        <button className="w-full py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors">
+                        <button className="w-full py-2 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors cursor-pointer">
                             Follow
                         </button>
                     </div>
@@ -36,7 +36,7 @@ export default function TeacherProfileCard() {
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <h1 className="text-2xl md:text-3xl font-bold">Professional Teacher Mila Smith</h1>
+                                    <h1 className="text-xl md:text-2xl font-bold">Professional Teacher Mila Smith</h1>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="24"
@@ -125,22 +125,22 @@ export default function TeacherProfileCard() {
                                         <span className="mr-1">🎯</span>
                                         Specialized in Conversational, Business...
                                     </p>
-                                    <button className="mt-2 text-orange-500 font-medium">Read More</button>
+                                    <button className="mt-2 text-[#E35D33] font-medium">Read More</button>
                                 </div>
                             </div>
 
                             <div className="flex flex-col items-center md:items-end gap-4">
-                                <div className="text-right">
-                                    <p className="text-3xl font-bold text-orange-500">Rp. 50.000</p>
+                                <div className="text-left">
+                                    <p className="text-3xl font-bold text-[#E35D33]">Rp. 50.000</p>
                                     <p className="text-sm text-gray-700 max-w-[250px]">
                                         Purchase 1 trial class and get 2 times free experiences
                                     </p>
                                 </div>
                                 <div className="w-full md:w-auto flex flex-col gap-3">
-                                    <button className="w-full md:w-[250px] py-2.5 px-4 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                    <button className="w-full md:w-[180px] py-2.5 px-4 bg-[#E35D33] hover:bg-orange-600 text-white font-medium rounded-xl shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 cursor-pointer">
                                         Book Trial
                                     </button>
-                                    <button className="w-full md:w-[250px] py-2.5 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors">
+                                    <button className="w-full md:w-[180px] py-2.5 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors cursor-pointer">
                                         Book Course
                                     </button>
                                 </div>
