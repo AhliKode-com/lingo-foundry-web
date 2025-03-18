@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from '@/components/organisms/navbar'
 import Footer from '@/components/organisms/footer'
 
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
@@ -25,6 +27,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         <main>
           {children}
+          <SpeedInsights />
         </main>
         <Footer/>
       </body>
