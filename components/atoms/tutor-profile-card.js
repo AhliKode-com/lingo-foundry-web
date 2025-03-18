@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 15:01:00
+ * @Last Modified time: 2025-03-18 16:58:38
  */
 
 "use client"
@@ -21,15 +21,14 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                 <div className="flex flex-col md:flex-row gap-6">
                     {/* Profile Image */}
                     <div className="flex flex-col items-center gap-4">
-                        <div className="relative w-40 h-40 rounded-full overflow-hidden">
                             <Image
                                 src="/assets/tutor-profiles/tutor-1.png"
                                 alt="Teacher profile picture"
-                                width={160}
-                                height={160}
-                                className="object-cover"
+                                width={120}
+                                height={120}
+                                className="w-[100px] h-[100px] rounded-full"
+                                priority
                             />
-                        </div>
                         <button className="w-full py-2 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors cursor-pointer">
                             Follow
                         </button>
@@ -155,7 +154,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
 
                 {/* Schedule Panel */}
                 <div
-                    className={`absolute right-0 top-0 transform transition-all duration-300 bg-white border border-gray-200 rounded-xl shadow-lg w-[400px] z-10 
+                    className={`hidden lg:block absolute right-0 top-0 transform transition-all duration-300 bg-white border border-gray-200 rounded-xl shadow-lg w-[400px] z-10 
                         ${isOpen
                             ? "translate-x-[calc(100%+20px)] opacity-100 visible"
                             : "translate-x-[calc(100%-20px)] opacity-0 invisible pointer-events-none"
