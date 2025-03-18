@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 00:37:11
+ * @Last Modified time: 2025-03-18 14:54:23
  */
 
 export const Home = {
@@ -193,10 +193,6 @@ export const FindTutor = {
 
 export const NavbarData = {
     links: [
-        {
-            href: '/all-categories',
-            title: 'All Categories'
-        },
         {
             href: '/',
             title: 'Home'

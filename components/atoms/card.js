@@ -2,9 +2,10 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 09:28:43
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 09:36:11
+ * @Last Modified time: 2025-03-18 15:49:54
  */
 
+import Image from 'next/image';
 import { OrangeButton, WhiteButton } from '../atoms/buttons';
 
 export function LookingCard({
@@ -17,7 +18,14 @@ export function LookingCard({
 }) {
     return (
         <div className="items-center flex flex-col w-full md:h-[455px] py-[30px] md:py-[50px] px-[15px] md:px-[46px] drop-shadow-xl bg-white rounded-[10px] animation-effect">
-            <img src={image} alt={alt} className="w-[96px] h-[100px] mx-auto" />
+            <Image 
+                src={image} 
+                alt={alt} 
+                width={120}
+                height={120}
+                className="w-[96px] h-[100px] mx-auto" 
+                priority
+            />
             
             <span className="
                 text-[16px] sm:text-[24px] md:text-[16px] lg:text-[24px] xl:text-[34px]

@@ -2,9 +2,10 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-16 18:56:44
+ * @Last Modified time: 2025-03-18 15:27:04
  */
 "use client"
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React, {useState, useEffect} from 'react'
 
@@ -32,24 +33,45 @@ export default function Navbar() {
     return (
         <nav className="fixed z-50 bg-[#FFFFFF] w-full border-b-2 border-[#FF723A10] font-semibold">
             <div className="lingo-container flex justify-between items-center py-[5px] relative">
-                <img src="./assets/dot-nav.svg" alt="Dot" className="block absolute left-[150px] sm:left-[275px] top-[9px]"/>
-                <Link className='cursor-pointer z-30' href='/' onClick={() => setOpen(false)}>
-                    <img src="./assets/logo.png" alt="Logo" className="max-w-none w-[90px] md:w-[120px] animation-effect"/>
-                </Link>
-                <div className="hidden xl:flex">
-                    <ul className="flex gap-11 text-[16px]">
-                        {links.map((link, index) => {
-                            const marginClass = index === 0 ? 'mr-[80px]' : '';
-                            const activeClass = pathname === link.href ? 'text-[#E15C31]' : '';
-                            return (
-                                <li key={index} className={`${marginClass} ${activeClass}`}>
-                                    <Link href={link.href}>{link.title}</Link>
-                                </li>
-                            );
-                        })}
-                    </ul>
+                <div className='flex items-center gap-11'>
+                    <Link className='cursor-pointer z-30' href='/' onClick={() => setOpen(false)}>
+                        <Image
+                            src="/assets/logo.png"
+                            alt="Logo"
+                            width={120}
+                            height={120}
+                            className="max-w-none w-[90px] md:w-[120px] h-auto animation-effect"
+                            priority
+                        />
+                    </Link>
+                    <div className="hidden lg:flex">
+                        <ul className="flex gap-11 text-[16px]">
+                            {links.map((link, index) => {
+                                const activeClass = pathname === link.href ? 'text-[#E15C31]' : '';
+                                return (
+                                    <li key={index} className={`${activeClass}`}>
+                                        <Link href={link.href}>{link.title}</Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
                 </div>
-                <div className='hidden md:flex items-center'>
+                <Image
+                    src="/assets/dot-nav.svg"
+                    alt="Dot"
+                    width={120}
+                    height={120}
+                    className="
+                    block
+                    absolute
+                    left-[150px]
+                    sm:left-[275px]
+                    top-[9px]
+                    "
+                    priority
+                />
+                <div className='hidden lg:flex items-center'>
                     <Link href='/'>
                         <OrangeButton text="Apply as Tutor"/>
                     </Link>
@@ -68,7 +90,7 @@ export default function Navbar() {
                 </div>
 
                 {/* hamburger */}
-                <div className='flex ml-auto md:hidden group z-50 w-6 h-6 cursor-pointer flex-col justify-between items-center' onClick={() => { setOpen(!open) }}>
+                <div className='flex ml-auto lg:hidden group z-50 w-6 h-6 cursor-pointer flex-col justify-between items-center' onClick={() => { setOpen(!open) }}>
                     <span className={`h-1 w-full rounded-lg cursor-pointer transform transition duration-300 ease-in-out bg-[#FF5733] ${open ? "rotate-45 translate-y-2.5" : ""}`} />
                     <span className={`h-1 rounded-lg cursor-pointer transition-all duration-300 ease-in-out bg-[#1D419D] ${open ? "w-0" : "w-full"}`} />
                     <span className={`h-1 w-full rounded-lg cursor-pointer transform transition duration-300 ease-in-out bg-[#FF5733] ${open ? "-rotate-45 -translate-y-2.5" : ""}`} />

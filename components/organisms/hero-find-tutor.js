@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-16 19:58:25
+ * @Last Modified time: 2025-03-18 15:25:13
  */
 
 import { FindTutor } from "@/constants/en"
@@ -29,7 +29,7 @@ export default function Hero() {
                 font-bold 
                 text-[32px] lg:text-[40px] xl:text-[56px] 
                 lg:leading-[60px] xl:leading-[84px]
-                md:w-[520px] mt-[155px] 
+                md:w-[520px] mt-[70px] 
                 animation-effect">
             {hero.title1}
             <span className="relative flex">
