@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:53:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-19 11:00:33
+ * @Last Modified time: 2025-03-19 15:32:05
  */
 
 
@@ -19,7 +19,7 @@ import { multiStepPayment } from "@/constants/en";
 
 export default function ProcessBooking() {
 
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(2);
     const { tab } = multiStepPayment;
 
     const onCompletePayment = () => {
