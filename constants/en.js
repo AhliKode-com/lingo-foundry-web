@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 14:54:23
+ * @Last Modified time: 2025-03-18 21:13:21
  */
 
 export const Home = {
@@ -414,4 +414,15 @@ export const multiStepPayment = {
         nextBtn: "Next",
         prevBtn: "Prev",
     },
+    confirmPayment: {
+        title: "Confirm Payment",
+        product: "Product",
+        subject: "Subject",
+        category: "Category",
+        duration: "Duration",
+        sessions: "Sessions",
+        subTotal: "Subtotal",
+        summary: "Summary",
+        completePayment: "Complete Payment"
+    }
 }
