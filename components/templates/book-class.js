@@ -63,6 +63,12 @@ export default function BookClass() {
         return hoveredTime.day === day && hoveredTime.time === time;
     }
 
+    const addOneHour = (timeStr) => {
+        let [hours, minutes] = timeStr.split(":").map(Number)
+        hours = (hours + 1).toString().padStart(2, '0')
+        return `${hours}:${minutes.toString().padStart(2, '0')}`
+    }
+
     return (
         <div>
             <h2 className="font-bold text-xl">Book Class</h2>
@@ -70,11 +76,11 @@ export default function BookClass() {
             {/* ...the rest of your content */}
 
             <div className="border border-[#E35D33] rounded-2xl p-6 max-w-4xl mx-auto mt-8">
-                <h2 className="text-xl font-medium text-gray-700 mb-6">These are the last time slots available! Book now
+                <h2 className="text-base md:text-xl font-medium text-gray-700 mb-6">These are the last time slots available! Book now
                     before its too late.</h2>
 
-                <div className="flex gap-6 mb-6">
-                    <div className="w-1/2">
+                <div className="flex gap-6 mb-6 flex-col md:flex-row">
+                    <div className="w-full md:w-1/2">
                         <h3 className="text-gray-600 mb-3">Product Paid</h3>
                         <div
                             className="border border-gray-300 rounded-lg p-4 flex items-center gap-3 shadow-md h-[96px]">
@@ -100,7 +106,7 @@ export default function BookClass() {
                         </div>
                     </div>
 
-                    <div className="w-1/2">
+                    <div className="w-full md:w-1/2">
                         <h3 className="text-gray-600 mb-3">Course Package</h3>
                         <div
                             className="border border-gray-300 rounded-lg p-4 shadow-md h-[96px] flex flex-col items-start justify-center">
@@ -112,26 +118,28 @@ export default function BookClass() {
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between mb-4">
-                    <div className="text-gray-600">02 - 07 March</div>
+                <div className="flex items-center justify-between mb-4 flex-col md:flex-row gap-3 md:gap-0">
                     <div className="flex items-center gap-2">
-                        <button className="w-8 h-8 flex items-center justify-center border rounded text-gray-400">
-                            <span>&#8249;</span>
-                        </button>
-                        <button className="w-8 h-8 flex items-center justify-center border rounded text-gray-400">
-                            <span>&#8250;</span>
-                        </button>
+                        <div className="text-gray-600">02 - 07 March</div>
+                        <div className="flex items-center gap-2">
+                            <button className="w-8 h-8 flex items-center justify-center border rounded text-gray-400 text-center">
+                                <span>&#8249;</span>
+                            </button>
+                            <button className="w-8 h-8 flex items-center justify-center border rounded text-gray-400">
+                                <span>&#8250;</span>
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex items-center text-gray-600">
+                    <div className="flex items-center text-gray-600 text-sm md:text-base text-center">
                         <span>Please select your lesson start time (GMT +07:00) Jakarta, ID</span>
                         <span className="ml-1">&#9660;</span>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-6 gap-2 mb-6">
+                <div className="grid grid-cols-6 gap-2 mb-3 md:mb-6 mt-6 md:mt-0">
                     {days.map((day) => (
-                        <div key={day.name} className="flex flex-col items-center">
-                            <div className="mb-2 text-gray-600">{day.name}</div>
+                        <div key={day.name} className="flex flex-col items-center text-sm md:text-base">
+                            <div className="mb-1 md:mb-2 text-gray-600">{day.name}</div>
                             <div
                                 className={`w-full py-2 text-center border-b-2 border-[#E35D33]`}>
                                 {day.date}
@@ -146,7 +154,7 @@ export default function BookClass() {
                             {generateTimeSlots(day.name).map((time) => (
                                 <button
                                     key={`${day.name}-${time}`}
-                                    className={`w-full py-2 my-1 rounded relative cursor-pointer ${
+                                    className={`w-full py-1 md:py-2 my-1 rounded relative cursor-pointer text-xs md:text-base ${
                                         isActiveTimeSlot(day.name, time)
                                             ? 'bg-[#E35D33] text-white'
                                             : 'text-[#E35D33]'
@@ -155,7 +163,7 @@ export default function BookClass() {
                                         day: day.name,
                                         date: day.date,
                                         time,
-                                        formattedTime: '12:30 pm - 13:30 pm'
+                                        formattedTime: `${time} - ${addOneHour(time)}`
                                     })}
                                     onMouseEnter={() => setHoveredTime({
                                         day: day.name,
@@ -167,7 +175,7 @@ export default function BookClass() {
                                     {time}
                                     {isActiveTimeSlot(day.name, time) && isHoveredTimeSlot(day.name, time) && (
                                         <div
-                                            className="absolute bg-white border shadow-lg rounded-lg p-4 w-64 z-50 -top-12 -right-[250px] animation-effect">
+                                            className="absolute bg-white border shadow-lg rounded-lg p-4 w-64 z-50 -top-12 -right-[250px] animation-effect hidden md:block">
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
                                                 <div>
@@ -185,20 +193,7 @@ export default function BookClass() {
                     ))}
                 </div>
 
-                {selectedTime.day === 'Sat' && selectedTime.time === '10:00' && (
-                    <div className="absolute bg-white border shadow-lg rounded-lg p-4 w-64 right-24 top-96 mt-32">
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
-                            <div>
-                                <div className="font-medium text-sm">Selected</div>
-                                <div className="text-gray-700 text-sm">English - Children (6-11)</div>
-                            </div>
-                        </div>
-                        <div className="text-gray-600 text-sm">{selectedTime.formattedTime}</div>
-                    </div>
-                )}
-
-                <div className="mt-6 text-gray-600">
+                <div className="mt-6 text-gray-600 text-sm md:text-base">
                     Already <span className="text-green-500">selected {selectedSlots}</span>, still can select <span
                     className="text-[#E35D33]">{maxSlots - selectedSlots}/{maxSlots}</span>
                 </div>
