@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:09:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-19 10:48:35
+ * @Last Modified time: 2025-03-20 11:56:47
  */
 
 export function OrangeText({text, position}) {
@@ -35,8 +35,8 @@ export function TitleDashboard({text, custom}) {
     )
 }
 
-export function TitlePayment({text, colSpan}) {
+export function TitlePayment({text, custom}) {
     return (
-        <div className={`col-span-${colSpan} underline`}>{text}</div>
+        <div className={`${custom} underline text-[14px] md:text-[16px]`}>{text}</div>
     )
 }

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:51:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-19 15:29:26
+ * @Last Modified time: 2025-03-20 19:34:03
  */
 
 "use client";
@@ -46,21 +46,22 @@ export default function TakeClass() {
   ];
 
   return (
-    <div className="py-[50px] flex justify-center">
+    <div className="pt-[20px] lg:py-[50px] flex justify-center">
         <div className="bg-white border border-[#CBD3E1] rounded-[20px] p-[40px] flex flex-col">
             <span className="text-[20px] font-semibold">You’re all set, take your class now</span>
 
             {/* Table Header */}
-            <div className="my-[20px] flex w-full items-center gap-[8px]">
-                <span className="font-semibold w-[386px]">Class</span>
-                <span className="font-semibold w-[386px]">Schedule</span>
+            <div className="my-[20px] w-full items-center gap-[8px] lg:flex hidden">
+                <span className="font-semibold w-[250px] lg:w-[386px]">Class</span>
+                <span className="font-semibold w-[250px] lg:w-[386px]">Schedule</span>
             </div>
 
             {/* Map over each row of cards */}
-            <div className="flex flex-col gap-[27px]">
+            <div className="flex flex-col gap-[4px] lg:gap-[27px]">
                 {classesData.map((item, index) => (
-                    <div key={index} className="flex gap-[8px]">
+                    <div key={index} className="flex flex-col lg:flex-row gap-[4px] lg:gap-[8px] border-b-[1px] lg:border-0 border-[#CBD3E1] last:border-b-0 pb-[20px] lg:pb-0">
                         {/* Left Card */}
+                        <span className="text-[14px] flex lg:hidden">Class & Schedule:</span>
                         <div className={`${cardClass} flex gap-[15px]`}>
                             <Image
                                 src={item.left.image}
@@ -68,13 +69,13 @@ export default function TakeClass() {
                                 width={50}
                                 height={50}
                                 priority
-                                className="object-cover w-[50px] h-[50px]"
+                                className="object-cover w-[30px] h-[30px] lg:w-[50px] lg:h-[50px]"
                             />
                             <div className="flex flex-col">
-                                <span>{item.left.teacher1}</span>
+                                <span className="text-[14px] lg:text-[16px]">{item.left.teacher1}</span>
                                 <span>{item.left.teacher2}</span>
-                                <span className="text-[#545659DE]">{item.left.subject}</span>
-                                <span className="text-[#545659DE]">{item.left.hours}</span>
+                                <span className="text-[#545659DE] text-[14px] lg:text-[16px]">{item.left.subject}</span>
+                                <span className="text-[#545659DE] text-[14px] lg:text-[16px]">{item.left.hours}</span>
                             </div>
                         </div>
 

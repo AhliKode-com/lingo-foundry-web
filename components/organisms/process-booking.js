@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:53:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-19 15:32:05
+ * @Last Modified time: 2025-03-20 10:57:50
  */
 
 
@@ -33,10 +33,10 @@ export default function ProcessBooking() {
     ];
 
     return (
-        <div className="pt-[100px]">
+        <div className="pt-[78px] md:pt-[100px] animation-effect overflow-hidden">
             <div className="w-full">
-                <div className="w-full fixed z-50 bg-[#FFFFFF] border-b-[1px] border-[#E5E5E5]">
-                    <div className="lingo-container flex items-center gap-[12px] py-[25px] ">
+                <div className="w-full fixed z-40 bg-[#FFFFFF] border-b-[1px] border-[#E5E5E5]">
+                    <div className="lingo-container flex flex-col sm:flex-row justify-start md:items-center gap-[12px] py-[25px] ">
                         {steps.map((step, index) => {
                             const isActive = step.id === currentStep;
                             const isCompleted = step.id < currentStep;
@@ -67,10 +67,10 @@ export default function ProcessBooking() {
                                     >
                                         {step.label}
                                     </span>
-                                    <div>
+                                    <div className="rotate-[90deg] sm:rotate-0">
                                         {index < steps.length - 1 && (
                                             <RiArrowRightSLine className={`
-                                                text-[22px]
+                                                text-[22px]3
                                                 ${
                                                     isActive 
                                                     ? "text-[#7A7A7A]" 
@@ -88,7 +88,7 @@ export default function ProcessBooking() {
                 </div>
             </div>
 
-            <div className="lingo-container flex flex-col pb-[50px] pt-[130px]">
+            <div className="lingo-container flex flex-col pb-[50px] pt-[185px] sm:pt-[130px]">
                 {steps.find((step) => step.id === currentStep)?.component}
                 <div className="mt-4 flex gap-2">
                     {currentStep > 1 && (

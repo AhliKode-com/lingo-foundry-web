@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 14:21:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 16:33:27
+ * @Last Modified time: 2025-03-20 19:38:26
  */
 
 import Image from 'next/image';
@@ -45,7 +45,7 @@ export default function Browse() {
             <div className='lingo-container px-[20px] mb-[55px] xl:px-0 z-10 animation-effect'>
                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[10px] sm:gap-[18px] md:gap-[24px] animation-effect'>
                     {box.map((item, index) => (
-                        <div style={{ backgroundColor: bgColors[item.category] }} className="p-[10px] sm:p-[14px] md:p-[16px] lg:p-[20px] animation-effect flex justify-center items-center" key={index}>
+                        <div style={{ backgroundColor: bgColors[item.category] }} className="p-[10px] sm:p-[14px] md:p-[16px] lg:p-[20px] animation-effect flex items-center" key={index}>
                             <div className='flex items-center'>
                                 <Image 
                                     src={item.src} 
