@@ -2,28 +2,32 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 15:25:13
+ * @Last Modified time: 2025-03-20 20:22:24
  */
 
 import { FindTutor } from "@/constants/en"
+import Image from "next/image"
 
 export default function Hero() {
     const { hero } = FindTutor
     return (
       <div className="lingo-container flex h-full pt-[70px] sm:pt-[103.61px] pb-[100px] sm:pb-[150px] animation-effect">
         <div className="relative w-full flex flex-col">
-            <img 
+            <Image 
                 src="./assets/dot-plane.svg" 
                 alt="Hero plane" 
+                width={120}
+                height={120}
                 className="
                     animation-effect
                     absolute 
                     -left-[15px] md:-left-[45px] lg:-left-[80px] xl:-left-[140px] 
                     -bottom-[100px] md:-bottom-[130px] 
                     w-[150px] lg:w-[200px] xl:w-[278px]"
+                    priority
             />
-          <img src="./assets/hero-tutor.png" alt="Hero swirl" className="hidden min-[900px]:block absolute top-[30px] right-0 md:w-[400px] lg:w-[550px] xl:w-[689px] max-w-none animation-effect"/>
-          <img src="./assets/hero-decoration.png" alt="Hero swirl update" className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"/>
+          <Image width={120} height={120} priority src="./assets/hero-tutor.png" alt="Hero swirl" className="hidden min-[900px]:block absolute top-[30px] right-0 md:w-[400px] lg:w-[550px] xl:w-[689px] max-w-none animation-effect"/>
+          <Image width={120} height={120} priority src="./assets/hero-decoration.png" alt="Hero swirl update" className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"/>
           <h1 className="
                 z-10
                 font-bold 
@@ -33,15 +37,18 @@ export default function Hero() {
                 animation-effect">
             {hero.title1}
             <span className="relative flex">
-              <img 
+              <Image 
                 src="./assets/circle.svg" 
                 alt="Circle" 
+                width={120} 
+                height={120}
                 className="
                 absolute 
                 w-[205px] lg:w-[250px] xl:w-[365px] 
                 top-[0px]
                 left-[-10px]
-                animation-effect"/>
+                animation-effect"
+                priority/>
               {hero.title2}
             </span>
             {hero.title3}
@@ -55,7 +62,7 @@ export default function Hero() {
             md:w-[480px] 
             mt-[20px] md:mt-[40px] mb-[27px]">{hero.subtitle}</h1>
           <div className="relative items-center flex md:w-[550px] lg:w-[614px] bg-[#FF723A10] rounded-[40px] border-[1px] border-[#C9C9C9] px-[31px] h-[50px] lg:h-[65px] animation-effect">
-            <img src="./assets/check.svg" alt="Search" className="mr-[8px]"/>
+            <Image width={120} height={120} priority src="./assets/check.svg" alt="Search" className="mr-[8px]"/>
             <span className="animation-effect text-[14px] md:text-[16px]">{hero.placeholder}</span>
             <button className="hidden md:block absolute right-0 bg-[#E35D33] px-[28px] h-[50px] lg:h-[65px] animation-effect rounded-[40px] text-white">
               {hero.buttonSearch}
