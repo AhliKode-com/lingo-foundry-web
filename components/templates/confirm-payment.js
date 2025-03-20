@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:50:17
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-19 11:24:14
+ * @Last Modified time: 2025-03-20 11:58:34
  */
 
 import { TitleDashboard, TitlePayment } from "@/components/atoms/title";
@@ -37,27 +37,29 @@ export default function ConfirmPayment({ onCompletePayment }) {
 
     return (
         <div className="flex flex-col">
-            <TitleDashboard text={confirmPayment.title} marginBottom="mb-[40px]"/>
-            <div className="pb-[10px] grid grid-cols-7 border-b-[1px] border-[#D2D2D250]">
-                <TitlePayment text={confirmPayment.product} colSpan={2}/>
-                <TitlePayment text={confirmPayment.subject} colSpan={1}/>
-                <TitlePayment text={confirmPayment.category} colSpan={1}/>
-                <TitlePayment text={confirmPayment.duration} colSpan={1}/>
-                <TitlePayment text={confirmPayment.sessions} colSpan={1}/>
-                <TitlePayment text={confirmPayment.subTotal} colSpan={1}/>
+            <div className="mb-[20px] md:mb-[40px]">
+                <TitleDashboard text={confirmPayment.title}/>
+            </div>
+            <div className="pb-[10px] hidden md:grid grid-cols-6 lg:grid-cols-7 border-b-[1px] border-[#D2D2D250]">
+                <TitlePayment text={confirmPayment.product} custom={'col-span-1 lg:col-span-2'}/>
+                <TitlePayment text={confirmPayment.subject} custom={'col-span-1'}/>
+                <TitlePayment text={confirmPayment.category} custom={'col-span-1'}/>
+                <TitlePayment text={confirmPayment.duration} custom={'col-span-1'}/>
+                <TitlePayment text={confirmPayment.sessions} custom={'col-span-1'}/>
+                <TitlePayment text={confirmPayment.subTotal} custom={'col-span-1'}/>
             </div>
             <div className="relative">
                 {cartItems.map((item, index) => (
                     <CartRow
-                    key={index}
-                    item={item}
-                    onDelete={() => console.log("Delete item:", index)}
+                        key={index}
+                        item={item}
+                        onDelete={() => console.log("Delete item:", index)}
                     />
                 ))}
             </div>
             
             <div className="w-full flex flex-col items-end py-[100px]">
-                <div className="flex flex-col w-[490px]">
+                <div className="flex flex-col w-full md:w-[490px]">
                     <TitleDashboard text={confirmPayment.summary} custom="mb-[25px] mx-auto"/>
                     <span className="font-medium text-[18px] mb-[15px]">Order Summary</span>
                     <div className="border-b-[1px] border-[#D2D2D250]">
