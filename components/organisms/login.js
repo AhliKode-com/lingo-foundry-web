@@ -3,16 +3,19 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useLogin } from "@/hooks/useLogin"
 
 export default function LoginForm() {
+  const { login } = useLogin()
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle login logic here
+
     console.log({ email, password })
+    await login(email, password)
   }
 
   return (
@@ -41,13 +44,13 @@ export default function LoginForm() {
               <input
                 id="email"
                 name="email"
-                type="email"
+                type="text"
                 autoComplete="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                placeholder="Enter your email here"
+                placeholder="Enter your username here"
               />
             </div>
           </div>

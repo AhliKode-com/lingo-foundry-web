@@ -12,6 +12,7 @@ import React, {useState, useEffect} from 'react'
 import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
 import Link from 'next/link';
+import {useAuth} from "@/hooks/useAuth";
 
 export default function Navbar() {
 
@@ -19,6 +20,7 @@ export default function Navbar() {
     
     const pathname = usePathname();
     const [open, setOpen] = useState(false)
+    const { user, loading } = useAuth();
 
     useEffect(() => {
         if (open) {
@@ -75,17 +77,32 @@ export default function Navbar() {
                     <Link href='/'>
                         <OrangeButton text="Apply as Tutor"/>
                     </Link>
-                    {auth.map((link, index) => {
-                        const marginClass = index === 0 ? 'mx-[30px]' : '';
-                        return (
-                            <Link 
-                                key={index} 
-                                className={`cursor-pointer ${marginClass}`}
-                                href={link.href}
-                            >
-                                {link.title}
-                            </Link>
-                        )}
+                    { !loading && (
+                        <>
+                            {auth.map((link, index) => {
+                                const marginClass = index === 0 ? 'mx-[30px]' : '';
+                                if (link.title === 'Log in' && user != null) {
+                                    return (
+                                        <Link
+                                            key={index}
+                                            className={`cursor-pointer ${marginClass}`}
+                                            href="/"
+                                        >
+                                            Hello, {user?.sub}
+                                        </Link>
+                                    )
+                                }
+                                return (
+                                    <Link
+                                        key={index}
+                                        className={`cursor-pointer ${marginClass}`}
+                                        href={link.href}
+                                    >
+                                        {link.title}
+                                    </Link>
+                                )}
+                            )}
+                        </>
                     )}
                 </div>
 
@@ -120,17 +137,33 @@ export default function Navbar() {
                                 <OrangeButton text="Apply as Tutor"/>
                             </Link>
                             <div className='flex mt-6 gap-6'>
-                                {auth.map((link, index) => {
-                                    return (
-                                        <Link
-                                            key={index} 
-                                            className='cursor-pointer'
-                                            href={link.href}
-                                            onClick={() => setOpen(false)}
-                                        >
-                                            {link.title}
-                                        </Link>
-                                    )}
+                                {!loading && (
+                                    <>
+                                        {auth.map((link, index) => {
+                                            if (link.title === 'Log in' && user != null) {
+                                                return (
+                                                    <Link
+                                                        key={index}
+                                                        className='cursor-pointer'
+                                                        href="/"
+                                                        onClick={() => setOpen(false)}
+                                                    >
+                                                        Hello, {user?.sub}
+                                                    </Link>
+                                                )
+                                            }
+                                            return (
+                                                <Link
+                                                    key={index}
+                                                    className='cursor-pointer'
+                                                    href={link.href}
+                                                    onClick={() => setOpen(false)}
+                                                >
+                                                    {link.title}
+                                                </Link>
+                                            )}
+                                        )}
+                                    </>
                                 )}
                             </div>
                         </div>
