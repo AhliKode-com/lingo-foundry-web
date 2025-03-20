@@ -208,7 +208,7 @@ export const NavbarData = {
     ],
     auth: [
         {
-            href: '/',
+            href: '/login',
             title: 'Log in'
         },
         {
