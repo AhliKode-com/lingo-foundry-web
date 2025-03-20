@@ -26,8 +26,8 @@ export default function Hero() {
                     w-[150px] lg:w-[200px] xl:w-[278px]"
                     priority
             />
-          <Image width={120} height={120} priority src="./assets/hero-tutor.png" alt="Hero swirl" className="hidden min-[900px]:block absolute top-[30px] right-0 md:w-[400px] lg:w-[550px] xl:w-[689px] max-w-none animation-effect"/>
-          <Image width={120} height={120} priority src="./assets/hero-decoration.png" alt="Hero swirl update" className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"/>
+          <Image width={120} height={120} priority src="/assets/hero-tutor.png" alt="Hero swirl" className="hidden min-[900px]:block absolute top-[30px] right-0 md:w-[400px] lg:w-[550px] xl:w-[689px] max-w-none animation-effect"/>
+          <Image width={120} height={120} priority src="/assets/hero-decoration.png" alt="Hero swirl update" className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"/>
           <h1 className="
                 z-10
                 font-bold 
