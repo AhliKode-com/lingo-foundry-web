@@ -1,8 +1,8 @@
 /*
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:50:17
- * @Last Modified by: advistasyam
- * @Last Modified time: 2025-03-20 17:44:20
+ * @Last Modified by: danteclericuzio
+ * @Last Modified time: 2025-03-21 15:39:11
  */
 
 import React, {useState} from 'react';
@@ -71,10 +71,6 @@ export default function BookClass() {
 
     return (
         <div>
-            <h2 className="font-bold text-xl">Book Class</h2>
-            <p className="mt-2">This is where you confirm your payment details.</p>
-            {/* ...the rest of your content */}
-
             <div className="border border-[#E35D33] rounded-2xl p-6 max-w-4xl mx-auto mt-8">
                 <h2 className="text-base md:text-xl font-medium text-gray-700 mb-6">These are the last time slots available! Book now
                     before its too late.</h2>
@@ -175,7 +171,7 @@ export default function BookClass() {
                                     {time}
                                     {isActiveTimeSlot(day.name, time) && isHoveredTimeSlot(day.name, time) && (
                                         <div
-                                            className="absolute bg-white border shadow-lg rounded-lg p-4 w-64 z-50 -top-12 -right-[250px] animation-effect hidden md:block">
+                                            className="absolute bg-white border shadow-lg rounded-lg p-4 w-64 z-20 -top-12 -right-[250px] animation-effect hidden md:block">
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
                                                 <div>
