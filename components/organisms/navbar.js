@@ -2,17 +2,19 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 15:27:04
+ * @Last Modified time: 2025-03-22 16:27:37
  */
 "use client"
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React, {useState, useEffect} from 'react'
-
+import { GoBell, GoHeart } from "react-icons/go";
+import { BsCart2 } from "react-icons/bs";
 import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
 import Link from 'next/link';
 import {useAuth} from "@/hooks/useAuth";
+import { useLogout } from "@/hooks/useLogout";
 
 export default function Navbar() {
 
@@ -20,7 +22,9 @@ export default function Navbar() {
     
     const pathname = usePathname();
     const [open, setOpen] = useState(false)
+    const [openProfile, setOpenProfile] = useState(false)
     const { user, loading } = useAuth();
+    const { logout } = useLogout();
 
     useEffect(() => {
         if (open) {
@@ -65,52 +69,87 @@ export default function Navbar() {
                     width={120}
                     height={120}
                     className="
-                    block
-                    absolute
-                    left-[150px]
-                    sm:left-[275px]
-                    top-[9px]
+                        block
+                        absolute
+                        left-[150px]
+                        sm:left-[275px]
+                        top-[9px]
+                        animation-effect
                     "
                     priority
                 />
-                <div className='hidden lg:flex items-center'>
+                <div className='hidden lg:flex items-center animation-effect'>
                     <Link href='/'>
                         <OrangeButton text="Apply as Tutor"/>
                     </Link>
-                    { !loading && (
+                    {loading ? 
+                        <div className="flex gap-[24px] ml-[26px] items-center">
+                            <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
+                            <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
+                            <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
+                            <div className="relative">
+                                <div className="w-[40px] h-[40px] bg-gray-300 rounded-full animate-pulse" />
+                            </div>
+                        </div>
+                    : 
                         <>
-                            {auth.map((link, index) => {
-                                const marginClass = index === 0 ? 'mx-[30px]' : '';
-                                if (link.title === 'Log in' && user != null) {
+                            {user != null ? (
+                                <div className="flex gap-[24px] ml-[26px] items-center relative">
+                                    <GoBell className="text-[24px]" />
+                                    <GoHeart className="text-[24px]" />
+                                    <BsCart2 className="text-[24px]" />
+                                    <div 
+                                        className='relative animation-effect' 
+                                        onMouseEnter={() => setOpenProfile(true)} 
+                                        onMouseLeave={() => setOpenProfile(false)} 
+                                    >
+                                        <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute'></div>
+                                        <Image
+                                            src="/assets/tutor-profiles/tutor-1.png"
+                                            alt="Profile"
+                                            width={40}
+                                            height={40}
+                                            className='cursor-pointer'
+                                        />
+                                        {openProfile && (
+                                            <div className="absolute top-[0px] mt-[50px] right-0 bg-white border border-gray-200 rounded shadow">
+                                                <button className='whitespace-nowrap px-4 py-2 w-full'>Hello {user?.sub}</button>
+                                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect">
+                                                    Settings
+                                                </button>
+                                                <button 
+                                                    onClick={logout}
+                                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect"
+                                                >
+                                                    Sign Out
+                                                </button>
+                                            </div>
+                                        )} 
+                                    </div>
+                                </div>
+                            ) : (
+                                auth.map((link, index) => {
+                                    const marginClass = index === 0 ? "mx-[30px]" : "";
                                     return (
                                         <Link
                                             key={index}
                                             className={`cursor-pointer ${marginClass}`}
-                                            href="/"
+                                            href={link.href}
                                         >
-                                            Hello, {user?.sub}
+                                            {link.title}
                                         </Link>
-                                    )
-                                }
-                                return (
-                                    <Link
-                                        key={index}
-                                        className={`cursor-pointer ${marginClass}`}
-                                        href={link.href}
-                                    >
-                                        {link.title}
-                                    </Link>
-                                )}
+                                    );
+                                })
                             )}
                         </>
-                    )}
+                    }
                 </div>
 
                 {/* hamburger */}
                 <div className='flex ml-auto lg:hidden group z-50 w-6 h-6 cursor-pointer flex-col justify-between items-center' onClick={() => { setOpen(!open) }}>
-                    <span className={`h-1 w-full rounded-lg cursor-pointer transform transition duration-300 ease-in-out bg-[#FF5733] ${open ? "rotate-45 translate-y-2.5" : ""}`} />
-                    <span className={`h-1 rounded-lg cursor-pointer transition-all duration-300 ease-in-out bg-[#1D419D] ${open ? "w-0" : "w-full"}`} />
-                    <span className={`h-1 w-full rounded-lg cursor-pointer transform transition duration-300 ease-in-out bg-[#FF5733] ${open ? "-rotate-45 -translate-y-2.5" : ""}`} />
+                    <span className={`h-1 w-full rounded-lg cursor-pointer animation-effect bg-[#FF5733] ${open ? "rotate-45 translate-y-2.5" : ""}`} />
+                    <span className={`h-1 rounded-lg cursor-pointer animation-effect bg-[#1D419D] ${open ? "w-0" : "w-full"}`} />
+                    <span className={`h-1 w-full rounded-lg cursor-pointer animation-effect bg-[#FF5733] ${open ? "-rotate-45 -translate-y-2.5" : ""}`} />
                 </div>
 
                 {/* mobile */}
@@ -121,8 +160,8 @@ export default function Navbar() {
                     ${open ? 'translate-x-0' : 'translate-x-full'}`
                     }
                 >
-                    <div className="flex flex-col justify-center h-full p-5 sm:p-12">
-                        <ul className="flex flex-col gap-6 text-[14px] sm:text-[16px]">
+                    <div className="flex flex-col justify-center h-full p-5 sm:p-12 animation-effect">
+                        <ul className="flex flex-col gap-6 text-[14px] sm:text-[16px] animation-effect">
                             {links.map((link, index) => {
                                 const activeClass = pathname === link.href ? 'text-[#E15C31]' : '';
                                 return (
@@ -137,34 +176,66 @@ export default function Navbar() {
                                 <OrangeButton text="Apply as Tutor"/>
                             </Link>
                             <div className='flex mt-6 gap-6'>
-                                {!loading && (
+                                {loading ?
+                                    <div className="flex gap-[24px] items-center">
+                                        <div className="relative">
+                                            <div className="w-[40px] h-[40px] bg-gray-300 rounded-full animate-pulse" />
+                                        </div>
+                                        <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
+                                        <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
+                                        <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
+                                    </div>
+                                    :
                                     <>
-                                        {auth.map((link, index) => {
-                                            if (link.title === 'Log in' && user != null) {
+                                        {user != null ? (
+                                            <div className="flex gap-[24px] items-center relative">
+                                                <div 
+                                                    className='relative animation-effect' 
+                                                    onMouseEnter={() => setOpenProfile(true)} 
+                                                    onMouseLeave={() => setOpenProfile(false)} 
+                                                >
+                                                    <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute'></div>
+                                                    <Image
+                                                        src="/assets/tutor-profiles/tutor-1.png"
+                                                        alt="Profile"
+                                                        width={40}
+                                                        height={40}
+                                                        className='cursor-pointer'
+                                                    />
+                                                    {openProfile && (
+                                                        <div className="absolute top-[0px] left-0 mt-[50px] bg-white border border-gray-200 rounded shadow">
+                                                            <button className='whitespace-nowrap px-4 py-2 w-full'>Hello {user?.sub}</button>
+                                                            <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect">Settings</button>
+                                                            <button 
+                                                                onClick={logout}
+                                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect"
+                                                            >
+                                                                Sign Out
+                                                            </button>
+                                                        </div>
+                                                    )} 
+                                                </div>
+                                                <GoBell className="text-[24px]" />
+                                                <GoHeart className="text-[24px]" />
+                                                <BsCart2 className="text-[24px]" />
+                                            </div>
+                                        ) : (
+                                            auth.map((link, index) => {
+                                                const marginClass = index === 0 ? "mr-[30px]" : "";
                                                 return (
                                                     <Link
                                                         key={index}
-                                                        className='cursor-pointer'
-                                                        href="/"
+                                                        className={`cursor-pointer ${marginClass}`}
+                                                        href={link.href}
                                                         onClick={() => setOpen(false)}
                                                     >
-                                                        Hello, {user?.sub}
+                                                        {link.title}
                                                     </Link>
-                                                )
-                                            }
-                                            return (
-                                                <Link
-                                                    key={index}
-                                                    className='cursor-pointer'
-                                                    href={link.href}
-                                                    onClick={() => setOpen(false)}
-                                                >
-                                                    {link.title}
-                                                </Link>
-                                            )}
+                                                );
+                                            })
                                         )}
                                     </>
-                                )}
+                                }
                             </div>
                         </div>
                     </div>

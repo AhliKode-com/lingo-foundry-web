@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-15 16:47:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-15 17:34:18
+ * @Last Modified time: 2025-03-22 16:30:33
  */
 
 import { OrangeButton } from "@/components/atoms/buttons";
@@ -47,7 +47,7 @@ export default function HeroBottom() {
                             <OrangeButton text={heroBottom.button} />
                         </div>
                 </div>
-                <div className="relative w-full h-full md:hidden">
+                <div className="relative w-full h-full lg:hidden">
                     <div className="
                         absolute
                         top-1/2
@@ -57,7 +57,7 @@ export default function HeroBottom() {
                     ">
                         <OrangeButton text={heroBottom.button} />
                     </div>
-                    <div className="w-full h-full bg-[#00000060] rounded-[25px]"></div>
+                    <div className="w-full h-full bg-[#00000060] rounded-[25px] md:rounded-[50px]"></div>
                 </div>
             </div>
         </div>
