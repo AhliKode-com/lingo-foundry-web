@@ -13,11 +13,11 @@ export default function TeacherProfileCard({isOpen, onHover}) {
 
     return (
         <div
-            className="relative flex justify-start mt-6"
+            className="relative flex justify-center xl:justify-start mt-6"
             onMouseEnter={onHover}
         >
             {/* Teacher Card */}
-            <div className="relative max-w-4xl w-full p-6 rounded-xl border border-gray-200 shadow-sm bg-white transition-all duration-300">
+            <div className="relative max-w-4xl xl:max-w-3xl w-full p-6 rounded-xl border border-gray-200 shadow-sm bg-white transition-all duration-300">
                 <div className="flex flex-col md:flex-row gap-6">
                     {/* Profile Image */}
                     <div className="flex flex-col items-center gap-4">
@@ -29,7 +29,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                 className="w-[100px] h-[100px] rounded-full"
                                 priority
                             />
-                        <button className="w-full py-2 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors cursor-pointer">
+                        <button className="w-full py-2 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 transition-colors cursor-pointer">
                             Follow
                         </button>
                     </div>
@@ -39,7 +39,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <h1 className="text-xl md:text-2xl font-bold">Professional Teacher Mila Smith</h1>
+                                    <h1 className="text-lg md:text-2xl font-bold">Professional Teacher Mila Smith</h1>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="24"
@@ -56,7 +56,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </svg>
                                 </div>
 
-                                <div className="mt-2 flex flex-wrap gap-y-2">
+                                <div className="mt-2 flex flex-wrap gap-y-2 text-xs md:text-base">
                                     <div className="flex items-center">
                                         <span className="mr-1">⭐</span>
                                         <span className="font-medium">CELTA & TESOL Certified</span>
@@ -65,7 +65,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </div>
                                 </div>
 
-                                <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-2">
+                                <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-2 text-xs md:text-base">
                                     <div className="flex items-center">
                                         <span className="mr-1">💥</span>
                                         <span className="font-medium text-orange-500">13,000+</span>
@@ -77,9 +77,9 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </div>
                                 </div>
 
-                                <div className="mt-2 flex items-center gap-2">
+                                <div className="mt-2 flex items-center gap-2 text-xs md:text-base">
                                     <div className="flex items-center">
-                                        <span className="text-xl font-medium">4.8</span>
+                                        <span className="font-medium">4.8</span>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="20"
@@ -90,7 +90,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                             strokeWidth="1.5"
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
-                                            className="w-5 h-5"
+                                            className="w-3 md:w-5 h-3 md:h-5"
                                         >
                                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                                         </svg>
@@ -103,7 +103,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                 </div>
 
                                 <div className="mt-3">
-                                    <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+                                    <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-xs md:text-base">
                                         <span className="font-medium">Speaks:</span>
                                         <span>English</span>
                                         <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-md">Native</span>
@@ -117,7 +117,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </div>
                                 </div>
 
-                                <div className="mt-3">
+                                <div className="mt-3 text-xs md:text-base">
                                     <p className="text-gray-700">
                                         <span className="mr-1">👨‍🏫</span>5 years of enriching experience teaching English to children and
                                         adults!
@@ -132,18 +132,18 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col items-center md:items-end gap-4">
+                            <div className="flex flex-col items-start md:items-end gap-4">
                                 <div className="text-left">
-                                    <p className="text-3xl font-bold text-[#E35D33]">Rp. 50.000</p>
-                                    <p className="text-sm text-gray-700 max-w-[250px]">
+                                    <p className="text-md md:text-lg font-bold text-[#E35D33]">Rp. 50.000</p>
+                                    <p className="text-xs md:text-sm text-gray-700 max-w-[250px]">
                                         Purchase 1 trial class and get 2 times free experiences
                                     </p>
                                 </div>
                                 <div className="w-full md:w-auto flex flex-col gap-3">
-                                    <button className="w-full md:w-[180px] py-2.5 px-4 bg-[#E35D33] hover:bg-orange-600 text-white font-medium rounded-xl shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 cursor-pointer">
+                                    <button className="w-full md:w-[180px] py-2.5 px-4 bg-[#E35D33] hover:bg-orange-600 text-white font-medium rounded-xl shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E35D33] cursor-pointer">
                                         Book Trial
                                     </button>
-                                    <button className="w-full md:w-[180px] py-2.5 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors cursor-pointer">
+                                    <button className="w-full md:w-[180px] py-2.5 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E35D33] transition-colors cursor-pointer">
                                         Book Course
                                     </button>
                                 </div>
@@ -154,7 +154,7 @@ export default function TeacherProfileCard({isOpen, onHover}) {
 
                 {/* Schedule Panel */}
                 <div
-                    className={`hidden lg:block absolute right-0 top-0 transform transition-all duration-300 bg-white border border-gray-200 rounded-xl shadow-lg w-[400px] z-10 
+                    className={`hidden xl:block absolute right-0 top-0 transform transition-all duration-300 bg-white border border-gray-200 rounded-xl shadow-lg w-[400px] z-10 
                         ${isOpen
                             ? "translate-x-[calc(100%+20px)] opacity-100 visible"
                             : "translate-x-[calc(100%-20px)] opacity-0 invisible pointer-events-none"
@@ -213,8 +213,8 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                     <div className="px-4">
                         <div className="border rounded-lg overflow-hidden">
                             {/* Days of Week */}
-                            <div className="grid grid-cols-8 text-center text-sm font-medium border-b">
-                                <div className="py-2 border-r"></div>
+                            <div className="grid grid-cols-10 text-center text-xs font-medium border-b">
+                                <div className="py-2 border-r col-span-3"></div>
                                 <div className="py-2 border-r">MON</div>
                                 <div className="py-2 border-r">TUE</div>
                                 <div className="py-2 border-r">WED</div>
@@ -225,18 +225,18 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                             </div>
 
                             {/* Time Slots */}
-                            <div className="grid grid-cols-8 text-sm border-b">
-                                <div className="p-2 border-r">
+                            <div className="grid grid-cols-10 text-sm border-b">
+                                <div className="p-2 border-r col-span-3">
                                     <div className="font-medium">morning</div>
-                                    <div className="text-xs text-gray-500">06:00-12:00</div>
+                                    <div className="text-xs text-gray-500 whitespace-nowrap">06:00-12:00</div>
                                 </div>
                                 <div className="border-r"></div>
-                                <div className="border-r bg-orange-200"></div>
+                                <div className="border-r bg-[#FF9474]"></div>
                                 <div className="border-r"></div>
-                                <div className="border-r bg-orange-300 flex items-center justify-center">
+                                <div className="border-r bg-[#E25D33] flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-orange-600"
+                                        className="h-5 w-5 text-white"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         stroke="currentColor"
@@ -248,16 +248,16 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </svg>
                                 </div>
                                 <div className="border-r"></div>
-                                <div className="border-r bg-orange-200"></div>
+                                <div className="border-r bg-[#FF9474]"></div>
                                 <div className=""></div>
                             </div>
 
-                            <div className="grid grid-cols-8 text-sm border-b">
-                                <div className="p-2 border-r">
+                            <div className="grid grid-cols-10 text-sm border-b">
+                                <div className="p-2 border-r col-span-3">
                                     <div className="font-medium">afternoon</div>
                                     <div className="text-xs text-gray-500">12:00-18:00</div>
                                 </div>
-                                <div className="border-r bg-orange-300 flex items-center justify-center">
+                                <div className="border-r bg-[#E25D33] flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         className="h-5 w-5 text-orange-600"
@@ -272,14 +272,14 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </svg>
                                 </div>
                                 <div className="border-r"></div>
-                                <div className="border-r bg-orange-200"></div>
+                                <div className="border-r bg-[#FF9474]"></div>
                                 <div className="border-r"></div>
                                 <div className="border-r"></div>
                                 <div className="border-r"></div>
-                                <div className="bg-orange-300 flex items-center justify-center">
+                                <div className="bg-[#E25D33] flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-orange-600"
+                                        className="h-5 w-5 text-white"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         stroke="currentColor"
@@ -292,8 +292,8 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-8 text-sm border-b">
-                                <div className="p-2 border-r">
+                            <div className="grid grid-cols-10 text-sm border-b">
+                                <div className="p-2 border-r col-span-3">
                                     <div className="font-medium">evening</div>
                                     <div className="text-xs text-gray-500">18:00-24:00</div>
                                 </div>
@@ -303,24 +303,24 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                 <div className="border-r"></div>
                                 <div className="border-r"></div>
                                 <div className="border-r relative">
-                                    <div className="absolute bottom-1 right-1 bg-green-800 text-white text-[10px] px-1 py-0.5 rounded">
-                                        2 Students on Sat at 2AM
-                                    </div>
+                                    {/*<div className="absolute bottom-1 right-1 bg-green-800 text-white text-[10px] px-1 py-0.5 rounded">*/}
+                                    {/*    2 Students on Sat at 2AM*/}
+                                    {/*</div>*/}
                                 </div>
                                 <div className=""></div>
                             </div>
 
-                            <div className="grid grid-cols-8 text-sm">
-                                <div className="p-2 border-r">
+                            <div className="grid grid-cols-10 text-sm">
+                                <div className="p-2 border-r col-span-3">
                                     <div className="font-medium">late night</div>
                                     <div className="text-xs text-gray-500">00:00-06:00</div>
                                 </div>
                                 <div className="border-r"></div>
                                 <div className="border-r"></div>
-                                <div className="border-r bg-orange-300 flex items-center justify-center">
+                                <div className="border-r bg-[#E25D33] flex items-center justify-center">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-orange-600"
+                                        className="h-5 w-5 text-white"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         stroke="currentColor"
@@ -332,24 +332,9 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </svg>
                                 </div>
                                 <div className="border-r"></div>
-                                <div className="border-r bg-orange-200"></div>
+                                <div className="border-r bg-[#FF9474]"></div>
                                 <div className="border-r"></div>
                                 <div className="relative">
-                                    <div className="absolute bottom-2 right-2 cursor-pointer">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="h-6 w-6 text-gray-500"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        >
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                            <circle cx="12" cy="12" r="3" />
-                                        </svg>
-                                    </div>
                                 </div>
                             </div>
                         </div>
