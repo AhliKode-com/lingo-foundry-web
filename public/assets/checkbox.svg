@@ -1,0 +1,21 @@
+<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g filter="url(#filter0_d_2_6052)">
+<rect x="2" width="21" height="21" fill="url(#pattern0_2_6052)" shape-rendering="crispEdges"/>
+</g>
+<defs>
+<filter id="filter0_d_2_6052" x="0" y="0" width="25" height="25" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="2"/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_6052"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_6052" result="shape"/>
+</filter>
+<pattern id="pattern0_2_6052" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_2_6052" transform="scale(0.0111111)"/>
+</pattern>
+<image id="image0_2_6052" width="90" height="90" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAACz0lEQVR4nO3cz2pTQRQG8FsR617bObWFukgzQxB8BMGNCPUdXLqodakufA1XgitfxIV/cGEDIthNsecL6lJSUBcyMkEL2sYmoXfO3NzvgwOFwoT55fTcm9swVcUwDMMwDMMwDMMwDMNU63vr570u3wuQ117lIEDiPJZXOfCQV17ddme3s5j1re/o6lqA9K0RQv7aSXvP1sktRY6H2Dk6+/e4iG0uv+/u1g6dZrL1RoM1NORl7dBeZWi90WANrTKsHdp6k6GQIjQIHa27kB0NeziODtijckaD0OYdF9jRYo7E0QF7QM5olFX8wAJCR+suZEcjJ5L7HtTd7+0tSar0s4f7wdGB00Xuqtw88qBM3QNC43SQU9d6uFvHXcSufF52hEa9yCn+44VLhEY94+Kf0fGQ0KgXOf1+dIGccm3eR2OycTEaGfsrNwLct1neREKjfmRCIw9y66F9JuRWQ/uMyK2F9pmRGwHt1T33kDth4LYC3JuSb+GaDP2sitXCn7WuxeqsV3nSNOTiof0nd/nIgrE6Mxu2HXLZ0Co/e+96545ddGpsW+SyoSGxq+762IUnxrZHLh7aq/vQHaxcnB27DOTioUMqde/TfzbGvkCsFoK6xyXcwjUbGtNjl4bcHGhMjl0icrOgMar+STN7Q5euljCTmw4dT+zswjq5udCYDdsSubnQmA7bGrnZ0JgMuwTk5kPj/9ilIM8HNEbVT19q+ft13abF3cW8Q8eg8iVAHnm420HlaXooZY07n9AouwgNQkfrLmRHwx6OowP2qJzRILR5xwV2tJgjcXTAHpAzGmUVP7CA0NG6C9nRsIcrbnTwODZJTxa/5pjRPGAQWQ4YdNvWf7bBugZuq3bodABqOgjVfLOwKa/u7dhvxdZ0rPFOG5E39tdWsyAfYu92FtOps2lezfMF0qsMvcqLNC6ydTLDMAzDMAzDMAzDMExVdn4Bi4zwZXwniDYAAAAASUVORK5CYII="/>
+</defs>
+</svg>
