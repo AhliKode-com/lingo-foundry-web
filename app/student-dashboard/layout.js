@@ -5,7 +5,7 @@ import Navbar from '@/components/organisms/navbar'
 import Footer from '@/components/organisms/footer'
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import StudentNavbar from "@/components/organisms/student-navbar";
+import StudentNavbar from "@/components/organisms/dashboard/student-navbar";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",

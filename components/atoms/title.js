@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:09:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-20 11:56:47
+ * @Last Modified time: 2025-03-24 11:13:25
  */
 
 export function OrangeText({text, position}) {
@@ -32,6 +32,18 @@ export function TitleText({text, marginBottom, marginX}) {
 export function TitleDashboard({text, custom}) {
     return (
         <span className={`text-[24px] font-bold ${custom}`}>{text}</span>
+    )
+}
+
+export function TitleSubDashboard({text, custom}) {
+    return (
+        <span className={`text-[18px] font-bold ${custom} pl-[8px] border-l-[2px] border-[#FFBA7D]`}>{text}</span>
+    )
+}
+
+export function TitleStudentDashboard({text, custom}) {
+    return (
+        <span className={`text-[24px] font-semibold ${custom}`}>{text}</span>
     )
 }
 
