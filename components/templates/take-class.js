@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:51:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-20 19:34:03
+ * @Last Modified time: 2025-03-24 08:39:01
  */
 
 "use client";
@@ -109,7 +109,7 @@ export default function TakeClass() {
                                     <span className="font-bold text-[12px] text-white">{item.right.time}</span>
                                 </div>
                             </div>
-                            <Link href="/" className="w-full flex justify-end">
+                            <Link href="/student-dashboard" className="w-full flex justify-end">
                                 <span className="underline text-[#E35D33] text-[14px] font-semibold">Go to dashboard</span>
                             </Link>
                         </div>
