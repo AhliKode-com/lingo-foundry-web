@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-22 16:27:37
+ * @Last Modified time: 2025-03-25 21:45:08
  */
 "use client"
 import Image from 'next/image';
@@ -114,12 +114,15 @@ export default function Navbar() {
                                         {openProfile && (
                                             <div className="absolute top-[0px] mt-[50px] right-0 bg-white border border-gray-200 rounded shadow">
                                                 <button className='whitespace-nowrap px-4 py-2 w-full'>Hello {user?.sub}</button>
-                                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect">
-                                                    Settings
-                                                </button>
+                                                <Link href='/student-dashboard'>
+                                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Dashboard</button>
+                                                </Link>
+                                                <Link href='/student-dashboard/settings'>
+                                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Settings</button>
+                                                </Link>
                                                 <button 
                                                     onClick={logout}
-                                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect"
+                                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
                                                 >
                                                     Sign Out
                                                 </button>
@@ -205,10 +208,15 @@ export default function Navbar() {
                                                     {openProfile && (
                                                         <div className="absolute top-[0px] left-0 mt-[50px] bg-white border border-gray-200 rounded shadow">
                                                             <button className='whitespace-nowrap px-4 py-2 w-full'>Hello {user?.sub}</button>
-                                                            <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect">Settings</button>
+                                                            <Link href='/student-dashboard'>
+                                                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Dashboard</button>
+                                                            </Link>
+                                                            <Link href='/student-dashboard/settings'>
+                                                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Settings</button>
+                                                            </Link>
                                                             <button 
                                                                 onClick={logout}
-                                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect"
+                                                                className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
                                                             >
                                                                 Sign Out
                                                             </button>
