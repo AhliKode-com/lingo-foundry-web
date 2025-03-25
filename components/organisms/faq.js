@@ -7,7 +7,7 @@
 
 "use client";
 
-import { Question } from "@/components/atoms/question";
+import { Question } from "@/components/atoms/accordion";
 import { TitleText } from "../atoms/title";
 import { FindTutor } from "@/constants/en";
 import { getFaqs } from "@/api/getFaqs";

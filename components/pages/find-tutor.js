@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 18:38:38
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-23 22:20:26
+ * @Last Modified time: 2025-03-25 20:08:54
  */
 
 import HeroTutor from "@/components/organisms/hero-find-tutor";
@@ -17,7 +17,7 @@ export default function FindTutor() {
             <HeroTutor/>
             <ExploreTutor/>
             <Faq purpose="STUDENT"/>
-            <Review/>
+            <Review authorType="STUDENT"/>
             <HeroBottom/>
         </>
     )
