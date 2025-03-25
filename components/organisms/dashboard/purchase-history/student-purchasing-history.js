@@ -6,7 +6,7 @@
  */
 
 import { TitleStudentDashboard } from "@/components/atoms/title";
-import { PurchaseHistory } from "@/components/atoms/question";
+import { PurchaseHistory } from "@/components/atoms/accordion";
 
 export default function StudentPurchaseHistory(){
 
