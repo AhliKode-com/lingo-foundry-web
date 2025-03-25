@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-23 17:19:53
+ * @Last Modified time: 2025-03-25 21:45:28
  */
 
 "use client"
@@ -70,13 +70,13 @@ export default function Carousel (){
               <div className="flex gap-[10px]">
                 <button
                   onClick={prevSlide}
-                  className="bg-[#FF723A20] text-[#E35D33] h-[60px] w-[60px] flex justify-center items-center rounded-full"
+                  className="bg-[#FF723A20] text-[#E35D33] h-[60px] w-[60px] flex justify-center items-center rounded-full cursor-pointer"
                 >
                   <MdArrowBackIos className="text-[18px] ml-2" />
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="bg-[#E35D33] text-[#FFFFFF] h-[60px] w-[60px] flex justify-center items-center rounded-full"
+                  className="bg-[#E35D33] text-[#FFFFFF] h-[60px] w-[60px] flex justify-center items-center rounded-full cursor-pointer"
                 >
                   <MdArrowForwardIos className="text-[18px]" />
                 </button>

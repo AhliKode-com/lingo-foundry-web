@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-20 11:04:47
+ * @Last Modified time: 2025-03-25 20:50:27
  */
 
 export const Home = {
@@ -212,7 +212,7 @@ export const NavbarData = {
             title: 'Log in'
         },
         {
-            href: '/',
+            href: '/signup',
             title: 'Sign up'
         }
     ]
