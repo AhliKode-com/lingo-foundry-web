@@ -6,35 +6,33 @@
  */
 
 "use client"
-import { useState } from "react";
+import {useState} from "react";
 
-import { Home } from "@/constants/en";
-import { CategoryButton } from "./buttons";
+import {Home} from "@/constants/en";
+import {CategoryButton} from "./buttons";
 
-export default function CategorySelection() {
+export default function CategorySelection({updateCategory, category}) {
     const {findTutor} = Home;
     const categories = [
-        { id: 1, name: findTutor.categorySelection.all },
-        { id: 2, name: findTutor.categorySelection.recommended },
-        { id: 3, name: findTutor.categorySelection.highestRatedTutor },
-        { id: 4, name: findTutor.categorySelection.newestTutor },
-        { id: 5, name: findTutor.categorySelection.mostLessonCompleted },
+        {id: 1, name: findTutor.categorySelection.all, tag: "allPreview"},
+        {id: 2, name: findTutor.categorySelection.recommended, tag: "recommended"},
+        {id: 3, name: findTutor.categorySelection.highestRatedTutor, tag: "highestRated"},
+        {id: 4, name: findTutor.categorySelection.newestTutor, tag: "newest"},
+        {id: 5, name: findTutor.categorySelection.mostLessonCompleted, tag: "mostLessonCompleted"},
     ];
 
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].id);
-
-  return (
-    <div className="flex flex-col items-center space-y-4 mb-[40px]">
-      <div className="flex flex-wrap justify-center gap-3 mt-4">
-        {categories.map((category) => (
-            <CategoryButton
-                key={category.id}
-                text={category.name}
-                isSelected={selectedCategory === category.id}
-                onClick={() => setSelectedCategory(category.id)}
-            />
-        ))}
-      </div>
-    </div>
-  );
+    return (
+        <div className="flex flex-col items-center space-y-4 mb-[40px]">
+            <div className="flex flex-wrap justify-center gap-3 mt-4">
+                {categories.map((c) => (
+                    <CategoryButton
+                        key={c.id}
+                        text={c.name}
+                        isSelected={category === c.tag}
+                        onClick={() => updateCategory(c.tag)}
+                    />
+                ))}
+            </div>
+        </div>
+    );
 }
