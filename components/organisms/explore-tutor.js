@@ -6,38 +6,41 @@
  */
 
 "use client"
-import { useState } from "react";
+import React, { useState } from "react";
 import CategorySelection from "@/components/atoms/category-selection";
 import { TitleText } from "@/components/atoms/title";
 import { OrangeText } from "@/components/atoms/title";
 import { Home } from "@/constants/en";
 import TutorProfileCard from "@/components/atoms/tutor-profile-card";
+import {getPopularTutors} from "@/api/getPopularTutors";
 
 export default function ExploreTutor() {
     const [openCardId, setOpenCardId] = useState(null);
+    const [category, setCategory] = useState("allPreview")
     const { findTutor } = Home;
 
-    const teachers = [
-        { id: 1, name: "Mila Smith", image: "/assets/tutor-profiles/tutor-1.png" },
-        { id: 2, name: "John Doe", image: "/assets/tutor-profiles/tutor-2.png" },
-        { id: 3, name: "Sarah Lee", image: "/assets/tutor-profiles/tutor-3.png" },
-      ];
+    const { data, loading } = getPopularTutors();
 
     return (
         <div className="lingo-container pt-[100px] flex flex-col relative">
             <OrangeText text={findTutor.title} position="justify-center"/>
             <TitleText text={findTutor.subtitle} marginBottom='mb-[40px]' marginX='mx-auto'/>
-            <CategorySelection />
 
-            {/* advis */}
-            {teachers.map((teacher) => (
-                <TutorProfileCard
-                    key={teacher.id}
-                    teacher={teacher}
-                    isOpen={openCardId === teacher.id}
-                    onHover={() => setOpenCardId(teacher.id)}
-                />
-            ))}
+            { loading ? (
+                <div className="w-full h-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+            ) : (
+                <>
+                    <CategorySelection updateCategory={setCategory} category={category} />
+                    {data && data[category]?.map((teacher, index) => (
+                        <TutorProfileCard
+                            key={index}
+                            teacher={teacher}
+                            isOpen={openCardId === teacher.tutorId}
+                            onHover={() => setOpenCardId(teacher.tutorId)}
+                        />
+                    ))}
+                </>
+            )}
         </div>
     )
 }

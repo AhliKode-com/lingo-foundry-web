@@ -1,15 +1,33 @@
 /*
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
- * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 16:58:38
+ * @Last Modified by: advistasyam
+ * @Last Modified time: 2025-03-25 22:58:38
  */
 
 "use client"
 
-import Image from "next/image"
+import {useState} from "react";
 
-export default function TeacherProfileCard({isOpen, onHover}) {
+export default function TeacherProfileCard({ teacher, isOpen, onHover }) {
+    const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
+    const todayIndex = new Date().getDay()
+    const orderedDays = [...days.slice(todayIndex), ...days.slice(0, todayIndex)]
+
+    const getPopoverText = (info) => {
+        switch (info) {
+            case 1:
+                return "Available";
+            case 2:
+                return "Partially Booked";
+            case 3:
+                return "Almost Full";
+            default:
+                return "Fully Booked";
+        }
+    };
+
+    const [playingIndex, setPlayingIndex] = useState(null);
 
     return (
         <div
@@ -21,17 +39,11 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                 <div className="flex flex-col md:flex-row gap-6">
                     {/* Profile Image */}
                     <div className="flex flex-col items-center gap-4">
-                            <Image
-                                src="/assets/tutor-profiles/tutor-1.png"
-                                alt="Teacher profile picture"
-                                width={120}
-                                height={120}
-                                className="w-[100px] h-[100px] rounded-full"
-                                priority
-                            />
-                        <button className="w-full py-2 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 transition-colors cursor-pointer">
-                            Follow
-                        </button>
+                        <img
+                            src={teacher.tutorProfilePhotoUrl}
+                            alt="Teacher profile picture"
+                            className="w-[100px] h-[100px] rounded-full"
+                        />
                     </div>
 
                     {/* Profile Info */}
@@ -39,47 +51,26 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <h1 className="text-lg md:text-2xl font-bold">Professional Teacher Mila Smith</h1>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="#ef4444"
-                                        stroke="#ef4444"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="text-red-500"
-                                    >
-                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                                    </svg>
+                                    <h1 className="text-lg md:text-2xl font-bold">{teacher.tutorName}</h1>
                                 </div>
 
                                 <div className="mt-2 flex flex-wrap gap-y-2 text-xs md:text-base">
-                                    <div className="flex items-center">
-                                        <span className="mr-1">⭐</span>
-                                        <span className="font-medium">CELTA & TESOL Certified</span>
-                                        <span className="mx-1">📚</span>
-                                        <span>10 Years Experience</span>
-                                    </div>
+                                    <p className="line-clamp-3">
+                                        {teacher.tutorBio}
+                                    </p>
                                 </div>
 
                                 <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-2 text-xs md:text-base">
                                     <div className="flex items-center">
                                         <span className="mr-1">💥</span>
-                                        <span className="font-medium text-orange-500">13,000+</span>
-                                        <span className="text-orange-500">Lessons</span>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <span className="mr-1">⭐</span>
-                                        <span className="text-orange-500">Kids & Adults</span>
+                                        <span className="font-medium text-orange-500">{teacher.numberOfCourses}</span>
+                                        <span className="text-orange-500">{" "}Lessons</span>
                                     </div>
                                 </div>
 
                                 <div className="mt-2 flex items-center gap-2 text-xs md:text-base">
                                     <div className="flex items-center">
-                                        <span className="font-medium">4.8</span>
+                                        <span className="font-medium">{teacher.tutorRating}{" "}</span>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="20"
@@ -97,55 +88,9 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                                     </div>
                                     <span className="text-gray-500">(256)</span>
                                     <div className="ml-4">
-                                        <span className="font-medium text-orange-500">6593+</span>
+                                        <span className="font-medium text-orange-500">{teacher.numberOfStudents}</span>
                                         <span className="ml-1 text-gray-700">Students</span>
                                     </div>
-                                </div>
-
-                                <div className="mt-3">
-                                    <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-xs md:text-base">
-                                        <span className="font-medium">Speaks:</span>
-                                        <span>English</span>
-                                        <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-md">Native</span>
-                                        <span>,</span>
-                                        <span>Chinese</span>
-                                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md">A1 Beginner</span>
-                                        <span>,</span>
-                                        <span>Turkish</span>
-                                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-md">C2 Proficient</span>
-                                        <span className="text-gray-500">+4</span>
-                                    </div>
-                                </div>
-
-                                <div className="mt-3 text-xs md:text-base">
-                                    <p className="text-gray-700">
-                                        <span className="mr-1">👨‍🏫</span>5 years of enriching experience teaching English to children and
-                                        adults!
-                                        <span className="mx-1">🔮</span>
-                                        US Native Pennsylvania graduate
-                                    </p>
-                                    <p className="mt-1 text-gray-700">
-                                        <span className="mr-1">🎯</span>
-                                        Specialized in Conversational, Business...
-                                    </p>
-                                    <button className="mt-2 text-[#E35D33] font-medium">Read More</button>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col items-start md:items-end gap-4">
-                                <div className="text-left">
-                                    <p className="text-md md:text-lg font-bold text-[#E35D33]">Rp. 50.000</p>
-                                    <p className="text-xs md:text-sm text-gray-700 max-w-[250px]">
-                                        Purchase 1 trial class and get 2 times free experiences
-                                    </p>
-                                </div>
-                                <div className="w-full md:w-auto flex flex-col gap-3">
-                                    <button className="w-full md:w-[180px] py-2.5 px-4 bg-[#E35D33] hover:bg-orange-600 text-white font-medium rounded-xl shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E35D33] cursor-pointer">
-                                        Book Trial
-                                    </button>
-                                    <button className="w-full md:w-[180px] py-2.5 px-4 border border-[#E35D33] rounded-xl text-sm font-medium text-[#E35D33] bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E35D33] transition-colors cursor-pointer">
-                                        Book Course
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -165,42 +110,42 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                     {/* Introduction Videos Carousel */}
                     <div className="p-4 pb-0">
                         <div className="flex gap-2 overflow-x-auto pb-4">
-                            <div className="flex-shrink-0 relative w-[150px] h-[200px] rounded-lg overflow-hidden">
-                                <Image
-                                    src="/assets/tutor-profiles/detail-course.png"
-                                    alt="Self Introduction"
-                                    width={150}
-                                    height={200}
-                                    className="object-cover"
-                                />
-                                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
-                                    Self Introduction
-                                </div>
-                            </div>
-                            <div className="flex-shrink-0 relative w-[150px] h-[200px] rounded-lg overflow-hidden ">
-                                <Image
-                                    src="/assets/tutor-profiles/detail-course.png"
-                                    alt="Course Introduction"
-                                    width={150}
-                                    height={200}
-                                    className="object-cover"
-                                />
-                                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
-                                    Course Introduction
-                                </div>
-                            </div>
-                            <div className="flex-shrink-0 relative w-[150px] h-[200px] rounded-lg overflow-hidden">
-                                <Image
-                                    src="/assets/tutor-profiles/detail-course.png"
-                                    alt="Course Demo"
-                                    width={150}
-                                    height={200}
-                                    className="object-cover"
-                                />
-                                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
-                                    Course Demo
-                                </div>
-                            </div>
+                            {teacher.tutorVideoUrls.map((content, index) => (
+                                <>
+                                    {content.map((val, index) => (
+                                        <div
+                                            key={index}
+                                            className="relative w-[150px] h-[200px] rounded-lg overflow-hidden cursor-pointer"
+                                            onClick={() => setPlayingIndex(index)}
+                                        >
+                                            {playingIndex === index ? (
+                                                <iframe
+                                                    className="absolute inset-0 w-full h-full"
+                                                    src={val.videoUrl}
+                                                    title={val.videoName}
+                                                    frameBorder="0"
+                                                    allow="autoplay; encrypted-media"
+                                                    allowFullScreen
+                                                ></iframe>
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        src={val.thumbnailUrl}
+                                                        alt={val.videoDescription}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
+                                                        {val.videoDescription}
+                                                    </div>
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+                                                        ▶️
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    ))}
+                                </>
+                            ))}
                         </div>
 
                         {/* Timezone Info */}
@@ -210,141 +155,182 @@ export default function TeacherProfileCard({isOpen, onHover}) {
                     </div>
 
                     {/* Weekly Schedule */}
-                    <div className="px-4">
-                        <div className="border rounded-lg overflow-hidden">
+                    <div className="px-4 py-4 z-50">
+                        <div className="border border-[#E8E9EB] rounded-lg overflow-hidden">
                             {/* Days of Week */}
-                            <div className="grid grid-cols-10 text-center text-xs font-medium border-b">
-                                <div className="py-2 border-r col-span-3"></div>
-                                <div className="py-2 border-r">MON</div>
-                                <div className="py-2 border-r">TUE</div>
-                                <div className="py-2 border-r">WED</div>
-                                <div className="py-2 border-r">THU</div>
-                                <div className="py-2 border-r">FRI</div>
-                                <div className="py-2 border-r">SAT</div>
-                                <div className="py-2">SUN</div>
+                            <div className="grid grid-cols-10 text-center text-xs font-medium border-b border-[#E8E9EB]">
+                                <div className="py-2 border-r col-span-3 border-[#E8E9EB]"></div>
+                                {orderedDays.map((day, index) => (
+                                    <div
+                                        key={index}
+                                        className={`py-2 border-r border-[#E8E9EB] ${index === orderedDays.length - 1 ? "" : "border-r border-[#E8E9EB]"}`}
+                                    >
+                                        {day}
+                                    </div>
+                                ))}
                             </div>
 
                             {/* Time Slots */}
-                            <div className="grid grid-cols-10 text-sm border-b">
-                                <div className="p-2 border-r col-span-3">
+                            <div className="grid grid-cols-10 text-sm border-b border-[#E8E9EB]">
+                                <div className="p-2 border-r col-span-3 border-[#E8E9EB]">
                                     <div className="font-medium">morning</div>
                                     <div className="text-xs text-gray-500 whitespace-nowrap">06:00-12:00</div>
                                 </div>
-                                <div className="border-r"></div>
-                                <div className="border-r bg-[#FF9474]"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r bg-[#E25D33] flex items-center justify-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-white"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                    </svg>
-                                </div>
-                                <div className="border-r"></div>
-                                <div className="border-r bg-[#FF9474]"></div>
-                                <div className=""></div>
+                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
+                                    index === 7 ? null : (
+                                        <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
+                                            <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                {getPopoverText(schedule.morning)}
+                                            </div>
+                                            <div
+                                                className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
+                                                    schedule.morning === 1
+                                                        ? "bg-white"
+                                                        : schedule.morning === 2
+                                                            ? "bg-[#FF9474]"
+                                                            : "bg-[#E25D33]"
+                                                }`}
+                                            >
+                                                {schedule.morning > 3 && (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 text-white"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    >
+                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                )}
                             </div>
 
-                            <div className="grid grid-cols-10 text-sm border-b">
-                                <div className="p-2 border-r col-span-3">
+                            <div className="grid grid-cols-10 text-sm border-b border-[#E8E9EB]">
+                                <div className="p-2 border-r col-span-3 border-[#E8E9EB]">
                                     <div className="font-medium">afternoon</div>
                                     <div className="text-xs text-gray-500">12:00-18:00</div>
                                 </div>
-                                <div className="border-r bg-[#E25D33] flex items-center justify-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-orange-600"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                    </svg>
-                                </div>
-                                <div className="border-r"></div>
-                                <div className="border-r bg-[#FF9474]"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r"></div>
-                                <div className="bg-[#E25D33] flex items-center justify-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-white"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                    </svg>
-                                </div>
+                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
+                                    index === 7 ? null : (
+                                        <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
+                                            <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                {getPopoverText(schedule.afternoon)}
+                                            </div>
+                                            <div
+                                                className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
+                                                    schedule.afternoon === 1
+                                                        ? "bg-white"
+                                                        : schedule.afternoon === 2
+                                                            ? "bg-[#FF9474]"
+                                                            : "bg-[#E25D33]"
+                                                }`}
+                                            >
+                                                {schedule.afternoon > 3 && (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 text-white"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    >
+                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                )}
                             </div>
 
-                            <div className="grid grid-cols-10 text-sm border-b">
-                                <div className="p-2 border-r col-span-3">
+                            <div className="grid grid-cols-10 text-sm border-b border-[#E8E9EB]">
+                                <div className="p-2 border-r border-[#E8E9EB] col-span-3">
                                     <div className="font-medium">evening</div>
                                     <div className="text-xs text-gray-500">18:00-24:00</div>
                                 </div>
-                                <div className="border-r"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r relative">
-                                    {/*<div className="absolute bottom-1 right-1 bg-green-800 text-white text-[10px] px-1 py-0.5 rounded">*/}
-                                    {/*    2 Students on Sat at 2AM*/}
-                                    {/*</div>*/}
-                                </div>
-                                <div className=""></div>
+                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
+                                    index === 7 ? null : (
+                                        <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
+                                            <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                {getPopoverText(schedule.evening)}
+                                            </div>
+                                            <div
+                                                className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
+                                                    schedule.evening === 1
+                                                        ? "bg-white"
+                                                        : schedule.evening === 2
+                                                            ? "bg-[#FF9474]"
+                                                            : "bg-[#E25D33]"
+                                                }`}
+                                            >
+                                                {schedule.evening > 3 && (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 text-white"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    >
+                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                )}
                             </div>
 
                             <div className="grid grid-cols-10 text-sm">
-                                <div className="p-2 border-r col-span-3">
+                                <div className="p-2 border-r border-[#E8E9EB] col-span-3">
                                     <div className="font-medium">late night</div>
                                     <div className="text-xs text-gray-500">00:00-06:00</div>
                                 </div>
-                                <div className="border-r"></div>
-                                <div className="border-r"></div>
-                                <div className="border-r bg-[#E25D33] flex items-center justify-center">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5 text-white"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                    </svg>
-                                </div>
-                                <div className="border-r"></div>
-                                <div className="border-r bg-[#FF9474]"></div>
-                                <div className="border-r"></div>
-                                <div className="relative">
-                                </div>
+                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
+                                    index === 7 ? null : (
+                                        <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
+                                            <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                {getPopoverText(schedule.lateNight)}
+                                            </div>
+                                            <div
+                                                className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
+                                                    schedule.lateNight === 1
+                                                        ? "bg-white"
+                                                        : schedule.lateNight === 2
+                                                            ? "bg-[#FF9474]"
+                                                            : "bg-[#E25D33]"
+                                                }`}
+                                            >
+                                                {schedule.lateNight > 3 && (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5 text-white"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    >
+                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                                    </svg>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                )}
                             </div>
                         </div>
-                    </div>
-
-                    {/* View More Button */}
-                    <div className="p-4">
-                        <button className="w-full py-2.5 px-4 border border-orange-500 text-orange-500 rounded-md text-sm font-medium hover:bg-orange-50 transition-colors">
-                            View More
-                        </button>
                     </div>
                 </div>
             </div>
