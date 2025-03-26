@@ -38,7 +38,7 @@ export function CategoryButton({ text, isSelected, onClick }) {
     return (
       <button
         onClick={onClick}
-        className={`px-[20px] py-[10px] md:px-[35px] md:py-[16px] rounded-[40px] text-[16px] font-bold animation-effect
+        className={`px-[20px] py-[10px] md:px-[35px] md:py-[16px] rounded-[40px] text-[16px] font-bold animation-effect cursor-pointer
           ${
             isSelected
               ? "bg-[#E35D33] text-white"
