@@ -4,7 +4,7 @@ import CourseCard from "@/components/organisms/dashboard/courses/course-card";
 import {useState} from "react";
 import Link from "next/link";
 
-export default function OngoingCourses() {
+export default function OngoingCourses({ courses }) {
     // const ongoingCourses = null;
     const ongoingCourses = [
         {
