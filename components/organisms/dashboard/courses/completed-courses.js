@@ -3,7 +3,7 @@
 import CourseCard from "@/components/organisms/dashboard/courses/course-card";
 import {useState} from "react";
 
-export default function CompletedCourses() {
+export default function CompletedCourses({ courses}) {
     //const completedCourses = null;
     const completedCourses = [
         {
