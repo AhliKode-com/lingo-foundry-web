@@ -63,8 +63,8 @@ export default function How() {
                             <Image
                                 src={step.image}
                                 alt={step.altImage}
-                                width={120}
-                                height={120}
+                                width={421}
+                                height={421}
                                 className="md:w-[300px] lg:w-[421px] h-auto animation-effect"
                                 priority
                             />
@@ -73,8 +73,8 @@ export default function How() {
                             <Image 
                                 src={step.icon} 
                                 alt={step.altIcon} 
-                                width={120}
-                                height={120}
+                                width={50}
+                                height={50}
                                 className="w-[50px]" 
                                 priority
                             />

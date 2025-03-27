@@ -17,8 +17,8 @@ export default function Hero() {
             <Image 
                 src="./assets/dot-plane.svg" 
                 alt="Hero plane" 
-                width={120}
-                height={120}
+                width={278}
+                height={278}
                 className="
                     animation-effect
                     absolute 
@@ -27,8 +27,8 @@ export default function Hero() {
                     w-[150px] lg:w-[200px] xl:w-[278px]"
                     priority
             />
-          <Image width={120} height={120} priority src="/assets/hero-tutor.png" alt="Hero swirl" className="hidden min-[900px]:block absolute top-[30px] right-0 md:w-[400px] lg:w-[550px] xl:w-[689px] max-w-none animation-effect"/>
-          <Image width={120} height={120} priority src="/assets/hero-decoration.png" alt="Hero swirl update" className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"/>
+          <Image width={689} height={689} priority src="/assets/hero-tutor.png" alt="Hero swirl" className="hidden min-[900px]:block absolute top-[30px] right-0 md:w-[400px] lg:w-[550px] xl:w-[689px] max-w-none animation-effect"/>
+          <Image width={150} height={150} priority src="/assets/hero-decoration.png" alt="Hero swirl update" className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"/>
           <h1 className="
                 z-10
                 font-bold 
@@ -41,8 +41,8 @@ export default function Hero() {
               <Image 
                 src="./assets/circle.svg" 
                 alt="Circle" 
-                width={120} 
-                height={120}
+                width={365}
+                height={365}
                 className="
                 absolute 
                 w-[205px] lg:w-[250px] xl:w-[365px] 

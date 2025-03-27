@@ -23,8 +23,8 @@ export default function TeacherProfileCardDashboard({isOpen, onHover}) {
                         <Image
                             src="/assets/tutor-profiles/tutor-1.png"
                             alt="Teacher profile picture"
-                            width={120}
-                            height={120}
+                            width={100}
+                            height={100}
                             className="w-[100px] h-[100px]"
                             priority
                         />

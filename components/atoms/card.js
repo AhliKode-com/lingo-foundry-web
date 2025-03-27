@@ -21,8 +21,8 @@ export function LookingCard({
             <Image 
                 src={image} 
                 alt={alt} 
-                width={120}
-                height={120}
+                width={100}
+                height={100}
                 className="w-[96px] h-[100px] mx-auto" 
                 priority
             />
