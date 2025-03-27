@@ -16,13 +16,9 @@ export function getStudentDashboard() {
             const token = Cookies.get("token");
 
             try {
-                const response = await api.get("/student/dashboard", {
+                const response = await api.get("/student/dashboard/courses", {
                     headers: {
                         Authorization: token ? `Bearer ${token}` : "",
-                    },
-                    params: {
-                        pageNumber: 1,
-                        pageSize: 50,
                     }
                 });
                 setData(response.data.data);
