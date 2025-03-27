@@ -12,5 +12,5 @@ export function middleware(req) {
 
 // protect specific routes
 export const config = {
-    matcher: ["/dashboard/:path*", "/profile/:path*"],
+    matcher: ["/student-dashboard/:path*"],
 };
