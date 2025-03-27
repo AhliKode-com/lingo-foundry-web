@@ -13,8 +13,7 @@ import { BsCart2 } from "react-icons/bs";
 import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
 import Link from 'next/link';
-import {useAuth} from "@/hooks/useAuth";
-import { useLogout } from "@/hooks/useLogout";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
 
@@ -23,8 +22,7 @@ export default function Navbar() {
     const pathname = usePathname();
     const [open, setOpen] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
-    const { user, loading } = useAuth();
-    const { logout } = useLogout();
+    const { user, loading, logoutContext } = useAuth()
 
     useEffect(() => {
         if (open) {
@@ -82,7 +80,7 @@ export default function Navbar() {
                     <Link href='/'>
                         <OrangeButton text="Apply as Tutor"/>
                     </Link>
-                    {loading ? 
+                    {loading ?
                         <div className="flex gap-[24px] ml-[26px] items-center">
                             <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
                             <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
@@ -91,17 +89,17 @@ export default function Navbar() {
                                 <div className="w-[40px] h-[40px] bg-gray-300 rounded-full animate-pulse" />
                             </div>
                         </div>
-                    : 
+                    :
                         <>
                             {user != null ? (
                                 <div className="flex gap-[24px] ml-[26px] items-center relative">
                                     <GoBell className="text-[24px]" />
                                     <GoHeart className="text-[24px]" />
                                     <BsCart2 className="text-[24px]" />
-                                    <div 
-                                        className='relative animation-effect' 
-                                        onMouseEnter={() => setOpenProfile(true)} 
-                                        onMouseLeave={() => setOpenProfile(false)} 
+                                    <div
+                                        className='relative animation-effect'
+                                        onMouseEnter={() => setOpenProfile(true)}
+                                        onMouseLeave={() => setOpenProfile(false)}
                                     >
                                         <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute'></div>
                                         <Image
@@ -120,14 +118,14 @@ export default function Navbar() {
                                                 <Link href='/student-dashboard/settings'>
                                                     <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Settings</button>
                                                 </Link>
-                                                <button 
-                                                    onClick={logout}
+                                                <button
+                                                    onClick={logoutContext}
                                                     className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
                                                 >
                                                     Sign Out
                                                 </button>
                                             </div>
-                                        )} 
+                                        )}
                                     </div>
                                 </div>
                             ) : (
@@ -192,10 +190,10 @@ export default function Navbar() {
                                     <>
                                         {user != null ? (
                                             <div className="flex gap-[24px] items-center relative">
-                                                <div 
-                                                    className='relative animation-effect' 
-                                                    onMouseEnter={() => setOpenProfile(true)} 
-                                                    onMouseLeave={() => setOpenProfile(false)} 
+                                                <div
+                                                    className='relative animation-effect'
+                                                    onMouseEnter={() => setOpenProfile(true)}
+                                                    onMouseLeave={() => setOpenProfile(false)}
                                                 >
                                                     <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute'></div>
                                                     <Image
@@ -214,14 +212,14 @@ export default function Navbar() {
                                                             <Link href='/student-dashboard/settings'>
                                                                 <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Settings</button>
                                                             </Link>
-                                                            <button 
-                                                                onClick={logout}
+                                                            <button
+                                                                onClick={logoutContext}
                                                                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
                                                             >
                                                                 Sign Out
                                                             </button>
                                                         </div>
-                                                    )} 
+                                                    )}
                                                 </div>
                                                 <GoBell className="text-[24px]" />
                                                 <GoHeart className="text-[24px]" />

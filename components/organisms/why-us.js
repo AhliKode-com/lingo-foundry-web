@@ -31,8 +31,8 @@ export default function Why() {
                 <Image 
                     src="/assets/hero-decoration.png" 
                     alt="Hero swirl update" 
-                    width={120}
-                    height={120}
+                    width={150}
+                    height={150}
                     className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"
                     priority
                 />
@@ -40,8 +40,8 @@ export default function Why() {
                     <Image 
                         src='/assets/hero-why.png' 
                         alt='why-us' 
-                        width={120}
-                        height={120}
+                        width={750}
+                        height={750}
                         className='hidden md:flex md:w-[490px] xl:w-[750px] animation-effect'
                         priority
                     />

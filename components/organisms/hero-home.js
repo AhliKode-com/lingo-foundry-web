@@ -20,26 +20,23 @@ export default function Hero() {
           <Image 
               src="/assets/dot-plane.svg" 
               alt="Hero plane" 
-              width={120}
-              height={120}
+              width={278}
+              height={278}
               className="animation-effect absolute -left-[15px] md:-left-[45px] lg:-left-[80px] xl:-left-[140px] -bottom-[100px] md:-bottom-[130px] w-[150px] lg:w-[200px] xl:w-[278px]"
-              priority
           />
           <Image 
             src="/assets/hero.png" 
             alt="Hero swirl" 
-            width={120}
-            height={120}
+            width={689}
+            height={689}
             className="hidden min-[900px]:block absolute top-[30px] right-0 md:w-[400px] lg:w-[480px] xl:w-[689px] max-w-none animation-effect"
-            priority
           />
           <Image 
             src="/assets/hero-decoration.png" 
             alt="Hero swirl update" 
-            width={120}
-            height={120}
+            width={150}
+            height={150}
             className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"
-            priority
           />
           <h1 className="z-10 font-bold text-[32px] lg:text-[40px] xl:text-[56px] lg:leading-[60px] xl:leading-[84px] md:w-[520px] mt-[70px] animation-effect">
             {hero.title1}
@@ -47,10 +44,9 @@ export default function Hero() {
               <Image 
                 src="./assets/circle.svg" 
                 alt="Circle" 
-                width={120}
-                height={120}
+                width={365}
+                height={365}
                 className="absolute w-[205px] lg:w-[250px] xl:w-[365px] top-[0px] left-[-10px] animation-effect"
-                priority
               />
               {hero.title2}
             </span>

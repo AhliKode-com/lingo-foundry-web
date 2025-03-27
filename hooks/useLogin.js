@@ -2,11 +2,13 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import api from "@/lib/api"
 import Cookies from "js-cookie"
+import { useAuth } from "@/context/AuthContext";
 
 export function useLogin() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const router = useRouter()
+    const { loginContext } = useAuth()
 
     const login = async (username, password) => {
         setLoading(true)
@@ -20,11 +22,8 @@ export function useLogin() {
                     sameSite: "strict",
                 });
 
+                loginContext(response.data.token)
                 router.push("/")
-
-                setTimeout(() => {
-                    window.location.reload()
-                }, 1000)
             } else {
                 setError(response.data.message)
             }
