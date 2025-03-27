@@ -2,13 +2,14 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 08:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 16:35:42
+ * @Last Modified time: 2025-03-27 15:03:16
  */
 
 import Image from "next/image";
 import { OrangeButton } from "../atoms/buttons";
 import { TitleText } from "../atoms/title";
 import { Home } from "@/constants/en";
+import Link from "next/link";
 
 export default function Why() {
     const {whyChooseUs} = Home;
@@ -60,9 +61,9 @@ export default function Why() {
                                 </div>
                             ))}
                         </div>
-                        <div>
+                        <Link href='/find-tutor'>
                             <OrangeButton text={whyChooseUs.whyButton}/>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>

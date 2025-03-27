@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 20:38:54
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-24 22:02:04
+ * @Last Modified time: 2025-03-27 15:27:42
  */
 
 
@@ -39,7 +39,7 @@ export default function EducationalMetricsChart() {
                             {data.map((item, index) => (
                                 <div key={index} className="flex flex-col items-center gap-1 w-[40px] relative">
                                     <div className="relative w-4 h-full flex flex-col">
-                                        <div className="relative group">
+                                        {/* <div className="relative group">
                                             <div
                                                 className="w-[8px] bg-[#1E419D] rounded-[3px]"
                                                 style={{
@@ -49,7 +49,7 @@ export default function EducationalMetricsChart() {
                                             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 text-[10px] text-white bg-black rounded hidden group-hover:block">
                                                 {item.quizRate}%
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="relative group">
                                             <div
                                                 className="w-[8px] bg-[#E35D33] rounded-[3px]"
@@ -88,10 +88,10 @@ export default function EducationalMetricsChart() {
                     <div className="w-[12px] h-[12px] md:w-[16px] md:h-[16px] bg-[#E35D33] rounded-full animation-effect"></div>
                     <span className="text-[10px] sm:text-[12px] font-bold text-[#161616] animation-effect">Completed course</span>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-[6px]">
+                {/* <div className="flex flex-col sm:flex-row sm:items-center sm:gap-[6px]">
                     <div className="w-[12px] h-[12px] md:w-[16px] md:h-[16px] bg-[#1E419D] rounded-full animation-effect"></div>
                     <span className="text-[10px] sm:text-[12px] font-bold text-[#161616] animation-effect">Completed Quiz</span>
-                </div>
+                </div> */}
             </div>
         </div>
     </div>
