@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:09:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-24 20:05:43
+ * @Last Modified time: 2025-03-31 22:53:55
  */
 
 export function OrangeText({text, position}) {
@@ -40,6 +40,24 @@ export function TitleText({text, marginBottom, marginX}) {
 export function TitleDashboard({text, custom}) {
     return (
         <span className={`text-[24px] font-bold ${custom}`}>{text}</span>
+    )
+}
+
+export function TitleTutorRegis({text, custom}) {
+    return (
+        <span className={`text-[31px] font-medium ${custom}`}>{text}</span>
+    )
+}
+
+export function DescTutorRegis({text, custom}) {
+    return (
+        <span className={`text-[16px] ${custom}`}>{text}</span>
+    )
+}
+
+export function LabelTutorRegis({text, custom}) {
+    return (
+        <span className={`text-[16px] ${custom}`}>{text}</span>
     )
 }
 

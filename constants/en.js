@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 10:52:39
+ * @Last Modified time: 2025-03-31 22:44:14
  */
 
 export const Home = {
@@ -433,7 +433,7 @@ export const multiStepPayment = {
         video: "Video",
         availability: "Availability",
         pricing: "Pricing",
-        nextBtn: "Next",
-        prevBtn: "Prev",
+        nextBtn: "Save & Continue",
+        prevBtn: "Back",
     }
 }
