@@ -2,8 +2,15 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:23
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 15:39:33
+ * @Last Modified time: 2025-03-31 00:00:30
  */
+export function TutorButton({text, custom}) {
+  return(
+      <button className={`${custom} animation-effect bg-[#E15C31] text-[16px] sm:text-[24px] px-[28px] py-[13px] font-bold rounded-[6px] text-white cursor-pointer animation-effect`}>
+        {text}
+      </button>
+  )
+}
 
 export function StepButton({text, onClick, bgColor}) {
     return (
