@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:53:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 11:02:31
+ * @Last Modified time: 2025-04-01 00:10:44
  */
 
 
@@ -93,9 +93,9 @@ export default function ProcessTutor() {
                 </div>
             </div>
 
-            <div className="lingo-container flex flex-col pb-[50px] pt-[185px] sm:pt-[130px]">
+            <div className="lingo-container lg:w-1/2 flex flex-col pb-[50px] pt-[130px]">
                 {steps.find((step) => step.id === currentStep)?.component}
-                <div className="mt-4 flex gap-2">
+                <div className="lingo-container mt-[35px] flex gap-2 justify-end">
                     {currentStep > 1 && (
                         <StepButton
                             text={tabTutor.prevBtn}
