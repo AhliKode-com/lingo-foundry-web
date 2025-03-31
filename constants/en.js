@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-25 20:50:27
+ * @Last Modified time: 2025-03-31 10:52:39
  */
 
 export const Home = {
@@ -424,5 +424,16 @@ export const multiStepPayment = {
         subTotal: "Subtotal",
         summary: "Summary",
         completePayment: "Complete Payment"
+    },
+    tabTutor: {
+        about: "About",
+        photo: "Photo",
+        cv: "CV & Certificate",
+        description: "Description",
+        video: "Video",
+        availability: "Availability",
+        pricing: "Pricing",
+        nextBtn: "Next",
+        prevBtn: "Prev",
     }
 }
