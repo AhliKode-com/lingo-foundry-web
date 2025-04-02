@@ -411,7 +411,7 @@ export default function About() {
                     </div>
                     <div className="ml-3 text-sm">
                         <label htmlFor="isOver18" className="font-medium text-gray-700">
-                        I confirm I'm over 18
+                        I confirm I&#39;m over 18
                         </label>
                     </div>
                 </div>

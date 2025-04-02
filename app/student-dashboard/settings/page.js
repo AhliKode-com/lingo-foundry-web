@@ -5,8 +5,15 @@
  * @Last Modified time: 2025-03-24 09:23:45
  */
 
+import StudentDashboardSettings from "@/components/organisms/dashboard/settings/student-dashboard-settings";
+import StudentDashboardChangePassword
+    from "@/components/organisms/dashboard/settings/student-dashboard-change-password";
+
 export default function StudentSettings() {
     return (
-        <div>STUDENT settings</div>
+        <>
+            <StudentDashboardSettings />
+            <StudentDashboardChangePassword />
+        </>
     )
 }
