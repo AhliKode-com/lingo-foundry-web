@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect } from "react"
 import Cookies from "js-cookie"
 import { jwtDecode } from "jwt-decode"
 import { useRouter } from "next/navigation";
+import {toast} from "react-toastify";
 
 const AuthContext = createContext()
 
@@ -37,6 +38,7 @@ export const AuthProvider = ({ children }) => {
     const logoutContext = () => {
         setUser(null)
         Cookies.remove("token")
+        toast.success("Logged out")
         router.push("/")
     }
 
