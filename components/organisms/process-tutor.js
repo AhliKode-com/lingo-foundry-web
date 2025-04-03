@@ -22,6 +22,7 @@ import Pricing from "@/components/templates/tutor/pricing";
 import { StepButton } from "@/components/atoms/buttons";
 import { multiStepPayment } from "@/constants/en";
 
+// process tutor
 export default function ProcessTutor() {
 
     const [currentStep, setCurrentStep] = useState(1);
