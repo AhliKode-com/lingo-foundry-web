@@ -7,7 +7,7 @@
 
 
 "use client";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 import { RiArrowRightSLine } from "react-icons/ri";
 
@@ -27,9 +27,17 @@ export default function ProcessTutor() {
     const [currentStep, setCurrentStep] = useState(1);
     const { tabTutor } = multiStepPayment;
 
+    // load data from localStorage on component mount
+    useEffect(() => {
+        const currentStep = localStorage.getItem("applyTutorCurrentStep")
+        if (currentStep) {
+            setCurrentStep(Number(currentStep))
+        }
+    }, [])
+
     const steps = [
-        { id: 1, label: tabTutor.about, component: <About/> },
-        { id: 2, label: tabTutor.photo, component: <Photo/> },
+        { id: 1, label: tabTutor.about, component: <About setCurrentStep={setCurrentStep} /> },
+        { id: 2, label: tabTutor.photo, component: <Photo setCurrentStep={setCurrentStep} /> },
         { id: 3, label: tabTutor.cv, component: <Cv/> },
         { id: 4, label: tabTutor.description, component: <Desc/> },
         { id: 5, label: tabTutor.video, component: <Video/> },

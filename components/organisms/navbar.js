@@ -77,7 +77,7 @@ export default function Navbar() {
                     priority
                 />
                 <div className='hidden lg:flex items-center animation-effect'>
-                    <Link href='/'>
+                    <Link href='/tutor-detail'>
                         <OrangeButton text="Apply as Tutor"/>
                     </Link>
                     {loading ?
@@ -173,7 +173,7 @@ export default function Navbar() {
                             })}
                         </ul>
                         <div className='flex flex-col mt-6'>
-                            <Link href='/' onClick={() => setOpen(false)}>
+                            <Link href='/tutor-detail' onClick={() => setOpen(false)}>
                                 <OrangeButton text="Apply as Tutor"/>
                             </Link>
                             <div className='flex mt-6 gap-6'>
