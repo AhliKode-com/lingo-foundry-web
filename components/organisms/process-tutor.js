@@ -38,11 +38,8 @@ export default function ProcessTutor() {
     const steps = [
         { id: 1, label: tabTutor.about, component: <About setCurrentStep={setCurrentStep} /> },
         { id: 2, label: tabTutor.photo, component: <Photo setCurrentStep={setCurrentStep} /> },
-        { id: 3, label: tabTutor.cv, component: <Cv/> },
-        { id: 4, label: tabTutor.description, component: <Desc/> },
-        { id: 5, label: tabTutor.video, component: <Video/> },
-        { id: 6, label: tabTutor.availability, component: <Avail/>     },
-        { id: 7, label: tabTutor.pricing, component: <Pricing/> },
+        { id: 3, label: tabTutor.cv, component: <Cv setCurrentStep={setCurrentStep} /> },
+        { id: 4, label: tabTutor.description, component: <Desc setCurrentStep={setCurrentStep} /> },
     ];
 
     return (
@@ -103,22 +100,22 @@ export default function ProcessTutor() {
 
             <div className="lingo-container lg:w-1/2 flex flex-col pb-[50px] pt-[130px]">
                 {steps.find((step) => step.id === currentStep)?.component}
-                <div className="lingo-container mt-[35px] flex gap-2 justify-end">
-                    {currentStep > 1 && (
-                        <StepButton
-                            text={tabTutor.prevBtn}
-                            bgColor="bg-[#BFBBBA]"
-                            onClick={() => setCurrentStep((prev) => prev - 1)}
-                        />
-                    )}
-                    {currentStep < steps.length && (
-                        <StepButton
-                            text={tabTutor.nextBtn}
-                            bgColor="bg-[#E35D33]"
-                            onClick={() => setCurrentStep((prev) => prev + 1)}
-                        />
-                    )}
-                </div>
+                {/*<div className="lingo-container mt-[35px] flex gap-2 justify-end">*/}
+                {/*    {currentStep > 1 && (*/}
+                {/*        <StepButton*/}
+                {/*            text={tabTutor.prevBtn}*/}
+                {/*            bgColor="bg-[#BFBBBA]"*/}
+                {/*            onClick={() => setCurrentStep((prev) => prev - 1)}*/}
+                {/*        />*/}
+                {/*    )}*/}
+                {/*    {currentStep < steps.length && (*/}
+                {/*        <StepButton*/}
+                {/*            text={tabTutor.nextBtn}*/}
+                {/*            bgColor="bg-[#E35D33]"*/}
+                {/*            onClick={() => setCurrentStep((prev) => prev + 1)}*/}
+                {/*        />*/}
+                {/*    )}*/}
+                {/*</div>*/}
             </div>
         </div>
   );

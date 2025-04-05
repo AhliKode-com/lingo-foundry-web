@@ -7,14 +7,23 @@
 
 "use client"
 
-import { useState, useRef } from "react"
+import {useState, useRef, useEffect} from "react"
 import Image from "next/image"
 import {toast} from "react-toastify";
+import postUploadFile from "@/api/static-file/postUploadFile";
 
 export default function Photo({ setCurrentStep }) {
     const [photo, setPhoto] = useState(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const fileInputRef = useRef(null)
+    const { uploadFile, objectKey, error } = postUploadFile()
+
+    useEffect(() => {
+        const url = localStorage.getItem("applyTutorStep2Data")
+        if (url) {
+            setPreviewUrl(url)
+        }
+    }, [])
 
     const handlePhotoChange = (e) => {
         const file = e.target.files[0]
@@ -41,10 +50,25 @@ export default function Photo({ setCurrentStep }) {
         fileInputRef.current.click()
     }
 
-    const handleSaveAndContinue = () => {
-        console.log("Saving photo:", photo)
+    const handleSaveAndContinue = async () => {
+        if (!photo) {
+            localStorage.setItem("applyTutorCurrentStep", "3")
+            setCurrentStep(3)
+            return;
+        }
+
+        toast.loading("Upload in progress...")
+        const fileUrl = await uploadFile(photo)
+
+        if (error) {
+            return
+        }
+
+        toast.dismiss()
+        toast.success("Upload successful")
+
+        localStorage.setItem("applyTutorStep2Data", fileUrl)
         localStorage.setItem("applyTutorCurrentStep", "3")
-        toast.success("Upload successfully")
         setCurrentStep(3)
     }
 
@@ -61,7 +85,7 @@ export default function Photo({ setCurrentStep }) {
                     onClick={handleUploadClick}
                 >
                     {previewUrl ? (
-                        <Image
+                        <img
                             src={previewUrl || "/placeholder.svg"}
                             alt="Profile preview"
                             width={150}
@@ -207,12 +231,18 @@ export default function Photo({ setCurrentStep }) {
             </ul>
 
             <div className="flex justify-between">
-                <button className="px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                <button
+                    className="px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    onClick={() => {setCurrentStep(1)}}
+                >
                     Back
                 </button>
                 <button
                     onClick={handleSaveAndContinue}
-                    className="px-8 py-3 bg-[#E35D33] text-white rounded-lg hover:bg-[#d04e26] transition-colors"
+                    disabled={previewUrl == null && photo == null}
+                    className="px-8 py-3 rounded-lg text-white transition-colors
+                            bg-[#E35D33] hover:bg-[#d04e26]
+                            disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                     Save and Continue
                 </button>
