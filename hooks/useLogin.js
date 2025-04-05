@@ -36,7 +36,7 @@ export function useLogin() {
         } catch (err) {
             setError(err.response?.data?.message || "Login failed")
             toast.dismiss()
-            toast.error(response.data.message || "Login failed")
+            toast.error(err.response.data.message || "Login failed")
         } finally {
             setLoading(false)
         }

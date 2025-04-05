@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:06:48
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-24 08:30:20
+ * @Last Modified time: 2025-04-05 23:29:49
  */
 
 "use client";
@@ -18,7 +18,7 @@ export default function Faq({purpose}) {
     const { data: faqs, loading } = getFaqs(purpose);
 
     //for sorting faqs based on priority (descending)
-    const sortedFaqs = [...faqs].sort((a, b) => b.priority - a.priority);
+    // const sortedFaqs = [...faqs].sort((a, b) => b.priority - a.priority);
 
     return (
         <div className="lingo-container flex flex-col justify-center items-center pt-[100px]">
@@ -31,8 +31,8 @@ export default function Faq({purpose}) {
                         <div className="animate-pulse bg-gray-300 p-5 h-[80px] w-full" />
                         <div className="animate-pulse bg-gray-300 p-5 h-[80px] w-full" />
                     </>
-                ): sortedFaqs?.length > 0 ? (
-                    sortedFaqs.map((item, index) => (
+                ): faqs?.length > 0 ? (
+                    faqs.map((item, index) => (
                         <Question
                             key={index}
                             title={item.title}
