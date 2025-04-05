@@ -2,11 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 00:15:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 15:02:51
+ * @Last Modified time: 2025-04-05 23:35:36
  */
 
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CategorySelection from "@/components/atoms/category-selection";
 import { TitleText } from "@/components/atoms/title";
 import { OrangeText } from "@/components/atoms/title";
@@ -20,6 +20,12 @@ export default function ExploreTutor() {
     const { findTutor } = Home;
 
     const { data, loading } = getPopularTutors();
+
+    useEffect(() => {
+        if (data && data[category] && data[category].length > 0) {
+            setOpenCardId(data[category][0].tutorId);
+        }
+    }, [category, data]);
 
     return (
         <div className="lingo-container pt-[100px] flex flex-col relative">
