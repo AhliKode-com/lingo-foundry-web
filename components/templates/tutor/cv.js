@@ -7,16 +7,76 @@
 
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useForm, useFieldArray } from "react-hook-form"
 import { FaTrash } from "react-icons/fa"
+import useUploadFile from "@/api/static-file/postUploadFile";
+import {toast} from "react-toastify";
 
-export default function CVCertification() {
+export default function CVCertification({ setCurrentStep }) {
+    // State to track if saved files have been loaded
+    const [savedCvFileName, setSavedCvFileName] = useState(null)
+    const [savedCertificateFiles, setSavedCertificateFiles] = useState([])
+
+    // Get saved data from localStorage on component mount
+    useEffect(() => {
+        try {
+            const savedData = localStorage.getItem("applyTutorStep3Data")
+            if (savedData) {
+                const parsedData = JSON.parse(savedData)
+
+                // Set the CV file name if it exists
+                if (parsedData.cvFile) {
+                    setSavedCvFileName(parsedData.cvFile.split('/').pop())
+                }
+
+                // Set certificate file names if they exist
+                if (parsedData.certificates && parsedData.certificates.length > 0) {
+                    const fileNames = parsedData.certificates.map(cert =>
+                        cert.file ? cert.file.split('/').pop() : null
+                    )
+                    setSavedCertificateFiles(fileNames)
+                }
+
+                // Reset the form with the saved data
+                reset({
+                    notHasTeachingCertificate: parsedData.notHasTeachingCertificate || false,
+                    certificates: parsedData.certificates?.length > 0 ?
+                        parsedData.certificates.map(cert => ({
+                            subject: cert.subject || "",
+                            certificateType: cert.certificateType || "",
+                            description: cert.description || "",
+                            issuedBy: cert.issuedBy || "",
+                            startYear: cert.startYear || "",
+                            endYear: cert.endYear || "",
+                            file: null, // We'll display the filename but can't prefill the actual file
+                        })) :
+                        [
+                            {
+                                subject: "",
+                                certificateType: "",
+                                description: "",
+                                issuedBy: "",
+                                startYear: "",
+                                endYear: "",
+                                file: null,
+                            },
+                        ]
+                })
+            }
+        } catch (error) {
+            console.error("Error loading saved data:", error)
+        }
+    }, [])
+
     const {
         register,
         handleSubmit,
         control,
         watch,
+        getValues,
+        setValue,
+        reset,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -35,6 +95,8 @@ export default function CVCertification() {
         },
     })
 
+    const { uploadFile, error } = useUploadFile()
+
     const { fields, append, remove } = useFieldArray({
         control,
         name: "certificates",
@@ -51,7 +113,7 @@ export default function CVCertification() {
         if (file) {
             // check file type
             if (!file.type.includes("image/jpeg") && !file.type.includes("image/png")) {
-                alert("Please upload a pdf file")
+                alert("Please upload a JPG or PNG file")
                 return
             }
 
@@ -62,34 +124,93 @@ export default function CVCertification() {
             }
 
             setCvFile(file)
+            setSavedCvFileName(file.name) // Update the displayed filename
         }
     }
 
     const handleCertificateUpload = (index, e) => {
         const file = e.target.files[0]
         if (file) {
-            // Check file type
+            // check file type
             if (!file.type.includes("image/jpeg") && !file.type.includes("image/png")) {
                 alert("Please upload a JPG or PNG file")
                 return
             }
 
-            // Check file size (20MB max)
+            // check file size (20MB max)
             if (file.size > 20 * 1024 * 1024) {
                 alert("File size should be less than 20MB")
                 return
             }
+
+            // Update the displayed filename
+            const updatedFiles = [...savedCertificateFiles]
+            updatedFiles[index] = file.name
+            setSavedCertificateFiles(updatedFiles)
         }
     }
 
-    const onSubmit = (data) => {
-        // add CV file to the data
+    const onSubmit = async (data) => {
+        // add cv file to the data
+        toast.loading("save your file...")
         const formData = {
-            ...data,
-            cvFile,
+            ...data
         }
+
+        if (cvFile) {
+            const cvFileUrl = await uploadFile(cvFile)
+            if (cvFileUrl) {
+                formData["cvFile"] = cvFileUrl
+            } else {
+                toast.dismiss()
+                toast.error(error)
+            }
+        } else if (savedCvFileName) {
+            // If no new file is uploaded but we have a saved file, keep the old URL
+            try {
+                const savedData = JSON.parse(localStorage.getItem("applyTutorStep3Data"))
+                if (savedData && savedData.cvFile) {
+                    formData["cvFile"] = savedData.cvFile
+                }
+            } catch (e) {
+                console.error("Error retrieving saved CV file:", e)
+            }
+        }
+
+        if (formData.notHasTeachingCertificate) {
+            formData.certificates = []
+        } else {
+            for (let index = 0; index < formData.certificates.length; index++) {
+                if (formData.certificates[index].file) {
+                    // If a new file is uploaded
+                    const fileUrl = await uploadFile(formData.certificates[index].file)
+                    if (fileUrl) {
+                        formData.certificates[index].file = fileUrl
+                    } else {
+                        toast.dismiss()
+                        toast.error(error)
+                    }
+                } else if (savedCertificateFiles[index]) {
+                    // If no new file but we have a saved one, keep the old URL
+                    try {
+                        const savedData = JSON.parse(localStorage.getItem("applyTutorStep3Data"))
+                        if (savedData && savedData.certificates && savedData.certificates[index] && savedData.certificates[index].file) {
+                            formData.certificates[index].file = savedData.certificates[index].file
+                        }
+                    } catch (e) {
+                        console.error("Error retrieving saved certificate file:", e)
+                    }
+                }
+            }
+        }
+
         console.log("Form submitted:", formData)
-        alert("Form data saved successfully!")
+        toast.dismiss()
+        toast.success("CV and certificates saved successfully!")
+
+        localStorage.setItem("applyTutorStep3Data", JSON.stringify(formData))
+        localStorage.setItem("applyTutorCurrentStep", "4")
+        setCurrentStep(4)
     }
 
     return (
@@ -124,7 +245,11 @@ export default function CVCertification() {
                         Upload
                     </button>
 
-                    {cvFile && <p className="mt-2 text-green-600">File uploaded: {cvFile.name}</p>}
+                    {(cvFile || savedCvFileName) && (
+                        <p className="mt-2 text-green-600">
+                            File uploaded: {cvFile ? cvFile.name : savedCvFileName}
+                        </p>
+                    )}
                 </div>
 
                 {/* Teaching Certificate Checkbox */}
@@ -134,11 +259,6 @@ export default function CVCertification() {
                             type="checkbox"
                             className="h-5 w-5 rounded border-gray-300 text-[#E35D33] focus:ring-[#E35D33] mr-2"
                             {...register("notHasTeachingCertificate")}
-                            onChange={(e) => {
-                                register("notHasTeachingCertificate").onChange({
-                                    target: { name: "notHasTeachingCertificate", value: e.target.checked },
-                                })
-                            }}
                         />
                         <span className="text-gray-800">I don&#39;t have a teaching certificate</span>
                     </label>
@@ -172,7 +292,24 @@ export default function CVCertification() {
                                             <option value="Science">Science</option>
                                         </select>
                                         {index === 0 && (
-                                            <button type="button" className="ml-2 text-gray-500" onClick={() => remove(0)}>
+                                            <button
+                                                type="button"
+                                                className="ml-2 text-gray-500"
+                                                onClick={() => {
+                                                    if (fields.length > 1) {
+                                                        remove(0);
+                                                    } else {
+                                                        // If it's the only field, clear it instead of removing
+                                                        setValue(`certificates.${index}.subject`, "");
+                                                        setValue(`certificates.${index}.certificateType`, "");
+                                                        setValue(`certificates.${index}.description`, "");
+                                                        setValue(`certificates.${index}.issuedBy`, "");
+                                                        setValue(`certificates.${index}.startYear`, "");
+                                                        setValue(`certificates.${index}.endYear`, "");
+                                                        setValue(`certificates.${index}.file`, null);
+                                                    }
+                                                }}
+                                            >
                                                 <FaTrash className="h-5 w-5" />
                                             </button>
                                         )}
@@ -226,7 +363,7 @@ export default function CVCertification() {
                                         >
                                             <option value="">Select</option>
                                             {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                                                <option key={year} value={year}>
+                                                <option key={year} value={year.toString()}>
                                                     {year}
                                                 </option>
                                             ))}
@@ -238,7 +375,7 @@ export default function CVCertification() {
                                         >
                                             <option value="">Select</option>
                                             {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                                                <option key={year} value={year}>
+                                                <option key={year} value={year.toString()}>
                                                     {year}
                                                 </option>
                                             ))}
@@ -258,19 +395,36 @@ export default function CVCertification() {
                                     <input
                                         type="file"
                                         ref={(el) => (certificateFileRefs.current[index] = el)}
-                                        onChange={(e) => handleCertificateUpload(index, e)}
+                                        onChange={(e) => {
+                                            const file = e.target.files[0];
+                                            handleCertificateUpload(index, e);
+                                            if (file) {
+                                                // manually set the file into form state
+                                                setValue(`certificates.${index}.file`, file);
+                                            }
+                                        }}
                                         accept="image/jpeg, image/png"
                                         className="hidden"
-                                        {...register(`certificates.${index}.file`)}
                                     />
 
                                     <button
                                         type="button"
-                                        onClick={() => certificateFileRefs.current[index].click()}
+                                        onClick={() => {
+                                            const ref = certificateFileRefs.current[index];
+                                            if (ref) {
+                                                ref.click();
+                                            }
+                                        }}
                                         className="border border-gray-800 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-100 transition-colors"
                                     >
                                         Upload
                                     </button>
+
+                                    {(watch(`certificates.${index}.file`) || savedCertificateFiles[index]) && (
+                                        <p className="mt-2 text-green-600">
+                                            File uploaded: {watch(`certificates.${index}.file`)?.name || savedCertificateFiles[index]}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -301,6 +455,7 @@ export default function CVCertification() {
                     <button
                         type="button"
                         className="px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                        onClick={() => {setCurrentStep(2)}}
                     >
                         Back
                     </button>
@@ -315,4 +470,3 @@ export default function CVCertification() {
         </div>
     )
 }
-
