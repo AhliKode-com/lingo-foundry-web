@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 16:07:01
+ * @Last Modified time: 2025-04-06 17:04:40
  */
 
 "use client"
@@ -31,7 +31,7 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
 
     return (
         <div
-            className="relative flex justify-center xl:justify-start mt-6"
+            className="cursor-pointer relative flex justify-center xl:justify-start mt-6"
             onMouseEnter={onHover}
             onClick={onClick}
         >

@@ -2,15 +2,20 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-15 16:47:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 10:31:53
+ * @Last Modified time: 2025-04-06 16:43:05
  */
 
+"use client"
+import { usePathname } from 'next/navigation';
 import { OrangeButton } from "@/components/atoms/buttons";
 import { TitleText } from "@/components/atoms/title";
 import { Home } from "@/constants/en";
+import Link from "next/link";
 
 export default function HeroBottom() {
     const { heroBottom } = Home;
+    const pathname = usePathname();
+
     return (
         <div className="lingo-container py-[50px] md:py-[115px]">
             <div className="block lg:hidden mb-[20px]">
@@ -44,7 +49,9 @@ export default function HeroBottom() {
                             ))}
                         </ol>
                         <div>
-                            <OrangeButton text={heroBottom.button} />
+                            <Link href={pathname === "/tutor" ? "/tutor-detail" : "/tutor"}>
+                                <OrangeButton text={heroBottom.button} />
+                            </Link>
                         </div>
                 </div>
                 <div className="relative w-full h-full lg:hidden">
@@ -54,8 +61,10 @@ export default function HeroBottom() {
                         left-1/2
                         -translate-x-1/2
                         -translate-y-1/2
-                    ">
-                        <OrangeButton text={heroBottom.button} />
+                    ">  
+                        <Link href={pathname === "/tutor" ? "/tutor-detail" : "/tutor"}>
+                            <OrangeButton text={heroBottom.button} />
+                        </Link>
                     </div>
                     <div className="w-full h-full bg-[#00000060] rounded-[25px] md:rounded-[50px]"></div>
                 </div>
