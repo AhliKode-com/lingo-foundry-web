@@ -2,11 +2,12 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 00:00:49
+ * @Last Modified time: 2025-04-06 16:40:43
  */
 "use client"
 import { IoIosArrowDown } from "react-icons/io";
 import { TutorButton } from "@/components/atoms/buttons";
+import Link from "next/link";
 
 export default function Hero() {
 
@@ -42,7 +43,9 @@ export default function Hero() {
                         <h1 className="text-[26px] md:text-[36px] font-bold">Rp.24.000.000/</h1>
                         <h1 className="text-[16px] md:text-[24px] font-medium mt-auto">Month</h1>
                     </div>
-                    <TutorButton text="Apply Now"/>
+                    <Link href="/tutor-detail">
+                        <TutorButton text="Apply Now"/>
+                    </Link>
                 </div>
             </div>
         </div>

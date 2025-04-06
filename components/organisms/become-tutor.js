@@ -2,12 +2,13 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 00:49:16
+ * @Last Modified time: 2025-04-06 16:41:32
  */
 
 import { TitleText } from "@/components/atoms/title";
 import Image from "next/image";
 import { TutorButton } from "@/components/atoms/buttons";
+import Link from "next/link";
 
 export default function BecomeTutor() {
 
@@ -58,7 +59,9 @@ export default function BecomeTutor() {
                     </div>
                 ))}
             </div>
-            <TutorButton text="Apply Now" custom="mx-auto w-full md:w-3/10"/>
+            <Link className="justify-center items-center flex" href="/tutor-detail">
+                <TutorButton text="Apply Now" custom="mx-auto w-full md:w-3/10"/>
+            </Link>
         </div>
     )
 }

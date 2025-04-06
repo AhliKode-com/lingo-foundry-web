@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-25 21:45:08
+ * @Last Modified time: 2025-04-06 16:43:50
  */
 "use client"
 import Image from 'next/image';
@@ -77,7 +77,7 @@ export default function Navbar() {
                     priority
                 />
                 <div className='hidden lg:flex items-center animation-effect'>
-                    <Link href='/tutor-detail'>
+                    <Link href={pathname === "/tutor" ? "/tutor-detail" : "/tutor"}>
                         <OrangeButton text="Apply as Tutor"/>
                     </Link>
                     {loading ?
@@ -173,7 +173,7 @@ export default function Navbar() {
                             })}
                         </ul>
                         <div className='flex flex-col mt-6'>
-                            <Link href='/tutor-detail' onClick={() => setOpen(false)}>
+                            <Link href={pathname === "/tutor" ? "/tutor-detail" : "/tutor"} onClick={() => setOpen(false)}>
                                 <OrangeButton text="Apply as Tutor"/>
                             </Link>
                             <div className='flex mt-6 gap-6'>

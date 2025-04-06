@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-24 10:56:38
+ * @Last Modified time: 2025-04-06 17:03:10
  */
 
 "use client"
@@ -70,15 +70,21 @@ export default function StudentNavbar() {
                             <span className='text-[14px] md:text-[16px] animation-effect'>0</span>
                             <span className='text-[14px] md:text-[16px] animation-effect'>following</span>
                         </div>
-                        <button className="bg-[#FFEEE8] px-[32px] py-[16px] items-center gap-[12px] md:flex hidden">
-                            <span className='text-[#FF6636]'>Become Tutor</span>
-                            <img src="/assets/arrow-right.svg" alt="arrow right" className=""/>
-                        </button>
+                        <Link href="/tutor-detail">
+                            <button className="cursor-pointer bg-[#FFEEE8] px-[32px] py-[16px] items-center gap-[12px] md:flex hidden">
+                                <span className='text-[#FF6636]'>Become Tutor</span>
+                                <img src="/assets/arrow-right.svg" alt="arrow right" className=""/>
+                            </button>
+                        </Link>
                     </div>
-                    <button className="bg-[#FFEEE8] px-[20px] py-[12px] items-center gap-[12px] flex w-fit md:hidden">
-                        <span className='text-[#FF6636] text-[12px] '>Become Tutor</span>
-                        <img src="/assets/arrow-right.svg" alt="arrow right" className="md:w-auto w-[14px]"/>
-                    </button>
+                    <>
+                        <Link href="/tutor-detail" className='md:hidden'>
+                            <button className="cursor-pointer bg-[#FFEEE8] px-[20px] py-[12px] items-center gap-[12px] flex w-fit">
+                                <span className='text-[#FF6636] text-[12px] '>Become Tutor</span>
+                                <img src="/assets/arrow-right.svg" alt="arrow right" className="md:w-auto w-[14px]"/>
+                            </button>
+                        </Link>
+                    </>
                 </div>
             </div>
             <div

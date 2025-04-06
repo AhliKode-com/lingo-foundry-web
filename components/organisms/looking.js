@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-14 22:57:28
+ * @Last Modified time: 2025-04-06 16:35:43
  */
 
 import { OrangeText, TitleText } from '@/components/atoms/title';
@@ -26,6 +26,7 @@ export default function Looking() {
                         title={looking.teachTitle}
                         desc={looking.teachDesc}
                         buttonType="white"
+                        href='/tutor'
                         buttonText={looking.registerButton}
                     />
                     <LookingCard
@@ -34,6 +35,7 @@ export default function Looking() {
                         title={looking.learnTitle}
                         desc={looking.learnDesc}
                         buttonType="orange"
+                        href="/signup"
                         buttonText={looking.registerButton}
                     />
                 </div>
