@@ -1,15 +1,15 @@
 /*
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
- * @Last Modified by: advistasyam
- * @Last Modified time: 2025-03-25 22:58:38
+ * @Last Modified by: danteclericuzio
+ * @Last Modified time: 2025-04-06 16:07:01
  */
 
 "use client"
 
 import {useState} from "react";
 
-export default function TeacherProfileCard({ teacher, isOpen, onHover }) {
+export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }) {
     const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
     const todayIndex = new Date().getDay()
     const orderedDays = [...days.slice(todayIndex), ...days.slice(0, todayIndex)]
@@ -33,6 +33,7 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover }) {
         <div
             className="relative flex justify-center xl:justify-start mt-6"
             onMouseEnter={onHover}
+            onClick={onClick}
         >
             {/* Teacher Card */}
             <div className="relative max-w-4xl xl:max-w-3xl w-full p-6 rounded-xl border border-gray-200 shadow-sm bg-white transition-all duration-300">
@@ -111,8 +112,8 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover }) {
                     <div className="p-4 pb-0">
                         <div className="flex gap-2 overflow-x-auto pb-4">
                             {teacher.tutorVideoUrls.map((content, index) => (
-                                <>
-                                    {content.map((val, index) => (
+                                <div key={index}>
+                                    {Array.isArray(content) && content.map((val, index) => (
                                         <div
                                             key={index}
                                             className="relative w-[150px] h-[200px] rounded-lg overflow-hidden cursor-pointer"
@@ -144,7 +145,7 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover }) {
                                             )}
                                         </div>
                                     ))}
-                                </>
+                                </div>
                             ))}
                         </div>
 

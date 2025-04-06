@@ -2,12 +2,10 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-05 17:24:30
+ * @Last Modified time: 2025-04-06 16:04:14
  */
 
 "use client"
-
-import Image from "next/image"
 
 export default function TeacherProfileCardDashboard({teacher}) {
 

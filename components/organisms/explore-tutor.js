@@ -2,10 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 00:15:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-05 23:35:36
+ * @Last Modified time: 2025-04-06 15:59:38
  */
 
 "use client"
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from "react";
 import CategorySelection from "@/components/atoms/category-selection";
 import { TitleText } from "@/components/atoms/title";
@@ -27,6 +28,11 @@ export default function ExploreTutor() {
         }
     }, [category, data]);
 
+    const router = useRouter();
+    const handleCardClick = (tutorId) => {
+        router.push(`/tutor/${tutorId}`);
+    };
+
     return (
         <div className="lingo-container pt-[100px] flex flex-col relative">
             <OrangeText text={findTutor.title} position="justify-center"/>
@@ -43,6 +49,7 @@ export default function ExploreTutor() {
                             teacher={teacher}
                             isOpen={openCardId === teacher.tutorId}
                             onHover={() => setOpenCardId(teacher.tutorId)}
+                            onClick={() => handleCardClick(teacher.tutorId)}
                         />
                     ))}
                 </>
