@@ -14,7 +14,7 @@ export function RatingSummary({averageRating,totalReviews,ratingCounts,dataRevie
                     <span className="text-[44px] font-medium">{averageRating.toFixed(1)}</span>
                     <div className="flex my-[8px] md:min-w-[140px] gap-[4px]">
                         {Array(roundedRating).fill().map((_, i) => (
-                            <img src="/assets/star.svg" alt="Star" key={i} className="w-[24px] h-[24px]" />
+                            <img src="/assets/star-review.svg" alt="Star" key={i} className="w-[24px] h-[24px]" />
                         ))}
                     </div>
                     <span className="text-[14px]">{totalReviews} reviews</span>
@@ -38,7 +38,7 @@ export function RatingSummary({averageRating,totalReviews,ratingCounts,dataRevie
                             />
                             )}
                         </div>
-                        <span className="w-12 text-right text-gray-500">({count})</span>
+                            <span className="w-12 text-right text-gray-500">({count})</span>
                         </div>
                     )
                     })}
@@ -57,7 +57,7 @@ export function RatingSummary({averageRating,totalReviews,ratingCounts,dataRevie
                         </div>
                         <div className="flex mt-[16px] mb-[8px]">
                             {Array(review.rating).fill().map((_, i) => (
-                                <img src="/assets/star.svg" alt="Star" key={i} className="w-[24px] h-[24px]" />
+                                <img src="/assets/star-review.svg" alt="Star" key={i} className="w-[18px] h-[18px]" />
                             ))}
                         </div>
                         <span className="">{review.review}</span>

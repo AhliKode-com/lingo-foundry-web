@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-07 17:10:41
+ * @Last Modified time: 2025-04-08 00:43:18
  */
 
 "use client";
@@ -10,9 +10,15 @@ import { useParams } from "next/navigation";
 import React from "react";
 import { useState } from "react";
 import { RatingSummary } from "@/components/atoms/rating-summary";
+import { ResumeTabs } from "@/components/atoms/resume-tab";
+import { Speciality } from "@/components/atoms/accordion";
+import { TutorCarousel } from '@/components/atoms/carousel';
+import { getDetail } from "@/api/getTutorDetail";
 
 export default function TutorDetail() {
     const { slug } = useParams();
+    const {data, loading} = getDetail(slug);
+    console.log(data)
     const [saved, setSaved] = useState(false);
 
     const [expanded, setExpanded] = useState(false);
@@ -32,11 +38,27 @@ export default function TutorDetail() {
         {name: 'Amanda', date: 'March 28,2025', rating: 5, review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'},
     ]
 
+    const specialityData = [
+        {title: 'title 1', desc: 'This is Desc 1'},
+        {title: 'title 2', desc: 'This is Desc 2'},
+        {title: 'title 3', desc: 'This is Desc 3'},
+        {title: 'title 4', desc: 'This is Desc 4'},
+    ]
+
+    const likeData = [
+        {id: 1,img: "/assets/man-1.png",name: "Aqil Zulkarnain",flag: "🇮🇩",rating: 4.9,reviews: 85,description: "Improve your Indonesian, communicate better,",price: 170000},
+        {id: 2,img: "/assets/man-1.png",name: "Muhammad Naufal Pratama",flag: "🇮🇩",rating: 5,reviews: 38,description: "Native Indonesian Tutor and Skilled Conversationalist with",price: 120000},
+        {id: 3,img: "/assets/man-1.png",name: "Putri Maharani",flag: "🇮🇩",rating: 5,reviews: 61,description: "MoE practitioner is here to boost your Indonesian",price: 200000},
+        {id: 4,img: "/assets/man-1.png",name: "Rio Aditya",flag: "🇮🇩",rating: 5,reviews: 56,description: "Friendly and Certified Bahasa Indonesia Teacher with over 10",price: 140000},
+        {id: 5,img: "/assets/man-1.png",name: "Dian Sastrowardoyo",flag: "🇮🇩",rating: 4.8,reviews: 42,description: "Experienced Indonesian language instructor for all levels",price: 150000},
+        {id: 6,img: "/assets/man-1.png",name: "Budi Wibowo",flag: "🇮🇩",rating: 4.7,reviews: 29,description: "Professional translator and language coach for beginners",price: 100000}
+    ]
+
     return (
         <div className="lingo-container flex flex-col lg:flex-row pt-[80px] sm:pt-[103.61px]">
             {/* Left scrollable section */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-8">
-                <div className="max-w-3xl">
+            <div className="p-4 md:p-8">
+                <div className="md:max-w-3xl">
                     {/* Profile header */}
                     <div className="block">
                         <div className="flex md:flex-row flex-col items-center gap-6 mb-6">
@@ -99,8 +121,8 @@ export default function TutorDetail() {
 
 
                     {/* About me section */}
-                    <div className="mb-[48px]">
-                        <span className="text-[23px] font-medium mb-[6px]">About me</span>
+                    <div className="mb-[48px] flex flex-col">
+                        <span className="text-[23px] font-medium mb-[20px]">About me</span>
                         <div className="flex flex-col gap-[20px]">
                             {expanded ? (
                                 <>
@@ -130,7 +152,7 @@ export default function TutorDetail() {
 
                     {/* speak */}
                     <div className="flex flex-col mb-[48px]">
-                        <span className="text-[23px] font-medium mb-[6px]">I speak</span>
+                        <span className="text-[23px] font-medium mb-[20px]">I speak</span>
                         <div className="flex flex-wrap gap-[24px]">
                             <div className="flex items-center gap-[8px]">
                                 <span className="text-[14px]">Javanese</span>
@@ -161,7 +183,7 @@ export default function TutorDetail() {
 
                     {/* say */}
                     <div className="flex flex-col mb-[48px]">
-                        <div className="flex items-center mb-[6px] gap-[6px]">
+                        <div className="flex items-center mb-[20px] gap-[6px]">
                             <span className="text-[23px] font-medium">What my students say</span>
                             <img src="/assets/warning.svg" alt="warning" className="w-[20px] h-[20px] mt-[5px]"/>
                         </div>
@@ -177,6 +199,30 @@ export default function TutorDetail() {
                             1: 0,
                             }}
                         />
+                    </div>
+
+                    {/* resume */}
+                    <div className="flex flex-col mb-[80px]">
+                        <span className="text-[23px] font-medium mb-[20px]">Resume</span>
+                        <ResumeTabs/>
+                    </div>
+
+                    {/* speciality */}
+                    <div className="flex flex-col mb-[48px]">
+                        <span className="text-[23px] font-medium mb-[20px]">My specialties</span>
+                            {specialityData.map((item, index) => (
+                                <Speciality
+                                    key={index}
+                                    title={item.title}
+                                    desc={item.desc}
+                                    defaultOpen={index === 0}
+                                />
+                            ))}
+                    </div>
+
+                    {/* like */}
+                    <div className="flex flex-col mb-[48px] overflow-hidden">
+                        <TutorCarousel tutors={likeData}/>
                     </div>
 
                 </div>
@@ -195,7 +241,7 @@ export default function TutorDetail() {
                             <div className="flex gap-[24px] my-[24px]">
                                 <div className="flex flex-col">
                                     <div className="flex gap-[4px] items-center">
-                                        <img src="/assets/star.svg" alt="star" className="w-[16px] h-[16px]"/>
+                                        <img src="/assets/star-review.svg" alt="star" className="w-[16px] h-[16px]"/>
                                         <span className="font-medium">4.9</span>
                                     </div>
                                     <span className="text-[14px] text-[#4D4C5C]">89 reviews</span>

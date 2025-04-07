@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 10:04:12
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-05 23:22:52
+ * @Last Modified time: 2025-04-08 00:53:20
  */
 "use client"
 import { TitleSubDashboard, OrangeTextDashboard } from "@/components/atoms/title";
@@ -36,9 +36,17 @@ export default function StudentDashboardCoursesZoom(){
                         </Link>
                     </div>
                     <div className="gap-[8px] flex flex-col">
-                        {activeCourses && activeCourses?.map((item, index) => (
-                            <MyCourses key={index} data={item}/>
-                        ))}
+                        { loading ? (
+                                <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                            ) : activeCourses?.length > 0 ? (
+                                    activeCourses?.map((item, index) => {
+                                        return (
+                                            <MyCourses key={index} data={item}/>
+                                        )
+                                    })
+                            ) : (
+                                <div className="py-10">No Courses available.</div>
+                            )}
                     </div>
                 </div>
                 <div className="lg:w-2/5 flex flex-col">
