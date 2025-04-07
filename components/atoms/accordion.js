@@ -2,12 +2,85 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:13:24
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-25 19:53:17
+ * @Last Modified time: 2025-04-07 22:13:19
  */
 "use client"
 import React, {useState, useRef, useEffect} from "react";
 import {FiChevronDown} from "react-icons/fi";
 import {GoArrowUp} from "react-icons/go";
+
+export function Speciality({title, desc, defaultOpen = false}) {
+    const [open, setOpen] = useState(defaultOpen);
+    const [height, setHeight] = useState(0);
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        if (contentRef.current) {
+            if (open) {
+                setHeight(contentRef.current.scrollHeight);
+            } else {
+                setHeight(0);
+            }
+        }
+    }, [open, desc]);
+
+    return (
+        <div className="w-full gap-0">
+            <button
+                onClick={() => setOpen((prev) => !prev)}
+                className={`
+                    flex 
+                    w-full 
+                    items-center 
+                    justify-between
+                    py-[10px] px-[12px] md:py-[20px]
+                    cursor-pointer
+                    gap-[5px]
+                    animation-effect`}
+            >
+                <span
+                    className={`
+                        text-left font-medium
+                        animation-effect
+                        text-[14px] sm:text-[16px]
+                    `}
+                >
+                    {title}
+                </span>
+
+                <div>
+                    <FiChevronDown
+                        className={`
+                            text-[18px] sm:text-[24px]
+                            animation-effect
+                            duration-300
+                            ${open ? "rotate-180" : "rotate-0"}
+                        `}
+                    />
+                </div>
+            </button>
+
+            <div
+                className="
+                    text-[12px] sm:text-[14px]
+                    overflow-hidden
+                    animation-effect
+                    border-b-[2px] border-[#E9EAF0]
+                "
+                style={{
+                    height: height
+                }}
+            >
+                <div
+                    ref={contentRef}
+                    className="pb-[20px] px-[12px]"
+                >
+                    {desc}
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export function Question({title, answer, defaultOpen = false}) {
     const [open, setOpen] = useState(defaultOpen);
@@ -42,7 +115,7 @@ export function Question({title, answer, defaultOpen = false}) {
             >
                 <span
                     className={`
-                        text-left text-lg font-medium
+                        text-left font-medium
                         animation-effect
                         text-[14px] sm:text-[16px]
                         ${open ? "text-[#FFFFFF]" : "text-[#E35D33]"}
@@ -125,7 +198,7 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                 <div className="flex flex-col gap-[12px]">
                     <span
                         className={`
-                            text-left text-lg font-medium
+                            text-left font-medium
                             animation-effect
                             text-[14px] md:text-[18px]
                             ${open ? "text-[#E35D33]" : "text-[#1D2026]"}
