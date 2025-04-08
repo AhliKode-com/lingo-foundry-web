@@ -43,7 +43,7 @@ export default function Hero() {
                         <h1 className="text-[26px] md:text-[36px] font-bold">Rp.24.000.000/</h1>
                         <h1 className="text-[16px] md:text-[24px] font-medium mt-auto">Month</h1>
                     </div>
-                    <Link href="/tutor-detail">
+                    <Link href="/tutor-register">
                         <TutorButton text="Apply Now" custom="w-full"/>
                     </Link>
                 </div>

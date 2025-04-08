@@ -15,7 +15,9 @@ export default function FindTutor() {
     return (
         <>
             <HeroTutor/>
-            <ExploreTutor/>
+            <section id="search">
+                <ExploreTutor/>
+            </section>
             <Faq purpose="STUDENT"/>
             <Review authorType="STUDENT"/>
             <HeroBottom/>

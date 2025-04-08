@@ -70,7 +70,7 @@ export default function StudentNavbar() {
                             <span className='text-[14px] md:text-[16px] animation-effect'>0</span>
                             <span className='text-[14px] md:text-[16px] animation-effect'>following</span>
                         </div>
-                        <Link href="/tutor-detail">
+                        <Link href="/tutor-register">
                             <button className="cursor-pointer bg-[#FFEEE8] px-[32px] py-[16px] items-center gap-[12px] md:flex hidden">
                                 <span className='text-[#FF6636]'>Become Tutor</span>
                                 <img src="/assets/arrow-right.svg" alt="arrow right" className=""/>
@@ -78,7 +78,7 @@ export default function StudentNavbar() {
                         </Link>
                     </div>
                     <>
-                        <Link href="/tutor-detail" className='md:hidden'>
+                        <Link href="/tutor-register" className='md:hidden'>
                             <button className="cursor-pointer bg-[#FFEEE8] px-[20px] py-[12px] items-center gap-[12px] flex w-fit">
                                 <span className='text-[#FF6636] text-[12px] '>Become Tutor</span>
                                 <img src="/assets/arrow-right.svg" alt="arrow right" className="md:w-auto w-[14px]"/>

@@ -39,10 +39,7 @@ export default function Browse() {
                             return(
                                 <Link
                                     key={index}
-                                    href={{
-                                        pathname: '/find-tutor',
-                                        query: { name: subject.name }
-                                    }}
+                                    href={`/find-tutor?q=${encodeURIComponent(subject.name)}#search`}
                                 >
                                     <div style={{ backgroundColor: randomColor }} className="p-[10px] sm:p-[14px] md:p-[16px] lg:p-[20px] animation-effect flex items-center" key={index}>
                                         <div className='flex items-center'>

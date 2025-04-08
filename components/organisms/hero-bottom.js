@@ -49,7 +49,7 @@ export default function HeroBottom() {
                             ))}
                         </ol>
                         <div>
-                            <Link href={pathname === "/tutor" ? "/tutor-detail" : "/tutor"}>
+                            <Link href={pathname === "/tutor" ? "/tutor-register" : "/tutor"}>
                                 <OrangeButton text={heroBottom.button} />
                             </Link>
                         </div>
@@ -62,7 +62,7 @@ export default function HeroBottom() {
                         -translate-x-1/2
                         -translate-y-1/2
                     ">  
-                        <Link href={pathname === "/tutor" ? "/tutor-detail" : "/tutor"}>
+                        <Link href={pathname === "/tutor" ? "/tutor-register" : "/tutor"}>
                             <OrangeButton text={heroBottom.button} />
                         </Link>
                     </div>

@@ -17,7 +17,7 @@ export function RatingSummary({averageRating,totalReviews,ratingCounts,dataRevie
                             <img src="/assets/star-review.svg" alt="Star" key={i} className="w-[24px] h-[24px]" />
                         ))}
                     </div>
-                    <span className="text-[14px]">{totalReviews} reviews</span>
+                    <span className="text-[14px]">{dataReview.length} reviews</span>
                 </div>
 
                 {/* Right section - Rating distribution */}
@@ -46,6 +46,9 @@ export function RatingSummary({averageRating,totalReviews,ratingCounts,dataRevie
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 mt-[32px] gap-[40px] animation-effect">
+                {displayedReviews.length === 0 && (
+                    <div>No Reviews yet</div>
+                )}
                 {displayedReviews.map((review, index) => (
                     <div key={index} className="flex flex-col animation-effect">
                         <div className="flex items-center gap-[16px]">

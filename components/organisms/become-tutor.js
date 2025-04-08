@@ -59,7 +59,7 @@ export default function BecomeTutor() {
                     </div>
                 ))}
             </div>
-            <Link className="justify-center items-center flex" href="/tutor-detail">
+            <Link className="justify-center items-center flex" href="/tutor-register">
                 <TutorButton text="Apply Now" custom="mx-auto w-full md:w-3/10"/>
             </Link>
         </div>
