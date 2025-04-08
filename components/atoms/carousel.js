@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-08 00:48:30
+ * @Last Modified time: 2025-04-08 08:39:23
  */
 
 "use client"
@@ -176,7 +176,7 @@ export function TutorCarousel({tutors}) {
         <div className="relative flex flex-col">
             <div className='flex justify-between items-center mb-[20px]'>
                 <span className="text-[23px] font-medium">You might also like</span>
-                <div className='flex gap-2'>
+                <div className='flex gap-2 animation-effect'>
                     <button
                         onClick={scrollLeft}
                         className="bg-[#E35D33] text-[#FFFFFF] h-[30px] w-[30px] flex justify-center items-center rounded-full cursor-pointer"
