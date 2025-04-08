@@ -14,6 +14,7 @@ import Why from '@/components/organisms/why-us';
 import How from '@/components/organisms/how';
 import Review from '@/components/organisms/review';
 import HeroBottom from '@/components/organisms/hero-bottom';
+import TutorSearch from "@/components/organisms/tutor-search";
 
 export default function Home() {
     return (

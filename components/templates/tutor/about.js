@@ -10,10 +10,13 @@
 import { useFieldArray, useForm } from "react-hook-form"
 import { TitleTutorRegis, DescTutorRegis, LabelTutorRegis } from "@/components/atoms/title"
 import { useEffect, useState } from "react"
+import {getLandingSubjects} from "@/api/getLandingSubjects";
 
 export default function About({ setCurrentStep }) {
     const [savedData, setSavedData] = useState(null)
     const MAX_EXPERTISE = 3
+
+    const { data: subjects, loading } = getLandingSubjects();
 
     // load data from localStorage on component mount
     useEffect(() => {
@@ -162,11 +165,9 @@ export default function About({ setCurrentStep }) {
                             <option value="" disabled>
                                 Select subject...
                             </option>
-                            <option value="Indonesian">Indonesian</option>
-                            <option value="English">English</option>
-                            <option value="Mathematics">Mathematics</option>
-                            <option value="Science">Science</option>
-                            <option value="History">History</option>
+                            {subjects && subjects.length > 0 && subjects.map(subject => (
+                                <option key={subject.id} value={subject.name}>{subject.name}</option>
+                            ))}
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

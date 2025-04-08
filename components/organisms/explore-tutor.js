@@ -14,6 +14,7 @@ import { OrangeText } from "@/components/atoms/title";
 import { Home } from "@/constants/en";
 import TutorProfileCard from "@/components/atoms/tutor-profile-card";
 import {getPopularTutors} from "@/api/getPopularTutors";
+import TutorSearch from "@/components/organisms/tutor-search";
 
 export default function ExploreTutor() {
     const [openCardId, setOpenCardId] = useState(null);
@@ -43,6 +44,7 @@ export default function ExploreTutor() {
             ) : (
                 <>
                     <CategorySelection updateCategory={setCategory} category={category} />
+                    <TutorSearch />
                     {data && data[category]?.map((teacher, index) => (
                         <TutorProfileCard
                             key={index}
