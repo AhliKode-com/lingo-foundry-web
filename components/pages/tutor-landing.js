@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-30 13:30:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 10:31:54
+ * @Last Modified time: 2025-04-08 21:19:27
  */
 
 import HeroTutorLanding from "@/components/organisms/hero-tutor-landing";
@@ -19,7 +19,9 @@ export default function TutorLanding() {
             <HowTutor/>
             <BecomeTutor/>
             <ReviewTutor/>
-            <Faq purpose="TUTOR"/>
+            <section id="FAQ">
+                <Faq purpose="TUTOR"/>
+            </section>
             <HeroBottom/>
         </>
     )

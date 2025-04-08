@@ -2,11 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-08 10:41:07
+ * @Last Modified time: 2025-04-08 21:01:54
  */
 
 "use client"
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import { OrangeText, TitleText } from '@/components/atoms/title';
 import { Home } from '@/constants/en';
@@ -20,62 +20,61 @@ export function Carousel (){
     const scrollRef = useRef(null)
     const [scrollPosition, setScrollPosition] = useState(0)
     const [maxScroll, setMaxScroll] = useState(0)
-  
-    const scrollRight = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: 315, behavior: "smooth" })
-        }
-    }
 
-    const scrollLeft = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: -315, behavior: "smooth" })
-        }
-    }
-  
-    useEffect(() => {
-        const handleScroll = () => {
-            if (scrollRef.current) {
-                setScrollPosition(scrollRef.current.scrollLeft)
-                setMaxScroll(scrollRef.current.scrollWidth - scrollRef.current.clientWidth)
-            }
-        }
-    
-        const scrollContainer = scrollRef.current
-        if (scrollContainer) {
-            scrollContainer.addEventListener("scroll", handleScroll)
-
-            setMaxScroll(scrollContainer.scrollWidth - scrollContainer.clientWidth)
-        
-            return () => scrollContainer.removeEventListener("scroll", handleScroll)
-        }
+    const updateScrollMetrics = useCallback(() => {
+        const el = scrollRef.current
+        if (!el) return
+        setScrollPosition(el.scrollLeft)
+        setMaxScroll(el.scrollWidth - el.clientWidth)
     }, [])
+
+    const scrollRight = () => scrollRef.current?.scrollBy({ left: 315, behavior: "smooth" })
+    const scrollLeft = () => scrollRef.current?.scrollBy({ left: -315, behavior: "smooth" })
+
+    useEffect(() => {
+        const el = scrollRef.current
+        if (!el) return
+
+        el.addEventListener("scroll", updateScrollMetrics)
+        window.addEventListener("resize", updateScrollMetrics)
+
+        const ro = new ResizeObserver(updateScrollMetrics)
+        ro.observe(el)
+
+        updateScrollMetrics()
+
+        return () => {
+            el.removeEventListener("scroll", updateScrollMetrics)
+            window.removeEventListener("resize", updateScrollMetrics)
+            ro.disconnect()
+        }
+    }, [updateScrollMetrics])
+
+    useEffect(() => {
+        updateScrollMetrics()
+    }, [tutorSubjects, updateScrollMetrics])
 
     return (
         <div className="lingo-container pt-[220px] flex flex-col">
-          <OrangeText text={carousel.title} position="justify-start"/>
-          <div className="relative w-full mx-auto flex flex-col overflow-hidden">
-            <div className="flex items-center justify-between">
-              <TitleText text={carousel.subtitle}/>
-              <div className="flex gap-[10px]">
-                {scrollPosition > 0 && (
-                    <button
-                    onClick={scrollLeft}
-                    className="bg-[#FF723A20] text-[#E35D33] h-[60px] w-[60px] flex justify-center items-center rounded-full cursor-pointer"
-                    >
-                        <MdArrowBackIos className="text-[18px] ml-2" />
-                    </button>
-                )}
-                {scrollPosition < maxScroll && (
-                    <button
-                    onClick={scrollRight}
-                    className="bg-[#E35D33] text-[#FFFFFF] h-[60px] w-[60px] flex justify-center items-center rounded-full cursor-pointer"
-                    >
-                        <MdArrowForwardIos className="text-[18px]" />
-                    </button>
-                )}
-              </div>
-            </div>
+            <OrangeText text={carousel.title} position="justify-start"/>
+            <div className="relative w-full mx-auto flex flex-col overflow-hidden">
+                <div className="flex items-center justify-between">
+                    <TitleText text={carousel.subtitle}/>
+                    <div className="flex gap-[10px]">
+                        <button
+                            onClick={scrollLeft}
+                            className="bg-[#FF723A20] text-[#E35D33] h-[60px] w-[60px] flex justify-center items-center rounded-full cursor-pointer"
+                        >
+                            <MdArrowBackIos className="text-[18px] ml-2" />
+                        </button>
+                        <button
+                            onClick={scrollRight}
+                            className="bg-[#E35D33] text-[#FFFFFF] h-[60px] w-[60px] flex justify-center items-center rounded-full cursor-pointer"
+                        >
+                            <MdArrowForwardIos className="text-[18px]" />
+                        </button>
+                    </div>
+                </div>
             <div
                 ref={scrollRef}
                 className="flex overflow-x-auto gap-[60px] pb-4 hide-scrollbar mt-[30px]"
