@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 16:40:43
+ * @Last Modified time: 2025-04-08 21:17:04
  */
 "use client"
 import { IoIosArrowDown } from "react-icons/io";
@@ -44,7 +44,7 @@ export default function Hero() {
                         <h1 className="text-[16px] md:text-[24px] font-medium mt-auto">Month</h1>
                     </div>
                     <Link href="/tutor-detail">
-                        <TutorButton text="Apply Now"/>
+                        <TutorButton text="Apply Now" custom="w-full"/>
                     </Link>
                 </div>
             </div>

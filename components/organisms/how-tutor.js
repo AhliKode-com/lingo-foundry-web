@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-30 17:28:06
+ * @Last Modified time: 2025-04-08 21:19:04
  */
 
 import { TitleText } from "@/components/atoms/title";
@@ -102,7 +102,7 @@ export default function HowTutor() {
                     <li>Tutors can use this as reference, but can also set their own price based on personal experiences to attract students.</li>
                     <li>As tutors accumulate teaching hours and receive positive reviews, tutors could also consider increasing the pricing for the class.</li>
                 </ul>
-                <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px]">See our <span className="text-[#E15C31] font-bold">FAQ’s</span> for more information.</span>
+                <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px]">See our <a href="#FAQ" className="text-[#E15C31] font-bold">FAQ’s</a> for more information.</span>
             </div>
         </div>
     )
