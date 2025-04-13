@@ -15,11 +15,7 @@ export function getDetail(tutorId) {
       const token = Cookies.get("token");
 
       try {
-        const response = await api.get("/tutor/" + tutorId, {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          }
-        });
+        const response = await api.get("/public/landing/" + tutorId);
         setData(response.data.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to get tutor detail");

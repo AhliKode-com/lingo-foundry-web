@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 16:43:50
+ * @Last Modified time: 2025-04-13 17:33:36
  */
 "use client"
 import Image from 'next/image';
@@ -14,6 +14,8 @@ import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
 import Link from 'next/link';
 import { useAuth } from "@/context/AuthContext";
+import {useStudentCart} from "@/api/studentCart";
+import {useStudentWishList} from "@/api/studentWishList";
 
 export default function Navbar() {
 
@@ -23,6 +25,21 @@ export default function Navbar() {
     const [open, setOpen] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
     const { user, loading, logoutContext } = useAuth()
+
+    // wishlist
+    const { data: wishlist, getWishList } = useStudentWishList();
+    useEffect(() => {
+        getWishList();
+    }, []);
+    const wishlistCount = Array.isArray(wishlist) ? wishlist.length : 0;
+
+    // cart
+    const { data: cart, getCart } = useStudentCart();
+    useEffect(() => {
+        getCart();
+    }, [getCart]);
+    const cartCount = Array.isArray(cart) ? cart.length : 0;
+
 
     useEffect(() => {
         if (open) {
@@ -94,8 +111,30 @@ export default function Navbar() {
                             {user != null ? (
                                 <div className="flex gap-[24px] ml-[26px] items-center relative">
                                     <GoBell className="text-[24px]" />
-                                    <GoHeart className="text-[24px]" />
-                                    <BsCart2 className="text-[24px]" />
+                                    <Link href='/wishlist'>
+                                        <div
+                                            className='relative'
+                                        >
+                                            <GoHeart className="text-[24px]" />
+                                            {wishlistCount > 0 ? (
+                                                <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
+                                                    {wishlistCount}
+                                                </div>
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </div>
+                                    </Link>
+                                    <div className='relative'>
+                                        <BsCart2 className="text-[24px]" />
+                                        {cartCount > 0 ? (
+                                            <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
+                                                {cartCount}
+                                            </div>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </div>
                                     <div
                                         className='relative animation-effect'
                                         onMouseEnter={() => setOpenProfile(true)}
@@ -148,9 +187,9 @@ export default function Navbar() {
 
                 {/* hamburger */}
                 <div className='flex ml-auto lg:hidden group z-50 w-6 h-6 cursor-pointer flex-col justify-between items-center' onClick={() => { setOpen(!open) }}>
-                    <span className={`h-1 w-full rounded-lg cursor-pointer animation-effect bg-[#FF5733] ${open ? "rotate-45 translate-y-2.5" : ""}`} />
+                    <span className={`h-1 w-full rounded-lg cursor-pointer animation-effect bg-[#E15C31] ${open ? "rotate-45 translate-y-2.5" : ""}`} />
                     <span className={`h-1 rounded-lg cursor-pointer animation-effect bg-[#1D419D] ${open ? "w-0" : "w-full"}`} />
-                    <span className={`h-1 w-full rounded-lg cursor-pointer animation-effect bg-[#FF5733] ${open ? "-rotate-45 -translate-y-2.5" : ""}`} />
+                    <span className={`h-1 w-full rounded-lg cursor-pointer animation-effect bg-[#E15C31] ${open ? "-rotate-45 -translate-y-2.5" : ""}`} />
                 </div>
 
                 {/* mobile */}
@@ -192,8 +231,7 @@ export default function Navbar() {
                                             <div className="flex gap-[24px] items-center relative">
                                                 <div
                                                     className='relative animation-effect'
-                                                    onMouseEnter={() => setOpenProfile(true)}
-                                                    onMouseLeave={() => setOpenProfile(false)}
+                                                    onClick={() => setOpenProfile(!openProfile)}
                                                 >
                                                     <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute'></div>
                                                     <Image
@@ -222,8 +260,30 @@ export default function Navbar() {
                                                     )}
                                                 </div>
                                                 <GoBell className="text-[24px]" />
-                                                <GoHeart className="text-[24px]" />
-                                                <BsCart2 className="text-[24px]" />
+                                                <Link href='/wishlist'>
+                                                    <div 
+                                                        className='relative'
+                                                    >
+                                                        <GoHeart className="text-[24px]" />
+                                                        {wishlistCount > 0 ? (
+                                                            <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
+                                                                {wishlistCount}
+                                                            </div>
+                                                        ) : (
+                                                            <></>
+                                                        )}
+                                                    </div>
+                                                </Link>
+                                                <div className='relative'>
+                                                    <BsCart2 className="text-[24px]" />
+                                                    {cartCount > 0 ? (
+                                                        <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
+                                                            {cartCount}
+                                                        </div>
+                                                    ) : (
+                                                        <></>
+                                                    )}
+                                                </div>
                                             </div>
                                         ) : (
                                             auth.map((link, index) => {
