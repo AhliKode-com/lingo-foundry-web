@@ -1,9 +1,10 @@
-import { useState, useCallback } from "react";
+import {useState, useCallback} from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
+import {useLingoContext} from "@/context/LingoContext";
 
 export function useStudentWishList() {
-  const [data, setData] = useState(null);
+  const { setWishlists } = useLingoContext()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,7 +25,7 @@ export function useStudentWishList() {
         data: payload,
         headers
       });
-      setData(response.data.data);
+      setWishlists(response.data.data);
       return response.data.data;
     } catch (err) {
       const message = err.response?.data?.message || `${method.toUpperCase()} request failed`;
@@ -48,7 +49,6 @@ export function useStudentWishList() {
   }, [handleRequest]);
 
   return {
-    data: data ?? [],
     loading,
     error,
     getWishList,

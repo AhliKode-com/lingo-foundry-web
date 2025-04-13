@@ -44,9 +44,10 @@ export default function TutorDetail() {
     };
 
     // wishlist
-    const {addToWishList} = useStudentWishList();
+    const {addToWishList, getWishList} = useStudentWishList();
     const handleAddToWishlist = async () => {
         await addToWishList(slug);
+        await getWishList();
         toast.success("Add tutor to wishlist success.")
     };
 

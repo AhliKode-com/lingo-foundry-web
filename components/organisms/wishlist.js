@@ -10,15 +10,18 @@ import React, {useEffect} from 'react'
 import {useStudentWishList} from "@/api/studentWishList";
 import { TitleText } from "../atoms/title";
 import Image from 'next/image';
-export default function Wishlist() {
+import {useLingoContext} from "@/context/LingoContext";
 
-    const { data: wishlist = [], getWishList, deleteWishList } = useStudentWishList();
+export default function Wishlist() {
+    const { getWishList, deleteWishList } = useStudentWishList();
+    const { wishlists } = useLingoContext();
     useEffect(() => {
-            getWishList();
-    }, [getWishList]);
+        getWishList();
+    }, []);
 
     const handleDeleteWishlist = async (tutorId) => {
         await deleteWishList(tutorId);
+        await getWishList()
         toast.success("Removed tutor wishlist success.")
     };
 
@@ -26,10 +29,10 @@ export default function Wishlist() {
         <div className="lingo-container flex flex-col pt-[120px] md:pt-[200px]">
             <TitleText text='Wishlist'/>
             
-            {wishlist.length > 0 ? (
+            {wishlists && wishlists.length > 0 ? (
                 <>
                     <div className="w-full animation-effect grid grid-cols-1 md:grid-cols-2 gap-[25px] mt-[30px] mb-[50px]">
-                        {wishlist && wishlist?.map((item, index) => (
+                        {wishlists && wishlists?.map((item, index) => (
                             <div
                                 key={index}
                                 className={`animation-effect relative h-fit flex flex-row items-center p-[20px] bg-[#FFFFFF] rounded-[8px] drop-shadow-lg`}

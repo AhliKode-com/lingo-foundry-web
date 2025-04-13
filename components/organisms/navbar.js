@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useAuth } from "@/context/AuthContext";
 import {useStudentCart} from "@/api/studentCart";
 import {useStudentWishList} from "@/api/studentWishList";
+import {useLingoContext} from "@/context/LingoContext";
 
 export default function Navbar() {
 
@@ -24,14 +25,22 @@ export default function Navbar() {
     const pathname = usePathname();
     const [open, setOpen] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
+    const [wishlistCount, setWishlistCount] = useState(0)
     const { user, loading, logoutContext } = useAuth()
 
-    // wishlist
-    const { data: wishlist, getWishList } = useStudentWishList();
+    const { getWishList } = useStudentWishList();
     useEffect(() => {
-        getWishList();
-    }, []);
-    const wishlistCount = Array.isArray(wishlist) ? wishlist.length : 0;
+        getWishList()
+    }, [])
+
+    // wishlist
+    const { wishlists } = useLingoContext();
+
+    useEffect(() => {
+        if (Array.isArray(wishlists)) {
+            setWishlistCount(wishlists.length)
+        }
+    }, [wishlists]);
 
     // cart
     const { data: cart, getCart } = useStudentCart();
