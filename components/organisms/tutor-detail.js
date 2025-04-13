@@ -2,10 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-08 00:43:18
+ * @Last Modified time: 2025-04-13 18:07:20
  */
 
 "use client";
+import {toast} from "react-toastify";
 import {useParams} from "next/navigation";
 import React from "react";
 import {useState} from "react";
@@ -15,13 +16,15 @@ import {Speciality} from "@/components/atoms/accordion";
 import {TutorCarousel} from '@/components/atoms/carousel';
 import {getDetail} from "@/api/getTutorDetail";
 import {getReviews} from "@/api/getUserReview";
+import {useStudentCart} from "@/api/studentCart";
+import {useStudentWishList} from "@/api/studentWishList";
 
 export default function TutorDetail() {
     const {slug} = useParams();
-    const {data, loading} = getDetail(slug);
+    const {data} = getDetail(slug);
     const {data: reviews} = getReviews("STUDENT");
-    console.log(data)
-    console.log(reviews)
+    // console.log(data)
+    // console.log(reviews)
     const [saved, setSaved] = useState(false);
 
     const [expanded, setExpanded] = useState(false);
@@ -30,56 +33,22 @@ export default function TutorDetail() {
         setExpanded(prev => !prev);
     };
 
-    const dataReview = [
-        {
-            name: 'Rose',
-            date: 'March 21,2025',
-            rating: 5,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-        {
-            name: 'Dante',
-            date: 'March 22,2025',
-            rating: 4,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-        {
-            name: 'Kelvin',
-            date: 'March 23,2025',
-            rating: 3,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-        {
-            name: 'Advis',
-            date: 'March 24,2025',
-            rating: 2,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-        {
-            name: 'Hafiz',
-            date: 'March 25,2025',
-            rating: 1,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-        {
-            name: 'Mario',
-            date: 'March 26,2025',
-            rating: 5,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-        {
-            name: 'Jess',
-            date: 'March 27,2025',
-            rating: 5,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-        {
-            name: 'Amanda',
-            date: 'March 28,2025',
-            rating: 5,
-            review: 'Learning Bahasa with Andika is honestly the best! He makes every lesson fun and super engaging, so it never feels like actual studying'
-        },
-    ]
+    // cart
+    const {addToCart} = useStudentCart();
+    const handleAddToCart = async () => {
+        // const payload = {
+        //     cartItemId: slug,
+        // };
+        // await addToCart(slug);
+        console.log('add to cart')
+    };
+
+    // wishlist
+    const {addToWishList} = useStudentWishList();
+    const handleAddToWishlist = async () => {
+        await addToWishList(slug);
+        toast.success("Add tutor to wishlist success.")
+    };
 
     const specialityData = [
         {title: 'title 1', desc: 'This is Desc 1'},
@@ -151,17 +120,17 @@ export default function TutorDetail() {
         }
     ]
 
-    if (!data && !reviews) {
+    if (!data || !reviews) {
         return (
             <div>Loading</div>
         )
     }
 
-    const subjects = data.tutorSubjects.map((val) => {
+    const subjects = data?.tutorSubjects.map((val) => {
         return val.subject.name
     })
 
-    const languageLevel = data.tutorSubjects.map((val) => {
+    const languageLevel = data?.tutorSubjects.map((val) => {
         const obj = {}
         obj.language = val.subject.name
         obj.level = val.subjectLevel.name
@@ -190,15 +159,15 @@ export default function TutorDetail() {
                         <div className="flex md:flex-row flex-col items-center gap-6 mb-6">
                             <div className="relative h-[166px] w-[166px] flex-shrink-0 md:mb-auto mr-auto md:mr-0">
                                 <img
-                                    src={data.tutor.profilePhotoUrl}
+                                    src={data?.tutor.profilePhotoUrl}
                                     alt="img"
-                                    className="object-cover"
+                                    className="h-[166px] w-[166px] object-cover"
                                 />
                             </div>
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-2">
                                     <span
-                                        className="text-[28px] font-medium">{data.tutor.firstName}{" "}{data.tutor.lastName}</span>
+                                        className="text-[28px] font-medium">{data?.tutor.firstName}{" "}{data?.tutor.lastName}</span>
                                     <img
                                         src="/assets/tag.svg"
                                         alt="tag"
@@ -351,9 +320,9 @@ export default function TutorDetail() {
                     <div className="p-6 shadow-md rounded-[8px]">
                         <div className="flex flex-col">
                             <img
-                                src="/assets/man-1.png"
-                                alt="Tutor"
-                                className="w-full h-40 object-contain rounded-md"
+                                src={data?.tutor.profilePhotoUrl}
+                                alt="img"
+                                className="h-[166px] w-[166px] object-cover mx-auto"
                             />
                             <div className="flex gap-[24px] my-[24px]">
                                 <div className="flex flex-col">
@@ -374,19 +343,21 @@ export default function TutorDetail() {
                             </div>
                             <div className="flex flex-col gap-[8px]">
                                 <button
-                                    className="gap-[14px] rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]">
+                                    onClick={handleAddToCart}
+                                    className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]">
                                     <img src="/assets/lightning.svg" alt="lightning" className="w-[20px] h-[20px]"/>
                                     Add to cart
+                                </button>
+                                <button
+                                    onClick={handleAddToWishlist}
+                                    className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
+                                    <img src="/assets/heart.svg" alt="heart" className="w-[20px] h-[20px]"/>
+                                    Save to my list
                                 </button>
                                 <button
                                     className="gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
                                     <img src="/assets/chat.svg" alt="chat" className="w-[20px] h-[20px]"/>
                                     Send message
-                                </button>
-                                <button
-                                    className="gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
-                                    <img src="/assets/heart.svg" alt="heart" className="w-[20px] h-[20px]"/>
-                                    Save to my list
                                 </button>
                             </div>
                             <div className="mt-[27px] flex flex-col gap-[16px]">

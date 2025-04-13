@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-08 21:01:54
+ * @Last Modified time: 2025-04-13 00:22:46
  */
 
 "use client"
@@ -15,7 +15,7 @@ import { getTutorSubjects } from '@/api/getTutorSubjects';
 export function Carousel (){
     const { carousel } = Home;
 
-    const { data: tutorSubjects, loading } = getTutorSubjects();
+    const { data: tutorSubjects = [], loading } = getTutorSubjects();
 
     const scrollRef = useRef(null)
     const [scrollPosition, setScrollPosition] = useState(0)
@@ -75,28 +75,32 @@ export function Carousel (){
                         </button>
                     </div>
                 </div>
-            <div
-                ref={scrollRef}
-                className="flex overflow-x-auto gap-[60px] pb-4 hide-scrollbar mt-[30px]"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-                {tutorSubjects.map((tutor, index) => (
-                    <div key={index} className="flex-shrink-0 w-[255px] overflow-hidden bg-white">
-                        <div className="relative">
-                            <img src={tutor.thumbnailUrl} alt={tutor.subject} className="w-[255px] h-[290px]"/>
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent h-full"></div>
-                            <div className="justify-center items-center flex flex-col whitespace-nowrap absolute bottom-[20px] left-1/2 -translate-x-1/2 text-white">
-                                <span className="font-semibold text-[18px] md:text-[22px] lg:text-[24px] mb-[5px] animation-effect">
-                                {tutor.subject}
-                                </span>
-                                <span className="font-medium text-[14px] md:text-[16px] animation-effect">
-                                Rp.{tutor.averagePrice.toLocaleString()}/Lesson
-                                </span>
+                {tutorSubjects.length > 0 ? (
+                    <div
+                        ref={scrollRef}
+                        className="flex overflow-x-auto gap-[60px] pb-4 hide-scrollbar mt-[30px]"
+                        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                    >
+                        {tutorSubjects.map((tutor, index) => (
+                            <div key={index} className="flex-shrink-0 w-[255px] overflow-hidden bg-white">
+                                <div className="relative">
+                                    <img src={tutor.thumbnailUrl} alt={tutor.subject} className="w-[255px] h-[290px]"/>
+                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent h-full"></div>
+                                    <div className="justify-center items-center flex flex-col whitespace-nowrap absolute bottom-[20px] left-1/2 -translate-x-1/2 text-white">
+                                        <span className="font-semibold text-[18px] md:text-[22px] lg:text-[24px] mb-[5px] animation-effect">
+                                        {tutor.subject}
+                                        </span>
+                                        <span className="font-medium text-[14px] md:text-[16px] animation-effect">
+                                        Rp.{tutor.averagePrice.toLocaleString()}/Lesson
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                ) : (
+                    <div className="text-center py-10">No Tutor Yet.</div>
+                )}
           </div>
           <style jsx global>{`
             .hide-scrollbar::-webkit-scrollbar {
