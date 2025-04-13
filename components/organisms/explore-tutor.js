@@ -7,7 +7,7 @@
 
 "use client"
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, Suspense} from "react";
 import CategorySelection from "@/components/atoms/category-selection";
 import { TitleText } from "@/components/atoms/title";
 import { OrangeText } from "@/components/atoms/title";
@@ -44,7 +44,9 @@ export default function ExploreTutor() {
             ) : (
                 <>
                     <CategorySelection updateCategory={setCategory} category={category} />
-                    <TutorSearch />
+                    <Suspense fallback={null}>
+                        <TutorSearch />
+                    </Suspense>
                     {data && data[category]?.map((teacher, index) => (
                         <TutorProfileCard
                             key={index}
