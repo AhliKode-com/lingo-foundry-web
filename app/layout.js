@@ -7,6 +7,7 @@ import Footer from '@/components/organisms/footer'
 import {SpeedInsights} from "@vercel/speed-insights/next"
 import {AuthProvider} from "@/context/AuthContext";
 import {ToastContainer} from "react-toastify";
+import {LingoProvider} from "@/context/LingoContext";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     variable: "--font-plus-jakarta-sans",
@@ -22,19 +23,21 @@ export const metadata = {
 export default function RootLayout({children}) {
     return (
         <html lang="en">
-            <body
-                className={`${plusJakartaSans.variable} antialiased`}
-            >
-                <ToastContainer />
-                <AuthProvider>
-                    <Navbar/>
-                    <main>
-                        {children}
-                        <SpeedInsights/>
-                    </main>
-                    <Footer/>
-                </AuthProvider>
-            </body>
+        <body
+            className={`${plusJakartaSans.variable} antialiased`}
+        >
+        <ToastContainer/>
+        <LingoProvider>
+            <AuthProvider>
+                <Navbar/>
+                <main>
+                    {children}
+                    <SpeedInsights/>
+                </main>
+                <Footer/>
+            </AuthProvider>
+        </LingoProvider>
+        </body>
         </html>
     );
 }
