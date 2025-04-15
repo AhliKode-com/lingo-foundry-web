@@ -17,6 +17,7 @@ import {getDetail} from "@/api/getTutorDetail";
 import {getReviews} from "@/api/getUserReview";
 import {useStudentCart} from "@/api/studentCart";
 import {useStudentWishList} from "@/api/studentWishList";
+import TutorDetailSkeleton from "@/components/organisms/tutor-detail-skeleton";
 
 export default function TutorDetail() {
     const {slug} = useParams();
@@ -158,13 +159,14 @@ export default function TutorDetail() {
 
     if (!data || !reviews) {
         return (
-            <div>Loading</div>
+            <TutorDetailSkeleton />
         )
     }
 
     const subjects = data?.tutorSubjects.map((val) => {
         return val.subject.name
     })
+
 
     const languageLevel = data?.tutorSubjects.map((val) => {
         const obj = {}
