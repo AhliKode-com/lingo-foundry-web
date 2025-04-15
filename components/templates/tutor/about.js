@@ -78,7 +78,6 @@ export default function About({ setCurrentStep }) {
     }
 
     const onSubmit = (data) => {
-        console.log(data)
         localStorage.setItem("applyTutorStep1Data", JSON.stringify(data))
         localStorage.setItem("applyTutorCurrentStep", "2")
         setSavedData(data)
@@ -166,7 +165,7 @@ export default function About({ setCurrentStep }) {
                                 Select subject...
                             </option>
                             {subjects && subjects.length > 0 && subjects.map(subject => (
-                                <option key={subject.id} value={subject.name}>{subject.name}</option>
+                                <option key={subject.name} value={subject.name}>{subject.name}</option>
                             ))}
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

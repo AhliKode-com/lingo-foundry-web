@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
+import {toast} from "react-toastify";
 
 export function getDetail(tutorId) {
   const [data, setData] = useState(null);
@@ -19,6 +20,7 @@ export function getDetail(tutorId) {
         setData(response.data.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to get tutor detail");
+        toast.error(err.response?.data?.message || "Failed to get tutor detail")
       } finally {
         setLoading(false);
       }

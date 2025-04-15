@@ -7,7 +7,7 @@
 
 import Processtutor from '@/components/organisms/process-tutor';
 
-export default function Hero() {
+export default function TutorRegister() {
     return (
         <Processtutor/>
     )

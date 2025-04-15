@@ -6,12 +6,12 @@
  */
 
 "use client"
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import React, {useState, useEffect, Suspense} from "react";
 import CategorySelection from "@/components/atoms/category-selection";
-import { TitleText } from "@/components/atoms/title";
-import { OrangeText } from "@/components/atoms/title";
-import { Home } from "@/constants/en";
+import {TitleText} from "@/components/atoms/title";
+import {OrangeText} from "@/components/atoms/title";
+import {Home} from "@/constants/en";
 import TutorProfileCard from "@/components/atoms/tutor-profile-card";
 import {getPopularTutors} from "@/api/getPopularTutors";
 import TutorSearch from "@/components/organisms/tutor-search";
@@ -19,9 +19,19 @@ import TutorSearch from "@/components/organisms/tutor-search";
 export default function ExploreTutor() {
     const [openCardId, setOpenCardId] = useState(null);
     const [category, setCategory] = useState("allPreview")
-    const { findTutor } = Home;
+    const [query, setQuery] = useState("");
+    const [debouncedQuery, setDebouncedQuery] = useState(query)
 
-    const { data, loading } = getPopularTutors();
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setDebouncedQuery(query)
+        }, 500)
+
+        return () => clearTimeout(timeout)
+    }, [query])
+
+    const {findTutor} = Home;
+    const {data, loading} = getPopularTutors(debouncedQuery);
 
     useEffect(() => {
         if (data && data[category] && data[category].length > 0) {
@@ -38,26 +48,29 @@ export default function ExploreTutor() {
         <div className="lingo-container pt-[100px] flex flex-col relative">
             <OrangeText text={findTutor.title} position="justify-center"/>
             <TitleText text={findTutor.subtitle} marginBottom='mb-[40px]' marginX='mx-auto'/>
-
-            { loading ? (
-                <div className="w-full h-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
-            ) : (
-                <>
-                    <CategorySelection updateCategory={setCategory} category={category} />
-                    <Suspense fallback={null}>
-                        <TutorSearch />
-                    </Suspense>
-                    {data && data[category]?.map((teacher, index) => (
-                        <TutorProfileCard
-                            key={index}
-                            teacher={teacher}
-                            isOpen={openCardId === teacher.tutorId}
-                            onHover={() => setOpenCardId(teacher.tutorId)}
-                            onClick={() => handleCardClick(teacher.tutorId)}
-                        />
-                    ))}
-                </>
-            )}
+            <>
+                <CategorySelection updateCategory={setCategory} category={category}/>
+                <Suspense fallback={null}>
+                    <TutorSearch setQuery={setQuery} query={query}/>
+                </Suspense>
+                {!data && loading ? (
+                    <div>
+                        Skeleton
+                    </div>
+                ) : !loading && data && (data[category] === null) ? (
+                    <div>
+                        No Data Found
+                    </div>
+                ) : data && data[category]?.map((teacher, index) => (
+                    <TutorProfileCard
+                        key={index}
+                        teacher={teacher}
+                        isOpen={openCardId === teacher.tutorId}
+                        onHover={() => setOpenCardId(teacher.tutorId)}
+                        onClick={() => handleCardClick(teacher.tutorId)}
+                    />
+                ))}
+            </>
         </div>
     )
 }
