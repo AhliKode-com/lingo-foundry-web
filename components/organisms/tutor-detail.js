@@ -2,14 +2,13 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-13 18:07:20
+ * @Last Modified time: 2025-04-14 23:10:35
  */
 
 "use client";
 import {toast} from "react-toastify";
 import {useParams} from "next/navigation";
-import React from "react";
-import {useState} from "react";
+import React, {useState} from "react";
 import {RatingSummary} from "@/components/atoms/rating-summary";
 import {ResumeTabs} from "@/components/atoms/resume-tab";
 import {Speciality} from "@/components/atoms/accordion";
@@ -23,24 +22,60 @@ export default function TutorDetail() {
     const {slug} = useParams();
     const {data} = getDetail(slug);
     const {data: reviews} = getReviews("STUDENT");
-    // console.log(data)
-    // console.log(reviews)
-    const [saved, setSaved] = useState(false);
-
     const [expanded, setExpanded] = useState(false);
 
     const toggleExpanded = () => {
         setExpanded(prev => !prev);
     };
 
+    // random color
+    const bgColors = ["#D8F8F2", "#FFF2E5","#FFF0F0"]
+
     // cart
-    const {addToCart} = useStudentCart();
+    const [openCart, setOpenCart] = useState(false);
+    const [selectedIndexes, setSelectedIndexes] = useState([]);
+    const [sessionsByIndex, setSessionsByIndex] = useState({});
+    const handleOpenCart = () => {
+        setOpenCart(!openCart);
+    };
+    const {addToCart, getCart} = useStudentCart();
+    const handleCheckboxChange = (index, minSession) => {
+        setSelectedIndexes((prev) =>
+            prev.includes(index)
+                ? prev.filter((i) => i !== index)
+                : [...prev, index]
+        );
+      
+        setSessionsByIndex((prev) =>
+            prev[index] == null ? { ...prev, [index]: minSession } : prev
+        );
+      };
+
+    const changeSessions = (index, delta) => {
+        setSessionsByIndex((prev) => {
+            const current = prev[index] || 1;
+            const next = current + delta;
+            return { ...prev, [index]: next };
+        });
+    };
+
     const handleAddToCart = async () => {
-        // const payload = {
-        //     cartItemId: slug,
-        // };
-        // await addToCart(slug);
-        console.log('add to cart')
+        const payload = selectedIndexes.map((i) => ({
+            tutorSubjectId: languageLevel[i].tutorSubjectId,
+            sessionCount: sessionsByIndex[i] || languageLevel[i].minSession,
+        }));
+        await addToCart(payload);
+        toast.success("Add tutor to cart success.");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await getCart();
+        setOpenCart(false);
+        // reset selected indexes and sessions
+        const newSessions = {};
+        selectedIndexes.forEach((i) => {
+            newSessions[i] = languageLevel[i].minSession;
+        });
+        setSessionsByIndex(newSessions);
+        setSelectedIndexes([]);
     };
 
     // wishlist
@@ -135,6 +170,9 @@ export default function TutorDetail() {
         const obj = {}
         obj.language = val.subject.name
         obj.level = val.subjectLevel.name
+        obj.tutorSubjectId = val.id
+        obj.maxSession = val.maximumSession
+        obj.minSession = val.minimumSession
         return obj
     })
 
@@ -152,6 +190,76 @@ export default function TutorDetail() {
 
     return (
         <div className="lingo-container flex flex-col lg:flex-row pt-[80px] sm:pt-[103.61px]">
+            {/* cart modal */}
+            {openCart && (
+                <div className="fixed inset-0 bg-[#00000070] flex items-center justify-center z-50" onClose={handleOpenCart}>
+                    <div className="bg-white rounded-[8px] p-6 shadow-lg flex flex-col">
+                        <span className="text-[24px] font-semibold mb-4">Add to Cart</span>
+                        <span className="text-gray-600 mb-6">Do you want to add this item to your cart?</span>
+                        <div className="flex flex-col mb-4">
+                            <div className="flex flex-row items-center gap-4 p-4 pb-2 border-b-[2px] border-[#DCDCE5]">
+                                <div className="w-5 h-5"/>
+                                <span className="text-[16px] font-medium">Subject</span>
+                                <span className="text-[16px] font-medium ml-[12px]">Level</span>
+                                <span className="text-[16px] font-medium ml-[36px]">Session</span>
+                            </div>
+                            {languageLevel.map((data, index) => {
+                                const bgColor = bgColors[index % bgColors.length];
+                                const sessions   = sessionsByIndex[index] ?? data.minSession;
+                                const handleMinus = () => {
+                                    if (sessions > data.minSession) {
+                                      changeSessions(index, -1);
+                                    }
+                                };
+                                
+                                const handlePlus = () => {
+                                    if (sessions < data.maxSession) {
+                                      changeSessions(index, +1);
+                                    }
+                                };
+                                return(
+                                    <div key={index} className="flex flex-row items-center gap-4 p-4">
+                                        <input type="checkbox" className="w-5 h-5" onChange={() => handleCheckboxChange(index, data.minSession)}/>
+                                        <span className="text-[16px] font-medium">{data.language}</span>
+                                        <span style={{ backgroundColor: bgColor  }} className="px-[8px] py-[1.5px] ml-auto">{data.level}</span>
+                                        <div className="flex items-center border rounded">
+                                            <button
+                                                onClick={handleMinus}
+                                                className="px-2"
+                                                disabled={sessions <= data.minSession}
+                                            >
+                                                -
+                                            </button>
+                                            <input type="text" value={sessions} readOnly className="w-8 text-center outline-none"/>
+                                            <button
+                                                onClick={handlePlus}
+                                                className="px-2"
+                                                disabled={sessions >= data.maxSession}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <div className="flex justify-center gap-4">
+                            <button
+                                onClick={handleOpenCart}
+                                className="cursor-pointer rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleAddToCart}
+                                className="cursor-pointer rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]"
+                            >
+                                Yes, add it
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* Left scrollable section */}
             <div className="p-4 md:p-8">
                 <div className="md:max-w-3xl">
@@ -160,7 +268,7 @@ export default function TutorDetail() {
                         <div className="flex md:flex-row flex-col items-center gap-6 mb-6">
                             <div className="relative h-[166px] w-[166px] flex-shrink-0 md:mb-auto mr-auto md:mr-0">
                                 <img
-                                    src={data?.tutor.profilePhotoUrl}
+                                    src={data.tutor.profilePhotoUrl}
                                     alt="img"
                                     className="h-[166px] w-[166px] object-cover"
                                 />
@@ -168,7 +276,7 @@ export default function TutorDetail() {
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-2">
                                     <span
-                                        className="text-[28px] font-medium">{data?.tutor.firstName}{" "}{data?.tutor.lastName}</span>
+                                        className="text-[28px] font-medium">{data.tutor.firstName}{" "}{data.tutor.lastName}</span>
                                     <img
                                         src="/assets/tag.svg"
                                         alt="tag"
@@ -235,36 +343,15 @@ export default function TutorDetail() {
                     <div className="flex flex-col mb-[48px]">
                         <span className="text-[23px] font-medium mb-[20px]">I teach</span>
                         <div className="flex flex-wrap gap-[24px]">
-                            {languageLevel.map((value, index) => (
-                                <div className="flex items-center gap-[8px]" key={index}>
-                                    <span className="text-[14px]">{value.language}</span>
-                                    <div className="px-[8px] py-[1.5px] bg-[#D8F8F2]">{value.level}</div>
-                                </div>
-                            ))}
-                            {/*<div className="flex items-center gap-[8px]">*/}
-                            {/*    <span className="text-[14px]">Javanese</span>*/}
-                            {/*    <div className="px-[8px] py-[1.5px] bg-[#D8F8F2]">Native</div>*/}
-                            {/*</div>*/}
-                            {/*<div className="flex items-center gap-[8px]">*/}
-                            {/*    <span className="text-[14px]">Indonesian</span>*/}
-                            {/*    <div className="px-[8px] py-[1.5px] bg-[#D8F8F2]">Native</div>*/}
-                            {/*</div>*/}
-                            {/*<div className="flex items-center gap-[8px]">*/}
-                            {/*    <span className="text-[14px]">English</span>*/}
-                            {/*    <div className="px-[8px] py-[1.5px] bg-[#CCE2FF]">Advanced C1</div>*/}
-                            {/*</div>*/}
-                            {/*<div className="flex items-center gap-[8px]">*/}
-                            {/*    <span className="text-[14px]">Malay</span>*/}
-                            {/*    <div className="px-[8px] py-[1.5px] bg-[#CCE2FF]">Intermediate B1</div>*/}
-                            {/*</div>*/}
-                            {/*<div className="flex items-center gap-[8px]">*/}
-                            {/*    <span className="text-[14px]">Chinese</span>*/}
-                            {/*    <div className="px-[8px] py-[1.5px] bg-[#D8F8F2]">Professional</div>*/}
-                            {/*</div>*/}
-                            {/*<div className="flex items-center gap-[8px]">*/}
-                            {/*    <span className="text-[14px]">Russian</span>*/}
-                            {/*    <div className="px-[8px] py-[1.5px] bg-[#D8F8F2]">Beginner</div>*/}
-                            {/*</div>*/}
+                            {languageLevel.map((value, index) => {
+                                const bgColor = bgColors[index % bgColors.length];
+                                return(
+                                    <div className="flex items-center gap-[8px]" key={index}>
+                                        <span className="text-[14px]">{value.language}</span>
+                                        <div style={{ backgroundColor: bgColor }} className="px-[8px] py-[1.5px]">{value.level}</div>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
 
@@ -344,7 +431,7 @@ export default function TutorDetail() {
                             </div>
                             <div className="flex flex-col gap-[8px]">
                                 <button
-                                    onClick={handleAddToCart}
+                                    onClick={handleOpenCart}
                                     className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]">
                                     <img src="/assets/lightning.svg" alt="lightning" className="w-[20px] h-[20px]"/>
                                     Add to cart

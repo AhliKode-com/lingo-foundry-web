@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-13 17:33:36
+ * @Last Modified time: 2025-04-15 00:25:01
  */
 "use client"
 import Image from 'next/image';
@@ -26,14 +26,16 @@ export default function Navbar() {
     const [open, setOpen] = useState(false)
     const [openProfile, setOpenProfile] = useState(false)
     const [wishlistCount, setWishlistCount] = useState(0)
+    const [cartCount, setCartCount] = useState(0)
     const { user, loading, logoutContext } = useAuth()
 
+    // wishlist
     const { getWishList } = useStudentWishList();
+
     useEffect(() => {
         getWishList()
     }, [])
 
-    // wishlist
     const { wishlists } = useLingoContext();
 
     useEffect(() => {
@@ -43,13 +45,21 @@ export default function Navbar() {
     }, [wishlists]);
 
     // cart
-    const { data: cart, getCart } = useStudentCart();
+    const { getCart } = useStudentCart();
+
     useEffect(() => {
         getCart();
-    }, [getCart]);
-    const cartCount = Array.isArray(cart) ? cart.length : 0;
+    }, []);
 
+    const { carts } = useLingoContext();
 
+    useEffect(() => {
+        if (Array.isArray(carts?.cartItems)) {
+            setCartCount(carts?.cartItems.length)
+        }
+    }, [carts]);
+
+    // style mobile
     useEffect(() => {
         if (open) {
           document.body.style.overflow = 'hidden';
@@ -134,16 +144,18 @@ export default function Navbar() {
                                             )}
                                         </div>
                                     </Link>
-                                    <div className='relative'>
-                                        <BsCart2 className="text-[24px]" />
-                                        {cartCount > 0 ? (
-                                            <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
-                                                {cartCount}
-                                            </div>
-                                        ) : (
-                                            <></>
-                                        )}
-                                    </div>
+                                    <Link href='/shopping-cart'>
+                                        <div className='relative'>
+                                            <BsCart2 className="text-[24px]" />
+                                            {cartCount > 0 ? (
+                                                <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
+                                                    {cartCount}
+                                                </div>
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </div>
+                                    </Link>
                                     <div
                                         className='relative animation-effect'
                                         onMouseEnter={() => setOpenProfile(true)}
@@ -283,16 +295,18 @@ export default function Navbar() {
                                                         )}
                                                     </div>
                                                 </Link>
-                                                <div className='relative'>
-                                                    <BsCart2 className="text-[24px]" />
-                                                    {cartCount > 0 ? (
-                                                        <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
-                                                            {cartCount}
-                                                        </div>
-                                                    ) : (
-                                                        <></>
-                                                    )}
-                                                </div>
+                                                <Link href='/shopping-cart'>
+                                                    <div className='relative'>
+                                                        <BsCart2 className="text-[24px]" />
+                                                        {cartCount > 0 ? (
+                                                            <div className="absolute top-[-10px] right-[-10px] bg-[#E15C31] text-white text-[12px] rounded-full w-[20px] h-[20px] flex items-center justify-center">
+                                                                {cartCount}
+                                                            </div>
+                                                        ) : (
+                                                            <></>
+                                                        )}
+                                                    </div>
+                                                </Link>
                                             </div>
                                         ) : (
                                             auth.map((link, index) => {

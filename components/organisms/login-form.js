@@ -15,7 +15,6 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [showModal, setShowModal] = useState(false);
 
   const title = pathname === '/signup' ? "Sign Up" : "Login"
 
@@ -25,25 +24,8 @@ export default function LoginForm() {
     await action(email, password)
   }
 
-  useEffect(() => {
-    if (error) {
-      setShowModal(true);
-      const timer = setTimeout(() => {
-        setShowModal(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
-
   return (
     <>
-      {showModal && (
-          <div className="fixed top-0 left-0 right-0 z-50 flex justify-center mt-10">
-            <div className="bg-red-400 text-white px-4 py-2 rounded-md shadow-md">
-              {error}
-            </div>
-          </div>
-      )}
       <div className="w-full space-y-4 md:space-y-8 py-[80px] md:py-[40px] px-[40px] animation-effect">
         <div className="text-left mb-[60px] md:mt-[70px] animation-effect">
           <h1 className="text-[48px] font-bold text-gray-900">{title}</h1>

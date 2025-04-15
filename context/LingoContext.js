@@ -1,7 +1,6 @@
 "use client"
 
-import {createContext, useContext, useEffect, useState} from "react"
-import {useStudentWishList} from "@/api/studentWishList";
+import {createContext, useContext, useState} from "react"
 
 const LingoContext = createContext()
 
