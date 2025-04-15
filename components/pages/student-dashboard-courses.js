@@ -6,11 +6,10 @@
  */
 "use client"
 
-import CourseSearch from "@/components/organisms/dashboard/courses/course-search";
 import { TitleSubDashboard } from "@/components/atoms/title";
 import OngoingCourses from "@/components/organisms/dashboard/courses/ongoing-courses";
 import CompletedCourses from "@/components/organisms/dashboard/courses/completed-courses";
-import {getStudentDashboard} from "@/api/dashboard/getStudentDashboard";
+import {getStudentDashboard} from "@/apis/dashboard/getStudentDashboard";
 import React from "react";
 
 export default function StudentDashboardCourses() {
@@ -18,17 +17,17 @@ export default function StudentDashboardCourses() {
 
     return (
         <div className="lingo-container flex flex-col mb-[72px]">
-            <p>Courses (957)</p>
-            <CourseSearch />
+            <p>Courses <span>{data && !loading && `(${data?.activeCourseCount + data?.completedCourseCount})`}</span></p>
+            {/*<CourseSearch />*/}
             <TitleSubDashboard text="Ongoing" custom="mt-[20px] border-[#42CBF7]" />
-            { loading ? (
-                <div className="w-full h-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+            { !data || loading ? (
+                <div className="w-full h-[150px] bg-gray-100 animate-pulse rounded-lg mt-12" />
             ) : (
                 <OngoingCourses courses={data} />
             )}
             <TitleSubDashboard text="Completed Course" custom="mt-[60px] border-[#42CBF7]" />
-            { loading ? (
-                <div className="w-full h-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+            { !data || loading ? (
+                <div className="w-full h-[150px] bg-gray-100 animate-pulse rounded-lg mt-12" />
             ) : (
                 <CompletedCourses courses={data} />
             )}

@@ -15,6 +15,7 @@ import How from '@/components/organisms/how';
 import Review from '@/components/organisms/review';
 import HeroBottom from '@/components/organisms/hero-bottom';
 import TutorSearch from "@/components/organisms/tutor-search";
+import {Suspense} from "react";
 
 export default function Home() {
     return (
@@ -23,7 +24,9 @@ export default function Home() {
             <Carousel/>
             <Looking/>
             <Browse/>
-            <ExploreTutor/>
+            <Suspense fallback={null}>
+                <ExploreTutor/>
+            </Suspense>
             <Why/>
             <How/>
             <Review authorType="STUDENT"/>

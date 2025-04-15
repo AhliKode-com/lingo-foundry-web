@@ -6,20 +6,22 @@
  */
 
 "use client"
-import {useRouter} from 'next/navigation';
+import {useRouter, useSearchParams} from 'next/navigation';
 import React, {useState, useEffect, Suspense} from "react";
 import CategorySelection from "@/components/atoms/category-selection";
 import {TitleText} from "@/components/atoms/title";
 import {OrangeText} from "@/components/atoms/title";
 import {Home} from "@/constants/en";
 import TutorProfileCard from "@/components/atoms/tutor-profile-card";
-import {getPopularTutors} from "@/api/getPopularTutors";
+import {getPopularTutors} from "@/apis/getPopularTutors";
 import TutorSearch from "@/components/organisms/tutor-search";
 
 export default function ExploreTutor() {
+    const searchParams = useSearchParams()
+
     const [openCardId, setOpenCardId] = useState(null);
     const [category, setCategory] = useState("allPreview")
-    const [query, setQuery] = useState("");
+    const [query, setQuery] = useState(searchParams.get("q") || "");
     const [debouncedQuery, setDebouncedQuery] = useState(query)
 
     useEffect(() => {
@@ -50,17 +52,16 @@ export default function ExploreTutor() {
             <TitleText text={findTutor.subtitle} marginBottom='mb-[40px]' marginX='mx-auto'/>
             <>
                 <CategorySelection updateCategory={setCategory} category={category}/>
-                <Suspense fallback={null}>
-                    <TutorSearch setQuery={setQuery} query={query}/>
-                </Suspense>
-                {!data && loading ? (
-                    <div>
-                        Skeleton
+                <TutorSearch setQuery={setQuery} query={query}/>
+                {loading ? (
+                    <div className="mt-12">
+                        <div className="w-full h-[25px] bg-gray-100 animate-pulse rounded-lg mb-2" />
+                        <div className="w-full h-[25px] bg-gray-100 animate-pulse rounded-lg mb-2" />
+                        <div className="w-full h-[25px] bg-gray-100 animate-pulse rounded-lg mb-2" />
+                        <div className="w-full h-[25px] bg-gray-100 animate-pulse rounded-lg mb-2" />
                     </div>
                 ) : !loading && data && (data[category] === null) ? (
-                    <div>
-                        No Data Found
-                    </div>
+                    <div className="font-medium text-lg mt-12 text-center">{query !== "" ? `ups, '${debouncedQuery}' not found` : "No Data Found"}</div>
                 ) : data && data[category]?.map((teacher, index) => (
                     <TutorProfileCard
                         key={index}

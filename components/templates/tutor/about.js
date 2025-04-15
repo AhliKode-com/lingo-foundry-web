@@ -10,7 +10,7 @@
 import { useFieldArray, useForm } from "react-hook-form"
 import { TitleTutorRegis, DescTutorRegis, LabelTutorRegis } from "@/components/atoms/title"
 import { useEffect, useState } from "react"
-import {getLandingSubjects} from "@/api/getLandingSubjects";
+import {getLandingSubjects} from "@/apis/getLandingSubjects";
 
 export default function About({ setCurrentStep }) {
     const [savedData, setSavedData] = useState(null)

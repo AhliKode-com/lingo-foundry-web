@@ -8,7 +8,7 @@
 import { useState } from "react";
 import { TitleSubDashboard, OrangeTextDashboard } from "@/components/atoms/title";
 import TutorProfileCardDashboard from "@/components/atoms/tutor-profile-card-dashboard";
-import {getPopularTutors} from "@/api/getPopularTutors";
+import {getPopularTutors} from "@/apis/getPopularTutors";
 import Link from "next/link";
 
 export default function StudentLikeCourses() {

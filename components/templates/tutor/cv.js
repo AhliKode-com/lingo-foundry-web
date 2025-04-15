@@ -10,7 +10,7 @@
 import { useState, useRef, useEffect } from "react"
 import { useForm, useFieldArray } from "react-hook-form"
 import { FaTrash } from "react-icons/fa"
-import useUploadFile from "@/api/static-file/postUploadFile";
+import useUploadFile from "@/apis/static-file/postUploadFile";
 import {toast} from "react-toastify";
 
 export default function CVCertification({ setCurrentStep }) {

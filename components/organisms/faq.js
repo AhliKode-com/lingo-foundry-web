@@ -10,18 +10,15 @@
 import { Question } from "@/components/atoms/accordion";
 import { TitleText } from "../atoms/title";
 import { FindTutor } from "@/constants/en";
-import { getFaqs } from "@/api/getFaqs";
+import { getFaqs } from "@/apis/getFaqs";
 
 export default function Faq({purpose}) {
     const {faq} = FindTutor;
 
     const { data: faqs, loading } = getFaqs(purpose);
 
-    //for sorting faqs based on priority (descending)
-    // const sortedFaqs = [...faqs].sort((a, b) => b.priority - a.priority);
-
     return (
-        <div className="lingo-container flex flex-col justify-center items-center pt-[100px]">
+        <div className="lingo-container flex flex-col justify-center items-center pt-[250px]">
             <TitleText text={faq.title} marginX="mx-auto" marginBottom="mb-[35px]"/>
 
             <div className="max-w-[648px] flex flex-col gap-[25px] w-full">

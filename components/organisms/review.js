@@ -10,7 +10,7 @@ import { TitleText } from '@/components/atoms/title';
 import { Home } from '@/constants/en';
 import { OrangeButton } from '@/components/atoms/buttons';
 import Image from 'next/image';
-import { getReviews } from '@/api/getUserReview';
+import { getReviews } from '@/apis/getUserReview';
 import Link from 'next/link';
 
 export default function Review({authorType}) {

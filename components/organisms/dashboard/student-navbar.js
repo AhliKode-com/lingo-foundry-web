@@ -62,14 +62,6 @@ export default function StudentNavbar() {
                         </div>
                     </div>
                     <div className="flex items-center gap-[30px]">
-                        <div className="flex flex-col">
-                            <span className='text-[14px] md:text-[16px] animation-effect'>0</span>
-                            <span className='text-[14px] md:text-[16px] animation-effect'>posts</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span className='text-[14px] md:text-[16px] animation-effect'>0</span>
-                            <span className='text-[14px] md:text-[16px] animation-effect'>following</span>
-                        </div>
                         <Link href="/tutor-register">
                             <button className="cursor-pointer bg-[#FFEEE8] px-[32px] py-[16px] items-center gap-[12px] md:flex hidden">
                                 <span className='text-[#FF6636]'>Become Tutor</span>

@@ -9,7 +9,7 @@ import { TitleSubDashboard, OrangeTextDashboard } from "@/components/atoms/title
 import MyCourses from "@/components/organisms/dashboard/my-courses";
 import UpcomingZoom from "@/components/organisms/dashboard/upcoming-zoom";
 import Productivity from "@/components/organisms/dashboard/productivity";
-import { getStudentDashboard } from '@/api/dashboard/getStudentDashboard';
+import { getStudentDashboard } from '@/apis/dashboard/getStudentDashboard';
 import Link from "next/link";
 
 export default function StudentDashboardCoursesZoom(){
@@ -61,7 +61,6 @@ export default function StudentDashboardCoursesZoom(){
                     </div>
                     <div className="w-full flex justify-between items-center mb-[15px]">
                         <TitleSubDashboard text="Productivity" custom="w-full border-[#FFBA7D]"/>
-                        <OrangeTextDashboard text="See details" position="justify-end"/>
                     </div>
                     <Productivity/>
                 </div>

@@ -6,78 +6,19 @@
  */
 
 "use client"
-import { TitleStudentDashboard } from "@/components/atoms/title";
-import { PurchaseHistory } from "@/components/atoms/accordion";
-import {getPurchaseHistory} from "@/api/dashboard/getPurchaseHistory";
+import {TitleStudentDashboard} from "@/components/atoms/title";
+import {PurchaseHistory} from "@/components/atoms/accordion";
+import {getPurchaseHistory} from "@/apis/dashboard/getPurchaseHistory";
 import React from "react";
 
-export default function StudentPurchaseHistory(){
-    const { data, loading, error } = getPurchaseHistory()
+export default function StudentPurchaseHistory() {
+    const {data, loading} = getPurchaseHistory()
 
-    // const data = [
-    //     {
-    //         date: "1st Septembar, 2021 at 11:30 PM",
-    //         courseCount: 2,
-    //         totalPrice: 6900000,
-    //         paymentMethod: "Credit Card",
-    //         courses: [
-    //             {
-    //                 tutorName: "JAMES🇺🇸 IELTS/TOEIC TEST 💯 Engineering 👨",
-    //                 tutorProfileUrl: "/assets/tutor-profiles/tutor-2.png",
-    //                 subjectLevel: "English - Children (6-11)",
-    //                 sessionCount: "5 Classes (5 hours)",
-    //                 price: 3000000,
-    //                 status: "On Going",
-    //                 rating: 4.7,
-    //                 reviewCount: 450000
-    //             },
-    //             {
-    //                 tutorName: "JAMES🇺🇸 IELTS/TOEIC TEST 💯 Engineering 👨",
-    //                 tutorProfileUrl: "/assets/tutor-profiles/tutor-2.png",
-    //                 subjectLevel: "English - Children (6-11)",
-    //                 sessionCount: "5 Classes (5 hours)",
-    //                 price: 3900000,
-    //                 status: "Done",
-    //                 rating: 4.7,
-    //                 reviewCount: 450000
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         date: "1st Septembar, 2021 at 11:30 PM",
-    //         courseCount: 2,
-    //         totalPrice: 6900000,
-    //         paymentMethod: "Credit Card",
-    //         courses: [
-    //             {
-    //                 tutorName: "JAMES🇺🇸 IELTS/TOEIC TEST 💯 Engineering 👨",
-    //                 tutorProfileUrl: "/assets/tutor-profiles/tutor-2.png",
-    //                 subjectLevel: "English - Children (6-11)",
-    //                 sessionCount: "5 Classes (5 hours)",
-    //                 price: 3000000,
-    //                 status: "On Going",
-    //                 rating: 4.7,
-    //                 reviewCount: 450000
-    //             },
-    //             {
-    //                 tutorName: "JAMES🇺🇸 IELTS/TOEIC TEST 💯 Engineering 👨",
-    //                 tutorProfileUrl: "/assets/tutor-profiles/tutor-2.png",
-    //                 subjectLevel: "English - Children (6-11)",
-    //                 sessionCount: "5 Classes (5 hours)",
-    //                 price: 3900000,
-    //                 status: "Done",
-    //                 rating: 4.7,
-    //                 reviewCount: 450000
-    //             }
-    //         ]
-    //     }
-    // ]
-    
-    return(
+    return (
         <div className="lingo-container flex flex-col mb-[72px]">
             <TitleStudentDashboard text="Purchase History"/>
             {loading ? (
-                <div className="w-full h-[75px] bg-gray-300 animate-pulse rounded-lg"></div>
+                <div className="w-full h-[75px] bg-gray-100 animate-pulse rounded-lg mt-12" />
             ) : (
                 <div className='mt-[15px] md:mt-[35px] flex flex-col gap-[25px] w-full animation-effect'>
                     {!data || !data.content || data.content.length === 0 ? (

@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 // https://devapi.lingofoundry.com/swagger-ui/index.html#/student-dashboard-controller/fetchStudentCourse
 export function getStudentDashboard() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 

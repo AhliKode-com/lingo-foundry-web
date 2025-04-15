@@ -8,7 +8,7 @@
 import Image from 'next/image';
 import { TitleText } from '@/components/atoms/title';
 import { Home } from '@/constants/en'
-import { getLandingSubjects } from '@/api/getLandingSubjects';
+import { getLandingSubjects } from '@/apis/getLandingSubjects';
 import Link from 'next/link';
 
 export default function Browse() {

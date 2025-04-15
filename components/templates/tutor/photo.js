@@ -10,7 +10,7 @@
 import {useState, useRef, useEffect} from "react"
 import Image from "next/image"
 import {toast} from "react-toastify";
-import postUploadFile from "@/api/static-file/postUploadFile";
+import postUploadFile from "@/apis/static-file/postUploadFile";
 
 export default function Photo({ setCurrentStep }) {
     const [photo, setPhoto] = useState(null)

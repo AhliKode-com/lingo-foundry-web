@@ -7,7 +7,7 @@
 "use client"
 import { TitleSubDashboard } from "@/components/atoms/title";
 import Shorts from "@/components/organisms/dashboard/shorts";
-import { getShortDashboard } from '@/api/dashboard/getLearningShorts';
+import { getShortDashboard } from '@/apis/dashboard/getLearningShorts';
 
 export default function StudentShorts() {
 
