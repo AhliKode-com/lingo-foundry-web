@@ -1,27 +1,28 @@
-import { useState, useEffect } from "react";
-import api from "@/lib/api";
+import { useState, useEffect } from "react"
+import api from "@/lib/api"
 
-export function getPopularTutors() {
-    const [data, setData] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export function getPopularTutors(query = "") {
+    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         const getData = async () => {
-            setLoading(true);
-            setError(null);
+            setLoading(true)
+            setError(null)
             try {
-                const response = await api.get("/public/landing/popular-tutors");
-                setData(response.data.data);
+                const url = `/public/landing/popular-tutors${query?.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""}`
+                const response = await api.get(url)
+                setData(response.data.data)
             } catch (err) {
-                setError(err.response?.data?.message || "Failed to get landing subject");
+                setError(err.response?.data?.message || "Failed to get landing subject")
             } finally {
-                setLoading(false);
+                setLoading(false)
             }
-        };
+        }
 
-        getData();
-    }, []);
+        getData()
+    }, [query])
 
-    return { data, loading, error };
+    return { data, loading, error }
 }

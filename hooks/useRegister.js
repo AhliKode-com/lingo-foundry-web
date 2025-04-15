@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import api from "@/lib/api"
-import Cookies from "js-cookie"
+import {toast} from "react-toastify"
 
 export function useRegister() {
     const [loadingRegister, setLoadingRegister] = useState(false)
@@ -20,6 +20,7 @@ export function useRegister() {
             }
         } catch (err) {
             setError(err.response?.data?.message || "Register failed")
+            toast.error(err.response?.data?.message || "Register failed")
         } finally {
             setLoadingRegister(false)
         }
