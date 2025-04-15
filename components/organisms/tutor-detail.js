@@ -13,16 +13,18 @@ import {RatingSummary} from "@/components/atoms/rating-summary";
 import {ResumeTabs} from "@/components/atoms/resume-tab";
 import {Speciality} from "@/components/atoms/accordion";
 import {TutorCarousel} from '@/components/atoms/carousel';
-import {getDetail} from "@/api/getTutorDetail";
-import {getReviews} from "@/api/getUserReview";
-import {useStudentCart} from "@/api/studentCart";
-import {useStudentWishList} from "@/api/studentWishList";
+import {getDetail} from "@/apis/getTutorDetail";
+import {getReviews} from "@/apis/getUserReview";
+import {useStudentCart} from "@/apis/studentCart";
+import {useStudentWishList} from "@/apis/studentWishList";
 import TutorDetailSkeleton from "@/components/organisms/tutor-detail-skeleton";
+import {getPopularTutors} from "@/apis/getPopularTutors";
 
 export default function TutorDetail() {
     const {slug} = useParams();
     const {data} = getDetail(slug);
     const {data: reviews} = getReviews("STUDENT");
+    const {data: popularTutor, loading: popularTutorLoading} = getPopularTutors();
     const [expanded, setExpanded] = useState(false);
 
     const toggleExpanded = () => {
@@ -92,69 +94,6 @@ export default function TutorDetail() {
         {title: 'title 2', desc: 'This is Desc 2'},
         {title: 'title 3', desc: 'This is Desc 3'},
         {title: 'title 4', desc: 'This is Desc 4'},
-    ]
-
-    const likeData = [
-        {
-            id: 1,
-            img: "/assets/man-1.png",
-            name: "Aqil Zulkarnain",
-            flag: "🇮🇩",
-            rating: 4.9,
-            reviews: 85,
-            description: "Improve your Indonesian, communicate better,",
-            price: 170000
-        },
-        {
-            id: 2,
-            img: "/assets/man-1.png",
-            name: "Muhammad Naufal Pratama",
-            flag: "🇮🇩",
-            rating: 5,
-            reviews: 38,
-            description: "Native Indonesian Tutor and Skilled Conversationalist with",
-            price: 120000
-        },
-        {
-            id: 3,
-            img: "/assets/man-1.png",
-            name: "Putri Maharani",
-            flag: "🇮🇩",
-            rating: 5,
-            reviews: 61,
-            description: "MoE practitioner is here to boost your Indonesian",
-            price: 200000
-        },
-        {
-            id: 4,
-            img: "/assets/man-1.png",
-            name: "Rio Aditya",
-            flag: "🇮🇩",
-            rating: 5,
-            reviews: 56,
-            description: "Friendly and Certified Bahasa Indonesia Teacher with over 10",
-            price: 140000
-        },
-        {
-            id: 5,
-            img: "/assets/man-1.png",
-            name: "Dian Sastrowardoyo",
-            flag: "🇮🇩",
-            rating: 4.8,
-            reviews: 42,
-            description: "Experienced Indonesian language instructor for all levels",
-            price: 150000
-        },
-        {
-            id: 6,
-            img: "/assets/man-1.png",
-            name: "Budi Wibowo",
-            flag: "🇮🇩",
-            rating: 4.7,
-            reviews: 29,
-            description: "Professional translator and language coach for beginners",
-            price: 100000
-        }
     ]
 
     if (!data || !reviews) {
@@ -270,7 +209,7 @@ export default function TutorDetail() {
                         <div className="flex md:flex-row flex-col items-center gap-6 mb-6">
                             <div className="relative h-[166px] w-[166px] flex-shrink-0 md:mb-auto mr-auto md:mr-0">
                                 <img
-                                    src={data.tutor.profilePhotoUrl}
+                                    src={data.tutor.profilePhotoUrl || "/placeholder.svg"}
                                     alt="img"
                                     className="h-[166px] w-[166px] object-cover"
                                 />
@@ -398,7 +337,7 @@ export default function TutorDetail() {
 
                     {/* like */}
                     <div className="flex flex-col mb-[48px] overflow-hidden">
-                        <TutorCarousel tutors={likeData}/>
+                        <TutorCarousel tutors={popularTutor} loading={popularTutorLoading} currentId={slug}/>
                     </div>
 
                 </div>
@@ -410,7 +349,7 @@ export default function TutorDetail() {
                     <div className="p-6 shadow-md rounded-[8px]">
                         <div className="flex flex-col">
                             <img
-                                src={data?.tutor.profilePhotoUrl}
+                                src={data?.tutor.profilePhotoUrl || "/placeholder.svg"}
                                 alt="img"
                                 className="h-[166px] w-[166px] object-cover mx-auto"
                             />

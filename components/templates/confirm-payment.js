@@ -5,25 +5,49 @@
  * @Last Modified time: 2025-04-15 11:26:31
  */
 "use client"
-import { TitleDashboard, TitlePayment } from "@/components/atoms/title";
-import { multiStepPayment } from "@/constants/en";
-import { CartRow } from "@/components/atoms/cart-row";
+import {TitleDashboard, TitlePayment} from "@/components/atoms/title";
+import {multiStepPayment} from "@/constants/en";
+import {CartRow} from "@/components/atoms/cart-row";
 import {useLingoContext} from "@/context/LingoContext";
-import {useStudentCart} from "@/api/studentCart";
+import {useStudentCart} from "@/apis/studentCart";
 import {toast} from "react-toastify";
+import {useStudentOrder} from "@/apis/studentOrder";
+import ConfirmPaymentSkeleton from "@/components/organisms/confirm-payment-skeleton";
 
 export default function ConfirmPayment() {
-    const { confirmPayment } = multiStepPayment;
-    const { carts } = useLingoContext();
-    const { getCart, deleteCart, updateCart } = useStudentCart();
+    const {confirmPayment} = multiStepPayment;
+    const {carts} = useLingoContext();
+    const {getCart, deleteCart, loading} = useStudentCart();
+    const {payOrder} = useStudentOrder()
 
     const handleDeleteCart = async (orderItemId) => {
-            await deleteCart(orderItemId);
-            await getCart()
-            toast.success("Removed course from cart success.")
+        await deleteCart(orderItemId)
+        await getCart()
+        toast.success("Removed course from cart success.")
     };
 
-    const isEmpty = !carts?.cartItems?.length;
+    const isLoading = carts === 0
+    const isEmpty = carts === null || !carts?.cartItems?.length;
+
+    const handleConfirmCart = async () => {
+        if (isEmpty) {
+            toast.error("Cart is empty, cannot make payment order")
+            return;
+        }
+
+        const orderId = carts.orderId
+        const payload = {
+            orderId: orderId,
+        }
+        toast.loading("Making your payment...")
+        const data = await payOrder(payload)
+        toast.dismiss()
+        if (data) {
+            window.open(data.invoiceUrl, "_blank")
+        }
+    }
+
+    console.log("carts: ", carts)
 
     return (
         <div className="flex flex-col lingo-container pt-[100px] md:pt-[150px]">
@@ -38,15 +62,25 @@ export default function ConfirmPayment() {
                 <TitlePayment text={confirmPayment.subTotal} custom={'col-span-1 ml-[8px]'}/>
             </div>
             <div className="relative">
-                {carts?.cartItems.map((item, index) => (
-                    <CartRow
-                        key={index}
-                        item={item}
-                        onDelete={handleDeleteCart}
-                    />
-                ))}
+                {isLoading ? (
+                    <ConfirmPaymentSkeleton/>
+                ) : isEmpty ? (
+                    <div className="font-medium pt-12 text-lg">
+                        Your cart is empty.
+                    </div>
+                ) : (
+                    <>
+                        {carts?.cartItems.map((item, index) => (
+                            <CartRow
+                                key={index}
+                                item={item}
+                                onDelete={handleDeleteCart}
+                            />
+                        ))}
+                    </>
+                )}
             </div>
-            
+
             <div className="w-full flex flex-col items-end py-[100px]">
                 <div className="flex flex-col w-full md:w-[490px]">
                     <TitleDashboard text={confirmPayment.summary} custom="mb-[25px] mx-auto"/>
@@ -63,11 +97,12 @@ export default function ConfirmPayment() {
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="font-medium text-[18px]">Total:</span>
-                        <span className="font-semibold text-[24px]">Rp.{Number(carts?.totalPrice).toLocaleString('id-ID')}</span>
+                        <span
+                            className="font-semibold text-[24px]">Rp.{Number(carts?.totalPrice).toLocaleString('id-ID')}</span>
                     </div>
-                    <button 
-                        disabled={isEmpty}
-                        onClick={() => console.log('Payment')}
+                    <button
+                        disabled={isEmpty || isLoading}
+                        onClick={handleConfirmCart}
                         className={`bg-[#E15C31] text-[14px] sm:text-[16px] px-[28px] py-[13px] mx-[30px] mt-[35px] text-white animation-effect ${isEmpty ? "bg-gray-400" : "cursor-pointer"}`}
                     >
                         Complete Payment

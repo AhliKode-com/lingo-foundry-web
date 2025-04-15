@@ -6,7 +6,7 @@
  */
 "use client"
 import { TitleStudentDashboard } from "@/components/atoms/title";
-import { getStudentDashboard } from '@/api/dashboard/getStudentDashboard';
+import { getStudentDashboard } from '@/apis/dashboard/getStudentDashboard';
 
 export default function StudentDashboard(){
     const { data: {

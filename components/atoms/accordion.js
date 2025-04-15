@@ -159,15 +159,33 @@ export function Question({title, answer, defaultOpen = false}) {
     );
 }
 
+function formatDateString(input) {
+    const date = new Date(input.replace(" ", "T")) // Ensures correct ISO format
+
+    const options = {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    }
+
+    const formatted = date.toLocaleString("id-ID", options)
+    return formatted.replace(",", "")  // Remove comma after day
+        .replace("pukul", " at")
+        .replace(/(.+) (\d{2}) (\d{4}), (.+)/, "$1 $2, $3 at $4")
+}
+
 export function PurchaseHistory({data, defaultOpen = false}) {
     const [open, setOpen] = useState(defaultOpen);
     const [height, setHeight] = useState(0);
     const contentRef = useRef(null);
 
-    const createdAt = data?.transactions[0]?.createdAt;
+    const createdAt = formatDateString(data?.transactions[0]?.createdAt);
     let totalAmount = 0;
     for (const transaction of data.transactions) {
-        totalAmount += transaction.totalAmount;
+        totalAmount += transaction.orderAmount;
     }
 
     useEffect(() => {
@@ -264,9 +282,9 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                 <div className="sm:col-span-2 animation-effect">
                                     <div className="flex items-center gap-[10px] md:gap-[20px] animation-effect">
                                         <img
-                                            src={item.tutorProfileUrl}
+                                            src={item.tutorProfileUrl || "/placeholder.svg"}
                                             alt="user"
-                                            className="rounded-full w-[50px] h-[50px] lg:w-[80px] lg:h-[80px] block animation-effect"
+                                            className="rounded-full w-[50px] h-[50px] lg:w-[80px] lg:h-[80px] block animation-effect object-cover"
                                         />
                                         <div className="flex flex-col gap-[4px] md:gap-[8px] animation-effect">
                                             {/*TODO: ask courses[].rating and courses[].reviewCount to BE*/}
@@ -292,7 +310,7 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                             <span
                                                 className="text-[#A1A5B3] text-[12px] md:text-[14px] w-[50px] md:w-[70px] animation-effect">Course:</span>
                                             <span
-                                                className="text-[##4E5566] text-[12px] md:text-[14px] animation-effect">{item.subjectLevel}</span>
+                                                className="text-[##4E5566] text-[12px] md:text-[14px] animation-effect">{item.subjectName}</span>
                                         </div>
                                         <div className="flex gap-[25px] items-center">
                                             <span
@@ -302,15 +320,15 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                         </div>
                                     </div>
                                 </div>
-                                {/* TODO: ask courses.price and courses.status in BE */}
+                                 {/*TODO: ask courses.price and courses.status in BE*/}
                                 {/*<div*/}
                                 {/*    className="flex lg:justify-center items-center text-[#E35D33] font-medium text-[14px] md:text-[20px] animation-effect">Rp.{Number(item.price).toLocaleString('id-ID')}</div>*/}
-                                {/*<div className={`*/}
-                                {/*    flex lg:justify-center items-center font-medium text-[14px] md:text-[20px] animation-effect*/}
-                                {/*    ${item.status === 'On Going' ? 'text-[#43B7A0]' : 'text-[#1D2026]'}*/}
-                                {/*`}>*/}
-                                {/*    {item.status}*/}
-                                {/*</div>*/}
+                                <div className={`
+                                    flex lg:justify-right items-center font-medium text-[14px] md:text-[20px] animation-effect
+                                    ${data.status === 'On Going' ? 'text-[#43B7A0]' : 'text-[#1D2026]'}
+                                `}>
+                                    {data.status}
+                                </div>
                             </div>
                         )
                     })}

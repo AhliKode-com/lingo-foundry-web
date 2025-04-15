@@ -7,7 +7,7 @@
 "use client"
 import {toast} from "react-toastify";
 import React from 'react'
-import {useStudentWishList} from "@/api/studentWishList";
+import {useStudentWishList} from "@/apis/studentWishList";
 import { TitleText } from "../atoms/title";
 import Image from 'next/image';
 import {useLingoContext} from "@/context/LingoContext";

@@ -14,8 +14,8 @@ import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
 import Link from 'next/link';
 import { useAuth } from "@/context/AuthContext";
-import {useStudentCart} from "@/api/studentCart";
-import {useStudentWishList} from "@/api/studentWishList";
+import {useStudentCart} from "@/apis/studentCart";
+import {useStudentWishList} from "@/apis/studentWishList";
 import {useLingoContext} from "@/context/LingoContext";
 
 export default function Navbar() {

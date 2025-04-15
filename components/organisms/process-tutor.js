@@ -21,7 +21,7 @@ import Pricing from "@/components/templates/tutor/pricing";
 
 import { StepButton } from "@/components/atoms/buttons";
 import { multiStepPayment } from "@/constants/en";
-import {getLandingSubjects} from "@/api/getLandingSubjects";
+import {getLandingSubjects} from "@/apis/getLandingSubjects";
 
 export default function ProcessTutor() {
 

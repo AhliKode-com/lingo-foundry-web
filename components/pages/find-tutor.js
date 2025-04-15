@@ -10,13 +10,16 @@ import ExploreTutor from '@/components/organisms/explore-tutor';
 import Faq from "@/components/organisms/faq";
 import Review from "@/components/organisms/review";
 import HeroBottom from '@/components/organisms/hero-bottom';
+import {Suspense} from "react";
 
 export default function FindTutor() {
     return (
         <>
             <HeroTutor/>
             <section id="search">
-                <ExploreTutor/>
+                <Suspense>
+                    <ExploreTutor/>
+                </Suspense>
             </section>
             <Faq purpose="STUDENT"/>
             <Review authorType="STUDENT"/>

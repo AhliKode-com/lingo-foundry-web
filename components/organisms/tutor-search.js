@@ -1,22 +1,8 @@
 "use client"
 
-import {useEffect, useState} from "react"
-import {ChevronDown, Search} from "./dashboard/courses/icons"
-import {useSearchParams} from "next/navigation";
-import {getPopularTutors} from "@/api/getPopularTutors";
+import {Search} from "./dashboard/courses/icons"
 
 export default function TutorSearch({setQuery, query}) {
-    const [searchQuery, setSearchQuery] = useState("")
-
-    const searchParams = useSearchParams()
-
-    useEffect(() => {
-        const query = searchParams.get('q');
-        if (query) {
-            setSearchQuery(query);
-        }
-    }, [searchParams]);
-
     return (
         <div className="w-full max-w-3xl mx-auto py-5">
             <div className="flex flex-wrap gap-4 items-start">

@@ -20,9 +20,9 @@ export function CartRow({ item, onDelete }) {
         <TitlePayment text={confirmPayment.product} custom="w-[80px] md:hidden"/>
         <div className="flex items-center gap-[12px]">
           <img
-            src={item.tutorProfileUrl}
+            src={item.tutorProfileUrl || "placeholder.svg"}
             alt="tutor-profile"
-            className="rounded-full w-[50px] h-[50px] lg:w-[80px] lg:h-[80px] md:hidden lg:block"
+            className="rounded-full w-[50px] h-[50px] lg:w-[80px] lg:h-[80px] md:hidden lg:block object-cover"
           />
           <div className="flex flex-col">
             <span className="text-[12px] lg:text-[16px]">{item.tutorName}</span>

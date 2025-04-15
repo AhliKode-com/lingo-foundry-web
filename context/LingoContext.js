@@ -6,7 +6,7 @@ const LingoContext = createContext()
 
 export const LingoProvider = ({ children }) => {
     const [wishlists, setWishlists] = useState(null)
-    const [carts, setCarts] = useState(null)
+    const [carts, setCarts] = useState(0)
 
     return (
         <LingoContext.Provider value={{

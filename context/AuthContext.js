@@ -24,6 +24,8 @@ export const AuthProvider = ({ children }) => {
                 return
             }
 
+            console.log(decoded)
+
             setUser(decoded) // use jwt token data to user object
         }
 
