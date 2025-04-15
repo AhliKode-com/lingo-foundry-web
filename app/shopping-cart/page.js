@@ -2,13 +2,13 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:52:57
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-24 08:41:01
+ * @Last Modified time: 2025-04-14 23:05:34
  */
 
-import Purchasing from '@/components/pages/purchasing-steps';
+import ShoppingCart from '@/components/pages/shopping-cart';
 
 export default function Home() {
   return (
-      <Purchasing/>
+      <ShoppingCart/>
   );
 }

@@ -1,9 +1,11 @@
+import {toast} from "react-toastify";
 import { useState, useCallback } from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
+import {useLingoContext} from "@/context/LingoContext";
 
 export function useStudentCart() {
-  const [data, setData] = useState(null);
+  const { setCarts } = useLingoContext()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,12 +26,12 @@ export function useStudentCart() {
         data: payload,
         headers
       });
-      setData(response.data.data);
+      setCarts(response.data.data);
       return response.data.data;
     } catch (err) {
-      const message = err.response?.data?.message || `${method.toUpperCase()} request failed`;
+      const message = err.response?.data?.message;
       setError(message);
-      throw new Error(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -39,12 +41,12 @@ export function useStudentCart() {
     return handleRequest("get", "/student/cart");
   }, [handleRequest]);
 
-  const addToCart = useCallback((cartItemId, updates) => {
-    return handleRequest("post",`/student/cart/${cartItemId}`, updates);
+  const addToCart = useCallback((updates) => {
+    return handleRequest("post",'/student/cart', updates);
   }, [handleRequest]);
 
-  const updateCart = useCallback((item) => {
-    return handleRequest("put", "/student/cart", item);
+  const updateCart = useCallback((cartItemId, updates) => {
+    return handleRequest("put", `/student/cart/${cartItemId}`, updates);
   }, [handleRequest]);
 
   const deleteCart = useCallback((cartItemId, updates) => {
@@ -52,7 +54,6 @@ export function useStudentCart() {
   }, [handleRequest]);
 
   return {
-    data,
     loading,
     error,
     getCart,

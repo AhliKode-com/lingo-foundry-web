@@ -1,3 +1,4 @@
+import {toast} from "react-toastify";
 import {useState, useCallback} from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
@@ -26,11 +27,9 @@ export function useStudentWishList() {
         headers
       });
       setWishlists(response.data.data);
-      return response.data.data;
     } catch (err) {
-      const message = err.response?.data?.message || `${method.toUpperCase()} request failed`;
+      const message = err.response?.data?.message;
       setError(message);
-      throw new Error(message);
     } finally {
       setLoading(false);
     }

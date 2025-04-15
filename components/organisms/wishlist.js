@@ -2,22 +2,20 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-13 18:07:22
+ * @Last Modified time: 2025-04-14 23:42:22
  */
 "use client"
 import {toast} from "react-toastify";
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useStudentWishList} from "@/api/studentWishList";
 import { TitleText } from "../atoms/title";
 import Image from 'next/image';
 import {useLingoContext} from "@/context/LingoContext";
+import Link from "next/link";
 
 export default function Wishlist() {
     const { getWishList, deleteWishList } = useStudentWishList();
     const { wishlists } = useLingoContext();
-    useEffect(() => {
-        getWishList();
-    }, []);
 
     const handleDeleteWishlist = async (tutorId) => {
         await deleteWishList(tutorId);
@@ -37,23 +35,25 @@ export default function Wishlist() {
                                 key={index}
                                 className={`animation-effect relative h-fit flex flex-row items-center p-[20px] bg-[#FFFFFF] rounded-[8px] drop-shadow-lg`}
                             >
-                                <img
-                                    src={item.tutorProfileUrl}
-                                    alt={item.tutorName}
-                                    className="w-[75px] h-[75px] rounded-full object-cover mr-[14px]"
-                                />
-                                <div className="flex flex-col">
-                                    <span className="text-[16px] font-semibold">{item.tutorName}</span>
-                                    <span className="text-[16px] font-semibold">{item.bio}</span>
-                                </div>
-                                <Image
-                                    src="/assets/delete.svg"
-                                    alt="delete"
-                                    height={15}
-                                    width={15}
-                                    className="ml-auto cursor-pointer"
-                                    onClick={() => handleDeleteWishlist(item.tutorId)}
-                                />
+                                    <Link href={`/tutor/${item.tutorId}`} className="flex flex-row items-center">
+                                        <img
+                                            src={item.tutorProfileUrl}
+                                            alt={item.tutorName}
+                                            className="w-[75px] h-[75px] rounded-full object-cover mr-[14px]"
+                                        />
+                                        <div className="flex flex-col">
+                                            <span className="text-[16px] font-semibold">{item.tutorName}</span>
+                                            <span className="text-[16px] font-semibold">{item.bio}</span>
+                                        </div>
+                                    </Link>
+                                    <Image
+                                        src="/assets/delete.svg"
+                                        alt="delete"
+                                        height={15}
+                                        width={15}
+                                        className="ml-auto cursor-pointer"
+                                        onClick={() => handleDeleteWishlist(item.tutorId)}
+                                    />
                             </div>
                         ))}
                     </div>
