@@ -7,7 +7,7 @@
 
 "use client";
 import {toast} from "react-toastify";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import React, {useState} from "react";
 import {RatingSummary} from "@/components/atoms/rating-summary";
 import {ResumeTabs} from "@/components/atoms/resume-tab";
@@ -19,13 +19,18 @@ import {useStudentCart} from "@/apis/studentCart";
 import {useStudentWishList} from "@/apis/studentWishList";
 import TutorDetailSkeleton from "@/components/organisms/tutor-detail-skeleton";
 import {getPopularTutors} from "@/apis/getPopularTutors";
+import {useAuth} from "@/context/AuthContext";
+import {router} from "next/client";
 
 export default function TutorDetail() {
     const {slug} = useParams();
     const {data} = getDetail(slug);
     const {data: reviews} = getReviews("STUDENT");
     const {data: popularTutor, loading: popularTutorLoading} = getPopularTutors();
+    const { user } = useAuth()
     const [expanded, setExpanded] = useState(false);
+
+    const router = useRouter();
 
     const toggleExpanded = () => {
         setExpanded(prev => !prev);
@@ -39,6 +44,10 @@ export default function TutorDetail() {
     const [selectedIndexes, setSelectedIndexes] = useState([]);
     const [sessionsByIndex, setSessionsByIndex] = useState({});
     const handleOpenCart = () => {
+        if (!user) {
+            router.push("/login");
+            return
+        }
         setOpenCart(!openCart);
     };
     const {addToCart, getCart} = useStudentCart();
@@ -84,6 +93,10 @@ export default function TutorDetail() {
     // wishlist
     const {addToWishList, getWishList} = useStudentWishList();
     const handleAddToWishlist = async () => {
+        if (!user) {
+            router.push("/login");
+            return;
+        }
         await addToWishList(slug);
         await getWishList();
         toast.success("Add tutor to wishlist success.")

@@ -61,6 +61,44 @@ export default function ProfileDescription({ setCurrentStep }) {
         localStorage.setItem("applyTutorStep4Data", JSON.stringify(data))
 
         toast.success("data saved successfully.")
+
+        const formData = {
+            "firstName": "string",
+            "lastName": "string",
+            "bio": "string",
+            "profilePhotoObjectKey": "string",
+            "countryOfBirth": "string",
+            "teachSubject": "string",
+            "expertises": [
+                "string"
+            ],
+            "languages": [
+                {
+                    "language": "string",
+                    "level": "string"
+                }
+            ],
+            "mobileNumber": "string",
+            "certificates": [
+                {
+                    "subject": "string",
+                    "type": "string",
+                    "description": "string",
+                    "issuedBy": "string",
+                    "startYear": 1073741824,
+                    "endYear": 1073741824,
+                    "fileObjectKey": "string"
+                }
+            ],
+            "cvFileObjectKey": "string",
+            "introduction": "string",
+            "teachingExperience": "string",
+            "courseMotivation": "string",
+            "title": "string",
+            "academicDegreeLevel": "Certificate",
+            "academicSubject": "Arts",
+            "headline": "string"
+        }
     }
 
     return (
