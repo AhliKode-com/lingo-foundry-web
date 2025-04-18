@@ -8,6 +8,7 @@
 import React, {useState, useRef, useEffect} from "react";
 import {FiChevronDown} from "react-icons/fi";
 import {GoArrowUp} from "react-icons/go";
+import {useRouter} from "next/navigation";
 
 export function Speciality({title, desc, defaultOpen = false}) {
     const [open, setOpen] = useState(defaultOpen);
@@ -182,6 +183,8 @@ export function PurchaseHistory({data, defaultOpen = false}) {
     const [height, setHeight] = useState(0);
     const contentRef = useRef(null);
 
+    const router = useRouter()
+
     const createdAt = formatDateString(data?.transactions[0]?.createdAt);
     let totalAmount = 0;
     for (const transaction of data.transactions) {
@@ -232,31 +235,45 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                 className="animation-effect text-[12px] md:text-[14px] text-[#4E5566]">{data.courses.length} Courses</span>
                         </div>
                         <span
-                            className="flex animation-effect text-[12px] md:text-[14px] text-[#4E5566]">Rp.{Number(totalAmount).toLocaleString('id-ID')}</span>
-                        {/*<div className="flex items-center gap-[6px]">*/}
-                        {/*    <img src="/assets/cc.svg" alt="coin"*/}
-                        {/*         className="animation-effect w-[16px] h-[16px] md:w-[20px] md:h-[20px]"/>*/}
-                        {/*    <span*/}
-                        {/*        className="animation-effect text-[12px] md:text-[14px] text-[#4E5566]">{data.paymentMethod}</span>*/}
-                        {/*</div>*/}
+                            className="flex animation-effect text-[12px] md:text-[14px] text-[#4E5566]"
+                        >
+                            Rp.{Number(totalAmount).toLocaleString('id-ID')}
+                        </span>
+                    </div>
+                    <div className={`
+                                        flex lg:justify-right items-center font-medium text-[14px] md:text-[20px] animation-effect
+                                        ${data.status === 'PAID' ? 'text-[#43B7A0]' : 'text-[#1D2026]'}
+                                    `}>
+                        {data.status}
                     </div>
                 </div>
 
-                <div
-                    className={`
-                        w-[38px] h-[38px] md:h-[48px] md:w-[48px] flex items-center justify-center
-                        ${open ? "bg-[#E35D33]" : "bg-[#F5F7FA]"}
-                        animation-effect
-                        `}
-                >
-                    <GoArrowUp
+                <div className="flex items-center gap-[15px]">
+                    <div
+                        className="flex h-[38px] md:h-[48px] lg:justify-center items-center bg-[#E35D33] text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect cursor-pointer whitespace-nowrap"
+                        onClick={() => {
+                            router.push(`/book-class/${data.orderId}`)
+                        }}
+                    >
+                        Set your schedule
+                    </div>
+
+                    <div
                         className={`
-                            text-[18px] sm:text-[24px]
+                            w-[38px] h-[38px] md:h-[48px] md:w-[48px] flex items-center justify-center
+                            ${open ? "bg-[#E35D33]" : "bg-[#F5F7FA]"}
                             animation-effect
-                            duration-300
-                            ${open ? "rotate-180 text-[#FFFFFF]" : "rotate-0 text-[#1D2026]"}
-                        `}
-                    />
+                            `}
+                    >
+                        <GoArrowUp
+                            className={`
+                                text-[18px] sm:text-[24px]
+                                animation-effect
+                                duration-300
+                                ${open ? "rotate-180 text-[#FFFFFF]" : "rotate-0 text-[#1D2026]"}
+                            `}
+                        />
+                    </div>
                 </div>
             </button>
 

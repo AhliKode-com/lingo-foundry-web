@@ -85,7 +85,7 @@ export function Carousel() {
                         {tutorSubjects.map((tutor, index) => (
                             <div key={index} className="flex-shrink-0 w-[255px] overflow-hidden bg-white">
                                 <div className="relative">
-                                    <img src={tutor.thumbnailUrl} alt={tutor.subject} className="w-[255px] h-[290px]"/>
+                                    <img src={tutor.thumbnailUrl || "/placeholder.svg"} alt={tutor.subject} className="w-[255px] h-[290px] object-cover"/>
                                     <div
                                         className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent h-full"></div>
                                     <div

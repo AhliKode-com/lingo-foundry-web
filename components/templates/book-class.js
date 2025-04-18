@@ -4,17 +4,21 @@
  * @Last Modified by: danteclericuzio
  * @Last Modified time: 2025-03-21 15:39:11
  */
+"use client"
 
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Image from "next/image";
+import {TitleDashboard} from "@/components/atoms/title";
+import {useParams} from "next/navigation";
+import {getPurchaseHistory} from "@/apis/dashboard/getPurchaseHistory";
 
 export default function BookClass() {
-    const [selectedTime, setSelectedTime] = useState({
-        day: 'Sat',
-        date: '07',
-        time: '10:00',
-        formattedTime: '12:30 pm - 13:30 pm'
-    });
+    const {slug} = useParams();
+    console.log(slug)
+
+    const {data, loading} = getPurchaseHistory()
+
+    const [selectedTime, setSelectedTime] = useState({});
 
     const [hoveredTime, setHoveredTime] = useState({
         day: 'Sat',
@@ -39,19 +43,19 @@ export default function BookClass() {
     const generateTimeSlots = (day) => {
         switch (day) {
             case 'Mon':
-                return ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00'];
+                return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
             case 'Tues':
-                return ['00:00', '01:00', '12:30', '13:30', '14:00', '15:00', '16:00', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00',];
+                return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
             case 'Wed':
-                return ['00:00', '01:00', '12:30', '13:30', '14:00', '15:00', '16:00', '17:00', '17:30', '18:00'];
+                return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
             case 'Thu':
-                return ['16:00', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00'];
+                return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
             case 'Fri':
-                return ['00:00', '01:00', '12:30', '13:30', '14:00', '15:00', '16:00', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00'];
+                return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
             case 'Sat':
-                return ['09:00', '10:00', '13:00', '14:00', '15:00'];
+                return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
             default:
-                return [];
+                return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
         }
     };
 
@@ -69,8 +73,36 @@ export default function BookClass() {
         return `${hours}:${minutes.toString().padStart(2, '0')}`
     }
 
+    const dateRange = useMemo(() => {
+        const today = new Date();
+        const sixDaysLater = new Date();
+        sixDaysLater.setDate(today.getDate() + 5);
+
+        const options = {
+            day: '2-digit',
+            month: 'short',
+        };
+
+        const start = today.toLocaleDateString('en-GB', options);
+        const end = sixDaysLater.toLocaleDateString('en-GB', options);
+
+        return `${start} - ${end}`;
+    }, []);
+
+    if (!data || loading) {
+        return (
+            <div>Loading</div>
+        )
+    }
+
+    const course = data.content.filter((val) => val.orderId === Number(slug))
+    console.log(course)
+
     return (
-        <div>
+        <div className="lingo-container py-[100px] md:py-[150px]">
+            <div className="mb-[20px] md:mb-[40px]">
+                <TitleDashboard text={"Book your class"} />
+            </div>
             <div className="border border-[#E35D33] rounded-2xl p-6 max-w-4xl mx-auto mt-8">
                 <h2 className="text-base md:text-xl font-medium text-gray-700 mb-6">These are the last time slots available! Book now
                     before its too late.</h2>
@@ -80,24 +112,18 @@ export default function BookClass() {
                         <h3 className="text-gray-600 mb-3">Product Paid</h3>
                         <div
                             className="border border-gray-300 rounded-lg p-4 flex items-center gap-3 shadow-md h-[96px]">
-                            <div className="bg-gray-200 rounded-lg w-12 h-12 flex items-center justify-center">
+                            <div className="w-12 h-12 flex items-center justify-center">
                                 {/*<div className="w-8 h-8 bg-gray-400 rounded-full"></div>*/}
-                                <Image src="/assets/tutor-profiles/tutor-2.png" alt={"tutor-img"} width={45} height={45}
-                                       priority/>
+                                <img src={course[0].courses[0].tutorProfileUrl} alt={"tutor-img"} className="w-[45px] h-[45px] object-cover rounded-lg"/>
                             </div>
                             <div>
-                                <div className="text-gray-700">
-                                    <span className="font-medium">JAMES</span>
-                                    <span>🧠</span>
-                                    <span>IELTS/TOEIC</span>
+                                <div className="font-medium">
+                                    {course[0].courses[0].tutorFirstName}{" "}{course[0].courses[0].tutorLastName}
                                 </div>
                                 <div>
-                                    <span>TEST</span>
-                                    <span>📝</span>
-                                    <span>Engineering</span>
-                                    <span>😊</span>
+                                    {course[0].courses[0].subjectName}
                                 </div>
-                                <div className="text-gray-600 text-sm">English - Children (6-11)</div>
+                                <div className="text-gray-600 text-sm">{course[0].courses[0].subjectLevel}</div>
                             </div>
                         </div>
                     </div>
@@ -106,29 +132,20 @@ export default function BookClass() {
                         <h3 className="text-gray-600 mb-3">Course Package</h3>
                         <div
                             className="border border-gray-300 rounded-lg p-4 shadow-md h-[96px] flex flex-col items-start justify-center">
-                            <div className="font-medium">5 Hours Session</div>
-                            <div className="text-gray-600">
-                                Reservation Deadline: <span className="text-[#E35D33] font-bold">March 25, 2025</span>
-                            </div>
+                            <div className="font-medium">1 Hours Session</div>
+                            {/*<div className="text-gray-600">*/}
+                            {/*    Reservation Deadline: <span className="text-[#E35D33] font-bold">March 25, 2025</span>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between mb-4 flex-col md:flex-row gap-3 md:gap-0">
                     <div className="flex items-center gap-2">
-                        <div className="text-gray-600">02 - 07 March</div>
-                        <div className="flex items-center gap-2">
-                            <button className="w-8 h-8 flex items-center justify-center border rounded text-gray-400 text-center">
-                                <span>&#8249;</span>
-                            </button>
-                            <button className="w-8 h-8 flex items-center justify-center border rounded text-gray-400">
-                                <span>&#8250;</span>
-                            </button>
-                        </div>
+                        <div className="text-gray-600">{dateRange}</div>
                     </div>
                     <div className="flex items-center text-gray-600 text-sm md:text-base text-center">
-                        <span>Please select your lesson start time (GMT +07:00) Jakarta, ID</span>
-                        <span className="ml-1">&#9660;</span>
+                        <span>your lesson timezone is (GMT +07:00) Jakarta, ID</span>
                     </div>
                 </div>
 
@@ -189,10 +206,10 @@ export default function BookClass() {
                     ))}
                 </div>
 
-                <div className="mt-6 text-gray-600 text-sm md:text-base">
-                    Already <span className="text-green-500">selected {selectedSlots}</span>, still can select <span
-                    className="text-[#E35D33]">{maxSlots - selectedSlots}/{maxSlots}</span>
-                </div>
+                {/*<div className="mt-6 text-gray-600 text-sm md:text-base">*/}
+                {/*    Already <span className="text-green-500">selected {selectedSlots}</span>, still can select <span*/}
+                {/*    className="text-[#E35D33]">{maxSlots - selectedSlots}/{maxSlots}</span>*/}
+                {/*</div>*/}
             </div>
         </div>
     )
