@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 22:44:14
+ * @Last Modified time: 2025-04-18 21:35:04
  */
 
 export const Home = {
@@ -126,10 +126,10 @@ export const Home = {
     },
     how: {
         title: "How it works",
-        oneHeadingBefore: "Find a tutor – You can book for trial for ",
-        oneHeadingHighlight: "up to 3 trials",
+        oneHeadingBefore: "Find a tutor",
+        oneHeadingHighlight: "",
         oneHeadingAfter: "",
-        oneDesc: "Browse tutors and see their background, experience and student feedback. You can book a trial up to 3 times. If you already took 1 trial and you’re not satisfied, you get access to try 2 more courses from different tutors.",
+        oneDesc: "Browse tutors and see their background, experience and student feedback. And book your class.",
         twoHeadingBefore: "Choose a time and book a class",
         twoHeadingHighlight: "",
         twoHeadingAfter: "",
@@ -138,7 +138,7 @@ export const Home = {
         threeHeadingHighlight: "",
         threeHeadingAfter: "",
         threeDescBefore: "Take the lesson anywhere you want with your mobile device or computer. When it's time for your lesson, load your class via ",
-        threeDescHighlight: "Zoom",
+        threeDescHighlight: "Google Meet",
         threeDescAfter: " and start learning!",
         threeDesc: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to 12 hours before your class."
     },

@@ -8,7 +8,7 @@ export default function LoginPage() {
     const pathname = usePathname();
     return (
         <main className="pt-[100px]">
-            <div className={`flex md:min-h-screen flex-col ${pathname === '/signup' ? 'md:flex-row-reverse' : 'md:flex-row'} lingo-container my-[40px] md:my-[84px] gap-2 animation-effect`}>
+            <div className={`flex md:min-h-screen flex-col md:flex-row lingo-container my-[40px] md:my-[84px] gap-2 animation-effect`}>
                 {/* Left side - Login Form */}
                 <div className="flex flex-1 items-start justify-center bg-[#F9F9F9] rounded-xl">
                     <LoginForm />
@@ -20,7 +20,7 @@ export default function LoginPage() {
                         src="/assets/login/login-side-img.png"
                         alt="Woman presenting"
                         fill
-                        className={`object-cover rounded-xl ${pathname === '/signup' ? 'scale-x-[-1]' : ''}`}
+                        className={`object-cover rounded-xl`}
                         priority
                     />
                     <div className="absolute inset-0 flex flex-col justify-between p-8 text-white">

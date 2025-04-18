@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 11:08:10
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-05 23:51:48
+ * @Last Modified time: 2025-04-18 21:12:38
  */
 "use client"
 import { TitleSubDashboard } from "@/components/atoms/title";
@@ -19,7 +19,15 @@ export default function StudentShorts() {
             <div className="overflow-x-auto w-full">
                 <div className="flex gap-[7px]">
                     { loading ? (
-                        <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                        <div className="flex gap-[7px]">
+                            <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                            <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                            <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                            <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                            <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                            <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                            <div className="h-[350px] w-[200px] bg-gray-300 animate-pulse rounded-lg"></div>
+                        </div>
                     ) : content?.length > 0 ? (
                             content?.map((link, index) => {
                                 return (
