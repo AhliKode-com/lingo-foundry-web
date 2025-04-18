@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 17:04:40
+ * @Last Modified time: 2025-04-18 20:36:56
  */
 
 "use client"
@@ -89,7 +89,7 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                     </div>
                                     <span className="text-gray-500">(256)</span>
                                     <div className="ml-4">
-                                        <span className="font-medium text-orange-500">{teacher.numberOfStudents}</span>
+                                        <span className="font-medium text-[#E35D33]">{teacher.numberOfStudents}</span>
                                         <span className="ml-1 text-gray-700">Students</span>
                                     </div>
                                 </div>

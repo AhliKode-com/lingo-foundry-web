@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:30
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 16:38:29
+ * @Last Modified time: 2025-04-18 21:39:13
  */
 
 import { FooterData } from '@/constants/en'
@@ -15,9 +15,9 @@ export default function Footer() {
     return (
         <footer className="pt-[70px] sm:pt-[90px] w-full border-t-[1px] border-[#CFCFCF]">
             <div className="lingo-container relative w-full flex flex-col pb-[40px]">
-                <span className='text-[14px] md:text-[16px]'>{title.navTitle}</span>
+                {/* <span className='text-[14px] md:text-[16px]'>{title.navTitle}</span> */}
                 <div className='my-[20px] md:my-[40px]'>
-                    <div className='
+                    {/* <div className='
                         animation-effect
                         grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 
                         gap-[20px] sm:gap-0
@@ -76,7 +76,7 @@ export default function Footer() {
                                 )}
                             )}
                         </div>
-                    </div>
+                    </div> */}
                     <div className='
                         grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 
                         gap-[20px] sm:gap-0
