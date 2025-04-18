@@ -6,11 +6,14 @@ export default function CourseCard({course, isSelected, onClick}) {
     const [isHovered, setIsHovered] = useState(false);
 
     const levelColor = {
-        "Free Trial": "bg-[#D1DDFD] text-[#3051BE]",
+        "General": "bg-[#D1DDFD] text-[#3051BE]",
         "Intermediate": "bg-[#FDEDD1] text-[#DF970C]",
         "Beginner": "bg-[#D1F4D0] text-[#1EB71B]",
         "Advanced": "bg-[#FDD3D1] text-[#C82112]"
     }
+
+    const progress = course.sessionCount - course.remainingSession
+    const total = course.sessionCount
 
     return (
         <div
@@ -21,29 +24,29 @@ export default function CourseCard({course, isSelected, onClick}) {
             tabIndex={0}
         >
       <span
-          className={`px-2 py-1 text-xs md:text-sm rounded-md ${levelColor[course.tag]}`}
+          className={`px-2 py-1 text-xs md:text-sm rounded-md ${levelColor[course.subjectLevel]}`}
       >
-        {course.tag}
+        {course.subjectLevel}
       </span>
             <p className="text-[#8D8D8D] mt-2 text-xs md:text-base">A Course by <span
-                className="text-[#E35D33]">{course.author}</span></p>
+                className="text-[#E35D33]">{course.tutorFirstName}{" "}{course.tutorLastName}</span></p>
             <h3 className="font-semibold text-base md:text-lg my-3 truncate"
                 style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
-                {course.title}
+                {course.subjectName}
             </h3>
             <p className="text-[#8D8D8D] text-xs md:text-sm mt-1">
-                Sessions completed {course.progress}/{course.total} {course.unit}
+                Sessions completed {progress}/{total}
             </p>
             <div className="w-full bg-gray-200 h-1.5 rounded-full mt-2">
                 <div
                     className="h-1.5 rounded-full"
                     style={{
-                        width: `${course.progress === 0 ? "2" : (course.progress / course.total) * 100}%`,
+                        width: `${progress === 0 ? "2" : (progress / total) * 100}%`,
                         backgroundColor: "#E35D33"
                     }}
                 ></div>
             </div>
-            {course.progress === course.total ? (
+            {progress === total ? (
                 !course.downloadable ? (
                     <div className="relative">
                         <button

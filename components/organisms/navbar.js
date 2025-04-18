@@ -161,17 +161,15 @@ export default function Navbar() {
                                         onMouseEnter={() => setOpenProfile(true)}
                                         onMouseLeave={() => setOpenProfile(false)}
                                     >
-                                        <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute'></div>
-                                        <Image
-                                            src="/assets/tutor-profiles/tutor-1.png"
+                                        <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute cursor-pointer'></div>
+                                        <img
+                                            src={user?.photoProfileUrl || "/placeholder.svg"}
                                             alt="Profile"
-                                            width={40}
-                                            height={40}
-                                            className='cursor-pointer'
+                                            className='cursor-pointer object-cover rounded-full w-[40px] h-[40px]'
                                         />
                                         {openProfile && (
                                             <div className="absolute top-[0px] mt-[50px] right-0 bg-white border border-gray-200 rounded shadow">
-                                                <button className='whitespace-nowrap px-4 py-2 w-full'>Hello {user?.sub}</button>
+                                                <button className='whitespace-nowrap px-4 py-2 w-full'>Hello, {user?.firstName}{" "}{user?.lastName}</button>
                                                 <Link href='/student-dashboard'>
                                                     <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Dashboard</button>
                                                 </Link>
@@ -255,16 +253,14 @@ export default function Navbar() {
                                                     onClick={() => setOpenProfile(!openProfile)}
                                                 >
                                                     <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute'></div>
-                                                    <Image
-                                                        src="/assets/tutor-profiles/tutor-1.png"
+                                                    <img
+                                                        src={user?.photoProfileUrl || "/placeholder.svg"}
                                                         alt="Profile"
-                                                        width={40}
-                                                        height={40}
-                                                        className='cursor-pointer'
+                                                        className='cursor-pointer object-cover rounded-full w-[40px] h-[40px]'
                                                     />
                                                     {openProfile && (
                                                         <div className="absolute top-[0px] left-0 mt-[50px] bg-white border border-gray-200 rounded shadow">
-                                                            <button className='whitespace-nowrap px-4 py-2 w-full'>Hello {user?.sub}</button>
+                                                            <button className='whitespace-nowrap px-4 py-2 w-full'>Hello, {user?.firstName}{" "}{user?.lastName}</button>
                                                             <Link href='/student-dashboard'>
                                                                 <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Dashboard</button>
                                                             </Link>
