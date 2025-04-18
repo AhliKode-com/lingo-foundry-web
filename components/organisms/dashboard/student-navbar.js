@@ -43,17 +43,16 @@ export default function StudentNavbar() {
                 <div
                     className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full h-full gap-[20px] lg:gap-0 animation-effect">
                     <div className="flex items-center gap-[23px]">
-                        <img src="/assets/student-profile.png" alt="student profile"
-                             className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] animation-effect"/>
+                        <img src={user?.photoProfileUrl || "/placeholder.svg"} alt="student profile"
+                             className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] animation-effect rounded-full object-cover"/>
                         <div className="flex flex-col gap-[6px] md:gap-[14px]">
-                            {<span
-                                className="font-semibold text-[18px] md:text-[24px] animation-effect">{user?.sub}</span>
-                            }
+                            <span
+                                className = "font-semibold text-[18px] md:text-[24px] animation-effect" >{user?.firstName}{" "}{user?.lastName}</span>
                             <div className="flex flex-col">
-                                <div className="flex items-center gap-[12px]">
-                                    <img src="/assets/indo-flag.svg" alt="indo flag" className="w-[22px]"/>
-                                    <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">From Indonesia</span>
-                                </div>
+                                {/*<div className="flex items-center gap-[12px]">*/}
+                                {/*    <img src="/assets/indo-flag.svg" alt="indo flag" className="w-[22px]"/>*/}
+                                {/*    <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">From Indonesia</span>*/}
+                                {/*</div>*/}
                                 <div className="flex items-center gap-[12px]">
                                     <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
                                     <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">Email Verified</span>

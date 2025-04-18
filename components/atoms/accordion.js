@@ -250,15 +250,6 @@ export function PurchaseHistory({data, defaultOpen = false}) {
 
                 <div className="flex items-center gap-[15px]">
                     <div
-                        className="flex h-[38px] md:h-[48px] lg:justify-center items-center bg-[#E35D33] text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect cursor-pointer whitespace-nowrap"
-                        onClick={() => {
-                            router.push(`/book-class/${data.orderId}`)
-                        }}
-                    >
-                        Set your schedule
-                    </div>
-
-                    <div
                         className={`
                             w-[38px] h-[38px] md:h-[48px] md:w-[48px] flex items-center justify-center
                             ${open ? "bg-[#E35D33]" : "bg-[#F5F7FA]"}
@@ -295,7 +286,7 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                     {data.courses.map((item, index) => {
                         return (
                             <div key={index}
-                                 className="animation-effect grid-cols-1 grid sm:grid-cols-2 lg:grid-cols-6 gap-[8px] md:gap-[20px] border-b-[1px] last:border-b-0 border-[#C1C8D0] py-[24px] md:py-[36px]">
+                                 className="animation-effect grid-cols-1 grid sm:grid-cols-2 lg:grid-cols-6 gap-[8px] md:gap-[20px] border-b-[1px] last:border-b-0 border-[#C1C8D0] py-[24px] md:py-[36px] items-center">
                                 <div className="sm:col-span-2 animation-effect">
                                     <div className="flex items-center gap-[10px] md:gap-[20px] animation-effect">
                                         <img
@@ -304,18 +295,6 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                             className="rounded-full w-[50px] h-[50px] lg:w-[80px] lg:h-[80px] block animation-effect object-cover"
                                         />
                                         <div className="flex flex-col gap-[4px] md:gap-[8px] animation-effect">
-                                            {/*TODO: ask courses[].rating and courses[].reviewCount to BE*/}
-                                            {/*<div className="flex items-center gap-[2px] md:gap-[6px] animation-effect">*/}
-                                            {/*    <img*/}
-                                            {/*        src="/assets/star-review.svg"*/}
-                                            {/*        alt="star"*/}
-                                            {/*        className="rounded-full w-[12px] h-[12px] md:w-[18px] md:h-[18px] animation-effect"*/}
-                                            {/*    />*/}
-                                            {/*    <span*/}
-                                            {/*        className="text-[#1D2026] text-[10px] md:text-[14px] font-medium animation-effect">{item.rating}</span>*/}
-                                            {/*    <span*/}
-                                            {/*        className="text-[#8C94A3] text-[10px] md:text-[14px] font-medium animation-effect">({Number(item.reviewCount).toLocaleString('id-ID')})</span>*/}
-                                            {/*</div>*/}
                                             <span
                                                 className="text-[10px] lg:text-[16px] animation-effect">{`${item.tutorFirstName} ${item.tutorLastName}`}</span>
                                         </div>
@@ -345,6 +324,14 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                     ${data.status === 'On Going' ? 'text-[#43B7A0]' : 'text-[#1D2026]'}
                                 `}>
                                     {data.status}
+                                </div>
+                                <div
+                                    className="flex h-[38px] md:h-[48px] justify-center items-center bg-[#E35D33] text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect cursor-pointer whitespace-nowrap"
+                                    onClick={() => {
+                                        router.push(`/book-class/${item.orderItemId}`)
+                                    }}
+                                >
+                                    Set your schedule
                                 </div>
                             </div>
                         )

@@ -17,7 +17,7 @@ export default function FindTutor() {
         <>
             <HeroTutor/>
             <section id="search">
-                <Suspense>
+                <Suspense feedback={null}>
                     <ExploreTutor/>
                 </Suspense>
             </section>

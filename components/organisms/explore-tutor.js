@@ -32,6 +32,16 @@ export default function ExploreTutor() {
         return () => clearTimeout(timeout)
     }, [query])
 
+    useEffect(() => {
+        const searchQ = searchParams.get("q") || ""
+        const timeout = setTimeout(() => {
+            setQuery(searchQ)
+            setDebouncedQuery(searchQ)
+        }, 500)
+
+        return () => clearTimeout(timeout)
+    }, [searchParams.get("q")])
+
     const {findTutor} = Home;
     const {data, loading} = getPopularTutors(debouncedQuery);
 
