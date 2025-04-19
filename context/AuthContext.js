@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode"
 import { useRouter } from "next/navigation";
 import {toast} from "react-toastify";
 import {useUserController} from "@/apis/userController";
-import {getUserMe} from "@/apis/getUserMe";
+import {useGetUserMe} from "@/apis/getUserMe";
 import api from "@/lib/api";
 
 const AuthContext = createContext()
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const router = useRouter();
-    const { data } = getUserMe();
+    const { data } = useGetUserMe();
 
     useEffect(() => {
         console.log("user", user)

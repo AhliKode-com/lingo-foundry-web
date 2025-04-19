@@ -65,7 +65,7 @@ export default function CourseCard({course, isSelected, onClick}) {
                         )}
                     </div>
                 ) : (
-                    <Link href={course.downloadLink} target="_blank" passHref>
+                    <Link href={course.downloadLink} target="_blank" rel="noopener noreferrer" passHref>
                         <button className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl bg-[#E25D33] hover:bg-orange-600 text-white cursor-pointer flex justify-center items-center text-xs md:text-base">
                             <Certificate className="ml-2"/>
                             <p>Certificate</p>

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:13:24
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-07 22:13:19
+ * @Last Modified time: 2025-04-19 19:35:14
  */
 "use client"
 import React, {useState, useRef, useEffect} from "react";
@@ -300,7 +300,7 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="sm:col-span-2 flex items-center animation-effect">
+                                <div className="flex items-center animation-effect">
                                     <div className="flex flex-col gap-[4px]">
                                         <div className="flex gap-[25px] items-center">
                                             <span
@@ -316,22 +316,31 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                         </div>
                                     </div>
                                 </div>
-                                 {/*TODO: ask courses.price and courses.status in BE*/}
-                                {/*<div*/}
-                                {/*    className="flex lg:justify-center items-center text-[#E35D33] font-medium text-[14px] md:text-[20px] animation-effect">Rp.{Number(item.price).toLocaleString('id-ID')}</div>*/}
-                                <div className={`
-                                    flex lg:justify-right items-center font-medium text-[14px] md:text-[20px] animation-effect
-                                    ${data.status === 'On Going' ? 'text-[#43B7A0]' : 'text-[#1D2026]'}
-                                `}>
-                                    {data.status}
+                                <div className="sm:col-span-2 flex items-center animation-effect">
+                                    <div className="flex flex-col gap-[4px]">
+                                        <div className="flex gap-[25px] items-center">
+                                            <span
+                                                className="text-[#A1A5B3] text-[12px] md:text-[14px] animation-effect">Remaining Session:</span>
+                                            <span
+                                                className="text-[##4E5566] text-[12px] md:text-[14px] animation-effect">{item.remainingSession}</span>
+                                        </div>
+                                        {/* <div className="flex gap-[25px] items-center">
+                                            <span
+                                                className="text-[#A1A5B3] text-[12px] md:text-[14px] w-[50px] md:w-[70px] animation-effect">Sessions:</span>
+                                            <span
+                                                className="text-[##4E5566] text-[12px] md:text-[14px] animation-effect">{item.sessionCount}</span>
+                                        </div> */}
+                                    </div>
                                 </div>
                                 <div
-                                    className="flex h-[38px] md:h-[48px] justify-center items-center bg-[#E35D33] text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect cursor-pointer whitespace-nowrap"
+                                    className={` ${item.remainingSession === 0 ? 'bg-gray-400' : 'bg-[#E35D33] cursor-pointer'} flex h-[38px] md:h-[48px] justify-center items-center text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect whitespace-nowrap`}
                                     onClick={() => {
-                                        router.push(`/book-class/${item.orderItemId}`)
+                                        if (item.remainingSession !== 0) {
+                                          router.push(`/book-class/${item.orderItemId}`)
+                                        }
                                     }}
                                 >
-                                    Set your schedule
+                                    {item.remainingSession === 0 ? 'Booked' : 'Set your schedule'}
                                 </div>
                             </div>
                         )

@@ -3,7 +3,11 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { EyeClosedIcon, EyeOpenedIcon } from "@/components/organisms/dashboard/settings/icons"
+import {useAuth} from "@/context/AuthContext";
 import {toast} from "react-toastify"
+import {useGetUserMe} from "@/apis/getUserMe";
+import {useUserController} from "@/apis/userController";
+import UserProfileSkeleton from "@/components/organisms/dashboard/settings/student-dashboard-settings-skeleton";
 
 export default function StudentDashboardChangePassword() {
     const {
@@ -12,13 +16,21 @@ export default function StudentDashboardChangePassword() {
         watch,
         formState: { errors },
     } = useForm()
+    const {data: userMe, loading} = useGetUserMe()
+    const { refreshUser } = useAuth()
+    const { updateProfile } = useUserController()
     const [showCurrentPassword, setShowCurrentPassword] = useState(false)
     const [showNewPassword, setShowNewPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        await updateProfile(data)
+        await refreshUser()
         toast.success("Password changed successfully")
+    }
+
+    if (!userMe || loading) {
+        return <UserProfileSkeleton/>
     }
 
     return (
@@ -110,14 +122,12 @@ export default function StudentDashboardChangePassword() {
                             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>}
                         </div>
 
-                        <div className="pt-2">
-                            <button
-                                type="submit"
-                                className="bg-[#FF6636] hover:bg-[#E55A2D] text-white px-8 py-2 rounded-md transition-colors"
-                            >
-                                Change Password
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            className="bg-[#E55A2D] text-white px-8 py-2 rounded-md transition-colors cursor-pointer mt-2"
+                        >
+                            Change Password
+                        </button>
                     </form>
                 </div>
             </div>
