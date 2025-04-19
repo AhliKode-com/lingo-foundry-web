@@ -2,12 +2,12 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:41:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-24 22:04:29
+ * @Last Modified time: 2025-04-19 19:54:30
  */
 
 import StudentDashboard from '@/components/organisms/dashboard/main/student-dashboard';
 import StudentLikeCourses from '@/components/organisms/dashboard/main/student-like-courses';
-import StudentCoursesZoom from '@/components/organisms/dashboard/main/student-dashboard-courses-zoom';
+import StudentCoursesGmeet from '@/components/organisms/dashboard/main/student-dashboard-courses-gmeet';
 import StudentShorts from '@/components/organisms/dashboard/main/student-dashboard-shorts';
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
         <>
             <StudentDashboard/>
             <StudentLikeCourses/>
-            <StudentCoursesZoom/>
+            <StudentCoursesGmeet/>
             <StudentShorts/>
         </>
     )

@@ -3,7 +3,7 @@ import api from "@/lib/api";
 import Cookies from "js-cookie";
 import {toast} from "react-toastify";
 
-export function getUserMe() {
+export function useGetUserMe() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

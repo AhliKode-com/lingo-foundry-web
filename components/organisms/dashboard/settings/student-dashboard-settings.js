@@ -4,14 +4,14 @@ import {useState} from "react"
 import {useForm} from "react-hook-form"
 import {toast} from "react-toastify";
 import {useAuth} from "@/context/AuthContext";
-import {getUserMe} from "@/apis/getUserMe";
+import {useGetUserMe} from "@/apis/getUserMe";
 import UserProfileSkeleton from "@/components/organisms/dashboard/settings/student-dashboard-settings-skeleton";
 import postUploadFile from "@/apis/static-file/postUploadFile";
 import {useUserController} from "@/apis/userController";
 
 export default function StudentDashboardSettings() {
     const {user} = useAuth();
-    const {data: userMe, loading} = getUserMe()
+    const {data: userMe, loading} = useGetUserMe()
     const { uploadFile, error } = postUploadFile()
     const { updateProfile } = useUserController()
     const { refreshUser } = useAuth()
@@ -30,15 +30,12 @@ export default function StudentDashboardSettings() {
     const onSubmit = async (data) => {
         if (photo) {
             const fileUrl = await uploadFile(photo)
-            console.log(fileUrl)
             let objectKey = fileUrl.split("/")
             objectKey = objectKey[objectKey.length - 1]
             if (!error && objectKey) {
                 data.profilePhotoObjectKey = objectKey
             }
         }
-
-        console.log(data)
         await updateProfile(data)
         await refreshUser()
 

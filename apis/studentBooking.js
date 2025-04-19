@@ -43,10 +43,15 @@ export function useStudentBooking() {
         return handleRequest("post",'/student/booking/create', payload);
     }, [handleRequest]);
 
+    const listBooking = useCallback(() => {
+        return handleRequest("get",'/student/booking/list');
+    }, [handleRequest]);
+
     return {
         loading,
         error,
         tutorUnavailableTime,
         createBooking,
+        listBooking
     };
 }
