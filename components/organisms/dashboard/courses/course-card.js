@@ -74,10 +74,20 @@ export default function CourseCard({course, isSelected, onClick}) {
                 )
             ) : (
                 <>
+                {course.remainingSession > 0 ? (
+                    <Link href={'/student-dashboard/purchase-history'} passHref>
+                        <button
+                            className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
+                            Set Schedule
+                        </button>
+                    </Link>
+                    
+                ) : (
                     <button
                         className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
                         Attend Course
                     </button>
+                )}
                     <button
                         className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
                         Reschedule
