@@ -2,10 +2,12 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-18 20:41:57
+ * @Last Modified time: 2025-04-19 22:36:27
  */
 
 "use client"
+
+import Link from "next/link"
 
 export default function TeacherProfileCardDashboard({teacher}) {
 
@@ -50,9 +52,15 @@ export default function TeacherProfileCardDashboard({teacher}) {
             <span className="text-[13px] text-[#707070] line-clamp-2">{teacher.tutorBio}</span>
           </div>
       
-          <button className="mt-[14px] w-1/2 whitespace-nowrap flex justify-center items-center rounded-[6px] bg-[#FFFFFF] border-[1px] border-[#E35D33] text-[13px] font-bold text-[#E35D33] py-[8px] px-[25px] self-center">
-            Book Course
-          </button>
+          <Link
+            href={`/tutor/${teacher.tutorId}`}
+            key={teacher.tutorId}
+            className="cursor-pointer"
+          >
+            <button className="mx-auto w-1/2 mt-[14px] whitespace-nowrap flex justify-center items-center rounded-[6px] bg-[#FFFFFF] border-[1px] border-[#E35D33] text-[13px] font-bold text-[#E35D33] py-[8px] px-[25px] self-center">
+              Book Course
+            </button>
+          </Link>
         </div>
       </div>
       
