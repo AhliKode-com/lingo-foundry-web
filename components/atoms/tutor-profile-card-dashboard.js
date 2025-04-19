@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-19 22:36:27
+ * @Last Modified time: 2025-04-19 23:32:03
  */
 
 "use client"
@@ -55,9 +55,9 @@ export default function TeacherProfileCardDashboard({teacher}) {
           <Link
             href={`/tutor/${teacher.tutorId}`}
             key={teacher.tutorId}
-            className="cursor-pointer"
+            className="w-fit flex mx-auto"
           >
-            <button className="mx-auto w-1/2 mt-[14px] whitespace-nowrap flex justify-center items-center rounded-[6px] bg-[#FFFFFF] border-[1px] border-[#E35D33] text-[13px] font-bold text-[#E35D33] py-[8px] px-[25px] self-center">
+            <button className="cursor-pointer mx-auto mt-[14px] whitespace-nowrap flex justify-center items-center rounded-[6px] bg-[#FFFFFF] border-[1px] border-[#E35D33] text-[13px] font-bold text-[#E35D33] py-[8px] px-[25px] self-center">
               Book Course
             </button>
           </Link>
