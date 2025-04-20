@@ -12,7 +12,7 @@ export default function MyCourses({data}) {
                 <img src={data.tutorProfileUrl || "/placeholder.svg"} alt={data.tutorFirstName} className="w-[40px] h-[40px] md:w-[52px] md:h-[52px] rounded-[8px] md:rounded-[16px] animation-effect object-cover"/>
                 <div className="flex flex-col gap-[4px]">
                     <span className="text-[12px] md:text-[14px] font-bold animation-effect">{data.subjectName}{" "}{data.subjectLevel}</span>
-                    <span className="text-[10px] md:text-[12px] text-[#E35D33] font-bold animation-effect">Sessions completed{" "}{data.remainingSession}/{data.sessionCount}</span>
+                    <span className="text-[10px] md:text-[12px] text-[#E35D33] font-bold animation-effect">Sessions completed{" "}{data.attendedCount}/{data.sessionCount}</span>
                 </div>
             </div>
             {/* stack image */}
