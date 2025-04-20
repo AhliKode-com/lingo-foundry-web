@@ -20,7 +20,7 @@ export default function Shorts({data}) {
             className="flex flex-col relative w-[159px] shrink-0"
             onClick={handleClick}
         >
-            <div className="max-w-[138px] text-[10px] text-[#F32C1F] p-[8px] bg-red-100 w-fit rounded-[4px] absolute top-[10px] left-[10px]">{data.videoName}</div>
+            <div className="max-w-[138px] text-[10px] text-[#F32C1F] p-[8px] bg-red-100 w-fit rounded-[4px] absolute top-[10px] left-[10px] break-words whitespace-normal">{data.videoName}</div>
             {isPlaying ? (
                 <video 
                     src={data.videoUrl} 

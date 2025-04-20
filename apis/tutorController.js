@@ -2,8 +2,9 @@ import {toast} from "react-toastify";
 import { useState, useCallback } from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
+import {useLingoContext} from "@/context/LingoContext";
 
-export function useStudentBooking() {
+export function useTutorController() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -34,33 +35,13 @@ export function useStudentBooking() {
         }
     }, []);
 
-    const tutorUnavailableTime = useCallback((payload) => {
-        return handleRequest("get",`/student/booking/tutor-availability?tutorId=${payload}`);
-    }, [handleRequest]);
-
-    const createBooking = useCallback((payload) => {
-        return handleRequest("post",'/student/booking/create', payload);
-    }, [handleRequest]);
-
-    const deleteBooking = useCallback((bookingId) => {
-        return handleRequest("delete",`/student/booking/${bookingId}`);
-    }, [handleRequest]);
-
-    const listBooking = useCallback(() => {
-        return handleRequest("get",'/student/booking/list');
-    }, [handleRequest]);
-
-    const getByOrderItemId = useCallback((orderItemId) => {
-        return handleRequest("get",`/student/booking/byId?orderItemId=${orderItemId}`);
+    const registerTutor = useCallback((payload) => {
+        return handleRequest("post",'/tutor/register', payload);
     }, [handleRequest]);
 
     return {
         loading,
         error,
-        tutorUnavailableTime,
-        createBooking,
-        deleteBooking,
-        listBooking,
-        getByOrderItemId
+        registerTutor,
     };
 }
