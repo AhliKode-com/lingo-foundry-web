@@ -12,7 +12,7 @@ export default function CourseCard({course, isSelected, onClick}) {
         "Advanced": "bg-[#FDD3D1] text-[#C82112]"
     }
 
-    const progress = course.sessionCount - course.remainingSession
+    const progress = course.attendedCount
     const total = course.sessionCount
 
     return (
@@ -83,15 +83,16 @@ export default function CourseCard({course, isSelected, onClick}) {
                     </Link>
                     
                 ) : (
-                    <button
-                        className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
-                        Attend Course
-                    </button>
+                    <></>
                 )}
-                    <button
-                        className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
-                        Reschedule
-                    </button>
+                    <Link
+                        href={`/student-dashboard/reschedule?orderItemId=${course.orderItemId}&tutorSubjectId=${course.tutorSubjectId}&tutorId=${course.tutorId}`} passHref
+                    >
+                        <button
+                            className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
+                            Reschedule
+                        </button>
+                    </Link>
                 </>
             )}
         </div>

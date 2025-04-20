@@ -10,8 +10,14 @@ import { useForm } from "react-hook-form"
 import { FaInfoCircle } from "react-icons/fa"
 import {toast} from "react-toastify";
 import {useEffect} from "react";
+import {useAuth} from "@/context/AuthContext";
+import {useTutorController} from "@/apis/tutorController";
+import {useRouter} from "next/navigation";
 
 export default function ProfileDescription({ setCurrentStep }) {
+    const { registerTutor } = useTutorController()
+    const router = useRouter()
+
     useEffect(() => {
         const savedData = localStorage.getItem("applyTutorStep4Data")
         if (savedData) {
@@ -26,6 +32,8 @@ export default function ProfileDescription({ setCurrentStep }) {
             })
         }
     }, [])
+
+    const { user } = useAuth()
 
     const {
         register,
@@ -51,54 +59,70 @@ export default function ProfileDescription({ setCurrentStep }) {
     const MAX_CHARS = 400
     const isOverLimit = totalCharCount > MAX_CHARS
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (isOverLimit) {
             alert("Please reduce your text to stay within the 400 character limit.")
             return
         }
 
-        console.log("Form submitted:", data)
         localStorage.setItem("applyTutorStep4Data", JSON.stringify(data))
 
-        toast.success("data saved successfully.")
+        const step1Data = JSON.parse(localStorage.getItem("applyTutorStep1Data"))
+        const step2Data = localStorage.getItem("applyTutorStep2Data")
+        const step3Data = JSON.parse(localStorage.getItem("applyTutorStep3Data"))
+        const step4Data = JSON.parse(localStorage.getItem("applyTutorStep4Data"))
 
         const formData = {
-            "firstName": "string",
-            "lastName": "string",
-            "bio": "string",
-            "profilePhotoObjectKey": "string",
-            "countryOfBirth": "string",
-            "teachSubject": "string",
-            "expertises": [
-                "string"
-            ],
-            "languages": [
-                {
-                    "language": "string",
-                    "level": "string"
+            "firstName": step1Data.firstName,
+            "lastName": step1Data.lastName,
+            "bio": user.bio,
+            "profilePhotoObjectKey": step2Data.split("download/")[1] || "",
+            "countryOfBirth": step1Data.countryOfBirth,
+            "teachSubject": step1Data.subjectYouTeach,
+            "expertises": step1Data.expertise,
+            "languages": step1Data.languages,
+            "mobileNumber": step1Data.phoneNumber,
+            "certificates": step3Data.certificates.map((value) => {
+                return {
+                    "subject": value.subject,
+                    "type": value.certificateType,
+                    "description": value.description,
+                    "issuedBy": value.issuedBy,
+                    "startYear": Number(value.startYear),
+                    "endYear": Number(value.endYear),
+                    "fileObjectKey": value.file.split("download/")[1] || ""
                 }
-            ],
-            "mobileNumber": "string",
-            "certificates": [
-                {
-                    "subject": "string",
-                    "type": "string",
-                    "description": "string",
-                    "issuedBy": "string",
-                    "startYear": 1073741824,
-                    "endYear": 1073741824,
-                    "fileObjectKey": "string"
-                }
-            ],
-            "cvFileObjectKey": "string",
-            "introduction": "string",
-            "teachingExperience": "string",
-            "courseMotivation": "string",
-            "title": "string",
-            "academicDegreeLevel": "Certificate",
-            "academicSubject": "Arts",
-            "headline": "string"
+            }),
+            "cvFileObjectKey": step3Data.cvFile.split("download/")[1] || "",
+            "introduction": step4Data.introduction,
+            "teachingExperience": step4Data.teachingExperience,
+            "courseMotivation": step4Data.courseMotivation,
+            "title": step4Data.title,
+            "academicDegreeLevel": null,
+            "academicSubject": null,
+            "headline": null
         }
+
+        toast.loading("Registering your tutor profile...", {
+            autoClose: 5000,
+        })
+        const response = await registerTutor(formData)
+        console.log(response)
+
+        if (response.error) {
+            toast.dismiss()
+            toast.error(response.error.message)
+            return;
+        }
+
+        toast.dismiss()
+        localStorage.removeItem("applyTutorCurrentStep")
+        localStorage.removeItem("applyTutorStep1Data")
+        localStorage.removeItem("applyTutorStep2Data")
+        localStorage.removeItem("applyTutorStep3Data")
+        localStorage.removeItem("applyTutorStep4Data")
+        toast.success("register successfully.")
+        router.push("/tutor-register-success")
     }
 
     return (

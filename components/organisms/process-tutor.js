@@ -4,8 +4,6 @@
  * @Last Modified by: danteclericuzio
  * @Last Modified time: 2025-04-01 00:10:44
  */
-
-
 "use client";
 import {useEffect, useState} from "react";
 
@@ -22,17 +20,31 @@ import Pricing from "@/components/templates/tutor/pricing";
 import { StepButton } from "@/components/atoms/buttons";
 import { multiStepPayment } from "@/constants/en";
 import {getLandingSubjects} from "@/apis/getLandingSubjects";
+import {useAuth} from "@/context/AuthContext";
+import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 export default function ProcessTutor() {
-
     const [currentStep, setCurrentStep] = useState(1);
     const { tabTutor } = multiStepPayment;
+
+    const { user } = useAuth()
+    const router = useRouter()
 
     // load data from localStorage on component mount
     useEffect(() => {
         const currentStep = localStorage.getItem("applyTutorCurrentStep")
         if (currentStep) {
             setCurrentStep(Number(currentStep))
+        }
+    }, [])
+
+    useEffect(() => {
+        if (user) {
+            if (user.tutor) {
+                toast.info("you already registered as tutor");
+                router.push("/");
+            }
         }
     }, [])
 
