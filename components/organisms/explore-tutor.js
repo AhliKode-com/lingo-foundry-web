@@ -39,8 +39,8 @@ export default function ExploreTutor() {
             setQuery(searchQ);
             setDebouncedQuery(searchQ);
     
-            if (searchQ.trim() !== "") {
-                setCategory("querySearch");
+            if (searchQ.trim() !== "" && searchQ.length > 3) {
+                setCategory("queryResult");
             } else {
                 setCategory("allPreview");
             }
@@ -77,7 +77,7 @@ export default function ExploreTutor() {
                         <div className="w-full h-[25px] bg-gray-100 animate-pulse rounded-lg mb-2" />
                         <div className="w-full h-[25px] bg-gray-100 animate-pulse rounded-lg mb-2" />
                     </div>
-                ) : !loading && data && (data[category] === null) ? (
+                ) : !loading && data && (data[category] === null || data[category].length === 0) ? (
                     <div className="font-medium text-lg mt-12 text-center">{query !== "" ? `ups, '${debouncedQuery}' not found` : "No Data Found"}</div>
                 ) : data && data[category]?.map((teacher, index) => (
                     <TutorProfileCard
