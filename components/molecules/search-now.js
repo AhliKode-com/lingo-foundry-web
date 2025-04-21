@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 15:31:42
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 15:33:31
+ * @Last Modified time: 2025-04-21 15:15:49
  */
 
 "use client"
@@ -44,7 +44,7 @@ export default function SearchNow({placeholder, buttonSearch}) {
                 onKeyDown={handleKeyDown}
             />
             <button
-                className="hidden md:block absolute right-0 bg-[#E35D33] px-[28px] h-[50px] lg:h-[65px] animation-effect rounded-[40px] text-white"
+                className="hidden md:block absolute right-0 bg-[#E35D33] px-[28px] h-[50px] lg:h-[65px] animation-effect rounded-[40px] text-white cursor-pointer"
                 onClick={handleSearch}
             >
                 {buttonSearch}

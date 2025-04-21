@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:50:17
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-15 11:26:31
+ * @Last Modified time: 2025-04-21 09:55:52
  */
 "use client"
 import {TitleDashboard, TitlePayment} from "@/components/atoms/title";
@@ -88,7 +88,7 @@ export default function ConfirmPayment() {
                     <div className="border-b-[1px] border-[#D2D2D250]">
                         <div className="flex justify-between items-center mb-[15px]">
                             <span className="text-[14px] text-[#6E7485]">Subtotal</span>
-                            <span>Rp.{Number(carts?.totalPrice).toLocaleString('id-ID')}</span>
+                            <span>Rp.{Number(carts?.totalPrice || 0).toLocaleString('id-ID')}</span>
                         </div>
                         <div className="flex justify-between items-center mb-[15px]">
                             <span className="text-[14px] text-[#6E7485]">Coupon Discount</span>
@@ -98,7 +98,7 @@ export default function ConfirmPayment() {
                     <div className="flex justify-between items-center">
                         <span className="font-medium text-[18px]">Total:</span>
                         <span
-                            className="font-semibold text-[24px]">Rp.{Number(carts?.totalPrice).toLocaleString('id-ID')}</span>
+                            className="font-semibold text-[24px]">Rp.{Number(carts?.totalPrice || 0).toLocaleString('id-ID')}</span>
                     </div>
                     <button
                         disabled={isEmpty || isLoading}

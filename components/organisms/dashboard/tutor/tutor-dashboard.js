@@ -2,18 +2,22 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 10:04:12
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 00:57:27
+ * @Last Modified time: 2025-04-21 09:24:39
  */
 "use client"
 import { TitleStudentDashboard } from "@/components/atoms/title";
+import { LastDaysButton } from "@/components/atoms/buttons";
 import {useAuth} from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import KeyToSuccess from "@/components/organisms/dashboard/tutor/key-to-success";
+import NewSubscriptions from "@/components/organisms/dashboard/tutor/new-subscriptions";
 
 export default function TutorDashboard(){
     const { user } = useAuth();
+
+    // recommended data
     const recommendedData = [
         {img: '/assets/enable-grey.svg', title: 'Enable money withdrawals', desc: 'Use a copy of your passport or official ID to confirm your identity. Once verified, you can withdraw your funds safely.'},
         {img: '/assets/complete-grey.svg', title: 'Complete the Welcome to Lingo course', desc: "Learn how to enhance your profile, get students and more! Tutors who complete this course earn three times as much as those who don't."},
@@ -21,6 +25,7 @@ export default function TutorDashboard(){
         {img: '/assets/play-grey.svg', title: 'Awesome trial lessons', desc: 'Learn how to teach lessons that inspire your students to come back for more!'},
     ]
 
+    // overview data
     const overviewData = [
         {img: '/assets/tutor-dashboard/1.svg', num: '19', desc: 'Active Lessons'},
         {img: '/assets/tutor-dashboard/2.svg', num: '241', desc: 'Active Lessons'},
@@ -121,8 +126,11 @@ export default function TutorDashboard(){
             {/* overview */}
             <div className="flex lg:flex-row flex-col px-[32px] py-[44px] bg-[#FDE0D7] mt-[56px] justify-between gap-[24px] lg:gap-0">
                 <div className="flex flex-col">
-                    <TitleStudentDashboard text="Overview" />
-                    <span className="text-[#4D4C5C]">Your business at a glance.</span>
+                    <div className="flex flex-col">
+                        <TitleStudentDashboard text="Overview" />
+                        <span className="text-[#4D4C5C]">Your business at a glance.</span>
+                    </div>
+                    <LastDaysButton custom="mt-auto"/>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[15px]">
                     {overviewData.map((item, index) => (
@@ -147,6 +155,7 @@ export default function TutorDashboard(){
             <KeyToSuccess/>
 
             {/* new subs */}
+            <NewSubscriptions/>
         </div>
     )
 }

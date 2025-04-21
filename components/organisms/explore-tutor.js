@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 00:15:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 15:59:38
+ * @Last Modified time: 2025-04-21 15:17:06
  */
 
 "use client"
@@ -20,7 +20,7 @@ export default function ExploreTutor() {
     const searchParams = useSearchParams()
 
     const [openCardId, setOpenCardId] = useState(null);
-    const [category, setCategory] = useState("allPreview")
+    const [category, setCategory] = useState("allPreview");
     const [query, setQuery] = useState(searchParams.get("q") || "");
     const [debouncedQuery, setDebouncedQuery] = useState(query)
 
@@ -33,14 +33,21 @@ export default function ExploreTutor() {
     }, [query])
 
     useEffect(() => {
-        const searchQ = searchParams.get("q") || ""
+        const searchQ = searchParams.get("q") || "";
+    
         const timeout = setTimeout(() => {
-            setQuery(searchQ)
-            setDebouncedQuery(searchQ)
-        }, 500)
-
-        return () => clearTimeout(timeout)
-    }, [searchParams.get("q")])
+            setQuery(searchQ);
+            setDebouncedQuery(searchQ);
+    
+            if (searchQ.trim() !== "") {
+                setCategory("querySearch");
+            } else {
+                setCategory("allPreview");
+            }
+        }, 500);
+    
+        return () => clearTimeout(timeout);
+    }, [searchParams.get("q")]);
 
     const {findTutor} = Home;
     const {data, loading} = getPopularTutors(debouncedQuery);

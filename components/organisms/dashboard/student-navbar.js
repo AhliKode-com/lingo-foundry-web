@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 17:03:10
+ * @Last Modified time: 2025-04-21 09:57:25
  */
 
 "use client"
@@ -43,11 +43,18 @@ export default function StudentNavbar() {
                 <div
                     className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full h-full gap-[20px] lg:gap-0 animation-effect">
                     <div className="flex items-center gap-[23px]">
-                        <img src={user?.photoProfileUrl || "/placeholder.svg"} alt="student profile"
-                             className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] animation-effect rounded-full object-cover"/>
+                        <img 
+                            src={user?.photoProfileUrl || "/placeholder.svg"} 
+                            alt="student profile"
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "/placeholder.svg";
+                            }}
+                            className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] animation-effect rounded-full object-cover"
+                        />
                         <div className="flex flex-col gap-[6px] md:gap-[14px]">
                             <span
-                                className = "font-semibold text-[18px] md:text-[24px] animation-effect" >{user?.firstName}{" "}{user?.lastName}</span>
+                                className = "font-semibold text-[18px] md:text-[24px] animation-effect" >{!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</span>
                             <div className="flex flex-col">
                                 {/*<div className="flex items-center gap-[12px]">*/}
                                 {/*    <img src="/assets/indo-flag.svg" alt="indo flag" className="w-[22px]"/>*/}

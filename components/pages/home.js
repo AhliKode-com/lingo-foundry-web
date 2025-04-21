@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 21:27:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-07 22:35:56
+ * @Last Modified time: 2025-04-21 14:37:06
  */
 
 import Browse from '@/components/organisms/browse';
@@ -14,7 +14,6 @@ import Why from '@/components/organisms/why-us';
 import How from '@/components/organisms/how';
 import Review from '@/components/organisms/review';
 import HeroBottom from '@/components/organisms/hero-bottom';
-import TutorSearch from "@/components/organisms/tutor-search";
 import {Suspense} from "react";
 
 export default function Home() {

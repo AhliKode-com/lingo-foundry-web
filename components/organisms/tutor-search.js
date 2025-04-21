@@ -1,8 +1,17 @@
 "use client"
 
 import {Search} from "./dashboard/courses/icons"
+import { useRouter } from "next/navigation";
 
 export default function TutorSearch({setQuery, query}) {
+    const router = useRouter();
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setQuery(value);
+
+        router.push(`/find-tutor?q=${value}#search`);
+    };
     return (
         <div className="w-full max-w-3xl mx-auto py-5">
             <div className="flex flex-wrap gap-4 items-start">
@@ -20,7 +29,7 @@ export default function TutorSearch({setQuery, query}) {
                             id="search"
                             placeholder="Search in your courses..."
                             value={query}
-                            onChange={(e) => setQuery(e.target.value)}
+                            onChange={handleChange}
                             className="w-full h-10 pl-10 pr-3 border border-gray-200 rounded-md text-base outline-none focus:border-gray-400"
                         />
                     </div>
