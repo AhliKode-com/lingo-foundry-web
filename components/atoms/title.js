@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:09:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 14:40:10
+ * @Last Modified time: 2025-04-22 00:53:07
  */
 
 export function NavText({text, position}) {
@@ -29,7 +29,7 @@ export function OrangeTextDashboard({text, position}) {
     )
 }
 
-export function TitleText({text, marginBottom, marginX}) {
+export function TitleText({text,custom, marginBottom, marginX}) {
     return (
         <span 
             className={`
@@ -38,6 +38,7 @@ export function TitleText({text, marginBottom, marginX}) {
                 font-bold
                 ${marginX}
                 ${marginBottom}
+                ${custom}
                 animation-effect
             `}>
             {text}

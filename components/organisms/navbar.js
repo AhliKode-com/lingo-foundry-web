@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 14:45:27
+ * @Last Modified time: 2025-04-21 23:15:01
  */
 "use client"
 import Image from 'next/image';
@@ -192,24 +192,18 @@ export default function Navbar() {
                                         />
                                         {openProfile && (
                                             <div className="absolute top-[0px] mt-[50px] right-0 bg-white border border-gray-200 rounded shadow">
-                                                <button className='whitespace-nowrap px-4 py-2'>Hello, {!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</button>
+                                                <button className='border-b-[1px] border-gray-200 whitespace-nowrap px-4 py-2'>Hello, {!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</button>
                                                 <>
-                                                    <button
-                                                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
-                                                    >
-                                                        Dashboard
-                                                    </button>
-
                                                     {showSubmenu && (
-                                                        <div className="pl-4">
+                                                        <div className="pl-0">
                                                             <Link href="/student-dashboard">
-                                                                <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">
                                                                 Student Dashboard
                                                                 </div>
                                                             </Link>
                                                             {user?.tutor?.approved && (
                                                                 <Link href="/tutor-dashboard">
-                                                                    <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                    <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">
                                                                     Tutor Dashboard
                                                                     </div>
                                                                 </Link>
@@ -327,23 +321,18 @@ export default function Navbar() {
                                                     />
                                                     {openProfile && (
                                                         <div className="absolute top-[0px] left-0 mt-[50px] bg-white border border-gray-200 rounded shadow">
-                                                            <button className='whitespace-nowrap px-4 py-2'>Hello, {!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</button>
+                                                            <button className='border-b-[1px] border-gray-200 whitespace-nowrap px-4 py-2'>Hello, {!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</button>
                                                             <>
-                                                                <button
-                                                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
-                                                                >
-                                                                    Dashboard
-                                                                </button>
                                                                 {showSubmenu && (
-                                                                    <div className="pl-4">
+                                                                    <div className="">
                                                                         <Link href="/student-dashboard">
-                                                                            <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                            <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">
                                                                                 Student Dashboard
                                                                             </div>
                                                                         </Link>
                                                                         {user?.tutor?.approved && (
                                                                             <Link href="/tutor-dashboard">
-                                                                                <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                                <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">
                                                                                 Tutor Dashboard
                                                                                 </div>
                                                                             </Link>
