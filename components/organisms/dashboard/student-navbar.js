@@ -54,7 +54,7 @@ export default function StudentNavbar() {
                         />
                         <div className="flex flex-col gap-[6px] md:gap-[14px]">
                             <span
-                                className = "font-semibold text-[18px] md:text-[24px] animation-effect" >{!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</span>
+                                className = "font-semibold text-[18px] md:text-[24px] animation-effect" >{!user?.firstName || !user?.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</span>
                             <div className="flex flex-col">
                                 {/*<div className="flex items-center gap-[12px]">*/}
                                 {/*    <img src="/assets/indo-flag.svg" alt="indo flag" className="w-[22px]"/>*/}

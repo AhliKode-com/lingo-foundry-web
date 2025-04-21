@@ -7,7 +7,7 @@
 
 import StudentDashboardReschedule from "@/components/pages/dashboard/student-dashboard-reschedule";
 
-export default function StudentPurchaseHistory() {
+export default function StudentBookingReschedule() {
     return (
         <StudentDashboardReschedule/>
     )
