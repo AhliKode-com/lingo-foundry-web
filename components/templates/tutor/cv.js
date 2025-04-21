@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 10:49:25
+ * @Last Modified time: 2025-04-21 13:34:50
  */
 
 "use client"
@@ -227,13 +227,13 @@ export default function CVCertification({ setCurrentStep }) {
                     <p className="text-gray-700 mb-4">
                         Upload your CV to boost your credibility! Our team will review it and add the badge to your profile.
                     </p>
-                    <p className="text-gray-600 text-sm mb-4">JPG or PNG format; maximum size of 20MB.</p>
+                    <p className="text-gray-600 text-sm mb-4">JPG/PNG/PDF format; maximum size of 2Gb.</p>
 
                     <input
                         type="file"
                         ref={cvFileRef}
                         onChange={handleCVUpload}
-                        accept="image/jpeg, image/png"
+                        accept="image/jpeg, image/png, application/pdf"
                         className="hidden"
                     />
 
@@ -390,7 +390,7 @@ export default function CVCertification({ setCurrentStep }) {
                                         Upload your certificate to boost your credibility! Our team will review it and add the badge to your
                                         profile.
                                     </p>
-                                    <p className="text-gray-600 text-sm mb-4">JPG or PNG format; maximum size of 20MB.</p>
+                                    <p className="text-gray-600 text-sm mb-4">JPG/PNG/PDF format; maximum size of 2Gb.</p>
 
                                     <input
                                         type="file"
@@ -403,7 +403,7 @@ export default function CVCertification({ setCurrentStep }) {
                                                 setValue(`certificates.${index}.file`, file);
                                             }
                                         }}
-                                        accept="image/jpeg, image/png"
+                                        accept="image/jpeg, image/png, application/pdf"
                                         className="hidden"
                                     />
 

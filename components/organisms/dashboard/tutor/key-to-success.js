@@ -2,11 +2,12 @@
  * @Author: danteclericuzio
  * @Date: 2025-04-21 00:56:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 00:56:17
+ * @Last Modified time: 2025-04-21 09:25:42
  */
 
 import { TitleStudentDashboard } from "@/components/atoms/title";
 import Image from "next/image";
+import { LastDaysButton } from "@/components/atoms/buttons";
 
 export default function KeyToSuccess() {
     const keysData = [
@@ -50,8 +51,13 @@ export default function KeyToSuccess() {
     
     return (
         <div className="flex flex-col mt-[62px]">
-            <TitleStudentDashboard text="Keys to success" />
-            <span className="text-[#4D4C5C]">These metrics are designed to help and support you grow your business, attract new students, and keep them engaged</span>
+            <div className="flex items-center">
+                <div className="flex flex-col">
+                    <TitleStudentDashboard text="Keys to success"/>
+                    <span className="text-[#4D4C5C]">These metrics are designed to help and support you grow your business, attract new students, and keep them engaged</span>
+                </div>
+                <LastDaysButton custom="ml-auto"/>
+            </div>
             {/* line 1 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-[8px] mt-[24px]">
                 {line1.map((item, index) => {
@@ -168,6 +174,7 @@ export default function KeyToSuccess() {
                     )
                 })}
             </div>
+            <span className="text-[12px] text-[#4D4C5C] mt-[12px] text-end">Live metrics updated Mar 26, 15:05.</span>
         </div>
     )
 }

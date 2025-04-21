@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-15 00:25:01
+ * @Last Modified time: 2025-04-21 14:45:27
  */
 "use client"
 import Image from 'next/image';
@@ -12,6 +12,7 @@ import { GoBell, GoHeart } from "react-icons/go";
 import { BsCart2 } from "react-icons/bs";
 import { OrangeButton } from '@/components/atoms/buttons'
 import { NavbarData } from '@/constants/en'
+import {NavText, OrangeText} from '@/components/atoms/title';
 import Link from 'next/link';
 import { useAuth } from "@/context/AuthContext";
 import {useStudentCart} from "@/apis/studentCart";
@@ -28,6 +29,8 @@ export default function Navbar() {
     const [wishlistCount, setWishlistCount] = useState(0)
     const [cartCount, setCartCount] = useState(0)
     const { user, loading, logoutContext } = useAuth()
+    const [showSubmenu, setShowSubmenu] = useState(true);
+    console.log("navbar user: ", user)
 
     // wishlist
     const { getWishList } = useStudentWishList();
@@ -113,9 +116,25 @@ export default function Navbar() {
                     priority
                 />
                 <div className='hidden lg:flex items-center animation-effect'>
-                    <Link href={pathname === "/tutor" ? "/tutor-register" : "/tutor"}>
-                        <OrangeButton text="Apply as Tutor"/>
-                    </Link>
+                    {!user?.tutor ? (
+                        <Link href={pathname === "/tutor" ? "/tutor-register" : "/tutor"}>
+                            <OrangeButton text="Apply as Tutor" />
+                        </Link>
+                        ) : !user.tutor.approved ? (
+                            <OrangeButton text="Waiting for Approval" custom="motion-safe:animate-pulse cursor-not-allowed"/>
+                        ) : (
+                        <Link href={
+                            pathname === "/" ? "/student-dashboard" : 
+                            pathname.includes("/tutor-dashboard") ? "/student-dashboard" : 
+                            pathname.includes("/student-dashboard") ? "/tutor-dashboard" : "/student-dashboard"
+                        }>
+                            <NavText text={
+                                pathname === "/" ? "Switch to student dashboard" : 
+                                pathname.includes("/tutor-dashboard") ? "Switch to student dashboard" : 
+                                pathname.includes("/student-dashboard") ? "Switch to tutor dashboard" : "Switch to student dashboard"
+                            }/>
+                        </Link>
+                    )}
                     {loading ?
                         <div className="flex gap-[24px] ml-[26px] items-center">
                             <div className="w-[24px] h-[24px] bg-gray-300 rounded animate-pulse" />
@@ -163,16 +182,41 @@ export default function Navbar() {
                                     >
                                         <div className='h-[100px] w-[30px] top-0 right-[5px] bg-transparent absolute cursor-pointer'></div>
                                         <img
-                                            src={user?.photoProfileUrl || "/placeholder.svg"}
+                                            src={user.photoProfileUrl || "/placeholder.svg"}
                                             alt="Profile"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "/placeholder.svg";
+                                            }}
                                             className='cursor-pointer object-cover rounded-full w-[40px] h-[40px]'
                                         />
                                         {openProfile && (
                                             <div className="absolute top-[0px] mt-[50px] right-0 bg-white border border-gray-200 rounded shadow">
-                                                <button className='whitespace-nowrap px-4 py-2 w-full'>Hello, {user?.firstName}{" "}{user?.lastName}</button>
-                                                <Link href='/student-dashboard'>
-                                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Dashboard</button>
-                                                </Link>
+                                                <button className='whitespace-nowrap px-4 py-2'>Hello, {!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</button>
+                                                <>
+                                                    <button
+                                                        className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
+                                                    >
+                                                        Dashboard
+                                                    </button>
+
+                                                    {showSubmenu && (
+                                                        <div className="pl-4">
+                                                            <Link href="/student-dashboard">
+                                                                <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                Student Dashboard
+                                                                </div>
+                                                            </Link>
+                                                            {user?.tutor?.approved && (
+                                                                <Link href="/tutor-dashboard">
+                                                                    <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                    Tutor Dashboard
+                                                                    </div>
+                                                                </Link>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </>
                                                 <Link href='/student-dashboard/settings'>
                                                     <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Settings</button>
                                                 </Link>
@@ -231,9 +275,28 @@ export default function Navbar() {
                             })}
                         </ul>
                         <div className='flex flex-col mt-6'>
-                            <Link href={pathname === "/tutor" ? "/tutor-register" : "/tutor"} onClick={() => setOpen(false)}>
-                                <OrangeButton text="Apply as Tutor"/>
-                            </Link>
+                            {!user?.tutor ? (
+                                <Link href={pathname === "/tutor" ? "/tutor-register" : "/tutor"} onClick={() => setOpen(false)}>
+                                    <OrangeButton text="Apply as Tutor" />
+                                </Link>
+                                ) : !user.tutor.approved ? (
+                                    <OrangeButton text="Waiting for Approval" custom="w-fit motion-safe:animate-pulse cursor-not-allowed"/>
+                                ) : (
+                                    <Link 
+                                        onClick={() => setOpen(false)}
+                                        href={
+                                            pathname === "/" ? "/student-dashboard" : 
+                                            pathname.includes("/tutor-dashboard") ? "/student-dashboard" : 
+                                            pathname.includes("/student-dashboard") ? "/tutor-dashboard" : "/student-dashboard"
+                                        }
+                                    >
+                                        <NavText text={
+                                            pathname === "/" ? "Switch to student dashboard" : 
+                                            pathname.includes("/tutor-dashboard") ? "Switch to student dashboard" : 
+                                            pathname.includes("/student-dashboard") ? "Switch to tutor dashboard" : "Switch to student dashboard"
+                                        }/>
+                                    </Link>
+                                )}
                             <div className='flex mt-6 gap-6'>
                                 {loading ?
                                     <div className="flex gap-[24px] items-center">
@@ -256,19 +319,46 @@ export default function Navbar() {
                                                     <img
                                                         src={user?.photoProfileUrl || "/placeholder.svg"}
                                                         alt="Profile"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = "/placeholder.svg";
+                                                        }}
                                                         className='cursor-pointer object-cover rounded-full w-[40px] h-[40px]'
                                                     />
                                                     {openProfile && (
                                                         <div className="absolute top-[0px] left-0 mt-[50px] bg-white border border-gray-200 rounded shadow">
-                                                            <button className='whitespace-nowrap px-4 py-2 w-full'>Hello, {user?.firstName}{" "}{user?.lastName}</button>
-                                                            <Link href='/student-dashboard'>
-                                                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Dashboard</button>
-                                                            </Link>
-                                                            <Link href='/student-dashboard/settings'>
+                                                            <button className='whitespace-nowrap px-4 py-2'>Hello, {!user.firstName || !user.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</button>
+                                                            <>
+                                                                <button
+                                                                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
+                                                                >
+                                                                    Dashboard
+                                                                </button>
+                                                                {showSubmenu && (
+                                                                    <div className="pl-4">
+                                                                        <Link href="/student-dashboard">
+                                                                            <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                                Student Dashboard
+                                                                            </div>
+                                                                        </Link>
+                                                                        {user?.tutor?.approved && (
+                                                                            <Link href="/tutor-dashboard">
+                                                                                <div className="whitespace-nowrap px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer rounded-md">
+                                                                                Tutor Dashboard
+                                                                                </div>
+                                                                            </Link>
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                            </>
+                                                            <Link href='/student-dashboard/settings' onClick={() => setOpen(false)}>
                                                                 <button className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer">Settings</button>
                                                             </Link>
                                                             <button
-                                                                onClick={logoutContext}
+                                                                onClick={() => {
+                                                                    logoutContext();
+                                                                    setOpen(false);
+                                                                }}
                                                                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 animation-effect cursor-pointer"
                                                             >
                                                                 Sign Out

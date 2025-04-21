@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-14 23:42:22
+ * @Last Modified time: 2025-04-21 14:48:49
  */
 "use client"
 import {toast} from "react-toastify";
@@ -59,7 +59,7 @@ export default function Wishlist() {
                     </div>
                 </>
             ) : (
-                <div className="text-center py-10 mx-auto w-full">No Wishlist Yet.</div>
+                <div className="text-center py-10 mx-auto w-full min-h-[500px] flex items-center justify-center">No Wishlist Yet.</div>
             )}
         </div>
     )

@@ -3,10 +3,10 @@
 /*
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
- * @Last Modified by: advis
- * @Last Modified time: 2025-03-31 23:44:49
+ * @Last Modified by: danteclericuzio
+ * @Last Modified time: 2025-04-21 11:56:22
  */
-
+import { IoIosArrowDown } from "react-icons/io";
 import { useFieldArray, useForm } from "react-hook-form"
 import { TitleTutorRegis, DescTutorRegis, LabelTutorRegis } from "@/components/atoms/title"
 import { useEffect, useState } from "react"
@@ -14,7 +14,6 @@ import {getLandingSubjects} from "@/apis/getLandingSubjects";
 
 export default function About({ setCurrentStep }) {
     const [savedData, setSavedData] = useState(null)
-    const MAX_EXPERTISE = 3
 
     const { data: subjects, loading } = getLandingSubjects();
 
@@ -61,11 +60,32 @@ export default function About({ setCurrentStep }) {
         name: "languages",
     })
 
+    const onSubmit = (data) => {
+        localStorage.setItem("applyTutorStep1Data", JSON.stringify(data))
+        localStorage.setItem("applyTutorCurrentStep", "2")
+        setSavedData(data)
+        setCurrentStep(2)
+    }
+
+    const [dropdownOpen, setDropdownOpen] = useState(null)
+
+    // country
+    const countries = [
+        "Indonesia", "Malaysia", "Singapore", "Thailand", "Philippines", "Vietnam", "United States", "United Kingdom", "Australia", "Canada"
+    ];
+    const selectedCountry = watch("countryOfBirth") || "";
+
+    // subject you teach
+    const selectedSubject = watch("subjectYouTeach") || "";
+
+    // expertise
+    const MAX_EXPERTISE = 3
+    const allExpertise = ["Indonesian for Adults","Fundamental Indonesian","Indonesian for Children (6-11)","Indonesian for Teenagers (12-17)","Business Indonesian","Conversational Indonesian","Indonesian Grammar","Indonesian Culture"]
     const expertise = watch("expertise") || []
     const isExpertiseMaxReached = expertise.length >= MAX_EXPERTISE
 
     const handleExpertiseAdd = (newExpertise) => {
-        if (newExpertise && !expertise.includes(newExpertise) && expertise.length < MAX_EXPERTISE) {
+        if (newExpertise && !expertise.includes(newExpertise) && !isExpertiseMaxReached) {
             setValue("expertise", [...expertise, newExpertise])
         }
     }
@@ -77,12 +97,11 @@ export default function About({ setCurrentStep }) {
         )
     }
 
-    const onSubmit = (data) => {
-        localStorage.setItem("applyTutorStep1Data", JSON.stringify(data))
-        localStorage.setItem("applyTutorCurrentStep", "2")
-        setSavedData(data)
-        setCurrentStep(2)
-    }
+    // languages you speak
+    const languagesList = ["English","Indonesian","Malay","Mandarin","Japanese","Korean","Spanish","French","German","Arabic"];
+    const languageLevels = ["Native","Fluent","Advanced","Intermediate","Basic"];
+    const [selectedLanguages, setSelectedLanguages] = useState([]);
+    const [selectedLevels, setSelectedLevels] = useState([]);
 
     return (
         <div className="lingo-container flex flex-col">
@@ -97,7 +116,7 @@ export default function About({ setCurrentStep }) {
                     <input
                         type="text"
                         placeholder={savedData?.firstName || "First name"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         {...register("firstName", { required: true })}
                     />
                 </div>
@@ -107,7 +126,7 @@ export default function About({ setCurrentStep }) {
                     <input
                         type="text"
                         placeholder={savedData?.lastName || "Last name"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         {...register("lastName", { required: true })}
                     />
                 </div>
@@ -117,7 +136,7 @@ export default function About({ setCurrentStep }) {
                     <input
                         type="email"
                         placeholder={savedData?.email || "Email"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         {...register("email", {
                             required: true,
                             pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -128,51 +147,76 @@ export default function About({ setCurrentStep }) {
                 <div className="space-y-2 mt-6">
                     <LabelTutorRegis text="Country of birth" />
                     <div className="relative">
-                        <select
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                        <input
+                            type="hidden"
                             {...register("countryOfBirth", { required: true })}
+                            value={selectedCountry}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setDropdownOpen(dropdownOpen === 'country' ? null : 'country')}
+                            className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         >
-                            <option value="" disabled>
-                                Choose country...
-                            </option>
-                            <option value="Indonesia">Indonesia</option>
-                            <option value="Malaysia">Malaysia</option>
-                            <option value="Singapore">Singapore</option>
-                            <option value="Thailand">Thailand</option>
-                            <option value="Philippines">Philippines</option>
-                            <option value="Vietnam">Vietnam</option>
-                            <option value="United States">United States</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Canada">Canada</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                            </svg>
-                        </div>
+                            <span className="text-left flex-1">
+                                {selectedCountry || "Choose country..."}
+                            </span>
+                            <IoIosArrowDown />
+                        </button>
+
+                        {dropdownOpen === 'country' && (
+                            <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                            {countries.map((country, index) => (
+                                <div
+                                key={index}
+                                className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                onClick={() => {
+                                    setValue("countryOfBirth", country)
+                                    setDropdownOpen(false)
+                                }}
+                                >
+                                    <span className="text-[16px]">{country}</span>
+                                </div>
+                            ))}
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 <div className="space-y-2 mt-6">
                     <LabelTutorRegis text="Subject you teach (select subjects)" />
                     <div className="relative">
-                        <select
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                        <input
+                            type="hidden"
                             {...register("subjectYouTeach", { required: true })}
+                            value={selectedSubject}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setDropdownOpen(dropdownOpen === 'subject' ? null : 'subject')}
+                            className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         >
-                            <option value="" disabled>
-                                Select subject...
-                            </option>
-                            {subjects && subjects.length > 0 && subjects.map(subject => (
-                                <option key={subject.name} value={subject.name}>{subject.name}</option>
+                            <span className="text-left flex-1">
+                                {selectedSubject || "Select subject..."}
+                            </span>
+                            <IoIosArrowDown />
+                        </button>
+
+                        {dropdownOpen === 'subject' && (
+                            <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                            {subjects && subjects.length > 0 && subjects.map((subject, index) => (
+                                <div
+                                key={index}
+                                className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                onClick={() => {
+                                    setValue("subjectYouTeach", subject.name)
+                                    setDropdownOpen(false)
+                                }}
+                                >
+                                <span className="text-[16px]">{subject.name}</span>
+                                </div>
                             ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                            </svg>
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -211,37 +255,45 @@ export default function About({ setCurrentStep }) {
                                 Maximum of {MAX_EXPERTISE} expertise reached. Remove one to add another.
                             </p>
                         ) : null}
-
+                        
                         <div className="relative">
-                            <select
-                                onChange={(e) => {
-                                    if (e.target.value) {
-                                        handleExpertiseAdd(e.target.value)
-                                        e.target.value = ""
-                                    }
-                                }}
-                                className={`w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none ${isExpertiseMaxReached ? "bg-gray-100 cursor-not-allowed" : ""}`}
+                            <input
+                                type="hidden"
+                                {...register("selectedExpertiseTemp")}
+                                value=""
+                            />
+                            <button
+                                type="button"
                                 disabled={isExpertiseMaxReached}
+                                onClick={() => setDropdownOpen(dropdownOpen === 'expertise' ? null : 'expertise')}
+                                className={`flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                isExpertiseMaxReached ? "bg-gray-100 cursor-not-allowed text-gray-400" : ""
+                                }`}
                             >
-                                <option value="">{isExpertiseMaxReached ? "Maximum reached" : "Select expertise..."}</option>
-                                {!isExpertiseMaxReached && (
-                                    <>
-                                        <option value="Indonesian for Adults">Indonesian for Adults</option>
-                                        <option value="Fundamental Indonesian">Fundamental Indonesian</option>
-                                        <option value="Indonesian for Children (6-11)">Indonesian for Children (6-11)</option>
-                                        <option value="Indonesian for Teenagers (12-17)">Indonesian for Teenagers (12-17)</option>
-                                        <option value="Business Indonesian">Business Indonesian</option>
-                                        <option value="Conversational Indonesian">Conversational Indonesian</option>
-                                        <option value="Indonesian Grammar">Indonesian Grammar</option>
-                                        <option value="Indonesian Culture">Indonesian Culture</option>
-                                    </>
-                                )}
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
+                                <span className="text-left flex-1">
+                                {isExpertiseMaxReached ? "Maximum reached" : "Select expertise..."}
+                                </span>
+                                <IoIosArrowDown />
+                            </button>
+
+                            {dropdownOpen === 'expertise' && !isExpertiseMaxReached && (
+                                <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                {allExpertise
+                                    .filter((exp) => !expertise.includes(exp))
+                                    .map((option, index) => (
+                                    <div
+                                        key={index}
+                                        className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                        onClick={() => {
+                                        handleExpertiseAdd(option)
+                                        setDropdownOpen(null)
+                                        }}
+                                    >
+                                        <span className="text-[16px]">{option}</span>
+                                    </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -251,55 +303,91 @@ export default function About({ setCurrentStep }) {
                     {fields.map((field, index) => (
                         <div key={field.id} className="flex gap-4 mb-2">
                             <div className="relative flex-1">
-                                <select
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                                <input
+                                    type="hidden"
                                     {...register(`languages.${index}.language`, {
-                                        required: index === 0,
+                                    required: index === 0 ? "Language is required" : false,
                                     })}
+                                    value={selectedLanguages[index] || ""}
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                    setDropdownOpen(dropdownOpen === `language-${index}` ? null : `language-${index}`)
+                                    }
+                                    className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                                 >
-                                    <option value="" disabled>
-                                        Language...
-                                    </option>
-                                    <option value="English">English</option>
-                                    <option value="Indonesian">Indonesian</option>
-                                    <option value="Malay">Malay</option>
-                                    <option value="Mandarin">Mandarin</option>
-                                    <option value="Japanese">Japanese</option>
-                                    <option value="Korean">Korean</option>
-                                    <option value="Spanish">Spanish</option>
-                                    <option value="French">French</option>
-                                    <option value="German">German</option>
-                                    <option value="Arabic">Arabic</option>
-                                </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                    </svg>
-                                </div>
+                                    <span className="text-left flex-1">
+                                        {selectedLanguages[index] || "language..."}
+                                    </span>
+                                    <IoIosArrowDown />
+                                </button>
+
+                                {dropdownOpen === `language-${index}` && (
+                                    <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                        {languagesList.map((lang, idx) => (
+                                            <div
+                                            key={idx}
+                                            className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                            onClick={() => {
+                                                const newSelected = [...selectedLanguages];
+                                                newSelected[index] = lang;
+                                                setSelectedLanguages(newSelected);
+                                                setValue(`languages.${index}.language`, lang);
+                                                setDropdownOpen(null);
+                                            }}
+                                            >
+                                                <span className="text-[16px]">{lang}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            
+                            <div className="relative flex-1">
+                                <input
+                                    type="hidden"
+                                    {...register(`languages.${index}.level`, {
+                                    required: index === 0 ? "Level is required" : false,
+                                    })}
+                                    value={selectedLevels[index] || ""}
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                    setDropdownOpen(dropdownOpen === `level-${index}` ? null : `level-${index}`)
+                                    }
+                                    className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] bg-gray-100"
+                                >
+                                    <span className="text-left flex-1">
+                                        {selectedLevels[index] || "level..."}
+                                    </span>
+                                    <IoIosArrowDown />
+                                </button>
+
+                                {dropdownOpen === `level-${index}` && (
+                                    <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                    {languageLevels.map((level, idx) => (
+                                        <div
+                                        key={idx}
+                                        className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                        onClick={() => {
+                                            const newSelected = [...selectedLevels];
+                                            newSelected[index] = level;
+                                            setSelectedLevels(newSelected);
+                                            setValue(`languages.${index}.level`, level);
+                                            setDropdownOpen(null);
+                                        }}
+                                        >
+                                            <span className="text-[16px]">{level}</span>
+                                        </div>
+                                    ))}
+                                    </div>
+                                )}
                             </div>
 
-                            <div className="relative flex-1">
-                                <select
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-100"
-                                    {...register(`languages.${index}.level`, {
-                                        required: index === 0,
-                                    })}
-                                >
-                                    <option value="" disabled>
-                                        Level
-                                    </option>
-                                    <option value="Native">Native</option>
-                                    <option value="Fluent">Fluent</option>
-                                    <option value="Advanced">Advanced</option>
-                                    <option value="Intermediate">Intermediate</option>
-                                    <option value="Basic">Basic</option>
-                                </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                    </svg>
-                                </div>
-                            </div>
 
                             {index > 0 && (
                                 <button
@@ -340,7 +428,7 @@ export default function About({ setCurrentStep }) {
                     <input
                         type="tel"
                         placeholder={savedData?.phoneNumber || "+62"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         {...register("phoneNumber")}
                     />
                 </div>

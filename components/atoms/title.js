@@ -2,8 +2,16 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:09:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 22:53:55
+ * @Last Modified time: 2025-04-21 14:40:10
  */
+
+export function NavText({text, position}) {
+    return (
+        <div className={`w-full flex ${position}`}>
+            <span className="text-[#E35D33] font-bold text-[16px] border-b-[1px] border-[#E35D33] w-fit animation-effect">{text}</span>
+        </div>
+    )
+}
 
 export function OrangeText({text, position}) {
     return (

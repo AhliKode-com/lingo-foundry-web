@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-08 22:39:28
+ * @Last Modified time: 2025-04-21 14:49:05
  */
 "use client"
 import { usePathname } from 'next/navigation';
@@ -99,7 +99,10 @@ export default function Review({authorType}) {
                 }
                 </div>
             ) : (
-                <div className={`text-center w-full ${pathname === '/review' ? 'pb-[80px]' : ''}`}>No Reviews Yet.</div>
+                <div>
+                    <TitleText text='Review'/>
+                    <div className={`text-center w-full ${pathname === '/review' ? 'pb-[80px] min-h-[500px] flex items-center justify-center' : ''}`}>No Reviews Yet.</div>
+                </div>
             )}
             
         </div>
