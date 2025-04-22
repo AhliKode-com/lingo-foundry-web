@@ -16,11 +16,11 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
 
     const getPopoverText = (info) => {
         switch (info) {
-            case 1:
+            case 0:
                 return "Available";
-            case 2:
+            case 1:
                 return "Partially Booked";
-            case 3:
+            case 2:
                 return "Almost Full";
             default:
                 return "Fully Booked";
@@ -28,6 +28,49 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
     };
 
     const [playingIndex, setPlayingIndex] = useState(null);
+
+    // Get today's date and set to midnight for comparison
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Function to create array of dates for the next 7 days (today + 6 days)
+    const generateDateArray = () => {
+        // Using GMT+7 timezone offset (7 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+        const gmtPlus7Offset = 7 * 60 * 60 * 1000;
+        const dateArray = [];
+
+        for (let i = 0; i < 7; i++) {
+            // Create date for GMT+7
+            const date = new Date(Date.now() + gmtPlus7Offset);
+            date.setDate(date.getDate() + i); // Add i days to get future dates
+            date.setHours(0, 0, 0, 0);
+
+            // Format date as YYYY-MM-DD
+            const formattedDate = date.toISOString().split('T')[0];
+
+            // Format display text
+            let displayText;
+            if (i === 0) {
+                displayText = 'Today';
+            } else {
+                const options = { weekday: 'short', month: 'numeric', day: 'numeric' };
+                displayText = date.toLocaleDateString('en-US', options);
+            }
+
+            dateArray.push({
+                date: formattedDate,
+                display: displayText
+            });
+        }
+        return dateArray;
+    };
+
+    const dateArray = generateDateArray();
+
+    const scheduleMap = {};
+    teacher.tutorSchedulePreviews.forEach(schedule => {
+        scheduleMap[schedule.date] = schedule;
+    });
 
     return (
         <div
@@ -177,22 +220,25 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                     <div className="font-medium">morning</div>
                                     <div className="text-xs text-gray-500 whitespace-nowrap">06:00-12:00</div>
                                 </div>
-                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
-                                    index === 7 ? null : (
+                                {dateArray.map((date, index) => {
+                                    const schedule = scheduleMap[date.date];
+                                    const morningValue = schedule ? schedule.morning : 0;
+
+                                    return (
                                         <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
                                             <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                {getPopoverText(schedule.morning)}
+                                                {getPopoverText(morningValue)}
                                             </div>
                                             <div
                                                 className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
-                                                    schedule.morning === 1
+                                                    morningValue === 0
                                                         ? "bg-white"
-                                                        : schedule.morning === 2
+                                                        : morningValue === 1
                                                             ? "bg-[#FF9474]"
                                                             : "bg-[#E25D33]"
                                                 }`}
                                             >
-                                                {schedule.morning > 3 && (
+                                                {morningValue > 2 && (
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         className="h-5 w-5 text-white"
@@ -208,31 +254,34 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 )}
                                             </div>
                                         </div>
-                                    )
-                                )}
+                                    );
+                                })}
                             </div>
 
                             <div className="grid grid-cols-10 text-sm border-b border-[#E8E9EB]">
                                 <div className="p-2 border-r col-span-3 border-[#E8E9EB]">
                                     <div className="font-medium">afternoon</div>
-                                    <div className="text-xs text-gray-500">12:00-18:00</div>
+                                    <div className="text-xs text-gray-500 whitespace-nowrap">12:00-18:00</div>
                                 </div>
-                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
-                                    index === 7 ? null : (
+                                {dateArray.map((date, index) => {
+                                    const schedule = scheduleMap[date.date];
+                                    const afternoonValue = schedule ? schedule.afternoon : 0;
+
+                                    return (
                                         <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
                                             <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                {getPopoverText(schedule.afternoon)}
+                                                {getPopoverText(afternoonValue)}
                                             </div>
                                             <div
                                                 className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
-                                                    schedule.afternoon === 1
+                                                    afternoonValue === 0
                                                         ? "bg-white"
-                                                        : schedule.afternoon === 2
+                                                        : afternoonValue === 1
                                                             ? "bg-[#FF9474]"
                                                             : "bg-[#E25D33]"
                                                 }`}
                                             >
-                                                {schedule.afternoon > 3 && (
+                                                {afternoonValue > 2 && (
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         className="h-5 w-5 text-white"
@@ -248,31 +297,34 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 )}
                                             </div>
                                         </div>
-                                    )
-                                )}
+                                    );
+                                })}
                             </div>
 
                             <div className="grid grid-cols-10 text-sm border-b border-[#E8E9EB]">
-                                <div className="p-2 border-r border-[#E8E9EB] col-span-3">
+                                <div className="p-2 border-r col-span-3 border-[#E8E9EB]">
                                     <div className="font-medium">evening</div>
-                                    <div className="text-xs text-gray-500">18:00-24:00</div>
+                                    <div className="text-xs text-gray-500 whitespace-nowrap">18:00-24:00</div>
                                 </div>
-                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
-                                    index === 7 ? null : (
+                                {dateArray.map((date, index) => {
+                                    const schedule = scheduleMap[date.date];
+                                    const eveningValue = schedule ? schedule.evening : 0;
+
+                                    return (
                                         <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
                                             <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                {getPopoverText(schedule.evening)}
+                                                {getPopoverText(eveningValue)}
                                             </div>
                                             <div
                                                 className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
-                                                    schedule.evening === 1
+                                                    eveningValue === 0
                                                         ? "bg-white"
-                                                        : schedule.evening === 2
+                                                        : eveningValue === 1
                                                             ? "bg-[#FF9474]"
                                                             : "bg-[#E25D33]"
                                                 }`}
                                             >
-                                                {schedule.evening > 3 && (
+                                                {eveningValue > 2 && (
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         className="h-5 w-5 text-white"
@@ -288,31 +340,34 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 )}
                                             </div>
                                         </div>
-                                    )
-                                )}
+                                    );
+                                })}
                             </div>
 
-                            <div className="grid grid-cols-10 text-sm">
-                                <div className="p-2 border-r border-[#E8E9EB] col-span-3">
+                            <div className="grid grid-cols-10 text-sm border-b border-[#E8E9EB]">
+                                <div className="p-2 border-r col-span-3 border-[#E8E9EB]">
                                     <div className="font-medium">late night</div>
-                                    <div className="text-xs text-gray-500">00:00-06:00</div>
+                                    <div className="text-xs text-gray-500 whitespace-nowrap">00:00-06:00</div>
                                 </div>
-                                {teacher.tutorSchedulePreviews.map((schedule, index) =>
-                                    index === 7 ? null : (
+                                {dateArray.map((date, index) => {
+                                    const schedule = scheduleMap[date.date];
+                                    const lateNightValue = schedule ? schedule.lateNight : 0;
+
+                                    return (
                                         <div key={index} className="relative group border-r border-[#E8E9EB] cursor-pointer">
                                             <div className="absolute bottom-full -left-2 transform -translate-x-1/2 mb-2 w-max bg-[#10312B] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                {getPopoverText(schedule.lateNight)}
+                                                {getPopoverText(lateNightValue)}
                                             </div>
                                             <div
                                                 className={`w-full h-full flex items-center justify-center border-r border-[#E8E9EB] ${
-                                                    schedule.lateNight === 1
+                                                    lateNightValue === 0
                                                         ? "bg-white"
-                                                        : schedule.lateNight === 2
+                                                        : lateNightValue === 1
                                                             ? "bg-[#FF9474]"
                                                             : "bg-[#E25D33]"
                                                 }`}
                                             >
-                                                {schedule.lateNight > 3 && (
+                                                {lateNightValue > 2 && (
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         className="h-5 w-5 text-white"
@@ -328,8 +383,8 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 )}
                                             </div>
                                         </div>
-                                    )
-                                )}
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
