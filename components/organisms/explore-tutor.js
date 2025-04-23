@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 00:15:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 15:17:06
+ * @Last Modified time: 2025-04-23 22:38:12
  */
 
 "use client"
@@ -14,7 +14,7 @@ import {OrangeText} from "@/components/atoms/title";
 import {Home} from "@/constants/en";
 import TutorProfileCard from "@/components/atoms/tutor-profile-card";
 import {getPopularTutors} from "@/apis/getPopularTutors";
-import TutorSearch from "@/components/organisms/tutor-search";
+import {TutorSearch} from "@/components/organisms/search";
 
 export default function ExploreTutor() {
     const searchParams = useSearchParams()
