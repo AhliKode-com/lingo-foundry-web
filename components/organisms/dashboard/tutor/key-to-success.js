@@ -2,22 +2,23 @@
  * @Author: danteclericuzio
  * @Date: 2025-04-21 00:56:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 09:25:42
+ * @Last Modified time: 2025-04-22 11:25:17
  */
 
 import { TitleStudentDashboard } from "@/components/atoms/title";
 import Image from "next/image";
 import { LastDaysButton } from "@/components/atoms/buttons";
+import {CircularProgressBar} from "@/components/atoms/circular-progress";
 
 export default function KeyToSuccess() {
     const keysData = [
-        {title: 'Lessons you rescheduled', desc: 'Aim for less than 10%', num: 0},
+        {title: 'Lessons you rescheduled', desc: 'Aim for less than 10%', num: 9},
         {title: 'Lessons you cancelled', desc: 'Aim for less than 5%', num: 0},
         {title: 'Total lessons missed', desc: 'Aim for 0%', num: 0, condition: 'lte' },
-        {title: 'Weekly lessons', desc: 'Aim for 75%', num: 0, condition: 'gte' },
-        {title: 'Lessons in the Lingo Foundry classroom', desc: 'Aim for 75%', num: 0, condition: 'gte' },
+        {title: 'Weekly lessons', desc: 'Aim for 75%', num: 60, condition: 'gte' },
+        {title: 'Lessons in the Lingo Foundry classroom', desc: 'Aim for 75%', num: 90, condition: 'gte' },
         {title: 'Replies within 24h', desc: 'Aim for 90%', num: 0},
-        {title: 'Trial follow-ups', desc: 'Aim for 90%', num: 0},
+        {title: 'Trial follow-ups', desc: 'Aim for 90%', num: 95},
         {title: 'Popular time slots', desc: 'Aim for more than 60', num: 117, condition: 'gte' },
         {title: 'Average review rating', desc: 'Aim for more than 4.8', num: 0.0, condition: 'gte' },
         {title: 'Profile score', desc: 'Aim for more than 60', num: 80, condition: 'gte' },
@@ -51,7 +52,7 @@ export default function KeyToSuccess() {
     
     return (
         <div className="flex flex-col mt-[62px]">
-            <div className="flex items-center">
+            <div className="flex md:flex-row flex-col gap-[20px] md:gap-0 items-center">
                 <div className="flex flex-col">
                     <TitleStudentDashboard text="Keys to success"/>
                     <span className="text-[#4D4C5C]">These metrics are designed to help and support you grow your business, attract new students, and keep them engaged</span>
@@ -70,14 +71,17 @@ export default function KeyToSuccess() {
                                     <span className="text-[#6A697C] text-[12px]">{item.desc}</span>
                                 </div>
                                 <div className="flex items-center mt-auto justify-between w-full">
-                                    <span className="text-[24px] md:text-[32px] font-medium">{item.num}%</span>
+                                    <div className="mt-[20px]">
+                                        <CircularProgressBar progress={item.num} />
+                                    </div>
+                                    {/* <span className="text-[24px] md:text-[32px] font-medium">{item.num}%</span> */}
                                     {isMet && (
                                         <Image
                                             src="/assets/green-check.svg"
                                             width={24}
                                             height={24}
                                             alt="check"
-                                            className=""
+                                            className="mt-auto"
                                         />
                                     )}
                                 </div>
@@ -98,14 +102,18 @@ export default function KeyToSuccess() {
                                     <span className="text-[#6A697C] text-[12px]">{item.desc}</span>
                                 </div>
                                 <div className="flex items-center mt-auto justify-between w-full">
-                                    <span className="text-[24px] md:text-[32px] font-medium">{item.num}%</span>
+                                    {/* <span className="text-[24px] md:text-[32px] font-medium">{item.num}%</span>
+                                     */}
+                                    <div className="mt-[20px]">
+                                        <CircularProgressBar progress={item.num} />
+                                    </div>
                                     {isMet && (
                                         <Image
                                             src="/assets/green-check.svg"
                                             width={24}
                                             height={24}
                                             alt="check"
-                                            className=""
+                                            className="mt-auto"
                                         />
                                     )}
                                 </div>
@@ -126,14 +134,17 @@ export default function KeyToSuccess() {
                                     <span className="text-[#6A697C] text-[12px]">{item.desc}</span>
                                 </div>
                                 <div className="flex items-center mt-auto justify-between w-full">
-                                    <span className="text-[24px] md:text-[32px] font-medium">{item.num}%</span>
+                                    {/* <span className="text-[24px] md:text-[32px] font-medium">{item.num}%</span> */}
+                                    <div className="mt-[20px]">
+                                        <CircularProgressBar progress={item.num} />
+                                    </div>
                                     {isMet && (
                                         <Image
                                             src="/assets/green-check.svg"
                                             width={24}
                                             height={24}
                                             alt="check"
-                                            className=""
+                                            className="mt-auto"
                                         />
                                     )}
                                 </div>
@@ -158,7 +169,7 @@ export default function KeyToSuccess() {
                                     <span className="text-[#6A697C] text-[12px]">{item.desc}</span>
                                 </div>
                                 <div className="flex items-center mt-auto justify-between w-full">
-                                    <span className="text-[24px] md:text-[32px] font-medium">{displayValue}</span>
+                                    <span className="text-[24px] lg:text-[32px] font-medium">{displayValue}</span>
                                     {item.desc && isMet && (
                                         <Image
                                             src="/assets/green-check.svg"
