@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 09:28:43
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 16:35:48
+ * @Last Modified time: 2025-04-23 23:42:37
  */
 
 import Image from 'next/image';
@@ -51,6 +51,32 @@ export function LookingCard({
                     <OrangeButton text={buttonText} />
                 </Link>
             )}
+        </div>
+    )
+}
+
+export function StudentCard({data}) {
+    return (
+        <div className="flex flex-col items-center justify-center">
+            <img 
+                src={data.img || "/placeholder.svg"} 
+                alt={data.name} 
+                className="w-[265px] h-[312px] object-cover"
+                onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/placeholder.svg";
+                }}
+            />
+            <div className="flex flex-col items-center justify-center gap-[6px] py-[16px] w-[265px] border-[1px] border-[#E9EAF0]">
+                <span className="text-[18px] font-medium">{data.name}</span>
+                <span className="text-[14px] text-[#8C94A3]">{data.skill}</span>
+            </div>
+            <div className="flex flex-col items-center justify-center py-[16px] gap-[16px] w-[265px] border-[1px] border-[#E9EAF0]">
+                <span className="text-[13px] font-medium text-[#4E5566]">{data.subject}</span>
+                <button className="cursor-pointer text-[#E35D33] px-[58px] py-[14px] bg-[#FFEEE8] font-semibold text-[14px]">
+                    Send message
+                </button>
+            </div>
         </div>
     )
 }

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 09:57:25
+ * @Last Modified time: 2025-04-23 18:03:15
  */
 
 "use client"
@@ -12,7 +12,7 @@ import {useAuth} from "@/context/AuthContext";
 
 export default function StudentNavbar() {
     const pathname = usePathname();
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
 
     const links = [
         {
@@ -43,18 +43,27 @@ export default function StudentNavbar() {
                 <div
                     className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full h-full gap-[20px] lg:gap-0 animation-effect">
                     <div className="flex items-center gap-[23px]">
-                        <img 
-                            src={user?.photoProfileUrl || "/placeholder.svg"} 
-                            alt="student profile"
-                            onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = "/placeholder.svg";
-                            }}
-                            className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] animation-effect rounded-full object-cover"
-                        />
+                        { loading ? (
+                            <div className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] bg-gray-300 animate-pulse rounded-full"></div>
+                        ) : (
+                            <img 
+                                src={user?.photoProfileUrl || "/placeholder.svg"} 
+                                alt="student profile"
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = "/placeholder.svg";
+                                }}
+                                className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] animation-effect rounded-full object-cover"
+                            />
+                        )}
                         <div className="flex flex-col gap-[6px] md:gap-[14px]">
-                            <span
-                                className = "font-semibold text-[18px] md:text-[24px] animation-effect" >{!user?.firstName || !user?.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}</span>
+                            { loading ? (
+                                <div className="h-[40px] w-full bg-gray-300 animate-pulse rounded-lg"></div>
+                            ) : (
+                                <span
+                                    className = "font-semibold text-[18px] md:text-[24px] animation-effect" >{!user?.firstName || !user?.lastName ? user?.username : `${user?.firstName} ${user?.lastName}`}
+                                </span>
+                            )}
                             <div className="flex flex-col">
                                 {/*<div className="flex items-center gap-[12px]">*/}
                                 {/*    <img src="/assets/indo-flag.svg" alt="indo flag" className="w-[22px]"/>*/}

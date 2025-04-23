@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 23:15:01
+ * @Last Modified time: 2025-04-23 22:31:19
  */
 "use client"
 import Image from 'next/image';
@@ -30,7 +30,6 @@ export default function Navbar() {
     const [cartCount, setCartCount] = useState(0)
     const { user, loading, logoutContext } = useAuth()
     const [showSubmenu, setShowSubmenu] = useState(true);
-    console.log("navbar user: ", user)
 
     // wishlist
     const { getWishList } = useStudentWishList();
