@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:23
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 09:28:03
+ * @Last Modified time: 2025-04-22 11:24:09
  */
 "use client"
 import { IoIosArrowDown } from "react-icons/io";
@@ -26,7 +26,7 @@ export function LastDaysButton({custom}) {
     <div className={`relative max-w-[250px] ${custom}`}>
       <button 
         onClick={handleDaysDropdown}
-        className='gap-[20px] w-full cursor-pointer flex justify-between items-center px-[21px] py-[15px] bg-white border-[2px] border-[#DCDCE5] rounded-[8px]'
+        className='whitespace-nowrap gap-[20px] w-full cursor-pointer flex justify-between items-center px-[21px] py-[15px] bg-white border-[2px] border-[#DCDCE5] rounded-[8px]'
       >
         <Image
             src="/assets/tutor-dashboard/calendar.svg"
