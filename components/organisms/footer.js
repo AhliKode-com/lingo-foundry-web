@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaGooglePlusG, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
-    const { title, list1, list2, list3, list4, contactUs, quickLinks, features } = FooterData;
+    const { title, list1, list2, list3, list4, contactUs, quickLinks, features, socialMedias } = FooterData;
     return (
         <footer className="pt-[70px] sm:pt-[90px] w-full border-t-[1px] border-[#CFCFCF]">
             <div className="lingo-container relative w-full flex flex-col pb-[40px]">
@@ -78,7 +78,7 @@ export default function Footer() {
                         </div>
                     </div> */}
                     <div className='
-                        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 
+                        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5
                         gap-[20px] sm:gap-0
                     '>
                         <div className='flex flex-col'>
@@ -91,20 +91,6 @@ export default function Footer() {
                                 priority
                             />
                             <span className='sm:w-[200px] my-4 text-[14px] md:text-[16px]'>{title.address}</span>
-                            <div className='flex gap-[10px] text-[#E35D33]'>
-                                <div className='w-[39px] h-[39px] rounded-full bg-[#FF723A10] flex items-center justify-center'>
-                                    <FaFacebookF/>
-                                </div>
-                                <div className='w-[39px] h-[39px] rounded-full bg-[#FF723A10] flex items-center justify-center'>
-                                    <FaWhatsapp/>
-                                </div>
-                                <div className='w-[39px] h-[39px] rounded-full bg-[#FF723A10] flex items-center justify-center'>
-                                    <FaGooglePlusG/>
-                                </div>
-                                <div className='w-[39px] h-[39px] rounded-full bg-[#FF723A10] flex items-center justify-center'>
-                                    <FaInstagram/>
-                                </div>
-                            </div>
                         </div>
                         <div className='flex flex-col text-[14px] md:text-[16px]'>
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.quickLinks}</span>
@@ -147,6 +133,22 @@ export default function Footer() {
                                     </Link>
                                 )}
                             )}
+                        </div>
+                        <div className='flex flex-col text-[14px] md:text-[16px]'>
+                            <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.followUs}</span>
+                            <div className='flex gap-[10px] text-[#E35D33]'>
+                                {socialMedias.map((socialMedia, idx) => {
+                                    return (
+                                        <Link
+                                            key={idx}
+                                            className='w-[39px] h-[39px] rounded-full bg-[#FF723A10] flex items-center justify-center'
+                                            href={socialMedia.href}
+                                        >
+                                            {socialMedia.component}
+                                        </Link>
+                                    )
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>

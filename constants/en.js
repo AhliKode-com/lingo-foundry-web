@@ -5,6 +5,8 @@
  * @Last Modified time: 2025-04-24 23:54:08
  */
 
+import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
+
 export const Home = {
     hero: {
         title1: 'Learn Everyday & Any New Language Online with Top',
@@ -225,6 +227,7 @@ export const FooterData = {
         navTitle: 'Tutors For All Ages & Levels',
         contactUs: 'Contact Us',
         quickLinks: 'Quick Links',
+        followUs: 'Follow Us',
         feature: 'Features',
         address: 'Language learning platform made easy & fun Connecting Top Instructors with students'
     },
@@ -346,7 +349,7 @@ export const FooterData = {
     ],
     contactUs: [
         {
-            href: '/',
+            href: 'mailto:info@lingofoundry.com',
             title: 'info@lingofoundry.com'
         },
         {
@@ -377,7 +380,7 @@ export const FooterData = {
         },
         {
             href: '/',
-            title: 'Explore out Tutors'
+            title: 'Explore our Tutors'
         },
         {
             href: '/',
@@ -391,6 +394,20 @@ export const FooterData = {
             href: '/',
             title: 'Why Choose Lingo Foundry?'
         }
+    ],
+    socialMedias: [
+        {
+            href: 'https://www.instagram.com/lingofoundry/',
+            component: <FaInstagram />,
+        },
+        {
+            href: 'https://www.facebook.com/lingofoundry',
+            component: <FaFacebookF />,
+        },
+        {
+            href: 'https://whatsapp.com/channel/0029Vb7T6qH3wtb9qe7Mol2w',
+            component: <FaWhatsapp />,
+        },
     ],
     features: [
         {
