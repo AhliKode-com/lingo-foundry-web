@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { IoIosArrowDown } from "react-icons/io";
 import { StudentCard } from '@/components/atoms/card';
+import Pagination from '@/components/atoms/pagination';
 import { StudentSearch } from "@/components/organisms/search";
 import { getLandingSubjects } from "@/apis/getLandingSubjects";
 
@@ -86,31 +87,19 @@ export default function MyStudents() {
     ];
 
     const studentsPerPage = 8;
+    const activeData = activeTab === "current" ? studentsData : studentsData2;
     const [currentPage, setCurrentPage] = useState(1);
-    const [currentPage2, setCurrentPage2] = useState(1);
 
-    const totalPages = Math.ceil(studentsData.length / studentsPerPage);
-    const totalPages2 = Math.ceil(studentsData2.length / studentsPerPage);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [debouncedQuery, selectedSubject, activeTab]);
 
-    const currentStudents = studentsData.slice(
+    const totalPages = Math.ceil(activeData.length / studentsPerPage);
+    const currentStudents = activeData.slice(
         (currentPage - 1) * studentsPerPage,
         currentPage * studentsPerPage
     );
 
-    const currentStudents2 = studentsData2.slice(
-        (currentPage2 - 1) * studentsPerPage,
-        currentPage2 * studentsPerPage
-    );
-
-    useEffect(() => {
-        setCurrentPage(1);
-        setCurrentPage2(1);
-    }, [debouncedQuery, selectedSubject]);
-
-    useEffect(() => {
-        setCurrentPage(1);
-        setCurrentPage2(1);
-    }, [activeTab]);
 
     return (
         <div className="lingo-container flex flex-col mb-[72px]">
@@ -175,105 +164,29 @@ export default function MyStudents() {
 
             {/* Tab Content */}
             <div className="mt-[35px] animation-effect">
-                {activeTab === "current" && (
-                    <div className="flex flex-col">
-                        {/* list student */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[24px]">
-                            {currentStudents.map((student, index) => (                      
-                                <StudentCard data={student} key={index}/>
-                            ))}
-                        </div>
-                        {/* pagination */}
-                        <div className="flex justify-center items-center gap-4 my-[60px]">
-                            {/* Prev Button */}
-                            <button
-                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
-                                className={`cursor-pointer w-10 h-10 rounded-full flex items-center justify-center animation-effect ${
-                                currentPage === 1 ? "bg-[#FFF3EF] opacity-50 cursor-not-allowed" : "bg-[#FFF3EF] hover:opacity-80"
-                                }`}
-                            >
-                                <FaArrowLeft className="text-[#E35D33]"/>
-                            </button>
-
-                            {/* Page Numbers */}
-                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                                <button
-                                key={pageNum}
-                                onClick={() => setCurrentPage(pageNum)}
-                                className={`cursor-pointer w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium animation-effect ${
-                                    currentPage === pageNum
-                                    ? "bg-[#E15C31] text-white"
-                                    : "text-black hover:bg-[#FFF3EF] hover:text-[#E35D33]"
-                                }`}
-                                >
-                                {String(pageNum).padStart(2, "0")}
-                                </button>
-                            ))}
-
-                            {/* Next Button */}
-                                <button
-                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                    disabled={currentPage === totalPages}
-                                    className={`cursor-pointer w-10 h-10 rounded-full flex items-center justify-center animation-effect ${
-                                    currentPage === totalPages ? "bg-[#FFF3EF] opacity-50 cursor-not-allowed" : "bg-[#FFF3EF] hover:opacity-80"
-                                    }`}
-                                >
-                                    <FaArrowRight className="text-[#E35D33]"/>
-                                </button>
-                            </div>
+                <div className="flex flex-col">
+                    {/* student cards */}
+                    <div id="student-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[24px]">
+                        {currentStudents.map((student, index) => (
+                            <StudentCard data={student} key={index} />
+                        ))}
                     </div>
-                )}
 
-                {activeTab === "archived" && (
-                    <div className="flex flex-col">
-                        {/* list student */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[24px]">
-                            {currentStudents2.map((student, index) => (                      
-                                <StudentCard data={student} key={index}/>
-                            ))}
-                        </div>
-                        {/* pagination */}
-                        <div className="flex justify-center items-center gap-4 my-[60px]">
-                            {/* Prev Button */}
-                            <button
-                                onClick={() => setCurrentPage2((prev) => Math.max(prev - 1, 1))}
-                                disabled={currentPage2 === 1}
-                                className={`cursor-pointer w-10 h-10 rounded-full flex items-center justify-center animation-effect ${
-                                    currentPage2 === 1 ? "bg-[#FFF3EF] opacity-50 cursor-not-allowed" : "bg-[#FFF3EF] hover:opacity-80"
-                                }`}
-                            >
-                                <FaArrowLeft className="text-[#E35D33]"/>
-                            </button>
-
-                            {/* Page Numbers */}
-                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                                <button
-                                key={pageNum}
-                                onClick={() => setCurrentPage2(pageNum)}
-                                className={`cursor-pointer w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium animation-effect ${
-                                    currentPage2 === pageNum
-                                    ? "bg-[#E15C31] text-white"
-                                    : "text-black hover:bg-[#FFF3EF] hover:text-[#E35D33]"
-                                }`}
-                                >
-                                {String(pageNum).padStart(2, "0")}
-                                </button>
-                            ))}
-
-                            {/* Next Button */}
-                                <button
-                                    onClick={() => setCurrentPage2((prev) => Math.min(prev + 1, totalPages2))}
-                                    disabled={currentPage2 === totalPages2}
-                                    className={`cursor-pointer w-10 h-10 rounded-full flex items-center justify-center animation-effect ${
-                                        currentPage2 === totalPages2 ? "bg-[#FFF3EF] opacity-50 cursor-not-allowed" : "bg-[#FFF3EF] hover:opacity-80"
-                                    }`}
-                                >
-                                    <FaArrowRight className="text-[#E35D33]"/>
-                                </button>
-                            </div>
-                    </div>
-                )}
+                    {/* pagination */}
+                    <Pagination
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        totalPages={totalPages}
+                        onPageChange={() => {
+                        const grid = document.getElementById("student-grid");
+                        if (grid) {
+                            const yOffset = -300;
+                            const y = grid.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                            window.scrollTo({ top: y, behavior: "smooth" });
+                        }
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );
