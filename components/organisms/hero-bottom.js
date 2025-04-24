@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-15 16:47:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 16:43:05
+ * @Last Modified time: 2025-04-24 23:39:36
  */
 
 "use client"
@@ -22,10 +22,13 @@ export default function HeroBottom() {
                 <TitleText text={heroBottom.title}/>
             </div>
             <div className="animation-effect text-[14px] sm:text-[16px] md:text-[18px] flex lg:hidden flex-col mb-[20px] ">
-                <ol className="list-decimal list-inside">
-                {heroBottom.list.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                ))}
+                <ol className="list-decimal list-inside my-[10px] space-y-2">
+                    {heroBottom.list.map((item, idx) => (
+                        <div key={idx}>
+                            <li className='font-semibold'>{item.title}</li>
+                            <span>{item.desc}</span>
+                        </div>  
+                    ))}
                 </ol>
             </div>
             <div 
@@ -41,11 +44,14 @@ export default function HeroBottom() {
                 rounded-[25px] md:rounded-[50px]
                 "
             >   
-                <div className="animation-effect p-[50px] hidden lg:flex flex-col absolute w-[540px] h-[400px] bg-[#F9E8E2] lg:bottom-[30px] xl:bottom-[100px] right-[30px]">
+                <div className="animation-effect py-[25px] px-[50px] hidden lg:flex flex-col absolute w-[540px] h-[430px] bg-[#F9E8E2] lg:bottom-[30px] xl:bottom-[100px] right-[30px]">
                         <TitleText text={heroBottom.title}/>
-                        <ol className="list-decimal list-inside my-[20px]">
+                        <ol className="list-decimal list-inside my-[10px] space-y-2">
                             {heroBottom.list.map((item, idx) => (
-                                <li key={idx}>{item}</li>
+                                <div key={idx}>
+                                    <li className='font-semibold'>{item.title}</li>
+                                    <span>{item.desc}</span>
+                                </div>  
                             ))}
                         </ol>
                         <div>
