@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-23 18:03:15
+ * @Last Modified time: 2025-04-24 09:21:58
  */
 
 "use client"
@@ -38,7 +38,7 @@ export default function StudentNavbar() {
     ]
 
     return (
-        <div className="lingo-container flex flex-col h-full pt-[80px] sm:pt-[103.61px]">
+        <div id='student-navbar' className="lingo-container flex flex-col h-full pt-[80px] sm:pt-[103.61px]">
             <div className="mt-[50px] border-[1px] border-[#FF723A40] w-full lg:h-[190px] p-[20px] md:p-[40px]">
                 <div
                     className="flex flex-col lg:flex-row lg:justify-between lg:items-center w-full h-full gap-[20px] lg:gap-0 animation-effect">
@@ -99,10 +99,16 @@ export default function StudentNavbar() {
                 <ul className="flex gap-[40px] h-full">
                     {links.map((link, index) => {
                         const isActive = pathname === link.href ? 'border-b-2 border-[#FF6636]' : '';
+                        const handleLinkClick = () => {
+                            const target = document.getElementById("student-navbar");
+                            if (target) {
+                                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                            }
+                        };
                         return (
                             <li key={index}
                                 className={`text-[14px] md:text-[16px] text-[#4E5566] ${isActive} h-full px-[10px] md:px-[20px] whitespace-nowrap animation-effect`}>
-                                <Link href={link.href}>{link.name}</Link>
+                                <Link href={link.href} onClick={handleLinkClick}>{link.name}</Link>
                             </li>
                         )
                     })}

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 10:04:12
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-23 16:33:20
+ * @Last Modified time: 2025-04-24 08:38:13
  */
 "use client"
 import { TitleStudentDashboard } from "@/components/atoms/title";
@@ -29,13 +29,13 @@ export default function TutorDashboard(){
                     <div className="flex flex-col">
                         <TitleStudentDashboard text="We're glad your're here!" />
                         <span className="text-[#4D4C5C]">Get set for success on Lingo Foundry with some basic tips.</span>
-                        <Link href={'/tutor-dashboard'} passHref>
+                        {/* <Link href={'/tutor-dashboard'} passHref>
                             <button
                                 className="rounded-[8px] mt-[16px] bg-[#E35D33] cursor-pointer flex h-[38px] md:h-[48px] justify-center items-center text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect whitespace-nowrap"
                             >
                                 View your calendar
                             </button>
-                        </Link>
+                        </Link> */}
                     </div>
                     <Image
                         src="/assets/tutor-dashboard/in-love.svg"

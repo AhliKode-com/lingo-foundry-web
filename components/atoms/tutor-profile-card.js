@@ -2,11 +2,12 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-18 20:36:56
+ * @Last Modified time: 2025-04-24 09:09:20
  */
 
 "use client"
 
+import Image from "next/image";
 import {useState} from "react";
 
 export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }) {
@@ -194,7 +195,7 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
 
                         {/* Timezone Info */}
                         <p className="text-xs text-gray-500 mb-4">
-                            * All times listed are in your local timezone: Bangkok GMT +07:00
+                            * All times listed are in your local timezone: Bangkok GMT +07:00aaa
                         </p>
                     </div>
 
@@ -239,18 +240,13 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 }`}
                                             >
                                                 {morningValue > 2 && (
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-5 w-5 text-white"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    >
-                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                                    </svg>
+                                                    <Image
+                                                        src="/assets/zap.svg"
+                                                        alt="alert"
+                                                        width={12}
+                                                        height={20}
+                                                        className=""
+                                                    />
                                                 )}
                                             </div>
                                         </div>
@@ -282,18 +278,13 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 }`}
                                             >
                                                 {afternoonValue > 2 && (
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-5 w-5 text-white"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    >
-                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                                    </svg>
+                                                    <Image
+                                                        src="/assets/zap.svg"
+                                                        alt="alert"
+                                                        width={12}
+                                                        height={20}
+                                                        className=""
+                                                    />
                                                 )}
                                             </div>
                                         </div>
@@ -325,18 +316,13 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 }`}
                                             >
                                                 {eveningValue > 2 && (
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-5 w-5 text-white"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    >
-                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                                    </svg>
+                                                    <Image
+                                                        src="/assets/zap.svg"
+                                                        alt="alert"
+                                                        width={12}
+                                                        height={20}
+                                                        className=""
+                                                    />
                                                 )}
                                             </div>
                                         </div>
@@ -368,18 +354,13 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                                 }`}
                                             >
                                                 {lateNightValue > 2 && (
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-5 w-5 text-white"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    >
-                                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                                                    </svg>
+                                                    <Image
+                                                        src="/assets/zap.svg"
+                                                        alt="alert"
+                                                        width={12}
+                                                        height={20}
+                                                        className=""
+                                                    />
                                                 )}
                                             </div>
                                         </div>
