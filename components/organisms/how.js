@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 16:36:30
+ * @Last Modified time: 2025-04-24 23:50:40
  */
 
 import { TitleText } from "@/components/atoms/title";
@@ -25,15 +25,15 @@ export default function How() {
           description: how.oneDesc
         },
         {
-          id: 2,
-          image: "/assets/how/two.png",
-          altImage: "two-pic",
-          icon: "/assets/how/two.svg",
-          altIcon: "two-num",
-          headingBefore: how.twoHeadingBefore,
-          headingHighlight: how.twoHeadingHighlight,
-          headingAfter: how.twoHeadingAfter,
-          description: how.twoDesc,
+            id: 2,
+            image: "/assets/how/two.png",
+            altImage: "two-pic",
+            icon: "/assets/how/two.svg",
+            altIcon: "two-num",
+            headingBefore: how.twoHeadingBefore,
+            descriptionBefore: how.twoDescBefore,
+            descriptionHighlight: how.twoDescHighlight,
+            descriptionAfter: how.twoDescAfter
         },
         {
           id: 3,

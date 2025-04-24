@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:30
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-18 21:39:13
+ * @Last Modified time: 2025-04-24 23:41:59
  */
 
 import { FooterData } from '@/constants/en'
@@ -107,20 +107,6 @@ export default function Footer() {
                             </div>
                         </div>
                         <div className='flex flex-col text-[14px] md:text-[16px]'>
-                            <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.contactUs}</span>
-                            {contactUs.map((item, index) => {
-                                return (
-                                    <Link
-                                        key={index} 
-                                        href={item.href}
-                                        className='cursor-pointer mb-[12px] text-[#A3A3A3]'
-                                    >
-                                        {item.title}
-                                    </Link>
-                                )}
-                            )}
-                        </div>
-                        <div className='flex flex-col text-[14px] md:text-[16px]'>
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.quickLinks}</span>
                             {quickLinks.map((item, index) => {
                                 return (
@@ -137,6 +123,20 @@ export default function Footer() {
                         <div className='flex flex-col text-[14px] md:text-[16px]'>
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.feature}</span>
                             {features.map((item, index) => {
+                                return (
+                                    <Link
+                                        key={index} 
+                                        href={item.href}
+                                        className='cursor-pointer mb-[12px] text-[#A3A3A3]'
+                                    >
+                                        {item.title}
+                                    </Link>
+                                )}
+                            )}
+                        </div>
+                        <div className='flex flex-col text-[14px] md:text-[16px]'>
+                            <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.contactUs}</span>
+                            {contactUs.map((item, index) => {
                                 return (
                                     <Link
                                         key={index} 

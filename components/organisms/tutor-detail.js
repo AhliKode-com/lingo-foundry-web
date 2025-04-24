@@ -2,10 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-14 23:10:35
+ * @Last Modified time: 2025-04-25 00:06:11
  */
 
 "use client";
+import { RiErrorWarningLine } from "react-icons/ri";
 import {toast} from "react-toastify";
 import {useParams, useRouter} from "next/navigation";
 import React, {useState} from "react";
@@ -145,7 +146,7 @@ export default function TutorDetail() {
     return (
         <div className="lingo-container flex flex-col lg:flex-row pt-[80px] sm:pt-[103.61px]">
             {/* cart modal */}
-            {openCart && (
+            {!openCart && (
                 <div className="fixed inset-0 bg-[#00000070] flex items-center justify-center z-50" onClose={handleOpenCart}>
                     <div className="bg-white rounded-[8px] p-6 shadow-lg flex flex-col">
                         <span className="text-[24px] font-semibold mb-4">Add to Cart</span>
@@ -156,10 +157,12 @@ export default function TutorDetail() {
                                 <span className="text-[16px] font-medium">Subject</span>
                                 <span className="text-[16px] font-medium ml-[12px]">Level</span>
                                 <span className="text-[16px] font-medium ml-[36px]">Session</span>
+                                <span className="text-[16px] font-medium ml-[24px]">Discount</span>
                             </div>
                             {languageLevel.map((data, index) => {
                                 const bgColor = bgColors[index % bgColors.length];
                                 const sessions   = sessionsByIndex[index] ?? data.minSession;
+                                const discount = sessions >= 10 ? '10' : '0';
                                 const handleMinus = () => {
                                     if (sessions > data.minSession) {
                                       changeSessions(index, -1);
@@ -193,10 +196,19 @@ export default function TutorDetail() {
                                                 +
                                             </button>
                                         </div>
+                                        <div className="flex items-center border rounded">
+                                            <input type="text" value={`${discount} %`} readOnly className="w-[85px] text-center outline-none"/>
+                                        </div>
                                     </div>
                                 )
                             })}
                         </div>
+                        {selectedIndexes.length === 0 && (
+                            <div className="flex items-center gap-2 mb-4">
+                                <RiErrorWarningLine className="text-[#E35D33]"/>
+                                <span>Please select at least one subject</span>
+                            </div>
+                        )}
                         <div className="flex justify-center gap-4">
                             <button
                                 onClick={handleOpenCart}
@@ -205,8 +217,12 @@ export default function TutorDetail() {
                                 Cancel
                             </button>
                             <button
+                                disabled={selectedIndexes.length === 0}
                                 onClick={handleAddToCart}
-                                className="cursor-pointer rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]"
+                                className={`
+                                    cursor-pointer rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full
+                                    ${selectedIndexes.length === 0 ? "opacity-50 cursor-not-allowed bg-gray-500" : "bg-[#E35D33] "}
+                                    `}
                             >
                                 Yes, add it
                             </button>

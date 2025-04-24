@@ -2,15 +2,15 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-18 21:35:04
+ * @Last Modified time: 2025-04-24 23:54:08
  */
 
 export const Home = {
     hero: {
         title1: 'Learn Everyday & Any New Language Online with Top',
         title2: 'Instructors.',
-        subtitle: 'Language learning made easy and fun—tailored just for you!',
-        placeholder: 'Try English Tutor',
+        subtitle: 'Language learning made easy and fun Personalized just for you!',
+        placeholder: 'Try “Learn English”',
         buttonSearch: 'Search Now'
     },
     carousel: {
@@ -43,15 +43,15 @@ export const Home = {
     },
     looking: {
         title: 'Teachers & Students',
-        subtitle: 'What you looking for?',
-        teachTitle: 'Do you want to teach here?',
-        learnTitle: 'Do you want to learn here?',
-        teachDesc: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed di nonumy eirmod tempor invidunt ut labore et dolore magn aliq erat.',
-        learnDesc: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed di nonumy eirmod tempor invidunt ut labore et dolore magn aliq erat.',
+        subtitle: 'What are you waiting for?',
+        teachTitle: 'Apply as Instructors',
+        learnTitle: 'Apply as Students',
+        teachDesc: "Grow your reach and make a real difference in student's lives by teaching on our platform, benefiting from our supportive community and expanding your professional horizons.",
+        learnDesc: "Unlock your potential with our platform designed for student growth, offering expert guidance to make a real impact in your future studies and career through confident language skills.",
         registerButton: 'Register Now'
     },
     category: {
-        title: 'Browse top category',
+        title: 'Browse Top Categories',
         english: {
             title: 'English',
             nums: '63,476 Courses'
@@ -129,11 +129,13 @@ export const Home = {
         oneHeadingBefore: "Find a tutor",
         oneHeadingHighlight: "",
         oneHeadingAfter: "",
-        oneDesc: "Browse tutors and see their background, experience and student feedback. And book your class.",
+        oneDesc: "Browse tutors and see their backgrounds, experiences, and student's feedback. And book your class.",
         twoHeadingBefore: "Choose a time and book a class",
         twoHeadingHighlight: "",
         twoHeadingAfter: "",
-        twoDesc: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to 12 hours before your class.",
+        twoDescBefore: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to",
+        twoDescHighlight: " 12 hours ",
+        twoDescAfter: "before your class.",
         threeHeadingBefore: "Learn when you want, from where you want",
         threeHeadingHighlight: "",
         threeHeadingAfter: "",
@@ -159,23 +161,23 @@ export const Home = {
         teacherThree: 'Kevin Duncan- IELTS Specialist',
     },
     heroBottom: {
-        title: 'You can be a great tutor',
+        title: 'Be a Great Teacher At Lingo Foundry',
         list: [
-            'Set your own prices',
-            'Be your own boss',
-            'Work from home, and on your schedule'
+            {title: 'Global Reach', desc: 'Connect with students from all over the world'},
+            {title: 'Flexible Work Hours', desc: 'Work from home, and on your schedule'},
+            {title: 'Competitive Earnings', desc: 'Set your own prices, and be your own boss'},
         ],
-        button: 'Join us'
+        button: 'Apply to teach'
     }
 }
 
 export const FindTutor = {
     hero: {
-        title1: 'Online Tutoring or',
-        title2: 'Tutors Near',
-        title3: 'Me, Classes',
-        subtitle: 'Study language with a teacher who is just focused on you!',
-        placeholder: 'Try English Tutor',
+        title1: 'Online Tutoring,',
+        title2: 'Tutors Near Me,',
+        title3: 'and Classes',
+        subtitle: 'Your dedicated language teacher, your path to fluency.',
+        placeholder: 'Try “Learn English”',
         buttonSearch: 'Search Now'
     },
     faq: {
@@ -224,7 +226,7 @@ export const FooterData = {
         contactUs: 'Contact Us',
         quickLinks: 'Quick Links',
         feature: 'Features',
-        address: 'Lorem ipsum dolor sit amet, consetetur sadip scing elitr, seddi nonumy eirmod tempor invi dunt ut labore lorem ipsum.'
+        address: 'Language learning platform made easy & fun Connecting Top Instructors with students'
     },
     list1: [
         {
@@ -375,15 +377,19 @@ export const FooterData = {
         },
         {
             href: '/',
-            title: 'Explore Pages'
+            title: 'Explore out Tutors'
         },
         {
             href: '/',
-            title: 'Our Services'
+            title: 'Online Tutoring FAQ'
         },
         {
             href: '/',
-            title: 'Destinations'
+            title: 'Hear What They Said'
+        },
+        {
+            href: '/',
+            title: 'Why Choose Lingo Foundry?'
         }
     ],
     features: [
