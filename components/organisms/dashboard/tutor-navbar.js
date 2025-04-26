@@ -27,6 +27,10 @@ export default function StudentNavbar() {
             name: "My Profile",
             href: "/tutor-dashboard/my-profile"
         },
+        {
+            name: "My Ads",
+            href: "/tutor-dashboard/my-ads"
+        },
         // {
         //     name: "Messages",
         //     href: "/tutor-dashboard/message"
