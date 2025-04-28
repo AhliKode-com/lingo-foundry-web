@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-25 00:06:11
+ * @Last Modified time: 2025-04-28 00:47:32
  */
 
 "use client";
@@ -21,7 +21,6 @@ import {useStudentWishList} from "@/apis/studentWishList";
 import TutorDetailSkeleton from "@/components/organisms/tutor-detail-skeleton";
 import {getPopularTutors} from "@/apis/getPopularTutors";
 import {useAuth} from "@/context/AuthContext";
-import {router} from "next/client";
 
 export default function TutorDetail() {
     const {slug} = useParams();
@@ -122,13 +121,17 @@ export default function TutorDetail() {
 
 
     const languageLevel = data?.tutorSubjects.map((val) => {
-        const obj = {}
-        obj.language = val.subject.name
-        obj.level = val.subjectLevel.name
-        obj.tutorSubjectId = val.id
-        obj.maxSession = val.maximumSession
-        obj.minSession = val.minimumSession
-        return obj
+        return {
+            language: val.subject.name,
+            level: val.subjectLevel.name,
+            tutorSubjectId: val.id,
+            maxSession: val.maximumSession,
+            minSession: val.minimumSession,
+            discounts: val.subjectDiscounts?.map((discount) => ({
+                sessionQuantity: discount.sessionQuantity,
+                discountPercentage: discount.discountPercentage,
+            })) || []
+        }
     })
 
     const calculateAverageRating = (data) => {
@@ -146,7 +149,7 @@ export default function TutorDetail() {
     return (
         <div className="lingo-container flex flex-col lg:flex-row pt-[80px] sm:pt-[103.61px]">
             {/* cart modal */}
-            {!openCart && (
+            {openCart && (
                 <div className="fixed inset-0 bg-[#00000070] flex items-center justify-center z-50" onClose={handleOpenCart}>
                     <div className="bg-white rounded-[8px] p-6 shadow-lg flex flex-col">
                         <span className="text-[24px] font-semibold mb-4">Add to Cart</span>
@@ -162,7 +165,15 @@ export default function TutorDetail() {
                             {languageLevel.map((data, index) => {
                                 const bgColor = bgColors[index % bgColors.length];
                                 const sessions   = sessionsByIndex[index] ?? data.minSession;
-                                const discount = sessions >= 10 ? '10' : '0';
+                                let selectedDiscount = 0;
+                                if (data.discounts && data.discounts.length > 0) {
+                                    const sortedDiscounts = [...data.discounts].sort((a, b) => a.sessionQuantity - b.sessionQuantity);
+                                    for (const discount of sortedDiscounts) {
+                                      if (sessions >= discount.sessionQuantity) {
+                                        selectedDiscount = discount.discountPercentage * 100;
+                                      }
+                                    }
+                                }
                                 const handleMinus = () => {
                                     if (sessions > data.minSession) {
                                       changeSessions(index, -1);
@@ -197,7 +208,7 @@ export default function TutorDetail() {
                                             </button>
                                         </div>
                                         <div className="flex items-center border rounded">
-                                            <input type="text" value={`${discount} %`} readOnly className="w-[85px] text-center outline-none"/>
+                                            <input type="text" value={`${selectedDiscount} %`} readOnly className="w-[85px] text-center outline-none"/>
                                         </div>
                                     </div>
                                 )

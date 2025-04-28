@@ -16,7 +16,12 @@ export default function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const title = pathname === '/signup' ? "Sign Up" : "Login"
+  const title = pathname === '/signup' 
+  ? "Sign Up" 
+  : pathname === '/forgotpassword' 
+  ? "Forgot Password" 
+  : "Login";
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -29,7 +34,14 @@ export default function LoginForm() {
       <div className="w-full space-y-4 md:space-y-8 py-[80px] md:py-[40px] px-[40px] animation-effect">
         <div className="text-left mb-[60px] md:mt-[70px] animation-effect">
           <h1 className="text-[48px] font-bold text-gray-900">{title}</h1>
-          <p className="mt-2 text-gray-600">Please {pathname === '/signup' ? 'register ' : "login "}to your account first</p>
+          <p className="mt-2 text-gray-600">
+            {pathname === '/forgotpassword' ? (
+                "Enter the email address associated with your account and we will send you a link to reset your password."
+            ) : (
+
+              <>Please {pathname === '/signup' ? 'register ' : "login "}to your account first</>
+            )}
+          </p>
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-6">
@@ -60,69 +72,71 @@ export default function LoginForm() {
                 />
               </div>
             </div>
+            {pathname !== '/forgotpassword' && (
 
-            <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <Image
-                      src="/assets/login/key.svg"
-                      alt="Key"
-                      width={24}
-                      height={24}
-                      className=""
+              <div className="space-y-2">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <Image
+                        src="/assets/login/key.svg"
+                        alt="Key"
+                        width={24}
+                        height={24}
+                        className=""
+                    />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                    placeholder="Password"
                   />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                        />
+                      </svg>
+                    ) : (
+                        <Image
+                            src="/assets/login/eye-close.svg"
+                            alt="eye-close"
+                            width={24}
+                            height={24}
+                            className="cursor-pointer"
+                        />
+                    )}
+                  </button>
                 </div>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                  placeholder="Password"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-3"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                      />
-                    </svg>
-                  ) : (
-                      <Image
-                          src="/assets/login/eye-close.svg"
-                          alt="eye-close"
-                          width={24}
-                          height={24}
-                          className="cursor-pointer"
-                      />
-                  )}
-                </button>
               </div>
-            </div>
+            )}
           </div>
 
           <div className={`flex items-center justify-end ${pathname === '/signup' ? 'hidden' : 'block'}`}>
             <div className="text-sm">
-              <Link href="#" className="font-medium text-[#1E419D] hover:text-indigo-500">
+              <Link href="/forgotpassword" className="font-medium text-[#1E419D] hover:text-indigo-500">
                 Forget Password
               </Link>
             </div>
@@ -191,7 +205,13 @@ export default function LoginForm() {
                   <div className="animate-spin rounded-full h-5 w-5 border-r-2 border-[#FFFFFF]"></div>
                 </div>
                 :
-                <span>{pathname === '/signup' ? 'Sign Up ' : "Log In"}</span>
+                <span>
+                  {pathname === '/forgotpassword' ? (
+                      "Continue"
+                  ) : (
+                    <>{pathname === '/signup' ? 'Sign Up ' : "Log In"}</>
+                  )}
+                </span>
               }
             </button>
 
@@ -199,8 +219,8 @@ export default function LoginForm() {
 
         <div className="mt-6 text-center text-sm text-gray-600">
           {pathname === '/signup' ? 'Already' : "Don't"} have an account?{" "}
-          <Link href="#" className="font-medium text-[#1E419D] hover:text-indigo-500">
-            {pathname === '/signup' ? 'Log In ' : "SIgn Up "}here
+          <Link href={pathname === '/signup' ? '/login' : "/signup "} className="font-medium text-[#1E419D] hover:text-indigo-500">
+            {pathname === '/signup' ? 'Log In ' : "Sign Up "}here
           </Link>
         </div>
       </div>

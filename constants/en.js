@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-24 23:54:08
+ * @Last Modified time: 2025-04-27 23:28:16
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
@@ -17,7 +17,7 @@ export const Home = {
     },
     carousel: {
         title: 'Our Language Tutors',
-        subtitle: '31 million teachers have been evaluated.',
+        subtitle: '31 million tutors have been evaluated.',
         englishTutors: {
             title: 'English Tutors',
             price: 'Rp. 50.000/Lesson'
@@ -163,11 +163,11 @@ export const Home = {
         teacherThree: 'Kevin Duncan- IELTS Specialist',
     },
     heroBottom: {
-        title: 'Be a Great Teacher At Lingo Foundry',
+        title: 'Be a Great Tutor At Lingo Foundry',
         list: [
             {title: 'Global Reach', desc: 'Connect with students from all over the world'},
-            {title: 'Flexible Work Hours', desc: 'Work from home, and on your schedule'},
-            {title: 'Competitive Earnings', desc: 'Set your own prices, and be your own boss'},
+            {title: 'Flexible Work Hours', desc: 'Work from home and on your schedule'},
+            {title: 'Competitive Earnings', desc: 'Set your own prices and be your own boss'},
         ],
         button: 'Apply to teach'
     }

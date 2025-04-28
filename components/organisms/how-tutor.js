@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-08 21:19:04
+ * @Last Modified time: 2025-04-27 23:31:07
  */
 
 import { TitleText } from "@/components/atoms/title";
@@ -18,7 +18,7 @@ export default function HowTutor() {
             icon: "/assets/how/one.svg",
             altIcon: "one-num",
             title: "Set your prices. Earn from Home Rp. 100.000 per hour or More",
-            desc: "You can choose your hourly rate, from Rp. 100,000 to Rp. 400,000 or more based on your expertise and experiences. Courses are divided into 30 minute trial lessons and 60 minute standard lessons."
+            desc: "You can choose your hourly rate, from Rp. 100,000 to Rp. 400,000 or more based on your expertise and experiences. Courses are divided into 30 minutes trial lessons and 60 minutes standard lessons."
         },
         {
             id: 2,
@@ -27,7 +27,7 @@ export default function HowTutor() {
             icon: "/assets/how/two.svg",
             altIcon: "two-num",
             title: "Be your own boss. Grow professionaly",
-            desc: "Choose your own schedule. Set your availability to the times that best suit you with no set minimum. Input your weekly availability and students can choose time slots that work for them.",
+            desc: "Design your ideal teaching week. Simply input your availability, and students can select their preferred class times. No set minimum commitment.",
             notes: "Top 10 tutors’ teaching hours: 16 - 81 hours / week"
         },
         {
@@ -37,7 +37,7 @@ export default function HowTutor() {
             icon: "/assets/how/three.svg",
             altIcon: "three-num",
             title: 'Your search for an "online tutoring job" ends here',
-            desc: "Whether you're looking for a work-from-home job or want to earn a full-time income, you can become a tutor on Lingo Foundry. As long as you have a stable internet connection and a computer with a microphone & webcam you can work from your preferred location anywhere in the world."
+            desc: "Turn your expertise into income from anywhere: Teach on Lingo Foundry, all you need is a reliable internet connection and a computer with a microphone and webcam."
         }
     ];
       

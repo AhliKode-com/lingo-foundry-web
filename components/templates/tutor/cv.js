@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 13:34:50
+ * @Last Modified time: 2025-04-28 14:39:09
  */
 
 "use client"
@@ -12,8 +12,13 @@ import { useForm, useFieldArray } from "react-hook-form"
 import { FaTrash } from "react-icons/fa"
 import useUploadFile from "@/apis/static-file/postUploadFile";
 import {toast} from "react-toastify";
+import {getEnums} from "@/apis/getEnum";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function CVCertification({ setCurrentStep }) {
+    const { data: enums } = getEnums();
+    const [dropdownOpen, setDropdownOpen] = useState(null)
+
     // State to track if saved files have been loaded
     const [savedCvFileName, setSavedCvFileName] = useState(null)
     const [savedCertificateFiles, setSavedCertificateFiles] = useState([])
@@ -112,8 +117,8 @@ export default function CVCertification({ setCurrentStep }) {
         const file = e.target.files[0]
         if (file) {
             // check file type
-            if (!file.type.includes("image/jpeg") && !file.type.includes("image/png")) {
-                alert("Please upload a JPG or PNG file")
+            if (!file.type.includes("image/jpeg") && !file.type.includes("image/png") && !file.type.includes("application/pdf")) {
+                alert("Please upload a JPG/PNG/PDF file")
                 return
             }
 
@@ -132,8 +137,8 @@ export default function CVCertification({ setCurrentStep }) {
         const file = e.target.files[0]
         if (file) {
             // check file type
-            if (!file.type.includes("image/jpeg") && !file.type.includes("image/png")) {
-                alert("Please upload a JPG or PNG file")
+            if (!file.type.includes("image/jpeg") && !file.type.includes("image/png") && !file.type.includes("application/pdf")) {
+                alert("Please upload a JPG/PNG/PDF file")
                 return
             }
 
@@ -246,9 +251,20 @@ export default function CVCertification({ setCurrentStep }) {
                     </button>
 
                     {(cvFile || savedCvFileName) && (
-                        <p className="mt-2 text-green-600">
-                            File uploaded: {cvFile ? cvFile.name : savedCvFileName}
-                        </p>
+                        <div className="mt-2 text-green-600 flex items-center">
+                            <p>File uploaded: {cvFile ? cvFile.name : savedCvFileName}</p>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setCvFile(null)
+                                    setSavedCvFileName(null)
+                                    cvFileRef.current.value = null
+                                }}
+                                className="ml-4 text-red-600 hover:text-red-800"
+                            >
+                                <FaTrash />
+                            </button>
+                        </div>
                     )}
                 </div>
 
@@ -280,57 +296,97 @@ export default function CVCertification({ setCurrentStep }) {
                                 {/* Subject */}
                                 <div className="mb-4">
                                     <label className="block text-gray-700 mb-2">Subject</label>
-                                    <div className="flex">
-                                        <select
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                            {...register(`certificates.${index}.subject`, { required: true })}
-                                        >
-                                            <option value="">Select subject...</option>
-                                            <option value="Indonesian">Indonesian</option>
-                                            <option value="English">English</option>
-                                            <option value="Mathematics">Mathematics</option>
-                                            <option value="Science">Science</option>
-                                        </select>
-                                        {index === 0 && (
+                                    <div className="flex gap-2">
+                                        <div className="relative w-full">
+                                            <input
+                                                type="hidden"
+                                                {...register(`certificates.${index}.subject`, { required: true })}
+                                                value={watch(`certificates.${index}.subject`) || ""}
+                                            />
                                             <button
                                                 type="button"
-                                                className="ml-2 text-gray-500"
+                                                onClick={() => setDropdownOpen(dropdownOpen === `certificate-subject-${index}` ? null : `certificate-subject-${index}`)}
+                                                className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                            >
+                                                <span className="text-left flex-1">
+                                                    {enums.subject.find(subject => subject.name === watch(`certificates.${index}.subject`))?.displayName || "Select subject..."}
+                                                </span>
+                                                <IoIosArrowDown />
+                                            </button>
+
+                                            {dropdownOpen === `certificate-subject-${index}` && (
+                                                <div className="absolute z-10 w-full  mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                                    {enums.subject.map((subject, idx) => {
+                                                        return(
+                                                            <div
+                                                                key={idx}
+                                                                className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                                                onClick={() => {
+                                                                setValue(`certificates.${index}.subject`, subject.name)
+                                                                setDropdownOpen(null)
+                                                                }}
+                                                            >
+                                                                <span className="text-[16px]">{subject.displayName}</span>
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                            )}
+                                        </div>
+
+
+                                            <button
+                                                type="button"
+                                                className="ml-2 text-gray-500 mt-2"
                                                 onClick={() => {
-                                                    if (fields.length > 1) {
-                                                        remove(0);
-                                                    } else {
-                                                        // If it's the only field, clear it instead of removing
-                                                        setValue(`certificates.${index}.subject`, "");
-                                                        setValue(`certificates.${index}.certificateType`, "");
-                                                        setValue(`certificates.${index}.description`, "");
-                                                        setValue(`certificates.${index}.issuedBy`, "");
-                                                        setValue(`certificates.${index}.startYear`, "");
-                                                        setValue(`certificates.${index}.endYear`, "");
-                                                        setValue(`certificates.${index}.file`, null);
-                                                    }
+                                                    setValue(`certificates.${index}.subject`, "");
                                                 }}
                                             >
                                                 <FaTrash className="h-5 w-5" />
                                             </button>
-                                        )}
+
                                     </div>
                                 </div>
 
                                 {/* Certificate */}
                                 <div className="mb-4">
                                     <label className="block text-gray-700 mb-2">Certificate</label>
-                                    <select
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                        {...register(`certificates.${index}.certificateType`, { required: true })}
-                                    >
-                                        <option value="">Choose certificate...</option>
-                                        <option value="Teaching Certificate">Teaching Certificate</option>
-                                        <option value="Language Proficiency">Language Proficiency</option>
-                                        <option value="Bachelor's Degree">Bachelor&#39;s Degree</option>
-                                        <option value="Master's Degree">Master&#39;s Degree</option>
-                                        <option value="PhD">PhD</option>
-                                        <option value="Other">Other</option>
-                                    </select>
+                                    <div className="relative w-full">
+                                        <input
+                                            type="hidden"
+                                            {...register(`certificates.${index}.certificateType`, { required: true })}
+                                            value={watch(`certificates.${index}.certificateType`) || ""}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setDropdownOpen(dropdownOpen === `certificate-type-${index}` ? null : `certificate-type-${index}`)}
+                                            className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                        >
+                                            <span className="text-left flex-1">
+                                                {enums.level.find(level => level.name === watch(`certificates.${index}.certificateType`))?.displayName || "Select level..."}
+                                            </span>
+                                            <IoIosArrowDown />
+                                        </button>
+
+                                        {dropdownOpen === `certificate-type-${index}` && (
+                                            <div className="absolute z-10 w-full  mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                                {enums.level.map((level, idx) => {
+                                                    return(
+                                                        <div
+                                                            key={idx}
+                                                            className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                                            onClick={() => {
+                                                            setValue(`certificates.${index}.certificateType`, level.name)
+                                                            setDropdownOpen(null)
+                                                            }}
+                                                        >
+                                                            <span className="text-[16px]">{level.displayName}</span>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Description */}
@@ -355,33 +411,84 @@ export default function CVCertification({ setCurrentStep }) {
 
                                 {/* Years of study */}
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 mb-2">Years of study</label>
-                                    <div className="flex items-center">
-                                        <select
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                            {...register(`certificates.${index}.startYear`)}
-                                        >
-                                            <option value="">Select</option>
-                                            {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                                                <option key={year} value={year.toString()}>
-                                                    {year}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <span className="mx-4">-</span>
-                                        <select
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                            {...register(`certificates.${index}.endYear`)}
-                                        >
-                                            <option value="">Select</option>
-                                            {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                                                <option key={year} value={year.toString()}>
-                                                    {year}
-                                                </option>
-                                            ))}
-                                        </select>
+                                    <label className="block text-gray-700 mb-2">Years of Study</label>
+                                    <div className="flex items-center gap-4">
+                                        {/* Start Year */}
+                                        <div className="relative w-full">
+                                            <input
+                                                type="hidden"
+                                                {...register(`certificates.${index}.startYear`)}
+                                                value={watch(`certificates.${index}.startYear`) || ""}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setDropdownOpen(dropdownOpen === `startYear-${index}` ? null : `startYear-${index}`)}
+                                                className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] text-left"
+                                            >
+                                                <span className="flex-1">
+                                                    {watch(`certificates.${index}.startYear`) || "Select"}
+                                                </span>
+                                                <IoIosArrowDown />
+                                            </button>
+
+                                            {dropdownOpen === `startYear-${index}` && (
+                                                <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-xl shadow-lg max-h-[250px] overflow-y-auto py-2">
+                                                    {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                                                        <div
+                                                        key={year}
+                                                        className="px-4 py-2 hover:bg-[#FDE0D7] hover:text-[#E35D33] text-gray-700 cursor-pointer transition-colors duration-150 ease-in-out text-[16px]"
+                                                        onClick={() => {
+                                                            setValue(`certificates.${index}.startYear`, year.toString());
+                                                            setDropdownOpen(null);
+                                                        }}
+                                                        >
+                                                        {year}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <span className="text-gray-500">-</span>
+
+                                        {/* End Year */}
+                                        <div className="relative w-full">
+                                            <input
+                                                type="hidden"
+                                                {...register(`certificates.${index}.endYear`)}
+                                                value={watch(`certificates.${index}.endYear`) || ""}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setDropdownOpen(dropdownOpen === `endYear-${index}` ? null : `endYear-${index}`)}
+                                                className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] text-left"
+                                            >
+                                                <span className="flex-1">
+                                                {watch(`certificates.${index}.endYear`) || "Select"}
+                                                </span>
+                                                <IoIosArrowDown />
+                                            </button>
+
+                                            {dropdownOpen === `endYear-${index}` && (
+                                                <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-xl shadow-lg max-h-[250px] overflow-y-auto py-2">
+                                                    {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                                                        <div
+                                                            key={year}
+                                                            className="px-4 py-2 hover:bg-[#FDE0D7] hover:text-[#E35D33] text-gray-700 cursor-pointer transition-colors duration-150 ease-in-out text-[16px]"
+                                                            onClick={() => {
+                                                                setValue(`certificates.${index}.endYear`, year.toString());
+                                                                setDropdownOpen(null);
+                                                            }}
+                                                        >
+                                                            {year}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
+
 
                                 {/* Certificate Upload */}
                                 <div className="bg-gray-50 p-6 rounded-lg mt-6">
@@ -421,9 +528,25 @@ export default function CVCertification({ setCurrentStep }) {
                                     </button>
 
                                     {(watch(`certificates.${index}.file`) || savedCertificateFiles[index]) && (
-                                        <p className="mt-2 text-green-600">
-                                            File uploaded: {watch(`certificates.${index}.file`)?.name || savedCertificateFiles[index]}
-                                        </p>
+                                        <div className="mt-2 text-green-600 flex items-center">
+                                            <p>File uploaded: {watch(`certificates.${index}.file`)?.name || savedCertificateFiles[index]}</p>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    // Reset the file state
+                                                    setValue(`certificates.${index}.file`, null);
+                                                    // Clear the file input
+                                                    certificateFileRefs.current[index].value = null;
+                                                    // Clear the saved file name if any
+                                                    const updatedFiles = [...savedCertificateFiles];
+                                                    updatedFiles[index] = null;
+                                                    setSavedCertificateFiles(updatedFiles);
+                                                }}
+                                                className="ml-4 text-red-600 hover:text-red-800"
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
                             </div>
