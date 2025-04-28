@@ -2,16 +2,15 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:30
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-24 23:41:59
+ * @Last Modified time: 2025-04-27 23:47:43
  */
 
 import { FooterData } from '@/constants/en'
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaFacebookF, FaInstagram, FaGooglePlusG, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
-    const { title, list1, list2, list3, list4, contactUs, quickLinks, features, socialMedias } = FooterData;
+    const { title, contactUs, quickLinks, features, socialMedias } = FooterData;
     return (
         <footer className="pt-[70px] sm:pt-[90px] w-full border-t-[1px] border-[#CFCFCF]">
             <div className="lingo-container relative w-full flex flex-col pb-[40px]">

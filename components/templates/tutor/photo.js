@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 10:49:15
+ * @Last Modified time: 2025-04-28 02:41:45
  */
 
 "use client"
@@ -11,9 +11,11 @@ import {useState, useRef, useEffect} from "react"
 import Image from "next/image"
 import {toast} from "react-toastify";
 import postUploadFile from "@/apis/static-file/postUploadFile";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Photo({ setCurrentStep }) {
     const [photo, setPhoto] = useState(null)
+    const { user } = useAuth()
     const [previewUrl, setPreviewUrl] = useState(null)
     const fileInputRef = useRef(null)
     const { uploadFile, objectKey, error } = postUploadFile()
@@ -48,6 +50,12 @@ export default function Photo({ setCurrentStep }) {
 
     const handleUploadClick = () => {
         fileInputRef.current.click()
+    }
+
+    const handleDeletePhoto = () => {
+        setPhoto(null)
+        setPreviewUrl(null)
+        localStorage.removeItem("applyTutorStep2Data")
     }
 
     const handleSaveAndContinue = async () => {
@@ -101,7 +109,7 @@ export default function Photo({ setCurrentStep }) {
                 </div>
 
                 <div>
-                    <h2 className="text-2xl font-bold mb-2">Kevin G.</h2>
+                    <h2 className="text-2xl font-bold mb-2">{user?.username}</h2>
                     <div className="flex items-center gap-2 mb-1">
                         <div className="w-6 h-4 bg-red-500 relative">
                             <div className="absolute bottom-0 w-full h-1/2 bg-white"></div>
@@ -145,10 +153,10 @@ export default function Photo({ setCurrentStep }) {
             <hr className="my-6" />
 
             <button
-                onClick={handleUploadClick}
-                className="w-full bg-[#E35D33] text-white py-3 px-4 rounded-lg hover:bg-[#d04e26] transition-colors mb-8"
+                onClick={previewUrl? handleDeletePhoto : handleUploadClick}
+                className={`${previewUrl? 'bg-[#e33333]' : 'bg-[#E35D33]'} w-full  text-white py-3 px-4 rounded-lg hover:bg-[#d04e26] transition-colors mb-8`}
             >
-                Upload photo
+                {previewUrl? 'Change photo' : 'Upload photo'}
             </button>
             <input
                 type="file"

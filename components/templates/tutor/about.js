@@ -4,18 +4,19 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 11:56:22
+ * @Last Modified time: 2025-04-28 11:59:29
  */
 import { IoIosArrowDown } from "react-icons/io";
 import { useFieldArray, useForm } from "react-hook-form"
 import { TitleTutorRegis, DescTutorRegis, LabelTutorRegis } from "@/components/atoms/title"
 import { useEffect, useState } from "react"
 import {getLandingSubjects} from "@/apis/getLandingSubjects";
+import {getEnums} from "@/apis/getEnum";
 
 export default function About({ setCurrentStep }) {
     const [savedData, setSavedData] = useState(null)
 
-    const { data: subjects, loading } = getLandingSubjects();
+    const { data: enums } = getEnums();
 
     // load data from localStorage on component mount
     useEffect(() => {
@@ -69,18 +70,12 @@ export default function About({ setCurrentStep }) {
 
     const [dropdownOpen, setDropdownOpen] = useState(null)
 
-    // country
-    const countries = [
-        "Indonesia", "Malaysia", "Singapore", "Thailand", "Philippines", "Vietnam", "United States", "United Kingdom", "Australia", "Canada"
-    ];
     const selectedCountry = watch("countryOfBirth") || "";
 
-    // subject you teach
     const selectedSubject = watch("subjectYouTeach") || "";
 
     // expertise
     const MAX_EXPERTISE = 3
-    const allExpertise = ["Indonesian for Adults","Fundamental Indonesian","Indonesian for Children (6-11)","Indonesian for Teenagers (12-17)","Business Indonesian","Conversational Indonesian","Indonesian Grammar","Indonesian Culture"]
     const expertise = watch("expertise") || []
     const isExpertiseMaxReached = expertise.length >= MAX_EXPERTISE
 
@@ -158,23 +153,23 @@ export default function About({ setCurrentStep }) {
                             className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         >
                             <span className="text-left flex-1">
-                                {selectedCountry || "Choose country..."}
+                                {selectedCountry ? enums.country.find(country => country.name === selectedCountry)?.displayName : "Choose country..."}
                             </span>
                             <IoIosArrowDown />
                         </button>
 
                         {dropdownOpen === 'country' && (
                             <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                            {countries.map((country, index) => (
+                            {enums?.country?.map((item, index) => (
                                 <div
                                 key={index}
                                 className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
                                 onClick={() => {
-                                    setValue("countryOfBirth", country)
+                                    setValue("countryOfBirth", item.name)
                                     setDropdownOpen(false)
                                 }}
                                 >
-                                    <span className="text-[16px]">{country}</span>
+                                    <span className="text-[16px]">{item.displayName}</span>
                                 </div>
                             ))}
                             </div>
@@ -196,14 +191,14 @@ export default function About({ setCurrentStep }) {
                             className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         >
                             <span className="text-left flex-1">
-                                {selectedSubject || "Select subject..."}
+                                {selectedSubject ? enums.subject.find(subject => subject.name === selectedSubject)?.displayName : "Select subject..."}
                             </span>
                             <IoIosArrowDown />
                         </button>
 
                         {dropdownOpen === 'subject' && (
                             <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                            {subjects && subjects.length > 0 && subjects.map((subject, index) => (
+                            {enums?.subject?.map((subject, index) => (
                                 <div
                                 key={index}
                                 className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
@@ -212,7 +207,7 @@ export default function About({ setCurrentStep }) {
                                     setDropdownOpen(false)
                                 }}
                                 >
-                                <span className="text-[16px]">{subject.name}</span>
+                                <span className="text-[16px]">{subject.displayName}</span>
                                 </div>
                             ))}
                             </div>
@@ -225,26 +220,29 @@ export default function About({ setCurrentStep }) {
                     <div className="border border-gray-300 rounded-lg p-4 relative">
                         <div className="flex flex-wrap gap-2 mb-4">
                             {expertise.length > 0 ? (
-                                expertise.map((exp, index) => (
-                                    <div key={index} className="bg-gray-100 rounded-[6px] px-3 py-1 flex items-center gap-1">
-                                        <span>{exp}</span>
-                                        <button
-                                            type="button"
-                                            onClick={() => handleExpertiseRemove(exp)}
-                                            className="ml-1 rounded-full bg-gray-300 w-5 h-5 flex items-center justify-center"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="h-3 w-3"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
+                                expertise.map((exp, index) => {
+                                    const expMatch = enums.expertise.find(expertiseItem => expertiseItem.name === exp)?.displayName;
+                                    return(
+                                        <div key={index} className="bg-gray-100 rounded-[6px] px-3 py-1 flex items-center gap-1">
+                                            <span>{expMatch}</span>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleExpertiseRemove(exp)}
+                                                className="ml-1 rounded-full bg-gray-300 w-5 h-5 flex items-center justify-center"
                                             >
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                ))
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-3 w-3"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    )
+                                })
                             ) : (
                                 <p className="text-gray-500 text-sm">No expertise selected</p>
                             )}
@@ -259,7 +257,7 @@ export default function About({ setCurrentStep }) {
                         <div className="relative">
                             <input
                                 type="hidden"
-                                {...register("selectedExpertiseTemp")}
+                                {...register("expertise")}
                                 value=""
                             />
                             <button
@@ -278,18 +276,18 @@ export default function About({ setCurrentStep }) {
 
                             {dropdownOpen === 'expertise' && !isExpertiseMaxReached && (
                                 <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                                {allExpertise
-                                    .filter((exp) => !expertise.includes(exp))
+                                {enums.expertise && enums.expertise
+                                    .filter((option) => !expertise.includes(option.name))
                                     .map((option, index) => (
                                     <div
                                         key={index}
                                         className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
                                         onClick={() => {
-                                        handleExpertiseAdd(option)
+                                        handleExpertiseAdd(option.name)
                                         setDropdownOpen(null)
                                         }}
                                     >
-                                        <span className="text-[16px]">{option}</span>
+                                        <span className="text-[16px]">{option.displayName}</span>
                                     </div>
                                     ))}
                                 </div>
