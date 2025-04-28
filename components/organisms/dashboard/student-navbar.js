@@ -23,10 +23,10 @@ export default function StudentNavbar() {
             name: "Courses",
             href: "/student-dashboard/courses"
         },
-        // {
-        //     name: "Message",
-        //     href: "/student-dashboard/message"
-        // },
+        {
+            name: "Message",
+            href: "/student-dashboard/message"
+        },
         {
             name: "Purchase History",
             href: "/student-dashboard/purchase-history"
