@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:50:17
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 09:55:52
+ * @Last Modified time: 2025-04-29 15:02:20
  */
 "use client"
 import {TitleDashboard, TitlePayment} from "@/components/atoms/title";
@@ -55,10 +55,11 @@ export default function ConfirmPayment() {
                 <TitleDashboard text={confirmPayment.title}/>
             </div>
             <div className="pb-[10px] hidden md:grid grid-cols-6 lg:grid-cols-6 border-b-[1px] border-[#D2D2D250]">
-                <TitlePayment text={confirmPayment.product} custom={'col-span-1 lg:col-span-2'}/>
+                <TitlePayment text={confirmPayment.product} custom={'col-span-1'}/>
                 <TitlePayment text={confirmPayment.subject} custom={'col-span-1 ml-[8px]'}/>
                 <TitlePayment text={confirmPayment.category} custom={'col-span-1 ml-[8px]'}/>
                 <TitlePayment text={confirmPayment.sessions} custom={'col-span-1 ml-[8px]'}/>
+                <TitlePayment text={confirmPayment.discount} custom={'col-span-1 ml-[8px]'}/>
                 <TitlePayment text={confirmPayment.subTotal} custom={'col-span-1 ml-[8px]'}/>
             </div>
             <div className="relative">
@@ -88,11 +89,11 @@ export default function ConfirmPayment() {
                     <div className="border-b-[1px] border-[#D2D2D250]">
                         <div className="flex justify-between items-center mb-[15px]">
                             <span className="text-[14px] text-[#6E7485]">Subtotal</span>
-                            <span>Rp.{Number(carts?.totalPrice || 0).toLocaleString('id-ID')}</span>
+                            <span>Rp.{Number(carts?.subtotal || 0).toLocaleString('id-ID')}</span>
                         </div>
                         <div className="flex justify-between items-center mb-[15px]">
-                            <span className="text-[14px] text-[#6E7485]">Coupon Discount</span>
-                            <span>0%</span>
+                            <span className="text-[14px] text-[#6E7485]">Discount</span>
+                            <span>Rp.{Number(carts?.discountAmount || 0).toLocaleString('id-ID')}</span>
                         </div>
                     </div>
                     <div className="flex justify-between items-center">

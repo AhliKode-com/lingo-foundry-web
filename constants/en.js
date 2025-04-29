@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 22:07:55
+ * @Last Modified time: 2025-04-29 14:53:27
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
@@ -446,6 +446,7 @@ export const multiStepPayment = {
         sessions: "Sessions",
         subTotal: "Subtotal",
         summary: "Summary",
+        discount: "Discount",
         completePayment: "Complete Payment"
     },
     tabTutor: {
