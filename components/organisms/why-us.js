@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 08:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-27 15:03:16
+ * @Last Modified time: 2025-04-28 22:06:01
  */
 
 import Image from "next/image";
@@ -26,7 +26,7 @@ export default function Why() {
     ]
 
     return (
-        <div className="w-full my-[100px] py-[60px] bg-gradient-to-b from-[#F14D5D10] to-[#FF723A10]">
+        <div className="w-full my-[50px] md:my-[100px] py-[60px] md:py-[120px] bg-gradient-to-b from-[#F14D5D10] to-[#FF723A10]">
             <div className='lingo-container mb-[55px] sm:px-0 animation-effect relative'>
                 <Image 
                     src="/assets/hero-decoration.png" 

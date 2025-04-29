@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useLogin } from "@/hooks/useLogin"
 import { useRegister } from "@/hooks/useRegister"
+import { useForgotPassword } from "@/hooks/useForgotPassword"
 import { usePathname } from 'next/navigation';
 
 export default function LoginForm() {
@@ -12,6 +13,7 @@ export default function LoginForm() {
 
   const { login, loading, error } = useLogin()
   const { signup, loadingRegister } = useRegister()
+  const { forgot, loadingForgot } = useForgotPassword()
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -25,7 +27,12 @@ export default function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const action = pathname === '/signup' ? signup : login
+    const action = pathname === '/signup' 
+    ? signup 
+    : pathname === '/forgotpassword' 
+    ? forgot 
+    : login
+    // const action = pathname === '/signup' ? signup : login
     await action(email, password)
   }
 
@@ -67,7 +74,7 @@ export default function LoginForm() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value.toLowerCase())}
-                  className="block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                  className="block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-3 text-gray-900 placeholder-gray-400 focus:border-[#E35D33] focus:outline-none"
                   placeholder="Enter your email here"
                 />
               </div>
@@ -96,7 +103,7 @@ export default function LoginForm() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                    className="block w-full rounded-lg border border-gray-300 py-3 pl-10 pr-10 text-gray-900 placeholder-gray-400 focus:border-[#E35D33] focus:outline-none"
                     placeholder="Password"
                   />
                   <button
@@ -134,7 +141,10 @@ export default function LoginForm() {
             )}
           </div>
 
-          <div className={`flex items-center justify-end ${pathname === '/signup' ? 'hidden' : 'block'}`}>
+          <div className={`flex items-center justify-end 
+              ${pathname === '/signup' ? 'hidden' : pathname === '/forgotpassword' ? 'hidden' : 'block'}
+            `}
+          >
             <div className="text-sm">
               <Link href="/forgotpassword" className="font-medium text-[#1E419D] hover:text-indigo-500">
                 Forget Password
@@ -200,7 +210,7 @@ export default function LoginForm() {
               className={`flex w-full justify-center rounded-lg bg-[#E35D33] py-3 px-4 text-sm font-medium text-white shadow-sm cursor-pointer`}
             >
               {
-                loading || loadingRegister ? 
+                loading || loadingRegister || loadingForgot ? 
                 <div>
                   <div className="animate-spin rounded-full h-5 w-5 border-r-2 border-[#FFFFFF]"></div>
                 </div>

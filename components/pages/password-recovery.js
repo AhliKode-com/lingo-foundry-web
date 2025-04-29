@@ -1,18 +1,17 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link"
-import LoginForm from "@/components/organisms/login-form"
+import PasswordRecoveryForm from "@/components/organisms/password-recovery-form"
 import { usePathname } from 'next/navigation';
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
 
-export default function LoginPage() {
-    const pathname = usePathname();
+export default function PasswordRecoveryPage() {
     return (
         <main className="pt-[100px]">
             <div className={`flex md:min-h-screen flex-col md:flex-row lingo-container my-[40px] md:my-[84px] gap-2 animation-effect`}>
                 {/* Left side - Login Form */}
                 <div className="flex flex-1 items-start justify-center bg-[#F9F9F9] rounded-xl">
-                    <LoginForm />
+                    <PasswordRecoveryForm />
                 </div>
 
                 {/* Right side - Image and Content */}

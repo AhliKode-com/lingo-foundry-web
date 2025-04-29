@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:06:48
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-05 23:29:49
+ * @Last Modified time: 2025-04-28 22:01:33
  */
 
 "use client";
@@ -18,7 +18,7 @@ export default function Faq({purpose}) {
     const { data: faqs, loading } = getFaqs(purpose);
 
     return (
-        <div className="lingo-container flex flex-col justify-center items-center pt-[250px]">
+        <div className="lingo-container flex flex-col justify-center items-center pt-[180px] md:pt-[250px]">
             <TitleText text={faq.title} marginX="mx-auto" marginBottom="mb-[35px]"/>
 
             <div className="max-w-[648px] flex flex-col gap-[25px] w-full">

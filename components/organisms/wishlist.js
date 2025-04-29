@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 14:48:49
+ * @Last Modified time: 2025-04-28 21:47:56
  */
 "use client"
 import {toast} from "react-toastify";
@@ -37,7 +37,7 @@ export default function Wishlist() {
                             >
                                     <Link href={`/tutor/${item.tutorId}`} className="flex flex-row items-center">
                                         <img
-                                            src={item.tutorProfileUrl}
+                                            src={item.tutorProfileUrl || "/placeholder.svg"}
                                             alt={item.tutorName}
                                             className="w-[75px] h-[75px] rounded-full object-cover mr-[14px]"
                                         />
