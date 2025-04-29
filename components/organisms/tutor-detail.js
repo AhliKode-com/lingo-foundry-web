@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 00:47:32
+ * @Last Modified time: 2025-04-28 23:05:20
  */
 
 "use client";
@@ -29,7 +29,7 @@ export default function TutorDetail() {
     const {data: popularTutor, loading: popularTutorLoading} = getPopularTutors();
     const { user } = useAuth()
     const [expanded, setExpanded] = useState(false);
-
+    const [loadingAddCart, setLoadingAddCart] = useState(false);
     const router = useRouter();
 
     const toggleExpanded = () => {
@@ -76,8 +76,10 @@ export default function TutorDetail() {
             tutorSubjectId: languageLevel[i].tutorSubjectId,
             sessionCount: sessionsByIndex[i] || languageLevel[i].minSession,
         }));
+        setLoadingAddCart(true);
         await addToCart(payload);
         toast.success("Add tutor to cart success.");
+        setLoadingAddCart(false);
         await new Promise((resolve) => setTimeout(resolve, 1000));
         await getCart();
         setOpenCart(false);
@@ -207,7 +209,7 @@ export default function TutorDetail() {
                                                 +
                                             </button>
                                         </div>
-                                        <div className="flex items-center border rounded">
+                                        <div className="flex items-center bg-gray-400 text-white font-semibold rounded">
                                             <input type="text" value={`${selectedDiscount} %`} readOnly className="w-[85px] text-center outline-none"/>
                                         </div>
                                     </div>
@@ -235,7 +237,14 @@ export default function TutorDetail() {
                                     ${selectedIndexes.length === 0 ? "opacity-50 cursor-not-allowed bg-gray-500" : "bg-[#E35D33] "}
                                     `}
                             >
-                                Yes, add it
+                                {loadingAddCart ? (
+                                    <div>
+                                        <div className="animate-spin rounded-full h-5 w-5 border-r-2 border-[#FFFFFF]"></div>
+                                    </div>
+                                    
+                                ) : (
+                                    "Yes, add it"
+                                )}
                             </button>
                         </div>
                     </div>

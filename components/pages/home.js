@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 21:27:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 14:37:06
+ * @Last Modified time: 2025-04-28 22:03:14
  */
 
 import Browse from '@/components/organisms/browse';
@@ -26,7 +26,9 @@ export default function Home() {
             <Suspense fallback={null}>
                 <ExploreTutor/>
             </Suspense>
-            <Why/>
+            <section id="why">
+                <Why/>
+            </section>
             <How/>
             <Review authorType="STUDENT"/>
             <HeroBottom/>

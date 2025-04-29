@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-22 00:52:30
+ * @Last Modified time: 2025-04-28 22:02:30
  */
 "use client"
 import { usePathname } from 'next/navigation';
@@ -25,7 +25,7 @@ export default function Review({authorType}) {
 
 
     return (
-        <div className={`lingo-container flex flex-col relative ${pathname === '/review' ? 'pt-[200px]' : 'pt-[115px]'}`}>
+        <div className={`lingo-container flex flex-col relative ${pathname === '/review' ? 'pt-[200px]' : 'pt-[180px] md:pt-[250px]'}`}>
             <div className={`flex justify-between items-center mb-[90px] ${pathname === '/review' ? 'hidden' : ''}`}>
                 <TitleText text={review.title}/>
                 <Link href='review'>

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-27 23:28:16
+ * @Last Modified time: 2025-04-28 22:07:55
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
@@ -353,8 +353,8 @@ export const FooterData = {
             title: 'info@lingofoundry.com'
         },
         {
-            href: '/',
-            title: '+62 888 888 888'
+            href: 'https://whatsapp.com/channel/0029Vb7T6qH3wtb9qe7Mol2w',
+            title: 'Whatsapp Channel',
         },
         {
             href: '/',
@@ -379,19 +379,19 @@ export const FooterData = {
             title: 'About Us'
         },
         {
-            href: '/',
+            href: '/find-tutor',
             title: 'Explore our Tutors'
         },
         {
-            href: '/',
+            href: '/find-tutor#faqStudent',
             title: 'Online Tutoring FAQ'
         },
         {
-            href: '/',
+            href: '/find-tutor#hearWhatTheySaid',
             title: 'Hear What They Said'
         },
         {
-            href: '/',
+            href: '/#why',
             title: 'Why Choose Lingo Foundry?'
         }
     ],
@@ -415,7 +415,7 @@ export const FooterData = {
             title: 'Home Page'
         },
         {
-            href: '/',
+            href: '/review',
             title: 'Testimonials'
         },
         {
