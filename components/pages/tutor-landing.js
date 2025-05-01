@@ -2,9 +2,8 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-30 13:30:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-08 21:19:27
+ * @Last Modified time: 2025-05-01 18:12:08
  */
-
 import HeroTutorLanding from "@/components/organisms/hero-tutor-landing";
 import HowTutor from '@/components/organisms/how-tutor';
 import BecomeTutor from '@/components/organisms/become-tutor';
@@ -18,7 +17,7 @@ export default function TutorLanding() {
             <HeroTutorLanding/>
             <HowTutor/>
             <BecomeTutor/>
-            <ReviewTutor/>
+            <ReviewTutor authorType="TUTOR"/>
             <section id="FAQ">
                 <Faq purpose="TUTOR"/>
             </section>
