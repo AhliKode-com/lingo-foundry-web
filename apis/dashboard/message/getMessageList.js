@@ -7,29 +7,29 @@ export function useGetMessageList() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const getData = async () => {
+        setLoading(true);
+        setError(null);
+
+        const token = Cookies.get("token");
+
+        try {
+            const response = await api.get("/message/list", {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                }
+            });
+            setData(response.data.data);
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to get message list");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const getData = async () => {
-            setLoading(true);
-            setError(null);
-
-            const token = Cookies.get("token");
-
-            try {
-                const response = await api.get("/message/list", {
-                    headers: {
-                        Authorization: token ? `Bearer ${token}` : "",
-                    }
-                });
-                setData(response.data.data);
-            } catch (err) {
-                setError(err.response?.data?.message || "Failed to get message list");
-            } finally {
-                setLoading(false);
-            }
-        };
-
         getData();
     }, []);
 
-    return { data, loading, error };
+    return { data, loading, error, getData };
 }

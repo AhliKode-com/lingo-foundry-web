@@ -1,19 +1,61 @@
 "use client"
 
-import {useState} from "react"
-import {FiSearch, FiMoreVertical, FiSend, FiVideo, FiCalendar, FiEdit, FiPlus, FiArrowLeft} from "react-icons/fi"
+import {useState, useEffect} from "react"
+import {FiSearch, FiMoreVertical, FiSend, FiVideo, FiCalendar, FiEdit, FiPlus, FiArrowLeft, FiX} from "react-icons/fi"
 import {BsCircleFill} from "react-icons/bs"
 import {useGetMessageList} from "@/apis/dashboard/message/getMessageList";
 import MessagingSkeleton from "@/components/organisms/dashboard/message/message-skeleton";
 import { format, isToday } from 'date-fns';
+import { useGetUserList } from "@/apis/dashboard/message/getListUser";
+import {useSendMessage} from "@/apis/dashboard/message/postSendMessage";
+import {useAuth} from "@/context/AuthContext";
+import {toast} from "react-toastify";
+import { useForm } from "react-hook-form";
 
 const MessageApp = () => {
-    const { data, loading } = useGetMessageList();
+    // context
+    const { user: thisUser } = useAuth();
 
-    const [message, setMessage] = useState("")
+    // apis
+    const { data, loading } = useGetMessageList();
+    const { data: listUsers, getUserList, loading: loadingUsers } = useGetUserList();
+    const { sendMessage } = useSendMessage();
+
+    // messaging state
     const [showChat, setShowChat] = useState(false)
     const [selectedConversation, setSelectedConversation] = useState(null)
     const [selectedMessages, setSelectedMessages] = useState([])
+
+    // search user modal state
+    const [showComposeModal, setShowComposeModal] = useState(false)
+    const [searchQuery, setSearchQuery] = useState("")
+    const [debouncedQuery, setDebouncedQuery] = useState(searchQuery)
+
+    // message result state
+    const [transformedConversations, setTransformedConversations] = useState([])
+
+    // react-hook-form for message
+    const { register, handleSubmit, reset } = useForm();
+
+    const onSubmit = (data) => {
+        handleSendMessage(data.message);
+        reset(); // Clear the input after sending
+    };
+
+    // Call getUserList when search query changes
+    useEffect(() => {
+        if (showComposeModal) {
+            getUserList(searchQuery);
+        }
+    }, [debouncedQuery, showComposeModal]);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setDebouncedQuery(searchQuery)
+        }, 500)
+
+        return () => clearTimeout(timeout)
+    }, [searchQuery])
 
     // format time helper function
     const formatMessageTime = (dateString) => {
@@ -42,61 +84,118 @@ const MessageApp = () => {
     }
 
     // transform API data to match the conversations structure needed for the UI
-    const transformedConversations = data ? data.map(item => {
-        const user = item.userVO;
-        // get the most recent message
-        const lastMessage = item.userMessageVOS.length ?
-            item.userMessageVOS[item.userMessageVOS.length - 1] : null;
+    useEffect(() => {
+        if (!data) return;
 
-        return {
-            id: user.id,
-            name: `${user.firstName} ${user.lastName}`.trim(),
-            message: lastMessage ? lastMessage.content : "",
-            time: lastMessage ? getShortTime(lastMessage.sentAt) : "",
-            online: false,
-            unread: lastMessage ? !lastMessage.isRead : false,
-            avatar: "/placeholder.svg?height=40&width=40",
-            messages: item.userMessageVOS.map(msg => ({
-                id: msg.id,
-                sender: msg.sender.id === user.id ? "tutor" : "user",
-                text: msg.content,
-                time: formatMessageTime(msg.sentAt),
-                fullTime: msg.sentAt
-            }))
-        };
-    }) : [];
+        // Create a map to group messages by conversation
+        const conversationMap = new Map();
 
-    const handleSendMessage = () => {
-        if (message.trim() && selectedConversation) {
-            // In a real application, you would call an API to send the message
-            // For now, we'll just add it to the UI
-            const newMessage = {
-                id: Date.now(), // Temporary ID
-                sender: "user",
-                text: message,
-                time: formatMessageTime(new Date()),
-                fullTime: new Date().toISOString()
-            };
+        // Process each item in the data array
+        data.forEach(item => {
+            const user = item.userVO;
+            const lastMessage = item.userMessageVOS.length > 0 ?
+                item.userMessageVOS[item.userMessageVOS.length - 1] : null;
 
-            // Find and update the selected conversation
-            const updatedConversations = transformedConversations.map(conv => {
-                if (conv.id === selectedConversation) {
-                    return {
-                        ...conv,
-                        messages: [...conv.messages, newMessage],
-                        message: message, // Update the preview
-                        time: "just now"
-                    };
+            if (!lastMessage) return;
+
+            // Generate a unique conversation ID
+            // Using the message ID of the first message in each conversation
+            const conversationId = user.id;
+
+            const existingConversation = conversationMap.get(conversationId);
+
+            if (existingConversation) {
+                // Add this message to existing conversation
+                existingConversation.messages.push({
+                    id: lastMessage.id,
+                    sender: lastMessage.sender.id === user.id ? "tutor" : "user",
+                    text: lastMessage.content,
+                    time: formatMessageTime(lastMessage.sentAt),
+                    fullTime: lastMessage.sentAt
+                });
+
+                // Update the preview if this is more recent
+                if (new Date(lastMessage.sentAt) > new Date(existingConversation.lastMessageTime)) {
+                    existingConversation.message = lastMessage.content;
+                    existingConversation.time = getShortTime(lastMessage.sentAt);
+                    existingConversation.lastMessageTime = lastMessage.sentAt;
+                    existingConversation.unread = !lastMessage.isRead;
                 }
-                return conv;
-            });
+            } else {
+                // Create a new conversation entry
+                conversationMap.set(conversationId, {
+                    id: conversationId, // Using message ID as unique conversation ID
+                    userId: user.id,
+                    name: `${user.firstName} ${user.lastName}`.trim(),
+                    message: lastMessage.content,
+                    time: getShortTime(lastMessage.sentAt),
+                    lastMessageTime: lastMessage.sentAt,
+                    online: false,
+                    unread: !lastMessage.isRead,
+                    avatar: user.profilePhotoUrl || "/placeholder.svg?height=40&width=40",
+                    messages: [{
+                        id: lastMessage.id,
+                        sender: lastMessage.sender.id === user.id ? "tutor" : "user",
+                        text: lastMessage.content,
+                        time: formatMessageTime(lastMessage.sentAt),
+                        fullTime: lastMessage.sentAt
+                    }]
+                });
+            }
+        });
 
-            // Update selected messages
-            setSelectedMessages([...selectedMessages, newMessage]);
-            setMessage("");
+        // Sort conversations by most recent message
+        const sortedConversations = Array.from(conversationMap.values())
+            .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
 
-            // Here you would typically call an API to save the message
-            // sendMessageAPI(selectedConversation, message);
+        sortedConversations.forEach(user => {
+            user.messages.sort((a, b) => new Date(a.fullTime) - new Date(b.fullTime));
+        });
+
+        setTransformedConversations(sortedConversations);
+    }, [data]);
+
+    const handleSendMessage = async (message) => {
+        if (message.trim() && selectedConversation) {
+            // Call API
+            const result = await sendMessage({ recipientId: selectedConversation, content: message });
+
+            if (result !== null) {
+                const newMessage = {
+                    id: Date.now(), // Temporary ID
+                    sender: "user",
+                    text: message,
+                    time: formatMessageTime(new Date()),
+                    fullTime: new Date().toISOString()
+                };
+
+                // Find and update the selected conversation
+                let updatedConversations = transformedConversations.map(conv => {
+                    if (conv.id === selectedConversation) {
+                        return {
+                            ...conv,
+                            messages: [...conv.messages, newMessage],
+                            message: message, // Update the preview
+                            time: "just now",
+                            lastMessageTime: new Date().toISOString()
+                        };
+                    }
+                    return conv;
+                });
+
+                // Sort conversations by most recent message
+                updatedConversations = updatedConversations
+                    .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
+
+                // Update selected messages
+                if (Array.isArray(selectedMessages)) {
+                    setSelectedMessages([...selectedMessages, newMessage]);
+                } else {
+                    setSelectedMessages([newMessage]);
+                }
+
+                setTransformedConversations(updatedConversations);
+            }
         }
     }
 
@@ -113,6 +212,70 @@ const MessageApp = () => {
         setShowChat(false);
     }
 
+    // New function to handle compose button click
+    const handleComposeClick = () => {
+        setShowComposeModal(true);
+        getUserList(""); // Initial load of users
+    }
+
+    // Handle selecting a user from the compose modal
+    const handleSelectUser = (user) => {
+        if (thisUser && user.id === thisUser.id) {
+            // Close the modal
+            setShowComposeModal(false);
+            setSearchQuery("");
+            toast.info("you cannot message yourself")
+            return
+        }
+
+        const exist = transformedConversations.filter((val) => val.id === user.id);
+        if (exist.length > 0) {
+            // Select the conversation
+            handleConversationClick(user.id)
+
+            // Close the modal
+            setShowComposeModal(false);
+            setSearchQuery("");
+            return
+        }
+
+        // Create a new conversation ID (for new conversations)
+        const newConversationId = `new-${Date.now()}`;
+
+        // Create a new conversation placeholder
+        const newConversation = {
+            id: user.id,
+            userId: user.id,
+            name: `${user.firstName} ${user.lastName}`.trim(),
+            message: "",
+            time: "new",
+            lastMessageTime: new Date().toISOString(),
+            online: false,
+            unread: false,
+            avatar: user.profilePhotoUrl || "/placeholder.svg?height=40&width=40",
+            messages: []
+        };
+
+        const updatedConversations = [newConversation, ...transformedConversations];
+        setTransformedConversations(updatedConversations);
+
+        // Select the new conversation
+        setSelectedConversation(newConversationId);
+        setSelectedMessages([]);
+        setShowChat(true);
+
+        // Close the modal
+        setShowComposeModal(false);
+        setSearchQuery("");
+    }
+
+    // If no conversation is selected yet, and we have conversations, select the first one
+    useEffect(() => {
+        if (!selectedConversation && transformedConversations.length > 0 && !showChat) {
+            handleConversationClick(transformedConversations[0].id);
+        }
+    }, [transformedConversations, selectedConversation, showChat]);
+
     if (loading || data === null) {
         return <MessagingSkeleton />
     }
@@ -121,11 +284,6 @@ const MessageApp = () => {
     const selectedConversationData = transformedConversations.find(
         conv => conv.id === selectedConversation
     ) || (transformedConversations.length > 0 ? transformedConversations[0] : null);
-
-    // If no conversation is selected yet and we have conversations, select the first one
-    if (!selectedConversation && transformedConversations.length > 0 && !showChat) {
-        handleConversationClick(transformedConversations[0].id);
-    }
 
     return (
         <div
@@ -140,17 +298,12 @@ const MessageApp = () => {
                     <div className="p-4 border-b border-gray-200">
                         <div className="flex justify-between items-center mb-4">
                             <h1 className="text-xl font-semibold text-gray-800">Message</h1>
-                            <button className="text-[#FF6636] flex items-center text-sm">
+                            <button
+                                className="text-[#FF6636] flex items-center text-sm cursor-pointer"
+                                onClick={handleComposeClick}
+                            >
                                 <FiPlus className="mr-1"/> Compose
                             </button>
-                        </div>
-                        <div className="relative">
-                            <FiSearch className="absolute left-3 top-3 text-gray-400"/>
-                            <input
-                                type="text"
-                                placeholder="Search"
-                                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-[#FF6636]"
-                            />
                         </div>
                     </div>
 
@@ -175,14 +328,11 @@ const MessageApp = () => {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex justify-between">
-                                        <h3 className="text-sm font-medium text-gray-900">{conversation.name}</h3>
+                                        <h3 className="text-sm font-medium text-gray-900 mr-2">{conversation.name}</h3>
                                         <span className="text-xs text-gray-500">{conversation.time}</span>
                                     </div>
                                     <p className="text-sm text-gray-500 truncate">{conversation.message}</p>
                                 </div>
-                                {conversation.unread && (
-                                    <span className="ml-2 mt-1 flex-shrink-0 w-2 h-2 rounded-full bg-red-500"></span>
-                                )}
                             </div>
                         ))}
                         {transformedConversations.length === 0 && (
@@ -210,12 +360,8 @@ const MessageApp = () => {
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center flex-wrap">
                                         <span className="text-sm font-medium mr-1">{selectedConversationData.name}</span>
-                                        {/* You can add more user details here if available in the API */}
                                     </div>
                                 </div>
-                                <button className="text-gray-500 ml-2">
-                                    <FiMoreVertical/>
-                                </button>
                             </div>
 
                             {/* Chat messages */}
@@ -270,42 +416,28 @@ const MessageApp = () => {
                                 )}
                             </div>
 
-                            {/* Action buttons */}
-                            <div className="border-t border-gray-200 p-2 md:p-3 overflow-x-auto">
-                                <div className="flex gap-2 md:flex-wrap">
-                                    <button className="border border-orange-500 text-orange-500 rounded-md px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm whitespace-nowrap flex items-center">
-                                        <FiVideo className="mr-1"/> Video Call
-                                    </button>
-                                    <button className="border border-orange-500 text-orange-500 rounded-md px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm whitespace-nowrap flex items-center">
-                                        <FiEdit className="mr-1"/> Book Trial
-                                    </button>
-                                    <button className="border border-orange-500 text-orange-500 rounded-md px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm whitespace-nowrap flex items-center">
-                                        <FiCalendar className="mr-1"/> View Schedule
-                                    </button>
-                                    <button className="border border-orange-500 text-orange-500 rounded-md px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm whitespace-nowrap">
-                                        Learn More
-                                    </button>
-                                </div>
-                            </div>
-
                             {/* Message input */}
-                            <div className="border-t border-gray-200 p-2 md:p-3 flex items-center">
+                            <form className="border-t border-gray-200 p-2 md:p-3 flex items-center" onSubmit={handleSubmit(onSubmit)}>
                                 <FiEdit className="text-orange-500 mr-2 flex-shrink-0"/>
                                 <input
                                     type="text"
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
+                                    {...register('message')}
                                     placeholder="Type your message"
                                     className="flex-1 border-0 focus:ring-0 focus:outline-none text-sm"
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            handleSubmit(onSubmit)();
+                                        }
+                                    }}
                                 />
                                 <button
-                                    onClick={handleSendMessage}
-                                    className="bg-orange-500 text-white rounded-md px-3 md:px-4 py-1 md:py-2 flex items-center text-xs md:text-sm flex-shrink-0"
+                                    type="submit"
+                                    className="bg-orange-500 text-white rounded-md px-3 md:px-4 py-1 md:py-2 flex items-center text-xs md:text-sm flex-shrink-0 cursor-pointer"
                                 >
-                                    Send <FiSend className="ml-1 md:ml-2"/>
+                                    Send <FiSend className="ml-1 md:ml-2" />
                                 </button>
-                            </div>
+                            </form>
                         </>
                     )}
                     {!selectedConversationData && (
@@ -315,6 +447,76 @@ const MessageApp = () => {
                     )}
                 </div>
             </div>
+
+            {/* Compose Modal */}
+            {showComposeModal && (
+                <div className="fixed inset-0 bg-opacity-30 backdrop-blur-md flex items-center justify-center z-50 p-4 rounded-xl shadow-lg">
+                    <div className="bg-white rounded-lg w-full max-w-md border-gray-400 border-[1px]">
+                        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                            <h2 className="text-lg font-medium">New Message</h2>
+                            <button
+                                onClick={() => {
+                                    setShowComposeModal(false);
+                                    setSearchQuery("");
+                                }}
+                                className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                            >
+                                <FiX size={20} />
+                            </button>
+                        </div>
+
+                        <div className="p-4">
+                            <div className="relative mb-4">
+                                <FiSearch className="absolute left-3 top-3 text-gray-400"/>
+                                <input
+                                    type="text"
+                                    placeholder="Search for users"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-[#FF6636]"
+                                />
+                            </div>
+
+                            <div className="max-h-60 overflow-y-auto">
+                                {loadingUsers ? (
+                                    <div className="text-center py-4">
+                                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-orange-500 border-t-transparent mx-auto"></div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {listUsers && listUsers.length > 0 ? (
+                                            listUsers.map(user => (
+                                                <div
+                                                    key={user.id}
+                                                    className="flex items-center p-3 hover:bg-gray-50 cursor-pointer rounded-md"
+                                                    onClick={() => handleSelectUser(user)}
+                                                >
+                                                    <div className="relative mr-3">
+                                                        <img
+                                                            src={user.profilePhotoUrl || "/placeholder.svg?height=40&width=40"}
+                                                            alt={`${user.firstName} ${user.lastName}`}
+                                                            className="w-10 h-10 rounded-full object-cover"
+                                                        />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <h3 className="text-sm font-medium text-gray-900">
+                                                            {`${user.firstName} ${user.lastName}`.trim()}
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="text-center py-4 text-gray-500">
+                                                {searchQuery.length >= 3 ? "No users found" : "Type at least 3 characters to search"}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
