@@ -4,7 +4,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 11:59:29
+ * @Last Modified time: 2025-05-02 10:41:13
  */
 import { IoIosArrowDown } from "react-icons/io";
 import { useFieldArray, useForm } from "react-hook-form"
@@ -46,6 +46,13 @@ export default function About({ setCurrentStep }) {
             languages: [{ language: "", level: "" }],
             phoneNumber: "",
             isOver18: false,
+            check1: false,
+            check2: false,
+            check3: false,
+            check4: false,
+            check5: false,
+            check6: false,
+            check7: false
         },
     })
 
@@ -97,6 +104,19 @@ export default function About({ setCurrentStep }) {
     const languageLevels = ["Native","Fluent","Advanced","Intermediate","Basic"];
     const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [selectedLevels, setSelectedLevels] = useState([]);
+
+    //checkbox
+    const checkboxFields = [
+        { id: "isOver18", label: "I confirm I'm over 18" },
+        { id: "check1", label: "Teachers must enter the designated online Gmeet meeting room on time to start the scheduled lesson(s);" },
+        { id: "check2", label: "Teachers can request salary withdrawal before the 30th of each month, and their salary payment will be received by the range of 5th to 10th of that month;" },
+        { id: "check3", label: `Active teachers will be listed on a "teacher's wall" for each subject. Each teacher's position on the wall (ranking) is calculated using comprehensive performance data from all teachers that is updated dynamically. A teacher will receive greater exposure and appear higher on the teacher's wall if our system detects an improvement in overall performance. For example, some factors that can raise your profile on the teacher's wall include: adding more time slots to teach, increasing the number of lessons you've sold, teaching more lessons;` },
+        { id: "check4", label: "If a student reports any misconduct or inappropriate behavior by the teacher (e.g. arriving late to class, skipping the lesson, leaving the lesson early), Lingo Foundry reserves the right to terminate all cooperation with the teacher should LingoFoundry deem it necessary;" },
+        { id: "check5", label: "If LingoFoundry discovers that a teacher is found to have attempted to teach LingoFoundry users outside the platform or circumvent LingoFoundry, LingoFoundry reserves the right to pursue appropriate legal action;" },
+        { id: "check6", label: "Teachers agree to abide by and support marketing and promotional activities organized by LingoFoundry as needed (such activities aim to increase teachers' income);" },
+        { id: "check7", label: "If LingoFoundry finds that a teacher is involved in any act of inappropriate behavior or slander (including but not limited to misrepresentations and scams) and deems the teacher's actions to have damaged the LingoFoundry brand or reputation, LingoFoundry reserves the right to pursue appropriate legal action." }
+    ];
+      
 
     return (
         <div className="lingo-container flex flex-col">
@@ -419,8 +439,8 @@ export default function About({ setCurrentStep }) {
                     <LabelTutorRegis
                         text={
                             <span>
-                Phone number <span className="text-gray-500 font-normal">(optional)</span>
-              </span>
+                                Phone number <span className="text-gray-500 font-normal">(optional)</span>
+                            </span>
                         }
                     />
                     <input
@@ -431,21 +451,29 @@ export default function About({ setCurrentStep }) {
                     />
                 </div>
 
-                <div className="mt-6 flex items-start">
-                    <div className="flex items-center h-5">
-                        <input
-                            id="isOver18"
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-red-300 text-[#E35D33] focus:ring-[#E35D33]"
-                            {...register("isOver18", { required: true })}
-                        />
-                    </div>
-                    <div className="ml-3 text-sm">
-                        <label htmlFor="isOver18" className="font-medium text-gray-700">
-                            I confirm I&#39;m over 18
-                        </label>
-                    </div>
+                <div className="flex flex-col space-y-4">
+                    <span className="font-semibold text-[18px]">LingoFoundry Terms of Service </span>
+                    <span>Dear Teacher,</span>
+                    <span>Welcome to LingoFoundry. Before you register to become a teacher on LingoFoundry, please read our Terms of Service. By checking each box, you acknowledge that you have read this consent form and agree to abide by the following items:</span>
                 </div>
+                
+                {checkboxFields.map(({ id, label }) => (
+                    <div key={id} className="mt-2 flex items-start">
+                        <div className="flex items-center h-5">
+                            <input
+                                id={id}
+                                type="checkbox"
+                                className="h-4 w-4 rounded border-red-300 text-[#E35D33] focus:ring-[#E35D33]"
+                                {...register(id, { required: true })}
+                            />
+                        </div>
+                        <div className="ml-3 text-sm">
+                        <label htmlFor={id} className="font-medium text-gray-700">
+                            {label}
+                        </label>
+                        </div>
+                    </div>
+                ))}
 
                 <div className="mt-6">
                     <button
