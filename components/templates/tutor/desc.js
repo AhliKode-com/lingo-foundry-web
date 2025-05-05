@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-05 10:57:58
+ * @Last Modified time: 2025-05-05 22:08:12
  */
 
 "use client"
@@ -13,6 +13,7 @@ import {useEffect} from "react";
 import {useAuth} from "@/context/AuthContext";
 import {useTutorController} from "@/apis/tutorController";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 export default function ProfileDescription({ setCurrentStep }) {
     const { registerTutor } = useTutorController()
@@ -131,9 +132,9 @@ export default function ProfileDescription({ setCurrentStep }) {
             <p className="text-gray-700 mb-2">
                 This info will go on your public profile. Write it in the language you&#39;ll be teaching and make sure to follow
                 our{" "}
-                <a href="#" className="underline font-medium">
+                <Link href="#" className="underline font-medium">
                     guidelines to get approved
-                </a>
+                </Link>
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-8">
