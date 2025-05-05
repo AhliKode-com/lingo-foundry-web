@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:13:24
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-19 19:35:14
+ * @Last Modified time: 2025-05-05 11:40:10
  */
 "use client"
 import React, {useState, useRef, useEffect} from "react";
@@ -10,33 +10,33 @@ import {FiChevronDown} from "react-icons/fi";
 import {GoArrowUp} from "react-icons/go";
 import {useRouter} from "next/navigation";
 
-export function Speciality({title, desc, defaultOpen = false}) {
-    const [open, setOpen] = useState(defaultOpen);
-    const [height, setHeight] = useState(0);
-    const contentRef = useRef(null);
+export function Speciality({data, isLast}) {
+    // const [open, setOpen] = useState(defaultOpen);
+    // const [height, setHeight] = useState(0);
+    // const contentRef = useRef(null);
 
-    useEffect(() => {
-        if (contentRef.current) {
-            if (open) {
-                setHeight(contentRef.current.scrollHeight);
-            } else {
-                setHeight(0);
-            }
-        }
-    }, [open, desc]);
+    // useEffect(() => {
+    //     if (contentRef.current) {
+    //         if (open) {
+    //             setHeight(contentRef.current.scrollHeight);
+    //         } else {
+    //             setHeight(0);
+    //         }
+    //     }
+    // }, [open, desc]);
 
     return (
         <div className="w-full gap-0">
             <button
-                onClick={() => setOpen((prev) => !prev)}
+                // onClick={() => setOpen((prev) => !prev)}
                 className={`
                     flex 
                     w-full 
                     items-center 
                     justify-between
                     py-[10px] px-[12px] md:py-[20px]
-                    cursor-pointer
                     gap-[5px]
+                    ${!isLast ? "border-b-[2px] border-[#E9EAF0]" : ""}
                     animation-effect`}
             >
                 <span
@@ -46,10 +46,10 @@ export function Speciality({title, desc, defaultOpen = false}) {
                         text-[14px] sm:text-[16px]
                     `}
                 >
-                    {title}
+                    {data}
                 </span>
 
-                <div>
+                {/* <div>
                     <FiChevronDown
                         className={`
                             text-[18px] sm:text-[24px]
@@ -58,10 +58,10 @@ export function Speciality({title, desc, defaultOpen = false}) {
                             ${open ? "rotate-180" : "rotate-0"}
                         `}
                     />
-                </div>
+                </div> */}
             </button>
 
-            <div
+            {/* <div
                 className="
                     text-[12px] sm:text-[14px]
                     overflow-hidden
@@ -78,7 +78,7 @@ export function Speciality({title, desc, defaultOpen = false}) {
                 >
                     {desc}
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

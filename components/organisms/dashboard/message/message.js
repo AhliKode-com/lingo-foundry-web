@@ -126,7 +126,7 @@ const MessageApp = () => {
                 conversationMap.set(conversationId, {
                     id: conversationId, // Using message ID as unique conversation ID
                     userId: user.id,
-                    name: `${user.firstName} ${user.lastName}`.trim(),
+                    name: user?.firstName !== null && user?.lastName !== null ?  `${user.firstName} ${user.lastName}`.trim() : `${user.username}`.split("@")[0],
                     message: lastMessage.content,
                     time: getShortTime(lastMessage.sentAt),
                     lastMessageTime: lastMessage.sentAt,
@@ -240,7 +240,7 @@ const MessageApp = () => {
         }
 
         // Create a new conversation ID (for new conversations)
-        const newConversationId = `new-${Date.now()}`;
+        const newConversationId = user.id;
 
         // Create a new conversation placeholder
         const newConversation = {
@@ -285,6 +285,8 @@ const MessageApp = () => {
         conv => conv.id === selectedConversation
     ) || (transformedConversations.length > 0 ? transformedConversations[0] : null);
 
+    console.log("selectedConversation", selectedConversation)
+
     return (
         <div
             className="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
@@ -299,7 +301,7 @@ const MessageApp = () => {
                         <div className="flex justify-between items-center mb-4">
                             <h1 className="text-xl font-semibold text-gray-800">Message</h1>
                             <button
-                                className="text-[#FF6636] flex items-center text-sm cursor-pointer"
+                                className="text-[#E15C31] flex items-center text-sm cursor-pointer"
                                 onClick={handleComposeClick}
                             >
                                 <FiPlus className="mr-1"/> Compose
@@ -348,8 +350,8 @@ const MessageApp = () => {
                     {/* Chat header */}
                     {selectedConversationData && (
                         <>
-                            <div className="border-b border-gray-200 p-3 md:p-4 flex items-center">
-                                <button onClick={handleBackToList} className="mr-2 md:hidden text-gray-500">
+                            <div className="border-b border-gray-200 p-3 md:p-[14px] flex items-center">
+                                <button onClick={handleBackToList} className="mr-2 md:hidden text-gray-500 cursor-pointer">
                                     <FiArrowLeft size={20}/>
                                 </button>
                                 <img
@@ -392,14 +394,14 @@ const MessageApp = () => {
                                                                         className="w-6 h-6 md:w-8 md:h-8 rounded-full"
                                                                     />
                                                                 </div>
-                                                                <div className="bg-orange-50 rounded-lg p-2 md:p-3">
+                                                                <div className="bg-[#FFEEE8] rounded-lg p-2 md:p-3">
                                                                     <p className="text-xs md:text-sm">{msg.text}</p>
                                                                     <div className="text-xs text-gray-500 mt-1 text-right">{msg.time}</div>
                                                                 </div>
                                                             </div>
                                                         )}
                                                         {msg.sender === "user" && (
-                                                            <div className={`bg-orange-500 text-white rounded-lg p-2 md:p-3 max-w-[90%] md:max-w-[80%]`}>
+                                                            <div className={`bg-[#E15C31] text-white rounded-lg p-2 md:p-3 max-w-[90%] md:max-w-[80%]`}>
                                                                 <p className="text-xs md:text-sm">{msg.text}</p>
                                                                 <div className="text-xs text-white opacity-70 mt-1 text-right">{msg.time}</div>
                                                             </div>
@@ -418,7 +420,7 @@ const MessageApp = () => {
 
                             {/* Message input */}
                             <form className="border-t border-gray-200 p-2 md:p-3 flex items-center" onSubmit={handleSubmit(onSubmit)}>
-                                <FiEdit className="text-orange-500 mr-2 flex-shrink-0"/>
+                                <FiEdit className="text-[#E15C31] mr-2 flex-shrink-0"/>
                                 <input
                                     type="text"
                                     {...register('message')}
@@ -433,7 +435,7 @@ const MessageApp = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className="bg-orange-500 text-white rounded-md px-3 md:px-4 py-1 md:py-2 flex items-center text-xs md:text-sm flex-shrink-0 cursor-pointer"
+                                    className="bg-[#E15C31] text-white rounded-md px-3 md:px-4 py-1 md:py-2 flex items-center text-xs md:text-sm flex-shrink-0 cursor-pointer"
                                 >
                                     Send <FiSend className="ml-1 md:ml-2" />
                                 </button>
@@ -473,7 +475,7 @@ const MessageApp = () => {
                                     placeholder="Search for users"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-[#FF6636]"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-[#E15C31]"
                                 />
                             </div>
 

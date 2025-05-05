@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 23:05:20
+ * @Last Modified time: 2025-05-05 16:31:11
  */
 
 "use client";
@@ -21,6 +21,7 @@ import {useStudentWishList} from "@/apis/studentWishList";
 import TutorDetailSkeleton from "@/components/organisms/tutor-detail-skeleton";
 import {getPopularTutors} from "@/apis/getPopularTutors";
 import {useAuth} from "@/context/AuthContext";
+import {getEnums} from "@/apis/getEnum";
 
 export default function TutorDetail() {
     const {slug} = useParams();
@@ -31,6 +32,7 @@ export default function TutorDetail() {
     const [expanded, setExpanded] = useState(false);
     const [loadingAddCart, setLoadingAddCart] = useState(false);
     const router = useRouter();
+    const { data: enums } = getEnums();
 
     const toggleExpanded = () => {
         setExpanded(prev => !prev);
@@ -278,7 +280,7 @@ export default function TutorDetail() {
                                         className="h-[12.5px] w-[16px] object-cover"
                                     />
                                 </div>
-                                <span className="text-[#121117] my-[10px]">Certified Indonesian teacher and examiner with an M.A. in Applied Linguistics and over 11 years of teaching experience</span>
+                                <span className="text-[#121117] my-[10px]">{data.tutor.bio}</span>
                                 <div className="flex flex-col gap-[15px]">
                                     <div className="flex gap-[10px]">
                                         <img src="/assets/doc.svg" alt="verified"
@@ -301,7 +303,7 @@ export default function TutorDetail() {
                                              className="w-[16px] h-[16px] mt-[5px]"/>
                                         <div className="flex flex-col gap-[5px]">
                                             <span className="font-semibold">Teaches</span>
-                                            <span>{subjects.join(", ")} lessons</span>
+                                            <span>{subjects.join(", ") || 0} lessons</span>
                                         </div>
                                     </div>
                                 </div>
@@ -316,11 +318,15 @@ export default function TutorDetail() {
                         <div className="flex flex-col gap-[20px]">
                             {expanded ? (
                                 <>
-                                    <span>{data.tutor.bio}</span>
+                                    <p className="whitespace-pre-line">
+                                        {`${data.tutor.introduction}\n\n${data.tutor.teachingExperience}\n\n${data.tutor.courseMotivation}`}
+                                    </p>
                                 </>
                             ) : (
                                 <>
-                                    <span className="line-clamp-2">{data.tutor.bio}</span>
+                                    <p className="line-clamp-2 whitespace-pre-line">
+                                    {`${data.tutor.introduction}\n\n${data.tutor.teachingExperience}\n\n${data.tutor.courseMotivation}`}
+                                    </p>
                                 </>
                             )}
                             <button onClick={toggleExpanded} className="self-start underline">
@@ -333,15 +339,19 @@ export default function TutorDetail() {
                     <div className="flex flex-col mb-[48px]">
                         <span className="text-[23px] font-medium mb-[20px]">I teach</span>
                         <div className="flex flex-wrap gap-[24px]">
-                            {languageLevel.map((value, index) => {
-                                const bgColor = bgColors[index % bgColors.length];
-                                return(
-                                    <div className="flex items-center gap-[8px]" key={index}>
-                                        <span className="text-[14px]">{value.language}</span>
-                                        <div style={{ backgroundColor: bgColor }} className="px-[8px] py-[1.5px]">{value.level}</div>
-                                    </div>
-                                )
-                            })}
+                            {languageLevel.length > 0 ?(
+                                languageLevel.map((value, index) => {
+                                    const bgColor = bgColors[index % bgColors.length];
+                                    return(
+                                        <div className="flex items-center gap-[8px]" key={index}>
+                                            <span className="text-[14px]">{value.language}</span>
+                                            <div style={{ backgroundColor: bgColor }} className="px-[8px] py-[1.5px]">{value.level}</div>
+                                        </div>
+                                    )
+                                })
+                            ) : (
+                                <>0 lessons</>
+                            )}
                         </div>
                     </div>
 
@@ -368,20 +378,26 @@ export default function TutorDetail() {
                     {/* resume */}
                     <div className="flex flex-col mb-[80px]">
                         <span className="text-[23px] font-medium mb-[20px]">Resume</span>
-                        <ResumeTabs/>
+                        <ResumeTabs 
+                            data={data?.tutor?.certificates}
+                            dataCv={data?.tutor?.cvFileUrl}    
+                        />
                     </div>
 
                     {/* speciality */}
                     <div className="flex flex-col mb-[48px]">
                         <span className="text-[23px] font-medium mb-[20px]">My specialties</span>
-                        {specialityData.map((item, index) => (
-                            <Speciality
-                                key={index}
-                                title={item.title}
-                                desc={item.desc}
-                                defaultOpen={index === 0}
-                            />
-                        ))}
+                        {data?.tutor?.expertises?.map((item, index) => {
+                            const expMatch = enums.expertise.find(expertiseItem => expertiseItem.name === item)?.displayName;
+                            return (
+                                <Speciality
+                                    key={index}
+                                    data={expMatch}
+                                    isLast={index === data?.tutor?.expertises.length - 1}
+                                    // defaultOpen={index === 0}
+                                />
+                            )
+                        })}
                     </div>
 
                     {/* like */}
@@ -439,13 +455,13 @@ export default function TutorDetail() {
                                 </button>
                             </div>
                             <div className="mt-[27px] flex flex-col gap-[16px]">
-                                <div className="flex gap-[10px]">
+                                {/* <div className="flex gap-[10px]">
                                     <img src="/assets/stats.svg" alt="stats" className="mb-auto mt-[5px]"/>
                                     <div className="flex flex-col">
                                         <span className="font-semibold">Super popular</span>
                                         <span className="text-[14px]">7 new contacts and 10 lesson bookings in the last 48 hours</span>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="flex gap-[10px]">
                                     <img src="/assets/clock-black.svg" alt="clock" className="mb-auto mt-[5px]"/>
                                     <span className="text-[14px]">Usually responds in less than an hour</span>

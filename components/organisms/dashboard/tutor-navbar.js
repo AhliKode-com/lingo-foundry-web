@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-24 09:22:42
+ * @Last Modified time: 2025-05-03 21:49:30
  */
 
 "use client"
@@ -24,17 +24,13 @@ export default function StudentNavbar() {
             href: "/tutor-dashboard/my-students"
         },
         {
-            name: "My Profile",
-            href: "/tutor-dashboard/my-profile"
-        },
-        {
             name: "My Ads",
             href: "/tutor-dashboard/my-ads"
         },
-        // {
-        //     name: "Messages",
-        //     href: "/tutor-dashboard/message"
-        // },
+        {
+            name: "Messages",
+            href: "/tutor-dashboard/message"
+        },
         {
             name: "Settings",
             href: "/tutor-dashboard/settings"
