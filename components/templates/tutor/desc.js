@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-31 10:49:20
+ * @Last Modified time: 2025-05-05 10:57:58
  */
 
 "use client"
@@ -68,7 +68,7 @@ export default function ProfileDescription({ setCurrentStep }) {
         localStorage.setItem("applyTutorStep4Data", JSON.stringify(data))
 
         const step1Data = JSON.parse(localStorage.getItem("applyTutorStep1Data"))
-        const step2Data = localStorage.getItem("applyTutorStep2Data")
+        const step2Data = localStorage.getItem("applyTutorStep2Data") || ""
         const step3Data = JSON.parse(localStorage.getItem("applyTutorStep3Data"))
         const step4Data = JSON.parse(localStorage.getItem("applyTutorStep4Data"))
 
@@ -76,7 +76,7 @@ export default function ProfileDescription({ setCurrentStep }) {
             "firstName": step1Data.firstName,
             "lastName": step1Data.lastName,
             "bio": user.bio,
-            "profilePhotoObjectKey": step2Data.split("download/")[1] || "",
+            "profilePhotoObjectKey": step2Data?.split("download/")[1] || "",
             "countryOfBirth": step1Data.countryOfBirth,
             "teachSubject": step1Data.subjectYouTeach,
             "expertises": step1Data.expertise,
@@ -90,10 +90,10 @@ export default function ProfileDescription({ setCurrentStep }) {
                     "issuedBy": value.issuedBy,
                     "startYear": Number(value.startYear),
                     "endYear": Number(value.endYear),
-                    "fileObjectKey": value.file.split("download/")[1] || ""
+                    "fileObjectKey": value.file?.split("download/")[1] || ""
                 }
             }),
-            "cvFileObjectKey": step3Data.cvFile.split("download/")[1] || "",
+            "cvFileObjectKey": step3Data.cvFile?.split("download/")[1] || "",
             "introduction": step4Data.introduction,
             "teachingExperience": step4Data.teachingExperience,
             "courseMotivation": step4Data.courseMotivation,
