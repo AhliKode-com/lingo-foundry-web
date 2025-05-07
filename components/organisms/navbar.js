@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-23 22:31:19
+ * @Last Modified time: 2025-05-07 16:05:47
  */
 "use client"
 import Image from 'next/image';
@@ -30,6 +30,17 @@ export default function Navbar() {
     const [cartCount, setCartCount] = useState(0)
     const { user, loading, logoutContext } = useAuth()
     const [showSubmenu, setShowSubmenu] = useState(true);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setOpen(false);
+            }
+        };
+      
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // wishlist
     const { getWishList } = useStudentWishList();
