@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-06 16:43:45
+ * @Last Modified time: 2025-05-07 23:38:56
  */
 
 "use client";
@@ -436,12 +436,12 @@ export default function TutorDetail() {
                                 <span className="text-[14px] text-[#4D4C5C]">per hour</span>
                             </div>
                             <div className="flex flex-col gap-[8px]">
-                                <button
+                                {/* <button
                                     onClick={handleOpenCart}
                                     className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]">
                                     <img src="/assets/lightning.svg" alt="lightning" className="w-[20px] h-[20px]"/>
                                     Add to cart
-                                </button>
+                                </button> */}
                                 <button
                                     onClick={handleAddToWishlist}
                                     className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
