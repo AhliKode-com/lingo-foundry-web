@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-05 16:31:11
+ * @Last Modified time: 2025-05-06 16:43:45
  */
 
 "use client";
@@ -422,9 +422,9 @@ export default function TutorDetail() {
                                 <div className="flex flex-col">
                                     <div className="flex gap-[4px] items-center">
                                         <img src="/assets/star-review.svg" alt="star" className="w-[16px] h-[16px]"/>
-                                        <span className="font-medium">{data.tutor.rating}</span>
+                                        <span className="font-medium">{data.tutor.averageRating}</span>
                                     </div>
-                                    <span className="text-[14px] text-[#4D4C5C]">89 reviews</span>
+                                    <span className="text-[14px] text-[#4D4C5C]">{data.tutor.reviewCount} reviews</span>
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="font-medium">{data.tutorSubjects.length}</span>
@@ -432,7 +432,7 @@ export default function TutorDetail() {
                                 </div>
                             </div>
                             <div className="flex mb-[24px] flex-col">
-                                <span className="font-medium">US$17</span>
+                                <span className="font-medium">Rp.{Number(data.tutor.averageSubjectPrice).toLocaleString()}</span>
                                 <span className="text-[14px] text-[#4D4C5C]">per hour</span>
                             </div>
                             <div className="flex flex-col gap-[8px]">
