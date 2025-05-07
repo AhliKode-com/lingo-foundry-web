@@ -1,38 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Lingo Foundry Web
 
-## Getting Started
+This is the web frontend for Lingo Foundry, built with Next.js.
 
-First, run the development server:
+## Prerequisites
+
+* Node.js LTS (v16+)
+* npm (v8+)
+* Docker (optional, for containerized setup)
+
+## Environment Variables
+
+* `NEXT_PUBLIC_API_BASE_URL` (default: `https://api.lingofoundry.com/api`)
+
+## Local Development
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+2. Start development server:
+
+   ```bash
+   NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL} npm run dev
+   ```
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Production Build
+
+1. Build the app:
+
+   ```bash
+   NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL} npm run build
+   ```
+2. Start in production mode:
+
+   ```bash
+   npm run start-prod
+   ```
+
+## Docker
+
+A `Dockerfile` is included to containerize the application.
+
+### Using the provided script
+
+Run the `start.sh` script to build and run the Docker container:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+chmod +x start.sh
+./start.sh
 ```
 
-testing 18 Mar 00:50
+The script will:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* Build the Docker image with the `NEXT_PUBLIC_API_BASE_URL` build argument.
+* Stop and remove any existing container named `lingo-foundry-web-container`.
+* Run a new container mapping port 8080.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Manual Docker commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Build the image
+NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL} \
+  docker build -t lingo-foundry-web .
 
-## Learn More
+# Run the container
+docker run -d -p 8080:8080 --name lingo-foundry-web-container lingo-foundry-web
+```
 
-To learn more about Next.js, take a look at the following resources:
+Access the app at [http://localhost:8080](http://localhost:8080).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Troubleshooting
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Ensure Docker daemon/service is running.
+* Check container logs:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  ```bash
+  docker logs lingo-foundry-web-container
+  ```
+* If you update environment variables, rebuild the image to apply changes.
