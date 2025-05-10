@@ -2,30 +2,43 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-03 21:49:30
+ * @Last Modified time: 2025-05-10 17:51:37
  */
 
 "use client"
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 import {useAuth} from "@/context/AuthContext";
+import {useEffect, useState} from "react";
 
 export default function StudentNavbar() {
     const pathname = usePathname();
     const { user, loading } = useAuth();
+    const [isProductionDomain, setIsProductionDomain] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const domain = window.location.hostname;
+            setIsProductionDomain(domain === "lingofoundry.com");
+        }
+    }, []);
+
 
     const links = [
         {
             name: "Home",
-            href: "/tutor-dashboard"
+            href: "/tutor-dashboard",
+            hiddenInProd: true
         },
         {
             name: "My Students",
-            href: "/tutor-dashboard/my-students"
+            href: "/tutor-dashboard/my-students",
+            hiddenInProd: true
         },
         {
             name: "My Ads",
-            href: "/tutor-dashboard/my-ads"
+            href: "/tutor-dashboard/my-ads",
+            hiddenInProd: true
         },
         {
             name: "Messages",
@@ -36,6 +49,8 @@ export default function StudentNavbar() {
             href: "/tutor-dashboard/settings"
         }
     ]
+
+    const filteredLinks = links.filter(link => !(isProductionDomain && link.hiddenInProd));
 
     return (
         <div id='tutor-navbar' className="lingo-container flex flex-col h-full pt-[80px] sm:pt-[103.61px]">
@@ -91,7 +106,7 @@ export default function StudentNavbar() {
             <div
                 className="overflow-x-auto mb-[40px] pt-[15px] md:pt-[20px] px-[20px] md:px-[40px] w-full h-[50px] md:h-[65px] border-[1px] border-[#FF723A40] border-t-0 flex items-center">
                 <ul className="flex gap-[40px] h-full">
-                    {links.map((link, index) => {
+                    {filteredLinks.map((link, index) => {
                         const isActive = pathname === link.href ? 'border-b-2 border-[#FF6636]' : '';
                         const handleLinkClick = () => {
                             const target = document.getElementById("tutor-navbar");

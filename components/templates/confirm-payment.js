@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:50:17
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-29 15:02:20
+ * @Last Modified time: 2025-05-10 17:37:49
  */
 "use client"
 import {TitleDashboard, TitlePayment} from "@/components/atoms/title";
@@ -103,10 +103,13 @@ export default function ConfirmPayment() {
                     </div>
                     <button
                         disabled={isEmpty || isLoading}
-                        onClick={handleConfirmCart}
-                        className={`bg-[#E15C31] text-[14px] sm:text-[16px] px-[28px] py-[13px] mx-[30px] mt-[35px] text-white animation-effect ${isEmpty ? "bg-gray-400" : "cursor-pointer"}`}
+                        // onClick={handleConfirmCart}
+                        // className={`bg-[#E15C31] text-[14px] sm:text-[16px] px-[28px] py-[13px] mx-[30px] mt-[35px] text-white animation-effect ${isEmpty ? "bg-gray-400" : "cursor-pointer"}`}
+                        onClick={() => {}}
+                        className={`bg-[#D2D2D2] text-[14px] sm:text-[16px] px-[28px] py-[13px] mx-[30px] mt-[35px] text-white animation-effect ${isEmpty ? "bg-gray-400" : "cursor-not-allowed"}`}
                     >
-                        Complete Payment
+                        {/* Complete Payment */}
+                        Currently Unavailable
                     </button>
                 </div>
             </div>
