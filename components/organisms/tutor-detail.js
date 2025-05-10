@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-10 17:31:35
+ * @Last Modified time: 2025-05-11 00:54:28
  */
 
 "use client";
@@ -282,22 +282,26 @@ export default function TutorDetail() {
                                 </div>
                                 <span className="text-[#121117] my-[10px]">{data.tutor.bio}</span>
                                 <div className="flex flex-col gap-[15px]">
-                                    <div className="flex gap-[10px]">
-                                        <img src="/assets/doc.svg" alt="verified"
-                                             className="w-[16px] h-[16px] mt-[5px]"/>
-                                        <div className="flex flex-col gap-[5px]">
-                                            <span className="font-semibold text-[#0450B4]">Professional Tutor</span>
-                                            <span>{data.tutor.firstName}{" "}{data.tutor.lastName} is a highly qualified tutor with a verified teaching certificate</span>
+                                    {Array.isArray(data.tutor?.certificates) && data.tutor.certificates.length > 0  && (
+                                        <div className="flex gap-[10px]">
+                                            <img src="/assets/doc.svg" alt="verified"
+                                                className="w-[16px] h-[16px] mt-[5px]"/>
+                                            <div className="flex flex-col gap-[5px]">
+                                                <span className="font-semibold text-[#0450B4]">Professional Tutor</span>
+                                                <span>{data.tutor.firstName}{" "}{data.tutor.lastName} is a highly qualified tutor with a verified teaching certificate</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="flex gap-[10px]">
-                                        <img src="/assets/badge.svg" alt="verified"
-                                             className="w-[16px] h-[16px] mt-[5px]"/>
-                                        <div className="flex flex-col gap-[5px]">
-                                            <span className="font-semibold text-[#E35D33]">Super Tutor</span>
-                                            <span>{data.tutor.firstName}{" "}{data.tutor.lastName} is a highly rated and experienced tutor.</span>
+                                    )}
+                                    {data.tutor?.numberOfCourses >= 500 && (    
+                                        <div className="flex gap-[10px]">
+                                            <img src="/assets/badge.svg" alt="verified"
+                                                className="w-[16px] h-[16px] mt-[5px]"/>
+                                            <div className="flex flex-col gap-[5px]">
+                                                <span className="font-semibold text-[#E35D33]">Super Tutor</span>
+                                                <span>{data.tutor.firstName}{" "}{data.tutor.lastName} is a highly rated and experienced tutor.</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
                                     <div className="flex gap-[10px]">
                                         <img src="/assets/teaches.svg" alt="verified"
                                              className="w-[16px] h-[16px] mt-[5px]"/>
