@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 13:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-24 09:09:20
+ * @Last Modified time: 2025-05-11 01:45:42
  */
 
 "use client"
@@ -131,7 +131,7 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                                         </svg>
                                     </div>
-                                    <span className="text-gray-500">(256)</span>
+                                    <span className="text-gray-500">({teacher?.reviewCount ?? 0})</span>
                                     <div className="ml-4">
                                         <span className="font-medium text-[#E35D33]">{teacher.numberOfStudents}</span>
                                         <span className="ml-1 text-gray-700">Students</span>
@@ -195,7 +195,7 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
 
                         {/* Timezone Info */}
                         <p className="text-xs text-gray-500 mb-4">
-                            * All times listed are in your local timezone: Bangkok GMT +07:00aaa
+                            * All times listed are in your local timezone: Bangkok GMT +07:00
                         </p>
                     </div>
 
