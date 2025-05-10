@@ -7,6 +7,8 @@ export function getEnums() {
         expertise: [],
         subject: [],
         level: [],
+        subjectTeach: [],
+        subjectLevelTeach: [],
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -16,11 +18,13 @@ export function getEnums() {
             setLoading(true);
             setError(null);
             try {
-                const [countryRes, expertiseRes, subjectRes, levelRes] = await Promise.all([
+                const [countryRes, expertiseRes, subjectRes, levelRes, subjectTeachRes, subjectLevelTeachRes] = await Promise.all([
                 api.get("/enum/country"),
                 api.get("/enum/expertise"),
                 api.get("/enum/academic-degree/subject"),
                 api.get("/enum/academic-degree/level"),
+                api.get("/enum/subject"),
+                api.get("/enum/subject-level"),
                 ]);
 
                 setData({
@@ -28,6 +32,8 @@ export function getEnums() {
                 expertise: expertiseRes.data.data,
                 subject: subjectRes.data.data,
                 level: levelRes.data.data,
+                subjectTeach: subjectTeachRes.data.data,
+                subjectLevelTeach: subjectLevelTeachRes.data.data,
                 });
             } catch (err) {
                 setError(err.response?.data?.message || "Failed to get enums");

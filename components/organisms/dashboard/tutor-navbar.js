@@ -52,6 +52,13 @@ export default function StudentNavbar() {
 
     const filteredLinks = links.filter(link => !(isProductionDomain && link.hiddenInProd));
 
+    const [certificatesJson, setCertificatesJson] = useState([]);
+    useEffect(() => {
+        if (user) {
+            setCertificatesJson(JSON.parse(user.tutor.certificatesJson));
+        }
+    }, [user])
+
     return (
         <div id='tutor-navbar' className="lingo-container flex flex-col h-full pt-[80px] sm:pt-[103.61px]">
             <div className="mt-[50px] border-[1px] border-[#FF723A40] w-full lg:h-[190px] p-[20px] md:p-[40px]">
@@ -85,19 +92,25 @@ export default function StudentNavbar() {
                                         <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
                                         <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">Email Verified</span>
                                     </div>
-                                    <div className="flex items-center gap-[12px]">
-                                        <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
-                                        <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">CV Verified</span>
-                                    </div>
-                                    <div className="flex items-center gap-[12px] md:hidden">
-                                        <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
-                                        <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">CV Verified</span>
-                                    </div>
+                                    {user?.tutor?.cvFileObjectKey !== "" && (
+                                        <div className="flex items-center gap-[12px]">
+                                            <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
+                                            <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">CV Verified</span>
+                                        </div>
+                                    )}
+                                    {certificatesJson && certificatesJson.length > 0 && (
+                                        <div className="flex items-center gap-[12px] md:hidden">
+                                            <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
+                                            <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">Certificate Verified</span>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="hidden items-center gap-[12px] md:flex">
-                                    <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
-                                    <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">CV Verified</span>
-                                </div>
+                                {certificatesJson && certificatesJson.length > 0 && (
+                                    <div className="hidden items-center gap-[12px] md:flex">
+                                        <img src="/assets/checkbox.svg" alt="checkbox" className="w-[22px]"/>
+                                        <span className="text-[#6E7485] text-[14px] md:text-[16px] animation-effect">Certificate Verified</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
