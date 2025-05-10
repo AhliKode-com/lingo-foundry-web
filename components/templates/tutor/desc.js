@@ -34,7 +34,7 @@ export default function ProfileDescription({ setCurrentStep }) {
         }
     }, [])
 
-    const { user } = useAuth()
+    const { user, refreshUser } = useAuth()
 
     const {
         register,
@@ -123,6 +123,8 @@ export default function ProfileDescription({ setCurrentStep }) {
         localStorage.removeItem("applyTutorStep3Data")
         localStorage.removeItem("applyTutorStep4Data")
         toast.success("register successfully.")
+
+        await refreshUser()
         router.push("/tutor-register-success")
     }
 

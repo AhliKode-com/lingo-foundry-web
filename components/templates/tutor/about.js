@@ -12,11 +12,15 @@ import { TitleTutorRegis, DescTutorRegis, LabelTutorRegis } from "@/components/a
 import { useEffect, useState } from "react"
 import {getLandingSubjects} from "@/apis/getLandingSubjects";
 import {getEnums} from "@/apis/getEnum";
+import {useAuth} from "@/context/AuthContext";
 
 export default function About({ setCurrentStep }) {
     const [savedData, setSavedData] = useState(null)
 
     const { data: enums } = getEnums();
+    const { user } = useAuth()
+
+    console.log(user)
 
     // load data from localStorage on component mount
     useEffect(() => {
@@ -63,6 +67,12 @@ export default function About({ setCurrentStep }) {
         }
     }, [savedData, reset])
 
+    useEffect(() => {
+        if (user?.username) {
+            setValue("email", user.username);
+        }
+    }, [user?.username, setValue]);
+
     const { fields, append, remove } = useFieldArray({
         control,
         name: "languages",
@@ -104,6 +114,19 @@ export default function About({ setCurrentStep }) {
     const languageLevels = ["Native","Fluent","Advanced","Intermediate","Basic"];
     const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [selectedLevels, setSelectedLevels] = useState([]);
+
+    useEffect(() => {
+        if (savedData) {
+            const languages = savedData?.languages?.map((val) => {
+                return val.language
+            })
+            const levels = savedData?.languages?.map((val) => {
+                return val.level
+            })
+            setSelectedLanguages(languages);
+            setSelectedLevels(levels);
+        }
+    }, [savedData])
 
     //checkbox
     const checkboxFields = [
@@ -151,7 +174,8 @@ export default function About({ setCurrentStep }) {
                     <input
                         type="email"
                         placeholder={savedData?.email || "Email"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] disabled:bg-gray-100"
+                        disabled={true}
                         {...register("email", {
                             required: true,
                             pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -211,19 +235,19 @@ export default function About({ setCurrentStep }) {
                             className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         >
                             <span className="text-left flex-1">
-                                {selectedSubject ? enums.subject.find(subject => subject.name === selectedSubject)?.displayName : "Select subject..."}
+                                {selectedSubject ? enums.subjectTeach.find(subject => subject.displayName === selectedSubject)?.displayName : "Select subject..."}
                             </span>
                             <IoIosArrowDown />
                         </button>
 
                         {dropdownOpen === 'subject' && (
                             <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                            {enums?.subject?.map((subject, index) => (
+                            {enums?.subjectTeach?.map((subject, index) => (
                                 <div
                                 key={index}
                                 className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
                                 onClick={() => {
-                                    setValue("subjectYouTeach", subject.name)
+                                    setValue("subjectYouTeach", subject.displayName)
                                     setDropdownOpen(false)
                                 }}
                                 >
@@ -344,19 +368,19 @@ export default function About({ setCurrentStep }) {
 
                                 {dropdownOpen === `language-${index}` && (
                                     <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                                        {languagesList.map((lang, idx) => (
+                                        {enums?.subjectTeach?.map((lang, idx) => (
                                             <div
                                             key={idx}
                                             className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
                                             onClick={() => {
                                                 const newSelected = [...selectedLanguages];
-                                                newSelected[index] = lang;
+                                                newSelected[index] = lang.displayName;
                                                 setSelectedLanguages(newSelected);
-                                                setValue(`languages.${index}.language`, lang);
+                                                setValue(`languages.${index}.language`, lang.displayName);
                                                 setDropdownOpen(null);
                                             }}
                                             >
-                                                <span className="text-[16px]">{lang}</span>
+                                                <span className="text-[16px]">{lang.displayName}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -387,19 +411,19 @@ export default function About({ setCurrentStep }) {
 
                                 {dropdownOpen === `level-${index}` && (
                                     <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                                    {languageLevels.map((level, idx) => (
+                                    {enums?.subjectLevelTeach.map((level, idx) => (
                                         <div
                                         key={idx}
                                         className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
                                         onClick={() => {
                                             const newSelected = [...selectedLevels];
-                                            newSelected[index] = level;
+                                            newSelected[index] = level.displayName;
                                             setSelectedLevels(newSelected);
-                                            setValue(`languages.${index}.level`, level);
+                                            setValue(`languages.${index}.level`, level.displayName);
                                             setDropdownOpen(null);
                                         }}
                                         >
-                                            <span className="text-[16px]">{level}</span>
+                                            <span className="text-[16px]">{level.displayName}</span>
                                         </div>
                                     ))}
                                     </div>
@@ -445,7 +469,7 @@ export default function About({ setCurrentStep }) {
                     />
                     <input
                         type="tel"
-                        placeholder={savedData?.phoneNumber || "+62"}
+                        placeholder={savedData?.phoneNumber || "enter your phone number"}
                         className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         {...register("phoneNumber")}
                     />
