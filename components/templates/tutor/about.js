@@ -4,7 +4,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-02 10:41:13
+ * @Last Modified time: 2025-05-12 17:13:37
  */
 import { IoIosArrowDown } from "react-icons/io";
 import { useFieldArray, useForm } from "react-hook-form"
@@ -139,7 +139,45 @@ export default function About({ setCurrentStep }) {
         { id: "check6", label: "Teachers agree to abide by and support marketing and promotional activities organized by LingoFoundry as needed (such activities aim to increase teachers' income);" },
         { id: "check7", label: "If LingoFoundry finds that a teacher is involved in any act of inappropriate behavior or slander (including but not limited to misrepresentations and scams) and deems the teacher's actions to have damaged the LingoFoundry brand or reputation, LingoFoundry reserves the right to pursue appropriate legal action." }
     ];
+
+    // const [searchTerm, setSearchTerm] = useState({
+    //     country: "",
+    //     subject: "",
+    //     expertise: "",
+
+    // });
+    const [searchTerm, setSearchTerm] = useState({});
+    
+    const filteredCountries = enums.country.filter((country) =>
+        (country?.displayName || "").toLowerCase().includes((searchTerm.country || "").toLowerCase())
+    );
       
+    const filteredSubjects = enums.subjectTeach.filter((subject) =>
+        (subject?.displayName || "").toLowerCase().includes((searchTerm.subject || "").toLowerCase())
+    );
+      
+    const filteredExpertise = enums.expertise
+        .filter((option) => !expertise.includes(option.name))
+        .filter((option) =>
+          (option?.displayName || "").toLowerCase().includes((searchTerm.expertise || "").toLowerCase())
+    );
+
+    const [prevDropdownOpen, setPrevDropdownOpen] = useState(null);
+
+    useEffect(() => {
+        if (prevDropdownOpen && prevDropdownOpen !== dropdownOpen) {
+          setSearchTerm((prevSearch) => ({
+            ...prevSearch,
+            [prevDropdownOpen]: ""
+          }));
+        }
+      
+        setPrevDropdownOpen(dropdownOpen);
+    }, [dropdownOpen]);
+
+    const handleDropdownToggle = (type) => {
+        setDropdownOpen((prev) => (prev === type ? null : type));
+    };
 
     return (
         <div className="lingo-container flex flex-col">
@@ -193,7 +231,7 @@ export default function About({ setCurrentStep }) {
                         />
                         <button
                             type="button"
-                            onClick={() => setDropdownOpen(dropdownOpen === 'country' ? null : 'country')}
+                            onClick={() => handleDropdownToggle('country')}
                             className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         >
                             <span className="text-left flex-1">
@@ -204,18 +242,34 @@ export default function About({ setCurrentStep }) {
 
                         {dropdownOpen === 'country' && (
                             <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                            {enums?.country?.map((item, index) => (
-                                <div
-                                key={index}
-                                className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
-                                onClick={() => {
-                                    setValue("countryOfBirth", item.name)
-                                    setDropdownOpen(false)
-                                }}
-                                >
-                                    <span className="text-[16px]">{item.displayName}</span>
+                                <div className="p-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Search..."
+                                        value={searchTerm.country}
+                                        onChange={(e) =>
+                                            setSearchTerm(prev => ({ ...prev, country: e.target.value }))
+                                          }
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                    />
                                 </div>
-                            ))}
+                                {filteredCountries.length > 0 ? (
+                                    filteredCountries.map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                            onClick={() => {
+                                                setValue("countryOfBirth", item.name);
+                                                setDropdownOpen(false);
+                                                setSearchTerm({});
+                                            }}
+                                        >
+                                            <span className="text-[16px]">{item.displayName}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="px-4 py-2 text-gray-500">No results found</div>
+                                )}
                             </div>
                         )}
                     </div>
@@ -231,7 +285,7 @@ export default function About({ setCurrentStep }) {
                         />
                         <button
                             type="button"
-                            onClick={() => setDropdownOpen(dropdownOpen === 'subject' ? null : 'subject')}
+                            onClick={() => handleDropdownToggle('subject')}
                             className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                         >
                             <span className="text-left flex-1">
@@ -242,18 +296,34 @@ export default function About({ setCurrentStep }) {
 
                         {dropdownOpen === 'subject' && (
                             <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                            {enums?.subjectTeach?.map((subject, index) => (
-                                <div
-                                key={index}
-                                className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
-                                onClick={() => {
-                                    setValue("subjectYouTeach", subject.displayName)
-                                    setDropdownOpen(false)
-                                }}
-                                >
-                                <span className="text-[16px]">{subject.displayName}</span>
+                                <div className="p-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Search..."
+                                        value={searchTerm.subject}
+                                        onChange={(e) =>
+                                            setSearchTerm(prev => ({ ...prev, subject: e.target.value }))
+                                        }
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                    />
                                 </div>
-                            ))}
+                                {filteredSubjects.length > 0 ? (
+                                    filteredSubjects.map((subject, index) => (
+                                        <div
+                                            key={index}
+                                            className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                            onClick={() => {
+                                                setValue("subjectYouTeach", subject.displayName);
+                                                setDropdownOpen(null);
+                                                setSearchTerm({});
+                                            }}
+                                        >
+                                            <span className="text-[16px]">{subject.displayName}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="px-4 py-2 text-gray-500">No results found</div>
+                                )}
                             </div>
                         )}
                     </div>
@@ -307,33 +377,48 @@ export default function About({ setCurrentStep }) {
                             <button
                                 type="button"
                                 disabled={isExpertiseMaxReached}
-                                onClick={() => setDropdownOpen(dropdownOpen === 'expertise' ? null : 'expertise')}
+                                onClick={() => handleDropdownToggle('expertise')}
                                 className={`flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
                                 isExpertiseMaxReached ? "bg-gray-100 cursor-not-allowed text-gray-400" : ""
                                 }`}
                             >
                                 <span className="text-left flex-1">
-                                {isExpertiseMaxReached ? "Maximum reached" : "Select expertise..."}
+                                    {isExpertiseMaxReached ? "Maximum reached" : "Select expertise..."}
                                 </span>
                                 <IoIosArrowDown />
                             </button>
 
                             {dropdownOpen === 'expertise' && !isExpertiseMaxReached && (
                                 <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                                {enums.expertise && enums.expertise
-                                    .filter((option) => !expertise.includes(option.name))
-                                    .map((option, index) => (
-                                    <div
-                                        key={index}
-                                        className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
-                                        onClick={() => {
-                                        handleExpertiseAdd(option.name)
-                                        setDropdownOpen(null)
-                                        }}
-                                    >
-                                        <span className="text-[16px]">{option.displayName}</span>
+                                    <div className="p-2">
+                                        <input
+                                            type="text"
+                                            placeholder="Search..."
+                                            value={searchTerm.expertise}
+                                            onChange={(e) =>
+                                            setSearchTerm((prev) => ({ ...prev, expertise: e.target.value }))
+                                            }
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                        />
                                     </div>
-                                    ))}
+                                    
+                                    {filteredExpertise.length > 0 ? (
+                                        filteredExpertise.map((option, index) => (
+                                            <div
+                                                key={index}
+                                                className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                                onClick={() => {
+                                                    handleExpertiseAdd(option.name)
+                                                    setDropdownOpen(null)
+                                                    setSearchTerm({})
+                                                }}
+                                            >
+                                                <span className="text-[16px]">{option.displayName}</span>
+                                            </div>
+                                        ))
+                                    ): (
+                                        <div className="px-4 py-2 text-gray-500">No results found</div>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -342,114 +427,155 @@ export default function About({ setCurrentStep }) {
 
                 <div className="space-y-2 mt-6">
                     <LabelTutorRegis text="Languages you speak" />
-                    {fields.map((field, index) => (
-                        <div key={field.id} className="flex gap-4 mb-2">
-                            <div className="relative flex-1">
-                                <input
-                                    type="hidden"
-                                    {...register(`languages.${index}.language`, {
-                                    required: index === 0 ? "Language is required" : false,
-                                    })}
-                                    value={selectedLanguages[index] || ""}
-                                />
+                    {fields.map((field, index) => {
+                        const filteredLangs = enums?.subjectTeach?.filter((lang) =>
+                            (lang?.displayName || "").toLowerCase().includes((searchTerm[`language-${index}`] || "").toLowerCase())
+                        );
+                      
+                        const filteredLevels = enums?.subjectLevelTeach?.filter((level) =>
+                            (level?.displayName || "").toLowerCase().includes((searchTerm[`level-${index}`] || "").toLowerCase())
+                        );
+                        return(
+                            <div key={field.id} className="flex gap-4 mb-2">
+                                <div className="relative flex-1">
+                                    <input
+                                        type="hidden"
+                                        {...register(`languages.${index}.language`, {
+                                        required: index === 0 ? "Language is required" : false,
+                                        })}
+                                        value={selectedLanguages[index] || ""}
+                                    />
 
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                    setDropdownOpen(dropdownOpen === `language-${index}` ? null : `language-${index}`)
-                                    }
-                                    className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                >
-                                    <span className="text-left flex-1">
-                                        {selectedLanguages[index] || "language..."}
-                                    </span>
-                                    <IoIosArrowDown />
-                                </button>
-
-                                {dropdownOpen === `language-${index}` && (
-                                    <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                                        {enums?.subjectTeach?.map((lang, idx) => (
-                                            <div
-                                            key={idx}
-                                            className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
-                                            onClick={() => {
-                                                const newSelected = [...selectedLanguages];
-                                                newSelected[index] = lang.displayName;
-                                                setSelectedLanguages(newSelected);
-                                                setValue(`languages.${index}.language`, lang.displayName);
-                                                setDropdownOpen(null);
-                                            }}
-                                            >
-                                                <span className="text-[16px]">{lang.displayName}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                            
-                            <div className="relative flex-1">
-                                <input
-                                    type="hidden"
-                                    {...register(`languages.${index}.level`, {
-                                    required: index === 0 ? "Level is required" : false,
-                                    })}
-                                    value={selectedLevels[index] || ""}
-                                />
-
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                    setDropdownOpen(dropdownOpen === `level-${index}` ? null : `level-${index}`)
-                                    }
-                                    className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] bg-gray-100"
-                                >
-                                    <span className="text-left flex-1">
-                                        {selectedLevels[index] || "level..."}
-                                    </span>
-                                    <IoIosArrowDown />
-                                </button>
-
-                                {dropdownOpen === `level-${index}` && (
-                                    <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
-                                    {enums?.subjectLevelTeach.map((level, idx) => (
-                                        <div
-                                        key={idx}
-                                        className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
-                                        onClick={() => {
-                                            const newSelected = [...selectedLevels];
-                                            newSelected[index] = level.displayName;
-                                            setSelectedLevels(newSelected);
-                                            setValue(`languages.${index}.level`, level.displayName);
-                                            setDropdownOpen(null);
-                                        }}
-                                        >
-                                            <span className="text-[16px]">{level.displayName}</span>
-                                        </div>
-                                    ))}
-                                    </div>
-                                )}
-                            </div>
-
-
-                            {index > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={() => remove(index)}
-                                    className="px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300 self-center"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDropdownToggle(`language-${index}`)}
+                                        className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                                     >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                                        <span className="text-left flex-1">
+                                            {selectedLanguages[index] || "language..."}
+                                        </span>
+                                        <IoIosArrowDown />
+                                    </button>
+
+                                    {dropdownOpen === `language-${index}` && (
+                                        <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                            <div className="p-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search..."
+                                                    value={searchTerm[`language-${index}`] || ""}
+                                                    onChange={(e) =>
+                                                    setSearchTerm((prev) => ({
+                                                        ...prev,
+                                                        [`language-${index}`]: e.target.value,
+                                                    }))
+                                                    }
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                                />
+                                            </div>
+                                            {filteredLangs.length > 0 ? (
+                                                filteredLangs.map((lang, idx) => (
+                                                    <div
+                                                    key={idx}
+                                                    className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                                    onClick={() => {
+                                                        const newSelected = [...selectedLanguages];
+                                                        newSelected[index] = lang.displayName;
+                                                        setSelectedLanguages(newSelected);
+                                                        setValue(`languages.${index}.language`, lang.displayName);
+                                                        setDropdownOpen(null);
+                                                    }}
+                                                    >
+                                                        <span className="text-[16px]">{lang.displayName}</span>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="px-4 py-2 text-gray-500">No results found</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                                
+                                <div className="relative flex-1">
+                                    <input
+                                        type="hidden"
+                                        {...register(`languages.${index}.level`, {
+                                        required: index === 0 ? "Level is required" : false,
+                                        })}
+                                        value={selectedLevels[index] || ""}
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDropdownToggle(`level-${index}`)}
+                                        className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] bg-gray-100"
+                                    >
+                                        <span className="text-left flex-1">
+                                            {selectedLevels[index] || "level..."}
+                                        </span>
+                                        <IoIosArrowDown />
+                                    </button>
+
+                                    {dropdownOpen === `level-${index}` && (
+                                        <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                            <div className="p-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search..."
+                                                    value={searchTerm[`level-${index}`] || ""}
+                                                    onChange={(e) =>
+                                                    setSearchTerm((prev) => ({
+                                                        ...prev,
+                                                        [`level-${index}`]: e.target.value,
+                                                    }))
+                                                    }
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                                />
+                                            </div>
+                                            {filteredLevels.length > 0 ? (
+                                                filteredLevels.map((level, idx) => (
+                                                    <div
+                                                    key={idx}
+                                                    className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                                    onClick={() => {
+                                                        const newSelected = [...selectedLevels];
+                                                        newSelected[index] = level.displayName;
+                                                        setSelectedLevels(newSelected);
+                                                        setValue(`languages.${index}.level`, level.displayName);
+                                                        setDropdownOpen(null);
+                                                    }}
+                                                    >
+                                                        <span className="text-[16px]">{level.displayName}</span>
+                                                    </div>
+                                                ))
+                                            ): (
+                                                <div className="px-4 py-2 text-gray-500">No results found</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+
+                                {index > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => remove(index)}
+                                        className="px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300 self-center"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+                        )
+                    })}
                     <button
                         type="button"
                         onClick={() => append({ language: "", level: "" })}
