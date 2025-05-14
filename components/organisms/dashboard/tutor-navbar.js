@@ -36,6 +36,10 @@ export default function StudentNavbar() {
             hiddenInProd: true
         },
         {
+            name: "My Subject",
+            href: "/tutor-dashboard/my-subject"
+        },
+        {
             name: "My Ads",
             href: "/tutor-dashboard/my-ads",
             hiddenInProd: true
