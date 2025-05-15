@@ -154,6 +154,7 @@ export default function TutorDashboardMySubjectOrganism() {
 
         await postTutorSubject(newSubject)
         await fetchTutorDetails()
+        toast.success("Successfully created new subject");
 
         setShowCreateModal(false)
         setSelectedSubjectForCreate(null)
@@ -196,7 +197,10 @@ export default function TutorDashboardMySubjectOrganism() {
     const filteredLevel = enums.subjectLevelTeach.filter((level) =>
         (level?.displayName || "").toLowerCase().includes((searchTerm.level || "").toLowerCase())
     );
-    
+
+    const [showAllSubjects, setShowAllSubjects] = useState(false);
+    const visibleSubjects = showAllSubjects ? tutorSubjects : tutorSubjects.slice(0, 4);
+
 
     return (
             <div className="lingo-container flex flex-col lg:flex-row gap-[20px] mb-[72px]">
@@ -327,47 +331,46 @@ export default function TutorDashboardMySubjectOrganism() {
                 )}
 
                 {/* Delete Confirmation Modal */}
-                {/*{showDeleteConfirm && tutorSubjects.length > 0 && (*/}
-                {/*    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">*/}
-                {/*        <div className="bg-white rounded-lg p-6 w-full max-w-md">*/}
-                {/*            <div className="flex justify-between items-center mb-4">*/}
-                {/*                <h3 className="text-xl font-bold">Remove Subject</h3>*/}
-                {/*                <button onClick={() => setShowDeleteConfirm(false)} className="text-gray-500 hover:text-gray-700">*/}
-                {/*                    <FaTimes />*/}
-                {/*                </button>*/}
-                {/*            </div>*/}
+                {/* {showDeleteConfirm && tutorSubjects.length > 0 && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+                <div className="bg-white rounded-lg p-6 w-full max-w-md">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-xl font-bold">Remove Subject</h3>
+                                <button onClick={() => setShowDeleteConfirm(false)} className="text-gray-500 hover:text-gray-700">
+                                    <FaTimes />
+                                </button>
+                            </div>
 
-                {/*            <p className="mb-4">*/}
-                {/*                Are you sure you want to remove your {tutorSubjects[selectedSubjectIndex]?.subject?.name} subject?*/}
-                {/*                This action cannot be undone.*/}
-                {/*            </p>*/}
+                            <p className="mb-4">
+                                Are you sure you want to remove your {tutorSubjects[selectedSubjectIndex]?.subject?.name} subject?
+                                This action cannot be undone.
+                            </p>
 
-                {/*            <div className="flex justify-end gap-2">*/}
-                {/*                <button*/}
-                {/*                    onClick={() => setShowDeleteConfirm(false)}*/}
-                {/*                    className="px-4 py-2 border rounded-md hover:bg-gray-100"*/}
-                {/*                >*/}
-                {/*                    Cancel*/}
-                {/*                </button>*/}
-                {/*                <button*/}
-                {/*                    onClick={deleteCurrentSubject}*/}
-                {/*                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"*/}
-                {/*                >*/}
-                {/*                    Remove*/}
-                {/*                </button>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*)}*/}
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    onClick={() => setShowDeleteConfirm(false)}
+                                    className="px-4 py-2 border rounded-md hover:bg-gray-100"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={deleteCurrentSubject}
+                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )} */}
 
                 {/* Left side - Form fields */}
-                <div className="w-full lg:w-2/3 flex flex-col lg:flex-row gap-[20px]">
-                    {/* subject list */}
+                <div className="w-full lg:w-2/3 lg:flex gap-[20px]">
                     <div className="flex flex-col gap-2 lg:w-1/3">
                         <div className='md:sticky md:top-[115px] flex flex-col gap-[16px]'>
                             <CreateOrangeButton text="Create Subject" onClick={() => setShowCreateModal(true)}/>
-                            {tutorSubjects.length > 0 ? (
-                                tutorSubjects.map((subject, index) => (
+                            {visibleSubjects.length > 0 ? (
+                                visibleSubjects.map((subject, index) => (
                                     <div
                                         key={subject.id}
                                         className={`flex items-center p-4 justify-between cursor-pointer rounded-[32px] border-[1px] animation-effect ${
@@ -386,25 +389,20 @@ export default function TutorDashboardMySubjectOrganism() {
                                                 <p className="text-sm text-green-500">active</p>
                                             </div>
                                         </div>
-                                        {/* TODO: Implement Later When Delete teachSubject API ready*/}
-                                        {/*{tutorSubjects.length > 1 && (*/}
-                                        {/*    <button*/}
-                                        {/*        className={`text-${index === selectedSubjectIndex ? 'white' : 'red-500'} hover:text-red-700`}*/}
-                                        {/*        onClick={(e) => {*/}
-                                        {/*            e.stopPropagation();*/}
-                                        {/*            setSelectedSubjectIndex(index);*/}
-                                        {/*            setShowDeleteConfirm(true);*/}
-                                        {/*        }}*/}
-                                        {/*    >*/}
-                                        {/*        <FaTrash />*/}
-                                        {/*    </button>*/}
-                                        {/*)}*/}
                                     </div>
                                 ))
                             ) : (
                                 <div className="p-6 text-center">
                                     No subjects found.
                                 </div>
+                            )}
+                            {tutorSubjects.length > 4 && (
+                                <button
+                                    onClick={() => setShowAllSubjects(prev => !prev)}
+                                    className="text-[#E35D33] font-semibold hover:underline mt-2 cursor-pointer"
+                                >
+                                    {showAllSubjects ? 'See less' : 'See more'}
+                                </button>
                             )}
                         </div>
                     </div>
