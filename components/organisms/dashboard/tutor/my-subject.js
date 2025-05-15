@@ -1,5 +1,5 @@
 "use client"
-
+import { IoIosArrowDown } from "react-icons/io";
 import React, { useEffect, useState } from 'react';
 import { FaPen, FaPlus, FaCheck, FaEye, FaTrash, FaTimes } from 'react-icons/fa';
 import { useAuth } from "@/context/AuthContext";
@@ -138,8 +138,10 @@ export default function TutorDashboardMySubjectOrganism() {
     };
 
     const createNewSubject = async () => {
-        if (!selectedSubjectForCreate) return;
-        if (!selectedSubjectLevelForCreate) return;
+        if (!selectedSubjectForCreate || !selectedSubjectLevelForCreate) {
+            toast.error("Please select both subject and level.");
+            return;
+        }
 
         const newSubject = {
             subjectId: parseInt(selectedSubjectForCreate.name),
@@ -155,6 +157,8 @@ export default function TutorDashboardMySubjectOrganism() {
 
         setShowCreateModal(false)
         setSelectedSubjectForCreate(null)
+        setSelectedSubjectForCreate(null);
+        setSelectedSubjectLevelForCreate(null);
     };
 
     const deleteCurrentSubject = () => {
@@ -176,65 +180,144 @@ export default function TutorDashboardMySubjectOrganism() {
     const editClassWrapper = "rounded-[32px] border-[1px] border-[#D9D9D9] p-4";
     const editContent = "border-[1px] border-[#A6A6A6] p-4 rounded-[32px]"
 
+    const [dropdownOpen, setDropdownOpen] = useState(null)
+    const handleDropdownToggle = (type) => {
+        setDropdownOpen((prev) => (prev === type ? null : type));
+    };
+    const [searchTerm, setSearchTerm] = useState({
+        subject: "",
+        level: "",
+    });
+
+    const filteredSubject = enums.subjectTeach.filter((subject) =>
+        (subject?.displayName || "").toLowerCase().includes((searchTerm.subject || "").toLowerCase())
+    );
+
+    const filteredLevel = enums.subjectLevelTeach.filter((level) =>
+        (level?.displayName || "").toLowerCase().includes((searchTerm.level || "").toLowerCase())
+    );
+    
+
     return (
             <div className="lingo-container flex flex-col lg:flex-row gap-[20px] mb-[72px]">
                 {/* create subject modal */}
                 {showCreateModal && (
-                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-white/30 backdrop-blur-lg">
-                        <div className="bg-white rounded-lg p-6 w-full max-w-md border-2 border-orange-300">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold">Create New Subject</h3>
-                                <button onClick={() => setShowCreateModal(false)} className="cursor-pointer text-gray-500 hover:text-gray-700">
-                                    <FaTimes />
-                                </button>
-                            </div>
-
+                    <div className="fixed inset-0 bg-[#00000070] flex items-center justify-center z-50">
+                        <div className="bg-white rounded-[8px] p-6 shadow-lg flex flex-col sm:w-[500px] animation-effect">
+                            <span className="text-[24px] font-semibold mb-4">Create New Subject</span>
+                            <span className="text-gray-600 mb-4">Select Subject</span>
                             <div className="mb-4">
-                                <label className="block mb-2 text-sm font-medium">Select Subject</label>
-                                <select
-                                    className="cursor-pointer w-full p-2 border rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                    value={selectedSubjectForCreate?.name || ""}
-                                    onChange={(e) => {
-                                        const selectedId = e.target.value;
-                                        const subject = enums?.subjectTeach?.find(s => s.name === selectedId);
-                                        setSelectedSubjectForCreate(subject || null);
-                                    }}
-                                >
-                                    <option value="">Select a subject</option>
-                                    {enums?.subjectTeach?.filter(subject =>
-                                        !tutorSubjects.some(ts => ts.subject.id === subject.name)
-                                    ).map(subject => (
-                                        <option key={subject.name} value={subject.name}>
-                                            {subject.displayName}
-                                        </option>
-                                    ))}
-                                </select>
-                                <select
-                                    value={selectedSubjectLevelForCreate || ""}
-                                    onChange={(e) => {
-                                        const selectedId = e.target.value;
-                                        setSelectedSubjectLevelForCreate(parseInt(selectedId, 10));
-                                    }}
-                                    className="cursor-pointer w-full mt-2 p-2 border rounded-md focus:border-none focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                >
-                                    <option value="">Select a subject level</option>
-                                    {enums?.subjectLevelTeach?.map((item, index) => (
-                                        <option key={index} value={item.name}>{item.displayName}</option>
-                                    ))}
-                                </select>
+                                {/* Subject Name Dropdown */}
+                                <div className="mt-2 relative">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDropdownToggle('subject')}
+                                        className="flex items-center px-4 py-3 rounded-lg border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                    >
+                                        <span className="text-left flex-1">
+                                            {selectedSubjectForCreate
+                                                ? selectedSubjectForCreate.displayName
+                                                : "Select a subject"}
+                                        </span>
+                                        <IoIosArrowDown />
+                                    </button>
+
+                                    {dropdownOpen === 'subject' && (
+                                        <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                            <div className="p-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search..."
+                                                    value={searchTerm.subject}
+                                                    onChange={(e) =>
+                                                        setSearchTerm((prev) => ({ ...prev, subject: e.target.value }))
+                                                    }
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                                />
+                                            </div>
+                                            {filteredSubject.length > 0 ? (
+                                                filteredSubject.map((subject) => (
+                                                    <div
+                                                        key={subject.name}
+                                                        className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                                        onClick={() => {
+                                                            console.log("subject", subject)
+                                                            setSelectedSubjectForCreate(subject);
+                                                            setDropdownOpen(null);
+                                                            setSearchTerm(prev => ({ ...prev, subject: "" }));
+                                                        }}
+                                                    >
+                                                        <span className="text-[16px]">{subject.displayName}</span>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="px-4 py-2 text-gray-500">No results found</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Subject Level Dropdown */}
+                                <div className="mt-2 relative">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDropdownToggle('level')}
+                                        className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                    >
+                                        <span className="text-left flex-1">
+                                            {selectedSubjectLevelForCreate
+                                                ? enums.subjectLevelTeach.find(item => item.name === selectedSubjectLevelForCreate)?.displayName
+                                                : "Select a subject level"}
+                                        </span>
+                                        <IoIosArrowDown />
+                                    </button>
+
+                                    {dropdownOpen === 'level' && (
+                                        <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
+                                            <div className="p-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search..."
+                                                    value={searchTerm.level}
+                                                    onChange={(e) =>
+                                                        setSearchTerm((prev) => ({ ...prev, level: e.target.value }))
+                                                    }
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                                />
+                                            </div>
+                                            {filteredLevel.length > 0 ? (
+                                                filteredLevel.map((item) => (
+                                                    <div
+                                                        key={item.name}
+                                                        className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
+                                                        onClick={() => {
+                                                            setSelectedSubjectLevelForCreate(item.name);
+                                                            setDropdownOpen(null);
+                                                            setSearchTerm((prev) => ({ ...prev, level: "" }));
+                                                        }}
+                                                    >
+                                                        <span className="text-[16px]">{item.displayName}</span>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="px-4 py-2 text-gray-500">No results found</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
-                            <div className="flex justify-end gap-2">
+                            <div className="flex justify-center gap-4">
                                 <button
                                     onClick={() => setShowCreateModal(false)}
-                                    className="px-4 py-2 border rounded-md hover:bg-gray-100 cursor-pointer"
+                                    className="cursor-pointer rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={createNewSubject}
-                                    className="cursor-pointer px-4 py-2 bg-[#E35D33] text-white rounded-md hover:bg-orange-600"
-                                    disabled={!selectedSubjectForCreate}
+                                    className="cursor-pointer rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]"
+                                    disabled={!selectedSubjectForCreate || !selectedSubjectLevelForCreate}
                                 >
                                     Create
                                 </button>
