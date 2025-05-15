@@ -2,12 +2,13 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:23
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-22 11:24:09
+ * @Last Modified time: 2025-05-15 09:00:21
  */
 "use client"
 import { IoIosArrowDown } from "react-icons/io";
 import Image from "next/image";
 import { useState } from "react";
+import { FaPlus } from 'react-icons/fa';
 
 export function LastDaysButton({custom}) {
   const daysData = [
@@ -87,6 +88,18 @@ export function OrangeButton({text, marginTop, custom}) {
             {text}
         </button>
     )
+}
+
+export function CreateOrangeButton({text, onClick, custom}) {
+  return (
+      <button 
+        onClick={onClick}
+        className={`
+        flex items-center gap-4 bg-[#E15C31] text-[14px] sm:text-[16px] px-[28px] py-[13px] rounded-[32px] text-white cursor-pointer animation-effect ${custom}`}
+      >
+        <FaPlus/>{text}
+      </button>
+  )
 }
 
 export function WhiteButton({text}) {
