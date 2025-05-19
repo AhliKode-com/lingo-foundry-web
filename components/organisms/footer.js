@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:30
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 22:11:09
+ * @Last Modified time: 2025-05-19 23:18:08
  */
 
 import { FooterData } from '@/constants/en'
@@ -89,7 +89,7 @@ export default function Footer() {
                                 className="max-w-none w-[90px] md:w-[120px]"
                                 priority
                             />
-                            <span className='sm:w-[200px] my-4 text-[14px] md:text-[16px]'>{title.address}</span>
+                            <span className='sm:w-[200px] my-4 text-[14px] md:text-[16px]'>{title.desc}</span>
                         </div>
                         <div className='flex flex-col text-[14px] md:text-[16px]'>
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.quickLinks}</span>
@@ -137,7 +137,7 @@ export default function Footer() {
                         </div>
                         <div className='flex flex-col text-[14px] md:text-[16px]'>
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.followUs}</span>
-                            <div className='flex gap-[10px] text-[#E35D33]'>
+                            <div className='flex gap-[10px] text-[#E35D33] mb-[15px] md:mb-[35px]'>
                                 {socialMedias.map((socialMedia, idx) => {
                                     return (
                                         <Link
@@ -150,12 +150,16 @@ export default function Footer() {
                                     )
                                 })}
                             </div>
+                            <div className='animation-effect text-[#A3A3A3] gap-[12px] flex flex-col justify-center w-full text-[12px] md:text-[16px]'> 
+                                <span>{title.address}</span>
+                                <span>{title.phone}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className='h-[1px] w-full bg-[#CFCFCF]'></div>
-            <div className='lingo-container py-[20px] md:py-[40px] justify-center flex w-full text-[10px] sm:text-[12px] md:text-[16px]'>
+            <div className='lingo-container py-[20px] md:py-[40px] justify-center flex w-full text-[10px] sm:text-[12px] md:text-[16px]'> 
                 Copyright@ 2025 &nbsp;<span className='font-semibold'>Lingo Foundry</span>. All Rights Reserved
             </div>
         </footer>
