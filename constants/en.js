@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-29 14:53:27
+ * @Last Modified time: 2025-05-19 23:12:56
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
@@ -229,7 +229,9 @@ export const FooterData = {
         quickLinks: 'Quick Links',
         followUs: 'Follow Us',
         feature: 'Features',
-        address: 'Language learning platform made easy & fun Connecting Top Instructors with students'
+        desc: 'Language learning platform made easy & fun Connecting Top Instructors with students',
+        address: 'Gedung Jaya Lantai 5 unit A.6 JL. M.H Thamrin No.12 , RT.002/RW.001, Kb. Sirih, Kec. Menteng, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10340',
+        phone: '+6221-3106663'
     },
     list1: [
         {
