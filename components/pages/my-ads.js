@@ -1,5 +1,5 @@
 import React, {Suspense} from "react";
-import MyAdsOrganism from "@/components/organisms/dashboard/tutor/my-ads";
+import MyAdsOrganism from "@/components/organisms/dashboard/tutor/tutor-profile";
 
 export default function MyAds() {
     return (
