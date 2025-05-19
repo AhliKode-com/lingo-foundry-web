@@ -2,14 +2,14 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-11 00:54:28
+ * @Last Modified time: 2025-05-19 12:22:02
  */
 
 "use client";
 import { RiErrorWarningLine } from "react-icons/ri";
 import {toast} from "react-toastify";
 import {useParams, useRouter} from "next/navigation";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {RatingSummary} from "@/components/atoms/rating-summary";
 import {ResumeTabs} from "@/components/atoms/resume-tab";
 import {Speciality} from "@/components/atoms/accordion";
@@ -67,7 +67,7 @@ export default function TutorDetail() {
 
     const changeSessions = (index, delta) => {
         setSessionsByIndex((prev) => {
-            const current = prev[index] || 1;
+            const current = prev[index] || languageLevel[index].minSession;
             const next = current + delta;
             return { ...prev, [index]: next };
         });
@@ -94,6 +94,18 @@ export default function TutorDetail() {
         setSelectedIndexes([]);
     };
 
+    useEffect(() => {
+        if (openCart) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+    
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [openCart]);
+
     // wishlist
     const {addToWishList, getWishList} = useStudentWishList();
     const handleAddToWishlist = async () => {
@@ -105,13 +117,6 @@ export default function TutorDetail() {
         await getWishList();
         toast.success("Add tutor to wishlist success.")
     };
-
-    const specialityData = [
-        {title: 'title 1', desc: 'This is Desc 1'},
-        {title: 'title 2', desc: 'This is Desc 2'},
-        {title: 'title 3', desc: 'This is Desc 3'},
-        {title: 'title 4', desc: 'This is Desc 4'},
-    ]
 
     if (!data || !reviews) {
         return (
@@ -155,17 +160,17 @@ export default function TutorDetail() {
             {/* cart modal */}
             {openCart && (
                 <div className="fixed inset-0 bg-[#00000070] flex items-center justify-center z-50" onClose={handleOpenCart}>
-                    <div className="bg-white rounded-[8px] p-6 shadow-lg flex flex-col">
-                        <span className="text-[24px] font-semibold mb-4">Add to Cart</span>
-                        <span className="text-gray-600 mb-6">Do you want to add this item to your cart?</span>
-                        <div className="flex flex-col mb-4">
-                            <div className="flex flex-row items-center gap-4 p-4 pb-2 border-b-[2px] border-[#DCDCE5]">
-                                <div className="w-5 h-5"/>
-                                <span className="text-[16px] font-medium">Subject</span>
-                                <span className="text-[16px] font-medium ml-[12px]">Level</span>
-                                <span className="text-[16px] font-medium ml-[36px]">Session</span>
-                                <span className="text-[16px] font-medium ml-[24px]">Discount</span>
-                            </div>
+                    <div className="bg-white rounded-[8px] p-4 md:p-6 shadow-lg flex flex-col animation-effect">
+                        <span className="animation-effect text-[20px] md:text-[24px] font-semibold mb-4">Add to Cart</span>
+                        <span className="text-[14px] md:text-[16px] text-gray-600 mb-6 animation-effect">Do you want to add this item to your cart?</span>
+                        <div className="hidden md:flex flex-row items-center gap-4 p-4 pb-2 border-b-[2px] border-[#DCDCE5]">
+                            <div className="w-5 h-5"/>
+                            <span className="text-[14px] md:text-[16px] font-medium">Subject</span>
+                            <span className="text-[14px] md:text-[16px] font-medium md:ml-[98px]">Level</span>
+                            <span className="text-[14px] md:text-[16px] font-medium ml-[36px]">Session</span>
+                            <span className="text-[14px] md:text-[16px] font-medium ml-[24px]">Discount</span>
+                        </div>
+                        <div className="flex flex-col mb-4 overflow-y-auto max-h-[300px]">
                             {languageLevel.map((data, index) => {
                                 const bgColor = bgColors[index % bgColors.length];
                                 const sessions   = sessionsByIndex[index] ?? data.minSession;
@@ -192,9 +197,33 @@ export default function TutorDetail() {
                                 return(
                                     <div key={index} className="flex flex-row items-center gap-4 p-4">
                                         <input type="checkbox" className="w-5 h-5" onChange={() => handleCheckboxChange(index, data.minSession)}/>
-                                        <span className="text-[16px] font-medium">{data.language}</span>
-                                        <span style={{ backgroundColor: bgColor  }} className="px-[8px] py-[1.5px] ml-auto">{data.level}</span>
-                                        <div className="flex items-center border rounded">
+                                        <div className="md:hidden flex flex-col gap-2">
+                                            <span className="text-[16px] font-medium">{data.language}</span>
+                                            <span style={{ backgroundColor: bgColor  }} className="px-[8px] py-[1.5px] w-fit">{data.level}</span>
+                                            <div className="flex items-center border rounded w-fit">
+                                                <button
+                                                    onClick={handleMinus}
+                                                    className="px-2"
+                                                    disabled={sessions <= data.minSession}
+                                                >
+                                                    -
+                                                </button>
+                                                <input type="text" value={sessions} readOnly className="w-8 text-center outline-none"/>
+                                                <button
+                                                    onClick={handlePlus}
+                                                    className="px-2"
+                                                    disabled={sessions >= data.maxSession}
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
+                                            <div className="flex items-center bg-gray-400 text-white font-semibold rounded">
+                                                <input type="text" value={`${selectedDiscount} %`} readOnly className="w-[85px] text-center outline-none"/>
+                                            </div>
+                                        </div>
+                                        <span className="text-[16px] font-medium md:block hidden">{data.language}</span>
+                                        <span style={{ backgroundColor: bgColor  }} className="px-[8px] py-[1.5px] ml-auto md:block hidden">{data.level}</span>
+                                        <div className="hidden md:flex items-center border rounded">
                                             <button
                                                 onClick={handleMinus}
                                                 className="px-2"
@@ -211,7 +240,7 @@ export default function TutorDetail() {
                                                 +
                                             </button>
                                         </div>
-                                        <div className="flex items-center bg-gray-400 text-white font-semibold rounded">
+                                        <div className="hidden md:flex items-center bg-gray-400 text-white font-semibold rounded">
                                             <input type="text" value={`${selectedDiscount} %`} readOnly className="w-[85px] text-center outline-none"/>
                                         </div>
                                     </div>

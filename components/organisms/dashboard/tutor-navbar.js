@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-10 17:51:37
+ * @Last Modified time: 2025-05-19 12:50:04
  */
 
 "use client"
@@ -40,8 +40,8 @@ export default function StudentNavbar() {
             href: "/tutor-dashboard/my-subject"
         },
         {
-            name: "My Ads",
-            href: "/tutor-dashboard/my-ads",
+            name: "Tutor Profile",
+            href: "/tutor-dashboard/tutor-profile",
             hiddenInProd: true
         },
         {
