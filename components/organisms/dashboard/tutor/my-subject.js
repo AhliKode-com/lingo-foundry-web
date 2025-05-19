@@ -40,9 +40,11 @@ export default function TutorDashboardMySubjectOrganism() {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [selectedSubjectForCreate, setSelectedSubjectForCreate] = useState(null);
     const [selectedSubjectLevelForCreate, setSelectedSubjectLevelForCreate] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const fetchTutorDetails = async () => {
         if (user?.tutor?.id && enums.subjectLevelTeach.length > 0) {
+            setLoading(true);
             try {
                 const tutorDetailData = await getData(user.tutor.id);
                 if (Array.isArray(tutorDetailData.tutorSubjects)) {
@@ -59,6 +61,8 @@ export default function TutorDashboardMySubjectOrganism() {
                 console.error("Error fetching tutor details:", error);
                 toast.error(error.message);
                 setTutorSubjects([]);
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -391,6 +395,8 @@ export default function TutorDashboardMySubjectOrganism() {
                                         </div>
                                     </div>
                                 ))
+                            ): loading ? (
+                                <div className="w-full h-[60px] bg-gray-300 animate-pulse rounded-[32px]"></div>
                             ) : (
                                 <div className="p-6 text-center">
                                     No subjects found.
@@ -565,6 +571,8 @@ export default function TutorDashboardMySubjectOrganism() {
                                     </div>
                                 )}
                             </>
+                        ): loading ? (
+                            <div className="w-full h-[60px] bg-gray-300 animate-pulse rounded-[32px]"></div>
                         ):(
                             <div className="p-6 text-center">
                                     Create a subject to get started.
@@ -579,19 +587,29 @@ export default function TutorDashboardMySubjectOrganism() {
                         <div className={editClassWrapper}>
                             <div className="flex justify-center mb-4">
                                 <div className="relative">
-                                    <img
-                                        src={user?.photoProfileUrl || "/placeholder.svg"}
-                                        alt="profile-picture"
-                                        className="w-24 h-24 rounded-full object-cover"
-                                    />
-                                    <Link href="/tutor-dashboard/settings" passHref className="absolute bottom-0 right-0 bg-[#E35D33] text-white p-2 rounded-full cursor-pointer">
-                                        <FaPen className="w-4 h-4" />
-                                    </Link>
+                                    {loading ? (
+                                        <div className="w-[75px] h-[75px] md:w-[110px] md:h-[110px] bg-gray-300 animate-pulse rounded-full"></div>
+                                    ) : (
+                                        <>
+                                            <img
+                                                src={user?.photoProfileUrl || "/placeholder.svg"}
+                                                alt="profile-picture"
+                                                className="w-24 h-24 rounded-full object-cover"
+                                            />
+                                            <Link href="/tutor-dashboard/settings" passHref className="absolute bottom-0 right-0 bg-[#E35D33] text-white p-2 rounded-full cursor-pointer">
+                                                <FaPen className="w-4 h-4" />
+                                            </Link>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="text-center mb-4 flex items-center justify-center gap-3">
-                                <span className="text-2xl font-bold">{user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.username}</span>
+                                {loading? (
+                                    <div className="w-full h-[30px] bg-gray-300 animate-pulse rounded-[32px]"></div>
+                                ) : (
+                                    <span className="text-2xl font-bold">{user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.username}</span>
+                                )}
                                 <FaCheck className="text-green-500" />
                             </div>
 
