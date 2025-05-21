@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:13:24
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-05 11:40:10
+ * @Last Modified time: 2025-05-21 22:10:48
  */
 "use client"
 import React, {useState, useRef, useEffect} from "react";
@@ -332,16 +332,23 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                                         </div> */}
                                     </div>
                                 </div>
-                                <div
-                                    className={` ${item.remainingSession === 0 ? 'bg-gray-400' : 'bg-[#E35D33] cursor-pointer'} flex h-[38px] md:h-[48px] justify-center items-center text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect whitespace-nowrap`}
+                                <button
+                                    className={`${
+                                        data.status === 'PAID'
+                                          ? item.remainingSession === 0
+                                            ? 'bg-gray-400'
+                                            : 'bg-[#E35D33] cursor-pointer'
+                                          : 'cursor-not-allowed bg-gray-400 animate-pulse'
+                                        } flex h-[38px] md:h-[48px] justify-center items-center text-white p-4 font-medium text-[14px] md:text-[16px] animation-effect whitespace-nowrap w-full`
+                                    }
                                     onClick={() => {
-                                        if (item.remainingSession !== 0) {
+                                        if (data.status === 'PAID' && item.remainingSession !== 0) {
                                           router.push(`/book-class/${item.orderItemId}`)
                                         }
                                     }}
                                 >
-                                    {item.remainingSession === 0 ? 'Booked' : 'Set your schedule'}
-                                </div>
+                                    {item.remainingSession === 0 ? 'Booked' : data.status === 'PAID' ? 'Set your schedule' : 'Pending payment'}
+                                </button>
                             </div>
                         )
                     })}

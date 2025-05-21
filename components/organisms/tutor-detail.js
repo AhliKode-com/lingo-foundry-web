@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-19 12:22:02
+ * @Last Modified time: 2025-05-21 21:59:03
  */
 
 "use client";
@@ -143,17 +143,10 @@ export default function TutorDetail() {
         }
     })
 
-    const calculateAverageRating = (data) => {
-        const testimonials = data.content
-        if (!testimonials || testimonials.length === 0) {
-            return 0
-        }
-        const totalRating = testimonials.reduce((sum, item) => sum + item.rating, 0)
-        const averageRating = totalRating / testimonials.length
-        return Math.round(averageRating * 10) / 10
-    }
-
-    const averageRating = calculateAverageRating(reviews)
+    const ratingCounts = [1, 2, 3, 4, 5].reduce((acc, rating) => {
+        acc[rating] = data?.tutorReviewData?.ratingCount?.[rating] || 0;
+        return acc;
+    }, {});
 
     return (
         <div className="lingo-container flex flex-col lg:flex-row pt-[80px] sm:pt-[103.61px]">
@@ -395,16 +388,10 @@ export default function TutorDetail() {
                             <img src="/assets/warning.svg" alt="warning" className="w-[20px] h-[20px] mt-[5px]"/>
                         </div>
                         <RatingSummary
-                            dataReview={reviews.content}
-                            averageRating={averageRating}
-                            totalReviews={reviews.content.length}
-                            ratingCounts={{
-                                5: 0,
-                                4: 0,
-                                3: 0,
-                                2: 0,
-                                1: 0,
-                            }}
+                            dataReview={data?.tutorReviewData?.userReviews?.content}
+                            averageRating={data?.tutorReviewData?.averageRating || 0}
+                            totalReviews={data?.tutorReviewData?.userReviews?.content.length || 0}
+                            ratingCounts={ratingCounts}
                         />
                     </div>
 
