@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 08:45:02
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-19 12:50:04
+ * @Last Modified time: 2025-05-22 01:42:30
  */
 
 "use client"
@@ -42,7 +42,6 @@ export default function StudentNavbar() {
         {
             name: "Tutor Profile",
             href: "/tutor-dashboard/tutor-profile",
-            hiddenInProd: true
         },
         {
             name: "Messages",
