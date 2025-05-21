@@ -20,8 +20,6 @@ export default function About({ setCurrentStep }) {
     const { data: enums } = getEnums();
     const { user } = useAuth()
 
-    console.log(user)
-
     // load data from localStorage on component mount
     useEffect(() => {
         const storedData = localStorage.getItem("applyTutorStep1Data")
@@ -110,8 +108,6 @@ export default function About({ setCurrentStep }) {
     }
 
     // languages you speak
-    const languagesList = ["English","Indonesian","Malay","Mandarin","Japanese","Korean","Spanish","French","German","Arabic"];
-    const languageLevels = ["Native","Fluent","Advanced","Intermediate","Basic"];
     const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [selectedLevels, setSelectedLevels] = useState([]);
 
@@ -140,12 +136,6 @@ export default function About({ setCurrentStep }) {
         { id: "check7", label: "If LingoFoundry finds that a teacher is involved in any act of inappropriate behavior or slander (including but not limited to misrepresentations and scams) and deems the teacher's actions to have damaged the LingoFoundry brand or reputation, LingoFoundry reserves the right to pursue appropriate legal action." }
     ];
 
-    // const [searchTerm, setSearchTerm] = useState({
-    //     country: "",
-    //     subject: "",
-    //     expertise: "",
-
-    // });
     const [searchTerm, setSearchTerm] = useState({});
     
     const filteredCountries = enums.country.filter((country) =>
