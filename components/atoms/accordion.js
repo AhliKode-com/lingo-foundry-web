@@ -9,6 +9,8 @@ import React, {useState, useRef, useEffect} from "react";
 import {FiChevronDown} from "react-icons/fi";
 import {GoArrowUp} from "react-icons/go";
 import {useRouter} from "next/navigation";
+import {useStudentOrder} from "@/apis/studentOrder";
+import {toast} from "react-toastify";
 
 export function Speciality({data, isLast}) {
     // const [open, setOpen] = useState(defaultOpen);
@@ -182,6 +184,7 @@ export function PurchaseHistory({data, defaultOpen = false}) {
     const [open, setOpen] = useState(defaultOpen);
     const [height, setHeight] = useState(0);
     const contentRef = useRef(null);
+    const {payOrder} = useStudentOrder();
 
     const router = useRouter()
 
@@ -189,6 +192,18 @@ export function PurchaseHistory({data, defaultOpen = false}) {
     let totalAmount = 0;
     for (const transaction of data.transactions) {
         totalAmount += transaction.orderAmount;
+    }
+
+    const handlePay = async () => {
+        const payload = {
+            orderId: data.orderId,
+        }
+        toast.loading("Making your payment...")
+        const response = await payOrder(payload)
+        toast.dismiss()
+        if (response) {
+            window.open(response.invoiceUrl, "_blank")
+        }
     }
 
     useEffect(() => {
@@ -249,6 +264,17 @@ export function PurchaseHistory({data, defaultOpen = false}) {
                 </div>
 
                 <div className="flex items-center gap-[15px]">
+                    {data.status !== 'PAID' && (
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handlePay();
+                            }}
+                            className="bg-[#E35D33] text-white px-4 py-2 cursor-pointer text-[14px] md:text-[16px] animation-effect h-[38px] md:h-[48px]"
+                        >
+                            Pay
+                        </button>
+                    )}
                     <div
                         className={`
                             w-[38px] h-[38px] md:h-[48px] md:w-[48px] flex items-center justify-center
