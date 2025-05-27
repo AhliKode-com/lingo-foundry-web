@@ -6,9 +6,12 @@
  */
 
 import TutorDashboardMessage from "@/components/pages/dashboard/student-dashboard-message";
+import { Suspense } from "react";
 
 export default function StudentMessage() {
     return (
-        <TutorDashboardMessage />
+        <Suspense fallback={<div>Loading...</div>}>
+            <TutorDashboardMessage />
+        </Suspense>
     )
 }
