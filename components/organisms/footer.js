@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:30
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-19 23:18:08
+ * @Last Modified time: 2025-05-27 23:45:06
  */
 
 import { FooterData } from '@/constants/en'
@@ -122,13 +122,13 @@ export default function Footer() {
                         <div className='flex flex-col text-[14px] md:text-[16px]'>
                             <span className='mb-[15px] md:mb-[35px] font-semibold'>{title.contactUs}</span>
                             {contactUs.map((item, index) => {
-                                const isInternal = item.href.includes('Whatsapp');
+                                const shouldOpenNewTab = index === 0 || index === 1;
                                 return (
                                     <Link
                                         key={index} 
                                         href={item.href}
                                         className='cursor-pointer mb-[12px] text-[#A3A3A3]'
-                                        {...(!isInternal && { target: "_blank", rel: "noopener noreferrer" })}
+                                        {...(shouldOpenNewTab && { target: "_blank", rel: "noopener noreferrer" })}
                                     >
                                         {item.title}
                                     </Link>

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:13:24
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-21 22:10:48
+ * @Last Modified time: 2025-05-27 11:07:44
  */
 "use client"
 import React, {useState, useRef, useEffect} from "react";
@@ -265,15 +265,15 @@ export function PurchaseHistory({data, defaultOpen = false}) {
 
                 <div className="flex items-center gap-[15px]">
                     {data.status !== 'PAID' && (
-                        <button
+                        <div
                             onClick={(e) => {
                                 e.stopPropagation();
                                 handlePay();
                             }}
-                            className="bg-[#E35D33] text-white px-4 py-2 cursor-pointer text-[14px] md:text-[16px] animation-effect h-[38px] md:h-[48px]"
+                            className="flex items-center justify-center bg-[#E35D33] text-white px-4 py-2 cursor-pointer text-[14px] md:text-[16px] animation-effect h-[38px] md:h-[48px]"
                         >
                             Pay
-                        </button>
+                        </div>
                     )}
                     <div
                         className={`

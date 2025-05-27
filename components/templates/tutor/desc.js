@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-05 22:08:12
+ * @Last Modified time: 2025-05-28 00:18:55
  */
 
 "use client"
@@ -11,14 +11,9 @@ import { FaInfoCircle } from "react-icons/fa"
 import {toast} from "react-toastify";
 import {useEffect} from "react";
 import {useAuth} from "@/context/AuthContext";
-import {useTutorController} from "@/apis/tutorController";
-import {useRouter} from "next/navigation";
 import Link from "next/link";
 
 export default function ProfileDescription({ setCurrentStep }) {
-    const { registerTutor } = useTutorController()
-    const router = useRouter()
-
     useEffect(() => {
         const savedData = localStorage.getItem("applyTutorStep4Data")
         if (savedData) {
@@ -104,28 +99,31 @@ export default function ProfileDescription({ setCurrentStep }) {
             "headline": null
         }
 
-        toast.loading("Registering your tutor profile...", {
-            autoClose: 5000,
-        })
-        const response = await registerTutor(formData)
-        console.log(response)
+        // toast.loading("Registering your tutor profile...", {
+        //     autoClose: 5000,
+        // })
+        // const response = await registerTutor(formData)
+        // console.log(response)
 
-        if (response.error) {
-            toast.dismiss()
-            toast.error(response.error.message)
-            return;
-        }
+        // if (response.error) {
+        //     toast.dismiss()
+        //     toast.error(response.error.message)
+        //     return;
+        // }
 
-        toast.dismiss()
-        localStorage.removeItem("applyTutorCurrentStep")
-        localStorage.removeItem("applyTutorStep1Data")
-        localStorage.removeItem("applyTutorStep2Data")
-        localStorage.removeItem("applyTutorStep3Data")
-        localStorage.removeItem("applyTutorStep4Data")
-        toast.success("register successfully.")
-
-        await refreshUser()
-        router.push("/tutor-register-success")
+        // toast.dismiss()
+        toast.success("Description saved successfully!")
+        localStorage.setItem("applyTutorStep4Data", JSON.stringify(formData))
+        localStorage.setItem("applyTutorCurrentStep", "5")
+        setCurrentStep(5)
+        // localStorage.removeItem("applyTutorCurrentStep")
+        // localStorage.removeItem("applyTutorStep1Data")
+        // localStorage.removeItem("applyTutorStep2Data")
+        // localStorage.removeItem("applyTutorStep3Data")
+        // localStorage.removeItem("applyTutorStep4Data")
+        // toast.success("register successfully.")
+        // await refreshUser()
+        // router.push("/tutor-register-success")
     }
 
     return (
@@ -228,7 +226,7 @@ export default function ProfileDescription({ setCurrentStep }) {
                     </button>
                     <button
                         type="submit"
-                        className={`px-8 py-3 bg-[#E35D33] text-white rounded-lg hover:bg-[#d04e26] transition-colors ${isOverLimit ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`px-8 py-3 bg-[#E35D33] cursor-pointer text-white rounded-lg hover:bg-[#d04e26] transition-colors ${isOverLimit ? "opacity-50 cursor-not-allowed" : ""}`}
                         disabled={isOverLimit}
                     >
                         Save and Continue

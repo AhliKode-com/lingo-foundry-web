@@ -4,7 +4,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-12 17:13:37
+ * @Last Modified time: 2025-05-27 21:34:07
  */
 import { IoIosArrowDown } from "react-icons/io";
 import { useFieldArray, useForm } from "react-hook-form"
@@ -620,7 +620,7 @@ export default function About({ setCurrentStep }) {
                         type="submit"
                         className="w-full bg-[#E35D33] text-white py-3 rounded-lg hover:bg-[#d04e26] transition-colors cursor-pointer"
                     >
-                        Submit
+                        Save & Continue
                     </button>
                 </div>
             </form>
