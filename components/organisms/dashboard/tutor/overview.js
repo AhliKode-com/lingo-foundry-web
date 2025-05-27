@@ -8,16 +8,31 @@
 import { TitleStudentDashboard } from "@/components/atoms/title";
 import { LastDaysButton } from "@/components/atoms/buttons";
 import Image from "next/image";
+import { getDashboardOverview } from "@/apis/getDashboardOverview";
+import { useState } from "react";
+import { OverviewSkeleton } from "@/components/atoms/skeletons/overview-skeleton";
 
 export default function Overview() {
-    const overviewData = [
-        {img: '/assets/tutor-dashboard/1.svg', num: '19', desc: 'Active Lessons'},
-        {img: '/assets/tutor-dashboard/2.svg', num: '241', desc: 'Active Lessons'},
-        {img: '/assets/tutor-dashboard/3.svg', num: '951', desc: 'Completed Lessons'},
-        {img: '/assets/tutor-dashboard/4.svg', num: '121', desc: 'New Students'},
-        {img: '/assets/tutor-dashboard/5.svg', num: '3', desc: 'New Followers'},
-        {img: '/assets/tutor-dashboard/6.svg', num: '56489', desc: 'Lessons Sold'}
-    ]
+    const [range, setRange] = useState(7); // Default to 7 days
+    const { data, loading, error } = getDashboardOverview(range);
+
+    const overviewData = data ? [
+        {img: '/assets/tutor-dashboard/1.svg', num: data.activeLessons, desc: 'Active Lessons'},
+        {img: '/assets/tutor-dashboard/2.svg', num: data.activeStudents, desc: 'Active Students'},
+        {img: '/assets/tutor-dashboard/3.svg', num: data.completedLessons, desc: 'Completed Lessons'},
+        {img: '/assets/tutor-dashboard/4.svg', num: data.newStudents, desc: 'New Students'},
+        {img: '/assets/tutor-dashboard/5.svg', num: data.newFollowers, desc: 'New Followers'},
+        {img: '/assets/tutor-dashboard/6.svg', num: data.lessonsSold, desc: 'Lessons Sold'}
+    ] : [];
+
+    if (error) {
+        return <div className="text-red-500">Error loading dashboard data: {error}</div>;
+    }
+
+    if (loading) {
+        return <OverviewSkeleton />;
+    }
+
     return (
         <div className="flex lg:flex-row flex-col px-[32px] py-[44px] bg-[#FDE0D7] mt-[56px] justify-between gap-[24px] lg:gap-0">
             <div className="flex flex-col">
@@ -25,7 +40,7 @@ export default function Overview() {
                     <TitleStudentDashboard text="Overview" />
                     <span className="text-[#4D4C5C]">Your business at a glance.</span>
                 </div>
-                <LastDaysButton custom="mt-auto"/>
+                <LastDaysButton custom="mt-auto" onChange={setRange} value={range}/>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[15px]">
                 {overviewData.map((item, index) => (
