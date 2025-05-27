@@ -7,22 +7,34 @@
 "use client"
 import { IoIosArrowDown } from "react-icons/io";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaPlus } from 'react-icons/fa';
 
-export function LastDaysButton({custom}) {
+export function LastDaysButton({custom, onChange, value = 7}) {
   const daysData = [
-          'Lifetime',
-          'Last 90 days',
-          'Last 30 days',
-          'Last 7 days',
-          'Last 1 day'
+          {text: 'Lifetime', value: 0},
+          {text: 'Last 90 days', value: 90},
+          {text: 'Last 30 days', value: 30},
+          {text: 'Last 7 days', value: 7},
+          {text: 'Last 1 day', value: 1}
       ]
       const [showDaysDropdown, setShowDaysDropdown] = useState(false);
       const handleDaysDropdown = () => {
           setShowDaysDropdown(!showDaysDropdown)
       }
-      const [selectedDays, setSelectedDays] = useState(1);
+      
+      // Find the index based on the value prop
+      const selectedIndex = daysData.findIndex(item => item.value === value);
+      const [selectedDays, setSelectedDays] = useState(selectedIndex);
+
+      // Update selectedDays when value prop changes
+      useEffect(() => {
+          const newIndex = daysData.findIndex(item => item.value === value);
+          if (newIndex !== -1) {
+              setSelectedDays(newIndex);
+          }
+      }, [value]);
+
   return (
     <div className={`relative max-w-[250px] ${custom}`}>
       <button 
@@ -36,7 +48,7 @@ export function LastDaysButton({custom}) {
             className=""
             alt="logo"
         />
-        {daysData[selectedDays]}
+        {daysData[selectedDays].text}
         <IoIosArrowDown/>
       </button>
       {showDaysDropdown && (
@@ -48,18 +60,19 @@ export function LastDaysButton({custom}) {
                       onClick={() => {
                           setSelectedDays(index)
                           setShowDaysDropdown(false)
+                          if (onChange) {
+                              onChange(item.value)
+                          }
                       }}
                   >
-                      <span className="text-[16px]">{item}</span>
+                      <span className="text-[16px]">{item.text}</span>
                   </div>
               ))}
           </div>
       )}
     </div>
-    
   );
 }
-
 
 export function TutorButton({text, custom}) {
   return(

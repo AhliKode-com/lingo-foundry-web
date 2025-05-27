@@ -8,6 +8,7 @@
 import Image from 'next/image';
 import { OrangeButton, WhiteButton } from '../atoms/buttons';
 import Link from 'next/link';
+import { FiMessageSquare } from "react-icons/fi";
 
 export function LookingCard({
     image, 
@@ -55,7 +56,7 @@ export function LookingCard({
     )
 }
 
-export function StudentCard({data}) {
+export const StudentCard = ({ data, onSendMessage }) => {
     return (
         <div className="flex flex-col items-center justify-center">
             <img 
@@ -73,10 +74,13 @@ export function StudentCard({data}) {
             </div>
             <div className="flex flex-col items-center justify-center py-[16px] gap-[16px] w-[265px] border-[1px] border-[#E9EAF0]">
                 <span className="text-[13px] font-medium text-[#4E5566]">{data.subject}</span>
-                <button className="cursor-pointer text-[#E35D33] px-[58px] py-[14px] bg-[#FFEEE8] font-semibold text-[14px]">
+                <button 
+                    onClick={onSendMessage}
+                    className="cursor-pointer text-[#E35D33] px-[58px] py-[14px] bg-[#FFEEE8] font-semibold text-[14px]"
+                >
                     Send message
                 </button>
             </div>
         </div>
-    )
-}
+    );
+};

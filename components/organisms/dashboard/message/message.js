@@ -11,10 +11,13 @@ import {useSendMessage} from "@/apis/dashboard/message/postSendMessage";
 import {useAuth} from "@/context/AuthContext";
 import {toast} from "react-toastify";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
 
 const MessageApp = () => {
     // context
     const { user: thisUser } = useAuth();
+    const searchParams = useSearchParams();
+    const userId = searchParams.get('userId');
 
     // apis
     const { data, loading } = useGetMessageList();
@@ -275,6 +278,19 @@ const MessageApp = () => {
             handleConversationClick(transformedConversations[0].id);
         }
     }, [transformedConversations, selectedConversation, showChat]);
+
+    // Handle userId from URL
+    useEffect(() => {
+        if (userId && !loadingUsers) {
+            const user = listUsers?.find(u => u.id === userId);
+            if (user) {
+                handleSelectUser(user);
+            } else if (!listUsers) {
+                // Only fetch if we don't have the user list yet
+                getUserList(userId);
+            }
+        }
+    }, [userId, listUsers, loadingUsers]);
 
     if (loading || data === null) {
         return <MessagingSkeleton />
