@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 14:39:09
+ * @Last Modified time: 2025-05-27 14:21:05
  */
 
 "use client"
@@ -252,7 +252,7 @@ export default function CVCertification({ setCurrentStep }) {
 
                     {(cvFile || savedCvFileName) && (
                         <div className="mt-2 text-green-600 flex items-center">
-                            <p>File uploaded: {cvFile ? cvFile.name : savedCvFileName}</p>
+                            <span className="break-words w-[calc(100%-35px)]">File uploaded: {cvFile ? cvFile.name : savedCvFileName}</span>
                             <button
                                 type="button"
                                 onClick={() => {
@@ -529,7 +529,7 @@ export default function CVCertification({ setCurrentStep }) {
 
                                     {(watch(`certificates.${index}.file`) || savedCertificateFiles[index]) && (
                                         <div className="mt-2 text-green-600 flex items-center">
-                                            <p>File uploaded: {watch(`certificates.${index}.file`)?.name || savedCertificateFiles[index]}</p>
+                                            <span className="break-words w-[calc(100%-35px)]">File uploaded: {watch(`certificates.${index}.file`)?.name || savedCertificateFiles[index]}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => {

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:53:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-01 00:10:44
+ * @Last Modified time: 2025-05-27 13:59:33
  */
 "use client";
 import {useEffect, useState} from "react";
@@ -53,6 +53,7 @@ export default function ProcessTutor() {
         { id: 2, label: tabTutor.photo, component: <Photo setCurrentStep={setCurrentStep} /> },
         { id: 3, label: tabTutor.cv, component: <Cv setCurrentStep={setCurrentStep} /> },
         { id: 4, label: tabTutor.description, component: <Desc setCurrentStep={setCurrentStep} /> },
+        { id: 5, label: tabTutor.availability, component: <Avail setCurrentStep={setCurrentStep} /> },
     ];
 
     return (

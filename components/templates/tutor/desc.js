@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-05 22:08:12
+ * @Last Modified time: 2025-05-27 14:09:01
  */
 
 "use client"
@@ -104,28 +104,32 @@ export default function ProfileDescription({ setCurrentStep }) {
             "headline": null
         }
 
-        toast.loading("Registering your tutor profile...", {
-            autoClose: 5000,
-        })
-        const response = await registerTutor(formData)
-        console.log(response)
+        // toast.loading("Registering your tutor profile...", {
+        //     autoClose: 5000,
+        // })
+        // const response = await registerTutor(formData)
+        // console.log(response)
 
-        if (response.error) {
-            toast.dismiss()
-            toast.error(response.error.message)
-            return;
-        }
+        // if (response.error) {
+        //     toast.dismiss()
+        //     toast.error(response.error.message)
+        //     return;
+        // }
 
         toast.dismiss()
-        localStorage.removeItem("applyTutorCurrentStep")
-        localStorage.removeItem("applyTutorStep1Data")
-        localStorage.removeItem("applyTutorStep2Data")
-        localStorage.removeItem("applyTutorStep3Data")
-        localStorage.removeItem("applyTutorStep4Data")
-        toast.success("register successfully.")
+        toast.success("Description saved successfully!")
+        localStorage.setItem("applyTutorStep4Data", JSON.stringify(formData))
+        localStorage.setItem("applyTutorCurrentStep", "5")
+        setCurrentStep(5)
+        // localStorage.removeItem("applyTutorCurrentStep")
+        // localStorage.removeItem("applyTutorStep1Data")
+        // localStorage.removeItem("applyTutorStep2Data")
+        // localStorage.removeItem("applyTutorStep3Data")
+        // localStorage.removeItem("applyTutorStep4Data")
+        // toast.success("register successfully.")
 
-        await refreshUser()
-        router.push("/tutor-register-success")
+        // await refreshUser()
+        // router.push("/tutor-register-success")
     }
 
     return (
