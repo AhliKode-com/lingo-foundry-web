@@ -9,6 +9,7 @@ export function getEnums() {
         level: [],
         subjectTeach: [],
         subjectLevelTeach: [],
+        banks: [],
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -18,22 +19,24 @@ export function getEnums() {
             setLoading(true);
             setError(null);
             try {
-                const [countryRes, expertiseRes, subjectRes, levelRes, subjectTeachRes, subjectLevelTeachRes] = await Promise.all([
-                api.get("/enum/country"),
-                api.get("/enum/expertise"),
-                api.get("/enum/academic-degree/subject"),
-                api.get("/enum/academic-degree/level"),
-                api.get("/enum/subject"),
-                api.get("/enum/subject-level"),
+                const [countryRes, expertiseRes, subjectRes, levelRes, subjectTeachRes, subjectLevelTeachRes, banksRes] = await Promise.all([
+                    api.get("/enum/country"),
+                    api.get("/enum/expertise"),
+                    api.get("/enum/academic-degree/subject"),
+                    api.get("/enum/academic-degree/level"),
+                    api.get("/enum/subject"),
+                    api.get("/enum/subject-level"),
+                    api.get("/enum/banks"),
                 ]);
 
                 setData({
-                country: countryRes.data.data,
-                expertise: expertiseRes.data.data,
-                subject: subjectRes.data.data,
-                level: levelRes.data.data,
-                subjectTeach: subjectTeachRes.data.data,
-                subjectLevelTeach: subjectLevelTeachRes.data.data,
+                    country: countryRes.data.data,
+                    expertise: expertiseRes.data.data,
+                    subject: subjectRes.data.data,
+                    level: levelRes.data.data,
+                    subjectTeach: subjectTeachRes.data.data,
+                    subjectLevelTeach: subjectLevelTeachRes.data.data,
+                    banks: banksRes.data.data,
                 });
             } catch (err) {
                 setError(err.response?.data?.message || "Failed to get enums");
@@ -44,5 +47,5 @@ export function getEnums() {
         getData();
     }, []);
 
-  return { data, loading, error };
+    return { data, loading, error };
 }

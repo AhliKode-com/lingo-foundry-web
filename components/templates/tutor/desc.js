@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-27 14:09:01
+ * @Last Modified time: 2025-05-28 00:18:55
  */
 
 "use client"
@@ -11,14 +11,9 @@ import { FaInfoCircle } from "react-icons/fa"
 import {toast} from "react-toastify";
 import {useEffect} from "react";
 import {useAuth} from "@/context/AuthContext";
-import {useTutorController} from "@/apis/tutorController";
-import {useRouter} from "next/navigation";
 import Link from "next/link";
 
 export default function ProfileDescription({ setCurrentStep }) {
-    const { registerTutor } = useTutorController()
-    const router = useRouter()
-
     useEffect(() => {
         const savedData = localStorage.getItem("applyTutorStep4Data")
         if (savedData) {
@@ -116,7 +111,7 @@ export default function ProfileDescription({ setCurrentStep }) {
         //     return;
         // }
 
-        toast.dismiss()
+        // toast.dismiss()
         toast.success("Description saved successfully!")
         localStorage.setItem("applyTutorStep4Data", JSON.stringify(formData))
         localStorage.setItem("applyTutorCurrentStep", "5")
@@ -127,7 +122,6 @@ export default function ProfileDescription({ setCurrentStep }) {
         // localStorage.removeItem("applyTutorStep3Data")
         // localStorage.removeItem("applyTutorStep4Data")
         // toast.success("register successfully.")
-
         // await refreshUser()
         // router.push("/tutor-register-success")
     }
@@ -232,7 +226,7 @@ export default function ProfileDescription({ setCurrentStep }) {
                     </button>
                     <button
                         type="submit"
-                        className={`px-8 py-3 bg-[#E35D33] text-white rounded-lg hover:bg-[#d04e26] transition-colors ${isOverLimit ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`px-8 py-3 bg-[#E35D33] cursor-pointer text-white rounded-lg hover:bg-[#d04e26] transition-colors ${isOverLimit ? "opacity-50 cursor-not-allowed" : ""}`}
                         disabled={isOverLimit}
                     >
                         Save and Continue

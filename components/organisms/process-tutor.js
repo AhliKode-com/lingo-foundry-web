@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:53:45
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-27 13:59:33
+ * @Last Modified time: 2025-05-27 23:52:30
  */
 "use client";
 import {useEffect, useState} from "react";
@@ -15,11 +15,10 @@ import Cv from "@/components/templates/tutor/cv";
 import Desc from "@/components/templates/tutor/desc";
 import Video from "@/components/templates/tutor/video";
 import Avail from "@/components/templates/tutor/avail";
+import Bank from "@/components/templates/tutor/bank";
 import Pricing from "@/components/templates/tutor/pricing";
 
-import { StepButton } from "@/components/atoms/buttons";
 import { multiStepPayment } from "@/constants/en";
-import {getLandingSubjects} from "@/apis/getLandingSubjects";
 import {useAuth} from "@/context/AuthContext";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
@@ -27,9 +26,17 @@ import {useRouter} from "next/navigation";
 export default function ProcessTutor() {
     const [currentStep, setCurrentStep] = useState(1);
     const { tabTutor } = multiStepPayment;
+    const [isProductionDomain, setIsProductionDomain] = useState(false);
 
     const { user } = useAuth()
     const router = useRouter()
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const domain = window.location.hostname;
+            setIsProductionDomain(domain === "lingofoundry.com");
+        }
+    }, []);
 
     // load data from localStorage on component mount
     useEffect(() => {
@@ -53,15 +60,17 @@ export default function ProcessTutor() {
         { id: 2, label: tabTutor.photo, component: <Photo setCurrentStep={setCurrentStep} /> },
         { id: 3, label: tabTutor.cv, component: <Cv setCurrentStep={setCurrentStep} /> },
         { id: 4, label: tabTutor.description, component: <Desc setCurrentStep={setCurrentStep} /> },
-        { id: 5, label: tabTutor.availability, component: <Avail setCurrentStep={setCurrentStep} /> },
+        { id: 5, label: tabTutor.bank, component: <Bank setCurrentStep={setCurrentStep} />},
     ];
+
+    const filteredSteps = steps.filter(step => !(isProductionDomain && step.hiddenInProd));
 
     return (
         <div className="pt-[78px] md:pt-[100px] animation-effect overflow-hidden">
             <div className="w-full">
                 <div className="w-full fixed z-40 bg-[#FFFFFF] border-b-[1px] border-[#E5E5E5]">
                     <div className="overflow-x-auto lingo-container flex flex-row justify-start md:items-center gap-[12px] py-[25px] ">
-                        {steps.map((step, index) => {
+                        {filteredSteps.map((step, index) => {
                             const isActive = step.id === currentStep;
                             const isCompleted = step.id < currentStep;
                             return (
@@ -92,7 +101,7 @@ export default function ProcessTutor() {
                                         {step.label}
                                     </span>
                                     <div className="rotate-[90deg] sm:rotate-0">
-                                        {index < steps.length - 1 && (
+                                        {index < filteredSteps.length - 1 && (
                                             <RiArrowRightSLine className={`
                                                 text-[22px]3
                                                 ${
@@ -113,7 +122,7 @@ export default function ProcessTutor() {
             </div>
 
             <div className="lingo-container lg:w-1/2 flex flex-col pb-[50px] pt-[130px]">
-                {steps.find((step) => step.id === currentStep)?.component}
+                {filteredSteps.find((step) => step.id === currentStep)?.component}
                 {/*<div className="lingo-container mt-[35px] flex gap-2 justify-end">*/}
                 {/*    {currentStep > 1 && (*/}
                 {/*        <StepButton*/}

@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:00
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-07 16:05:47
+ * @Last Modified time: 2025-05-27 23:47:59
  */
 "use client"
 import Image from 'next/image';
@@ -158,7 +158,7 @@ export default function Navbar() {
                         <>
                             {user != null ? (
                                 <div className="flex gap-[24px] ml-[26px] items-center relative">
-                                    <GoBell className="text-[24px]" />
+                                    {/* <GoBell className="text-[24px]" /> */}
                                     <Link href='/wishlist'>
                                         <div
                                             className='relative'
@@ -365,7 +365,7 @@ export default function Navbar() {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <GoBell className="text-[24px]" />
+                                                {/* <GoBell className="text-[24px]" /> */}
                                                 <Link href='/wishlist'>
                                                     <div 
                                                         className='relative'

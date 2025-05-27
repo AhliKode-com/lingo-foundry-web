@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-19 23:12:56
+ * @Last Modified time: 2025-05-27 23:40:15
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
@@ -359,11 +359,11 @@ export const FooterData = {
             title: 'Whatsapp Channel',
         },
         {
-            href: '/',
+            href: '/terms-conditions',
             title: 'Terms & Conditions'
         },
         {
-            href: '/',
+            href: '/privacy-policy',
             title: 'Privacy Policy'
         },
         {
@@ -420,14 +420,14 @@ export const FooterData = {
             href: '/review',
             title: 'Testimonials'
         },
-        {
-            href: '/',
-            title: 'Latest News'
-        },
-        {
-            href: '/',
-            title: 'Help Center'
-        }
+        // {
+        //     href: '/',
+        //     title: 'Latest News'
+        // },
+        // {
+        //     href: '/',
+        //     title: 'Help Center'
+        // }
     ]
 };
 
@@ -458,6 +458,7 @@ export const multiStepPayment = {
         description: "Description",
         video: "Video",
         availability: "Availability",
+        bank: "Bank Info",
         pricing: "Pricing",
         nextBtn: "Save & Continue",
         prevBtn: "Back",

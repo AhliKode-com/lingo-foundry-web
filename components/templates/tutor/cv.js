@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-27 14:21:05
+ * @Last Modified time: 2025-05-28 00:19:25
  */
 
 "use client"
@@ -584,7 +584,7 @@ export default function CVCertification({ setCurrentStep }) {
                     </button>
                     <button
                         type="submit"
-                        className="px-8 py-3 bg-[#E35D33] text-white rounded-lg hover:bg-[#d04e26] transition-colors"
+                        className="px-8 py-3 bg-[#E35D33] text-white cursor-pointer rounded-lg hover:bg-[#d04e26] transition-colors"
                     >
                         Save and Continue
                     </button>

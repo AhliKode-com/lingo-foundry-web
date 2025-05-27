@@ -2,20 +2,15 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-27 14:48:55
+ * @Last Modified time: 2025-05-27 22:15:58
  */
 "use client"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { TitleTutorRegis, DescTutorRegis } from "@/components/atoms/title"
-import {useRouter} from "next/navigation";
-import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
-import {getEnums} from "@/apis/getEnum";
 
 export default function Availability({setCurrentStep}) {
-    const router = useRouter()
-    const { data: enums } = getEnums();
     const [dropdownOpen, setDropdownOpen] = useState(null);
     const [searchTerm, setSearchTerm] = useState({});
     const [selectedTimes, setSelectedTimes] = useState({});
@@ -23,12 +18,9 @@ export default function Availability({setCurrentStep}) {
     const {
         register,
         handleSubmit,
-        control,
         watch,
         getValues,
         setValue,
-        reset,
-        formState: { errors },
     } = useForm({
         defaultValues: {
             days: {
@@ -40,7 +32,7 @@ export default function Availability({setCurrentStep}) {
                 saturday: false,
                 sunday: false,
             },
-            timeSlots: {
+            timeAvail: {
                 monday: [{ from: "", to: "" }],
                 tuesday: [{ from: "", to: "" }],
                 wednesday: [{ from: "", to: "" }],
@@ -53,7 +45,7 @@ export default function Availability({setCurrentStep}) {
     })
 
     const days = watch("days");
-    const timeSlots = watch("timeSlots");
+    const timeAvail = watch("timeAvail");
 
     const handleDropdownToggle = (day, slotIndex, type) => {
         setDropdownOpen(`${day}-${slotIndex}-${type}`);
@@ -69,33 +61,32 @@ export default function Availability({setCurrentStep}) {
     );
 
     const addTimeSlot = (day) => {
-        const currentSlots = getValues(`timeSlots.${day}`);
-        setValue(`timeSlots.${day}`, [...currentSlots, { from: "", to: "" }]);
+        const currentSlots = getValues(`timeAvail.${day}`);
+        setValue(`timeAvail.${day}`, [...currentSlots, { from: "", to: "" }]);
     };
 
     const removeTimeSlot = (day, index) => {
-        const currentSlots = getValues(`timeSlots.${day}`);
+        const currentSlots = getValues(`timeAvail.${day}`);
         if (currentSlots.length > 1) {
-            setValue(`timeSlots.${day}`, currentSlots.filter((_, i) => i !== index));
+            setValue(`timeAvail.${day}`, currentSlots.filter((_, i) => i !== index));
         }
     };
 
     const onSubmit = (data) => {
         // Filter out unchecked days
-        const filteredData = {
-            days: {},
-            timeSlots: {}
+        const formData = {
+            timeAvail: {}
         };
-
         // Only include checked days and their time slots
         Object.keys(data.days).forEach(day => {
             if (data.days[day]) {
-                filteredData.days[day] = true;
-                filteredData.timeSlots[day] = data.timeSlots[day];
+                formData.timeAvail[day] = data.timeAvail[day];
             }
         });
 
-        console.log(filteredData);
+        localStorage.setItem("applyTutorStep5Data", JSON.stringify(formData))
+        localStorage.setItem("applyTutorCurrentStep", "6")
+        setCurrentStep(6);
     }
 
     return (
@@ -123,12 +114,12 @@ export default function Availability({setCurrentStep}) {
 
                             {days[day] && (
                                 <div className="space-y-4">
-                                    {timeSlots[day].map((slot, index) => (
+                                    {timeAvail[day].map((slot, index) => (
                                         <div key={index} className="flex gap-4 items-center">
                                             <div className="relative flex-1">
                                                 <input
                                                     type="hidden"
-                                                    {...register(`timeSlots.${day}.${index}.from`)}
+                                                    {...register(`timeAvail.${day}.${index}.from`)}
                                                     value={selectedTimes[`${day}-${index}-from`] || ""}
                                                 />
                                                 <button
@@ -164,7 +155,7 @@ export default function Availability({setCurrentStep}) {
                                                                         ...prev,
                                                                         [`${day}-${index}-from`]: time
                                                                     }));
-                                                                    setValue(`timeSlots.${day}.${index}.from`, time);
+                                                                    setValue(`timeAvail.${day}.${index}.from`, time);
                                                                     setDropdownOpen(null);
                                                                 }}
                                                             >
@@ -178,7 +169,7 @@ export default function Availability({setCurrentStep}) {
                                             <div className="relative flex-1">
                                                 <input
                                                     type="hidden"
-                                                    {...register(`timeSlots.${day}.${index}.to`)}
+                                                    {...register(`timeAvail.${day}.${index}.to`)}
                                                     value={selectedTimes[`${day}-${index}-to`] || ""}
                                                 />
                                                 <button
@@ -214,7 +205,7 @@ export default function Availability({setCurrentStep}) {
                                                                         ...prev,
                                                                         [`${day}-${index}-to`]: time
                                                                     }));
-                                                                    setValue(`timeSlots.${day}.${index}.to`, time);
+                                                                    setValue(`timeAvail.${day}.${index}.to`, time);
                                                                     setDropdownOpen(null);
                                                                 }}
                                                             >
