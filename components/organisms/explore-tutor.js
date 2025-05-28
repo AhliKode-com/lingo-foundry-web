@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 00:15:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-23 22:38:12
+ * @Last Modified time: 2025-05-28 16:04:40
  */
 
 "use client"
@@ -40,7 +40,7 @@ export default function ExploreTutor() {
             setDebouncedQuery(searchQ);
     
             if (searchQ.trim() !== "" && searchQ.length > 3) {
-                setCategory("queryResult");
+                setCategory("allPreview");
             } else {
                 setCategory("allPreview");
             }

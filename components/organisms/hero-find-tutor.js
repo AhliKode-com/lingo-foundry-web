@@ -2,15 +2,27 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-23 22:23:48
+ * @Last Modified time: 2025-05-28 16:00:17
  */
-
+"use client"
 import { FindTutor } from "@/constants/en"
 import SearchNow from '@/components/molecules/search-now';
+import { OrangeButton } from '@/components/atoms/buttons';
 import Image from "next/image"
+import {useRouter} from "next/navigation";
+import { useState } from 'react';
 
 export default function Hero() {
     const { hero } = FindTutor
+    const router = useRouter();
+    const [searchValue, setSearchValue] = useState("");
+
+    const handleSearch = () => {
+        if (searchValue.trim()) {
+            router.push(`/find-tutor?q=${searchValue}#search`);
+        }
+    };
+
     return (
       <div className="lingo-container flex h-full pt-[70px] sm:pt-[103.61px] pb-[100px] sm:pb-[150px] animation-effect">
         <div className="relative w-full flex flex-col">
@@ -65,7 +77,17 @@ export default function Hero() {
           >
             {hero.subtitle}
           </h1>
-          <SearchNow placeholder={hero.placeholder} buttonSearch={hero.buttonSearch} />
+          <SearchNow 
+            placeholder={hero.placeholder} 
+            buttonSearch={hero.buttonSearch} 
+            onSearch={(value) => setSearchValue(value)}
+          />
+          <OrangeButton 
+            text="Search Now" 
+            marginTop="mt-[10px]" 
+            custom="block md:hidden"
+            onClick={handleSearch}
+          />
         </div>
       </div>
     )

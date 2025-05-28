@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 15:31:42
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-21 15:15:49
+ * @Last Modified time: 2025-05-28 16:03:11
  */
 
 "use client"
@@ -10,19 +10,30 @@ import Image from 'next/image';
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 
-export default function SearchNow({placeholder, buttonSearch}) {
+export default function SearchNow({placeholder, buttonSearch, onSearch}) {
     const [value, setValue] = useState("");
     const router = useRouter();
 
     const handleSearch = () => {
         if (value.trim()) {
             router.push(`/find-tutor?q=${value}#search`);
+            if (onSearch) {
+                onSearch(value);
+            }
         }
     };
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             handleSearch();
+        }
+    };
+
+    const handleChange = (e) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        if (onSearch) {
+            onSearch(newValue);
         }
     };
 
@@ -40,7 +51,7 @@ export default function SearchNow({placeholder, buttonSearch}) {
                 className="animation-effect text-[14px] md:text-[16px] focus:outline-none"
                 placeholder={placeholder}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={handleChange}
                 onKeyDown={handleKeyDown}
             />
             <button

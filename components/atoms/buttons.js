@@ -93,9 +93,11 @@ export function StepButton({text, onClick, bgColor}) {
     )
 }
 
-export function OrangeButton({text, marginTop, custom}) {
+export function OrangeButton({text, marginTop, custom, onClick}) {
     return (
-        <button className={`
+        <button 
+            onClick={onClick}
+            className={`
           bg-[#E15C31] text-[14px] sm:text-[16px] px-[28px] py-[13px] rounded-[40px] text-white cursor-pointer animation-effect 
           ${marginTop} ${custom}`}>
             {text}

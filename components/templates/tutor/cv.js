@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-28 00:19:25
+ * @Last Modified time: 2025-05-28 15:51:49
  */
 
 "use client"
@@ -577,14 +577,14 @@ export default function CVCertification({ setCurrentStep }) {
                 <div className="flex justify-between mt-8">
                     <button
                         type="button"
-                        className="px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                        className="text-[13px] md:text-[16px] px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                         onClick={() => {setCurrentStep(2)}}
                     >
                         Back
                     </button>
                     <button
                         type="submit"
-                        className="px-8 py-3 bg-[#E35D33] text-white cursor-pointer rounded-lg hover:bg-[#d04e26] transition-colors"
+                        className="text-[13px] md:text-[16px] px-8 py-3 bg-[#E35D33] text-white cursor-pointer rounded-lg hover:bg-[#d04e26] transition-colors"
                     >
                         Save and Continue
                     </button>
