@@ -2,17 +2,26 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 01:06:46
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-18 15:39:43
+ * @Last Modified time: 2025-05-28 15:59:02
  */
-
+"use client"
 import { Home } from '@/constants/en';
 import SearchNow from '@/components/molecules/search-now';
 import Image from 'next/image';
 import { OrangeButton } from '@/components/atoms/buttons';
+import {useRouter} from "next/navigation";
+import { useState } from 'react';
 
 export default function Hero() {
-
     const { hero } = Home;
+    const router = useRouter();
+    const [searchValue, setSearchValue] = useState("");
+
+    const handleSearch = () => {
+        if (searchValue.trim()) {
+            router.push(`/find-tutor?q=${searchValue}&category=all#search`);
+        }
+    };
 
     return (
       <div className="lingo-container flex h-full pt-[70px] sm:pt-[103.61px]">
@@ -52,8 +61,17 @@ export default function Hero() {
             </span>
           </h1>
           <h1 className="animation-effect font-semibold text-[14px] md:text-[16px] lg:text-[20px] leading-[34px] md:w-[480px] mt-[20px] md:mt-[40px] mb-[27px]">{hero.subtitle}</h1>
-          <SearchNow placeholder={hero.placeholder} buttonSearch={hero.buttonSearch} />
-          <OrangeButton text="Search Now" marginTop="mt-[10px]" custom="block md:hidden"/>
+          <SearchNow 
+            placeholder={hero.placeholder} 
+            buttonSearch={hero.buttonSearch} 
+            onSearch={(value) => setSearchValue(value)}
+          />
+          <OrangeButton 
+            text="Search Now" 
+            marginTop="mt-[10px]" 
+            custom="block md:hidden"
+            onClick={handleSearch}
+          />
         </div>
       </div>
     )

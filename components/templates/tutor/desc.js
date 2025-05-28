@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-28 00:18:55
+ * @Last Modified time: 2025-05-28 15:52:08
  */
 
 "use client"
@@ -219,14 +219,14 @@ export default function ProfileDescription({ setCurrentStep }) {
                 <div className="flex justify-between pt-4">
                     <button
                         type="button"
-                        className="px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                        className="text-[13px] md:text-[16px] px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                         onClick={() => {setCurrentStep(3)}}
                     >
                         Back
                     </button>
                     <button
                         type="submit"
-                        className={`px-8 py-3 bg-[#E35D33] cursor-pointer text-white rounded-lg hover:bg-[#d04e26] transition-colors ${isOverLimit ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`text-[13px] md:text-[16px] px-8 py-3 bg-[#E35D33] cursor-pointer text-white rounded-lg hover:bg-[#d04e26] transition-colors ${isOverLimit ? "opacity-50 cursor-not-allowed" : ""}`}
                         disabled={isOverLimit}
                     >
                         Save and Continue

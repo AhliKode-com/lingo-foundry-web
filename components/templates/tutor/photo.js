@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 02:41:45
+ * @Last Modified time: 2025-05-28 15:50:55
  */
 
 "use client"
@@ -81,15 +81,15 @@ export default function Photo({ setCurrentStep }) {
     }
 
     return (
-        <div className="max-w-2xl mx-auto px-4 py-8">
+        <div className="lingo-container flex flex-col">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Profile photo</h1>
             <p className="text-lg text-gray-700 mb-6">Choose a photo that will help learners get to know you.</p>
 
             <hr className="my-6" />
 
-            <div className="flex items-center gap-6 mb-6">
+            <div className="flex-col md:flex-row flex items-center gap-6 mb-6">
                 <div
-                    className="w-[150px] h-[150px] border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden"
+                    className="w-[150px] h-[150px] shrink-0 border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 rounded-md overflow-hidden"
                     onClick={handleUploadClick}
                 >
                     {previewUrl ? (
@@ -240,7 +240,7 @@ export default function Photo({ setCurrentStep }) {
 
             <div className="flex justify-between">
                 <button
-                    className="px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="text-[13px] md:text-[16px] px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                     onClick={() => {setCurrentStep(1)}}
                 >
                     Back
@@ -248,7 +248,7 @@ export default function Photo({ setCurrentStep }) {
                 <button
                     onClick={handleSaveAndContinue}
                     disabled={previewUrl == null && photo == null}
-                    className="px-8 py-3 rounded-lg text-white transition-colors
+                    className="px-8 py-3 rounded-lg text-white transition-colors text-[13px] md:text-[16px]
                             bg-[#E35D33] hover:bg-[#d04e26]
                             disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
