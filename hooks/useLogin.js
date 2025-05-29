@@ -27,7 +27,15 @@ export function useLogin() {
                 loginContext(response.data.token)
                 toast.dismiss()
                 toast.success("Logged in successfully.")
-                router.push("/")
+                
+                // Check for redirect cookie
+                const redirectPath = Cookies.get("redirectAfterLogin");
+                if (redirectPath) {
+                    Cookies.remove("redirectAfterLogin"); // Clear the cookie
+                    router.push(redirectPath);
+                } else {
+                    router.push("/");
+                }
             } else {
                 toast.dismiss()
                 toast.error(response.data.message || "Login failed")
