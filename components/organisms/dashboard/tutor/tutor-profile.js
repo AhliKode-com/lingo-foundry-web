@@ -9,12 +9,15 @@ import {LabelTutorRegis} from "@/components/atoms/title";
 import {IoIosArrowDown} from "react-icons/io";
 import {getEnums} from "@/apis/getEnum";
 import { useUpdateTutor } from "@/apis/updateTutor";
+import useUploadFile from "@/apis/static-file/postUploadFile";
 
 export default function TutorProfileForm() {
     const { user } = useAuth();
     const { getData } = getDetail();
     const { data: enums } = getEnums();
     const { updateTutor, loading: updateLoading } = useUpdateTutor();
+
+    const { uploadFile, error } = useUploadFile()
 
     const [formData, setFormData] = useState({
         bio: '',
@@ -28,7 +31,10 @@ export default function TutorProfileForm() {
         title: '',
         expertises: [],
         languages: [],
-        certificates: []
+        certificates: [],
+        cvFile: null,
+        cvFileUrl: '',
+        cvFileObjectKey: ''
     });
 
     const MAX_EXPERTISE = 3
@@ -44,7 +50,8 @@ export default function TutorProfileForm() {
         title: false,
         expertises: false,
         languages: false,
-        certificates: false
+        certificates: false,
+        cv: false
     });
 
     const [dropdownOpen, setDropdownOpen] = useState(null);
@@ -52,6 +59,8 @@ export default function TutorProfileForm() {
     const [prevDropdownOpen, setPrevDropdownOpen] = useState(null);
     const [savedCertificateFiles, setSavedCertificateFiles] = useState([]);
     const certificateFileRefs = useRef([]);
+    const cvFileRef = useRef(null);
+    const [cvFile, setCvFile] = useState(null);
 
     const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [selectedLevels, setSelectedLevels] = useState([]);
@@ -134,7 +143,7 @@ export default function TutorProfileForm() {
             // Format certificates data
             const formattedCertificates = formData.certificates.map(cert => ({
                 subject: cert.subject,
-                type: cert.certificateType,
+                type: cert.type,
                 description: cert.description,
                 issuedBy: cert.issuedBy,
                 startYear: parseInt(cert.startYear),
@@ -154,12 +163,31 @@ export default function TutorProfileForm() {
                 languages: formData.languages,
                 mobileNumber: user?.mobileNumber || '',
                 certificates: formattedCertificates,
-                cvFileObjectKey: user?.cvFileObjectKey || '',
+                cvFileObjectKey: formData.cvFileObjectKey || '',
                 introduction: formData.introduction,
                 teachingExperience: formData.teachingExperience,
                 courseMotivation: formData.courseMotivation,
-                title: formData.title
+                title: formData.title,
+                cvFileUrl: formData.cvFileUrl
             };
+
+            // Handle CV file upload if it's a new file
+            if (field === 'cv' && formData.cvFile) {
+                const cvFileUrl = await uploadFile(formData.cvFile);
+                if (cvFileUrl) {
+                    setFormData(prev => ({ ...prev, cvFileUrl: cvFileUrl }));
+                    updatePayload.cvFileUrl = cvFileUrl;
+                    let objectKey = cvFileUrl.split("/");
+                    objectKey = objectKey[objectKey.length - 1];
+                    if (objectKey) {
+                        updatePayload.cvFileObjectKey = objectKey;
+                    }
+                } else {
+                    toast.error('Failed to upload CV file');
+                    setSaving(false);
+                    return;
+                }
+            }
 
             // Make API call to update the tutor profile
             await updateTutor(updatePayload);
@@ -201,6 +229,10 @@ export default function TutorProfileForm() {
                 const tutorDetailData = await getData(user.tutor.id);
                 const tutorData = tutorDetailData?.tutor || {};
 
+                const cvFileUrl = tutorData.cvFileUrl || ''
+                let objectKey = cvFileUrl.split("/");
+                objectKey = objectKey[objectKey.length - 1];
+
                 setFormData({
                     bio: tutorData.bio || '',
                     introduction: tutorData.introduction || '',
@@ -213,7 +245,10 @@ export default function TutorProfileForm() {
                     title: tutorData.title || '',
                     expertises: tutorData.expertises || [],
                     languages: tutorData.languages || [],
-                    certificates: tutorData.certificates || []
+                    certificates: tutorData.certificates || [],
+                    cvFile: tutorData.cvFile || null,
+                    cvFileUrl: tutorData.cvFileUrl || '',
+                    cvFileObjectKey: objectKey
                 });
             } catch (error) {
                 toast.error(error.message);
@@ -229,6 +264,8 @@ export default function TutorProfileForm() {
 
     const editClassWrapper = "rounded-[32px] border-[1px] border-[#D9D9D9] p-4";
     const editContent = "border-[1px] border-[#A6A6A6] p-4 rounded-[32px]";
+
+    console.log(formData)
 
     const renderEditField = (field, label, multiline = false) => (
         <div className='flex flex-col gap-2'>
@@ -282,6 +319,26 @@ export default function TutorProfileForm() {
         </div>
     );
 
+    const handleCVUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // check file type
+            if (!file.type.includes("application/pdf")) {
+                toast.error("Please upload a PDF file");
+                return;
+            }
+
+            // check file size (1MB max)
+            if (file.size > 1 * 1024 * 1024) {
+                toast.error("File size should be less than 1MB");
+                return;
+            }
+
+            setCvFile(file);
+            setFormData(prev => ({ ...prev, cvFile: file }));
+        }
+    };
+
     const handleCertificateUpload = (index, e) => {
         const file = e.target.files[0];
         if (file) {
@@ -308,6 +365,8 @@ export default function TutorProfileForm() {
             setFormData(prev => ({ ...prev, certificates: newCertificates }));
         }
     };
+
+    console.log(formData)
 
     return (
         <div className="lingo-container flex flex-col lg:flex-row gap-[20px] mb-[72px]">
@@ -451,7 +510,7 @@ export default function TutorProfileForm() {
                                             {formData.expertises && formData.expertises.length > 0 ? (
                                                 formData.expertises.map((expertise, index) => (
                                                     <span key={index} className="bg-[#E35D33] text-white px-3 py-1 rounded-full text-sm">
-                                                        {expertise}
+                                                        {enums?.expertise?.find(exp => exp.name === expertise)?.displayName || expertise}
                                                     </span>
                                                 ))
                                             ) : (
@@ -796,7 +855,7 @@ export default function TutorProfileForm() {
                                                                 className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
                                                             >
                                                                 <span className="text-left flex-1">
-                                                                    {enums?.level?.find(level => level.name === cert.certificateType)?.displayName || "Select level..."}
+                                                                    {enums?.level?.find(level => level.name === cert.type)?.displayName || "Select level..."}
                                                                 </span>
                                                                 <IoIosArrowDown />
                                                             </button>
@@ -809,7 +868,7 @@ export default function TutorProfileForm() {
                                                                             className="animation-effect px-[18px] py-[12px] hover:bg-[#FDE0D7] hover:text-[#E35D33] cursor-pointer"
                                                                             onClick={() => {
                                                                                 const newCertificates = [...formData.certificates];
-                                                                                newCertificates[index] = { ...newCertificates[index], certificateType: level.name };
+                                                                                newCertificates[index] = { ...newCertificates[index], type: level.name };
                                                                                 setFormData(prev => ({ ...prev, certificates: newCertificates }));
                                                                                 setDropdownOpen(null);
                                                                             }}
@@ -925,59 +984,6 @@ export default function TutorProfileForm() {
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    {/* Certificate Upload */}
-                                                    <div className="bg-gray-50 p-6 rounded-lg mt-6">
-                                                        <h2 className="text-xl font-bold mb-2">Get a &#34;Certificate verified&#34; badge</h2>
-                                                        <p className="text-gray-700 mb-4">
-                                                            Upload your certificate to boost your credibility! Our team will review it and add the badge to your profile.
-                                                        </p>
-                                                        <p className="text-gray-600 text-sm mb-4">JPG/PNG/PDF format; maximum size of 20MB.</p>
-
-                                                        <input
-                                                            type="file"
-                                                            ref={(el) => (certificateFileRefs.current[index] = el)}
-                                                            onChange={(e) => handleCertificateUpload(index, e)}
-                                                            accept="image/jpeg, image/png, application/pdf"
-                                                            className="hidden"
-                                                        />
-
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                const ref = certificateFileRefs.current[index];
-                                                                if (ref) {
-                                                                    ref.click();
-                                                                }
-                                                            }}
-                                                            className="border border-gray-800 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-100 transition-colors"
-                                                        >
-                                                            Upload
-                                                        </button>
-
-                                                        {(cert.file || savedCertificateFiles[index]) && (
-                                                            <div className="mt-2 text-green-600 flex items-center">
-                                                                <p>File uploaded: {cert.file?.name || savedCertificateFiles[index]}</p>
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => {
-                                                                        const newCertificates = [...formData.certificates];
-                                                                        newCertificates[index] = { ...newCertificates[index], file: null };
-                                                                        setFormData(prev => ({ ...prev, certificates: newCertificates }));
-                                                                        const newFiles = [...savedCertificateFiles];
-                                                                        newFiles[index] = null;
-                                                                        setSavedCertificateFiles(newFiles);
-                                                                        if (certificateFileRefs.current[index]) {
-                                                                            certificateFileRefs.current[index].value = null;
-                                                                        }
-                                                                    }}
-                                                                    className="ml-4 text-red-600 hover:text-red-800"
-                                                                >
-                                                                    <FaTrash />
-                                                                </button>
-                                                            </div>
-                                                        )}
-                                                    </div>
                                                 </div>
                                             ))}
 
@@ -988,7 +994,7 @@ export default function TutorProfileForm() {
                                                         ...prev,
                                                         certificates: [...prev.certificates, {
                                                             subject: "",
-                                                            certificateType: "",
+                                                            type: "",
                                                             description: "",
                                                             issuedBy: "",
                                                             startYear: "",
@@ -1023,7 +1029,7 @@ export default function TutorProfileForm() {
                                                     <div key={index} className="border-b border-gray-200 pb-2 last:border-b-0">
                                                         <div className="flex items-center gap-2 font-medium">
                                                             <FaCertificate className="text-[#E35D33]" />
-                                                            <span>{cert.subject} - {cert.certificateType}</span>
+                                                            <span>{enums?.subject?.find(subject => subject.name === cert.subject)?.displayName || cert.subject} - {enums?.level?.find(level => level.name === cert.type)?.displayName || cert.type}</span>
                                                         </div>
                                                         <div className="ml-6 text-sm text-gray-600">
                                                             <p>Issued by: {cert.issuedBy}</p>
@@ -1034,6 +1040,110 @@ export default function TutorProfileForm() {
                                                 ))
                                             ) : (
                                                 <span className="text-gray-400">No certificates added</span>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* CV Section */}
+                    <div className='flex flex-col gap-2'>
+                        <div className="flex justify-between items-center">
+                            <label className="text-[#E35D33] font-medium">CV</label>
+                            <button
+                                onClick={() => setEditing(prev => ({...prev, cv: !prev.cv}))}
+                                className={`${editing.cv ? 'text-[#E35D33]' : 'text-gray-500 hover:text-[#E35D33]'} cursor-pointer animation-effect`}
+                            >
+                                <FaPen />
+                            </button>
+                        </div>
+                        <div className={editClassWrapper}>
+                            {loading ? (
+                                <div className="w-full h-[60px] bg-gray-300 animate-pulse rounded-[32px]"></div>
+                            ) : (
+                                <div className={editContent}>
+                                    {editing.cv ? (
+                                        <div className="flex flex-col gap-4">
+                                            <div className="bg-gray-50 p-6 rounded-lg">
+                                                <h2 className="text-xl font-bold mb-2">Upload your CV</h2>
+                                                <p className="text-gray-700 mb-4">
+                                                    Upload your CV to showcase your professional experience and qualifications.
+                                                </p>
+                                                <p className="text-gray-600 text-sm mb-4">PDF format; maximum size of 20MB.</p>
+
+                                                <input
+                                                    type="file"
+                                                    ref={cvFileRef}
+                                                    onChange={handleCVUpload}
+                                                    accept="application/pdf"
+                                                    className="hidden"
+                                                />
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const ref = cvFileRef.current;
+                                                        if (ref) {
+                                                            ref.click();
+                                                        }
+                                                    }}
+                                                    className="border border-gray-800 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-100 transition-colors"
+                                                >
+                                                    Upload CV
+                                                </button>
+
+                                                {(cvFile || formData.cvFileUrl) && (
+                                                    <div className="mt-2 text-green-600 flex items-center">
+                                                        <p>File uploaded: {cvFile ? cvFile.name : formData.cvFileUrl.split('/').pop()}</p>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setCvFile(null);
+                                                                setFormData(prev => ({ ...prev, cvFile: null }));
+                                                                if (cvFileRef.current) {
+                                                                    cvFileRef.current.value = null;
+                                                                }
+                                                            }}
+                                                            className="ml-4 text-red-600 hover:text-red-800"
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <div className="flex justify-end mt-2">
+                                                <button
+                                                    onClick={() => handleSave('cv')}
+                                                    className="text-green-500 cursor-pointer"
+                                                    disabled={saving}
+                                                >
+                                                    {saving ? (
+                                                        <div className="w-4 h-4 border-2 border-t-2 border-gray-200 border-t-green-500 rounded-full animate-spin"></div>
+                                                    ) : (
+                                                        <FaCheck />
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {formData.cvFileUrl ? (
+                                                <div className="flex items-center gap-2">
+                                                    <FaCertificate className="text-[#E35D33]" />
+                                                    <a 
+                                                        href={formData.cvFileUrl} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-600 hover:underline"
+                                                    >
+                                                        View CV
+                                                    </a>
+                                                </div>
+                                            ) : (
+                                                <span className="text-gray-400">No CV uploaded</span>
                                             )}
                                         </div>
                                     )}

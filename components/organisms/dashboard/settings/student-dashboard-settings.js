@@ -148,7 +148,8 @@ export default function StudentDashboardSettings() {
                                 defaultValue={userMe.mobileNumber || ""}
                                 className="w-full border border-[#E9EAF0] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#E9EAF0]"
                                 required={true}
-                                type={"number"}
+                                type="tel"
+                                pattern="[+]?[0-9]+"
                                 {...register("mobileNumber")}
                             />
                         </div>
