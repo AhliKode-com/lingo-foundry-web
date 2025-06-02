@@ -161,7 +161,7 @@ export default function MyStudents() {
                                         img: student.photoProfileUrl || '/placeholder.svg',
                                         name: `${student.firstName || ''} ${student.lastName || ''}`.trim() || student.username,
                                         skill: 'Student',
-                                        subject: 'English for Business'
+                                        // subject: 'English for Business'
                                     }}
                                     onSendMessage={() => handleSendMessage(student.id)}
                                 />
@@ -178,7 +178,7 @@ export default function MyStudents() {
                             onPageChange={() => {
                                 const grid = document.getElementById("student-grid");
                                 if (grid) {
-                                    const yOffset = -300;
+                                    const yOffset = 0;
                                     const y = grid.getBoundingClientRect().top + window.pageYOffset + yOffset;
                                     window.scrollTo({ top: y, behavior: "smooth" });
                                 }
