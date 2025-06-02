@@ -76,22 +76,26 @@ export default function StudentNavbar() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center gap-[30px]">
-                        <Link href="/tutor-register">
-                            <button className="cursor-pointer bg-[#FFEEE8] px-[32px] py-[16px] items-center gap-[12px] md:flex hidden">
-                                <span className='text-[#FF6636]'>Become Tutor</span>
-                                <img src="/assets/arrow-right.svg" alt="arrow right" className=""/>
-                            </button>
-                        </Link>
-                    </div>
-                    <>
-                        <Link href="/tutor-register" className='md:hidden'>
-                            <button className="cursor-pointer bg-[#FFEEE8] px-[20px] py-[12px] items-center gap-[12px] flex w-fit">
-                                <span className='text-[#FF6636] text-[12px] '>Become Tutor</span>
-                                <img src="/assets/arrow-right.svg" alt="arrow right" className="md:w-auto w-[14px]"/>
-                            </button>
-                        </Link>
-                    </>
+                    {user && !user.tutor && (
+                        <>
+                            <div className="flex items-center gap-[30px]">
+                                <Link href="/tutor-register">
+                                    <button className="cursor-pointer bg-[#FFEEE8] px-[32px] py-[16px] items-center gap-[12px] md:flex hidden">
+                                        <span className='text-[#FF6636]'>Become Tutor</span>
+                                        <img src="/assets/arrow-right.svg" alt="arrow right" className=""/>
+                                    </button>
+                                </Link>
+                            </div>
+                            <>
+                                <Link href="/tutor-register" className='md:hidden'>
+                                    <button className="cursor-pointer bg-[#FFEEE8] px-[20px] py-[12px] items-center gap-[12px] flex w-fit">
+                                        <span className='text-[#FF6636] text-[12px] '>Become Tutor</span>
+                                        <img src="/assets/arrow-right.svg" alt="arrow right" className="md:w-auto w-[14px]"/>
+                                    </button>
+                                </Link>
+                            </>
+                        </>
+                    )}
                 </div>
             </div>
             <div
