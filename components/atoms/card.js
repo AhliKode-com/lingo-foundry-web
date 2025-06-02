@@ -8,7 +8,6 @@
 import Image from 'next/image';
 import { OrangeButton, WhiteButton } from '../atoms/buttons';
 import Link from 'next/link';
-import { FiMessageSquare } from "react-icons/fi";
 
 export function LookingCard({
     image, 
@@ -72,8 +71,8 @@ export const StudentCard = ({ data, onSendMessage }) => {
                 <span className="text-[18px] font-medium">{data.name}</span>
                 <span className="text-[14px] text-[#8C94A3]">{data.skill}</span>
             </div>
-            <div className="flex flex-col items-center justify-center py-[16px] gap-[16px] w-[265px] border-[1px] border-[#E9EAF0]">
-                <span className="text-[13px] font-medium text-[#4E5566]">{data.subject}</span>
+            <div className="flex flex-col items-center justify-center py-[16px] w-[265px] border-[1px] border-[#E9EAF0]">
+                {/* <span className="text-[13px] font-medium text-[#4E5566]">{data.subject}</span> */}
                 <button 
                     onClick={onSendMessage}
                     className="cursor-pointer text-[#E35D33] px-[58px] py-[14px] bg-[#FFEEE8] font-semibold text-[14px]"

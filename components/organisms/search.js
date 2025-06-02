@@ -45,7 +45,7 @@ export function StudentSearch({setQuery, query}) {
     const handleChange = (e) => {
         const value = e.target.value;
         setQuery(value);
-        router.push(`/tutor-dashboard/my-students?q=${value}#search`);
+        router.push(`/tutor-dashboard/my-students?q=${value}`);
     };
     return (
         <div className="w-full max-w-3xl py-5">
@@ -61,7 +61,6 @@ export function StudentSearch({setQuery, query}) {
                         </div>
                         <input
                             type="text"
-                            id="search"
                             placeholder="Search in your students..."
                             value={query}
                             onChange={handleChange}
