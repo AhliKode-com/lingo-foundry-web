@@ -34,14 +34,6 @@ export default function TermsCondition() {
     </ul>
   );
 
-  const List = ({ items }) => (
-    <ul className="text-[16px] font-light animation-effect list-disc list-inside">
-      {items.map((item, index) => (
-        <li key={index}>{item}</li>
-      ))}
-    </ul>
-  );
-
   const NumberedList = ({ items, sectionNumber }) => (
     <ul className="text-[16px] font-light animation-effect list-none">
       {items.map((item, index) => {
@@ -91,7 +83,7 @@ export default function TermsCondition() {
             <Text>Welcome to Lingo Foundry!</Text>
             <Text>Please read these Terms and Conditions carefully before you start using Our Website, as these rules apply to your use of Our Website.</Text>
             <Text>General Provisions</Text>
-            <Text>These Lingo Foundry Application Terms and Conditions constitute an agreement between you ("You" or "User") and PT Edukasi Transformasi Nusantara ("We" or "Lingo Foundry"), a limited liability company duly established and operating under the laws of the Republic of Indonesia and domiciled in DKI Jakarta, Indonesia. These Terms and Conditions govern your access and use of the websites (https://lingofoundry.com), features, technology, content, as well as the ordering, payment, or use of services available on the Website ("Services").</Text>
+            <Text>These Lingo Foundry Application Terms and Conditions constitute an agreement between you (&quot;You&quot; or &quot;User&quot;) and PT Edukasi Transformasi Nusantara (&quot;We&quot; or &quot;Lingo Foundry&quot;), a limited liability company duly established and operating under the laws of the Republic of Indonesia and domiciled in DKI Jakarta, Indonesia. These Terms and Conditions govern your access and use of the websites (https://lingofoundry.com), features, technology, content, as well as the ordering, payment, or use of services available on the Website (&quot;Services&quot;).</Text>
             <Text>By agreeing to these Lingo Foundry Terms and Conditions, you also agree to additional Terms and Conditions, including the Terms and Conditions for each Service. Although they form a single unit, the additional Terms and Conditions will prevail in the event of any discrepancy with these Terms and Conditions.</Text>
             <Text>If you do not agree to any, part, or all these Terms and Conditions, please immediately stop accessing and using Our Website.</Text>
           </div>
@@ -180,10 +172,10 @@ export default function TermsCondition() {
             <NumberedList 
               sectionNumber={8}
               items={[
-                `The Platform and Services are provided "as is" and "as available" without warranties of any kind, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement.`,
+                "The Platform and Services are provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement.",
                 "The Company does not warrant that the Platform will always be available, uninterrupted, timely, secure, error-free, or that defects will be corrected.",
                 "The Company shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages whatsoever arising out of or in connection with the use or inability to use the Platform or Services.",
-                "In no event shall the Company's maximum liability to you for any damages arising out of or in connection with these Terms and Conditions or the use of the Platform exceed the amount you have paid to the Company for the relevant Services."
+                "In no event shall the Company&apos;s maximum liability to you for any damages arising out of or in connection with these Terms and Conditions or the use of the Platform exceed the amount you have paid to the Company for the relevant Services."
               ]}
             />
           </Section>
