@@ -93,43 +93,46 @@ export default function Recommended() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[12px] mt-[24px]">
                 {recommendedData.map((item, index) => (
                     !closedCards[index] && (
-                        <div
-                            key={index}
-                            className="min-h-[250px] md:min-h-[300px] lg:min-h-[350px] p-[17px] border-[1px] border-[#DCDCE5] rounded-[4px]"
-                        >
-                            <div className="flex flex-col justify-between h-full">
-                                <div className="flex flex-col gap-[8px]">
-                                    <div className="flex justify-between items-start">
-                                        <Image
-                                            src={item.img}
-                                            width={48}
-                                            height={48}
-                                            alt="icon"
-                                        />
-                                        {index === 0 ? 
-                                            <></>
-                                        :
-                                            <button onClick={() => handleClose(index)}>
-                                                <Image
-                                                    src="/assets/cross.svg"
-                                                    width={13}
-                                                    height={13}
-                                                    alt="close"
-                                                    className="cursor-pointer"
-                                                />
-                                            </button>
-                                        }
+                        <>
+                            {index === 1 && <div className="col-span-full h-[12px]" />}
+                            <div
+                                key={index}
+                                className="min-h-[250px] md:min-h-[300px] lg:min-h-[350px] p-[17px] border-[1px] border-[#DCDCE5] rounded-[4px]"
+                            >
+                                <div className="flex flex-col justify-between h-full">
+                                    <div className="flex flex-col gap-[8px]">
+                                        <div className="flex justify-between items-start">
+                                            <Image
+                                                src={item.img}
+                                                width={48}
+                                                height={48}
+                                                alt="icon"
+                                            />
+                                            {index === 0 ? 
+                                                <></>
+                                            :
+                                                <button onClick={() => handleClose(index)}>
+                                                    <Image
+                                                        src="/assets/cross.svg"
+                                                        width={13}
+                                                        height={13}
+                                                        alt="close"
+                                                        className="cursor-pointer"
+                                                    />
+                                                </button>
+                                            }
+                                        </div>
+                                        <div className="font-semibold">{item.title}</div>
+                                        <div className="text-[14px]">{item.desc}</div>
                                     </div>
-                                    <div className="font-semibold">{item.title}</div>
-                                    <div className="text-[14px]">{item.desc}</div>
+                                    <Link href={item.href}>
+                                        <button className="cursor-pointer mt-auto w-full py-[12px] border-[2px] border-black rounded-[8px]">
+                                            {item.buttonText}
+                                        </button>
+                                    </Link>
                                 </div>
-                                <Link href={item.href}>
-                                    <button className="cursor-pointer mt-auto w-full py-[12px] border-[2px] border-black rounded-[8px]">
-                                        {item.buttonText}
-                                    </button>
-                                </Link>
                             </div>
-                        </div>
+                        </>
                     )
                 ))}
             </div>
