@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { jwtDecode } from "jwt-decode";
 
 export function middleware(req) {
     const token = req.cookies.get("token")?.value;
@@ -23,6 +24,24 @@ export function middleware(req) {
     // Check for protected routes
     if (!token) {
         return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    // Check if token is expired
+    try {
+        const decodedToken = jwtDecode(token);
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        if (decodedToken.exp < currentTime) {
+            // Token is expired, remove it and redirect to login
+            const response = NextResponse.redirect(new URL("/login", req.url));
+            response.cookies.delete("token");
+            return response;
+        }
+    } catch (error) {
+        // If token is invalid, remove it and redirect to login
+        const response = NextResponse.redirect(new URL("/login", req.url));
+        response.cookies.delete("token");
+        return response;
     }
 
     return NextResponse.next();

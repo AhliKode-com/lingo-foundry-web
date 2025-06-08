@@ -8,6 +8,7 @@ import {SpeedInsights} from "@vercel/speed-insights/next"
 import {AuthProvider} from "@/context/AuthContext";
 import {ToastContainer} from "react-toastify";
 import {LingoProvider} from "@/context/LingoContext";
+import AuthCheckLayout from "@/components/layouts/AuthCheckLayout";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     variable: "--font-plus-jakarta-sans",
@@ -29,12 +30,14 @@ export default function RootLayout({children}) {
         <ToastContainer/>
         <LingoProvider>
             <AuthProvider>
-                <Navbar/>
-                <main>
-                    {children}
-                    <SpeedInsights/>
-                </main>
-                <Footer/>
+                <AuthCheckLayout>
+                    <Navbar/>
+                    <main>
+                        {children}
+                        <SpeedInsights/>
+                    </main>
+                    <Footer/>
+                </AuthCheckLayout>
             </AuthProvider>
         </LingoProvider>
         </body>

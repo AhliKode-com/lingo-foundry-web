@@ -140,6 +140,16 @@ export default function TutorProfileForm() {
                 }
             }
 
+            // Validate certificates for required fields
+            if (field === 'certificates') {
+                const hasIncompleteFields = formData.certificates.some(cert => !cert.type);
+                if (hasIncompleteFields) {
+                    toast.error('Please select certificate type for all entries');
+                    setSaving(false);
+                    return;
+                }
+            }
+
             // Format certificates data
             const formattedCertificates = formData.certificates.map(cert => ({
                 subject: cert.subject,
@@ -847,18 +857,25 @@ export default function TutorProfileForm() {
 
                                                     {/* Certificate Type */}
                                                     <div className="mb-4">
-                                                        <label className="block text-gray-700 mb-2">Certificate</label>
+                                                        <label className="block text-gray-700 mb-2">
+                                                            Certificate <span className="text-red-500">*</span>
+                                                        </label>
                                                         <div className="relative w-full">
                                                             <button
                                                                 type="button"
                                                                 onClick={() => handleDropdownToggle(`certificate-type-${index}`)}
-                                                                className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                                                className={`flex items-center w-full px-4 py-3 rounded-lg border ${
+                                                                    !cert.type ? 'border-red-500' : 'border-gray-300'
+                                                                } focus:outline-none focus:ring-2 focus:ring-[#E35D33]`}
                                                             >
                                                                 <span className="text-left flex-1">
                                                                     {enums?.level?.find(level => level.name === cert.type)?.displayName || "Select level..."}
                                                                 </span>
                                                                 <IoIosArrowDown />
                                                             </button>
+                                                            {!cert.type && (
+                                                                <p className="text-red-500 text-sm mt-1">Certificate type is required</p>
+                                                            )}
 
                                                             {dropdownOpen === `certificate-type-${index}` && (
                                                                 <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg max-h-[250px] overflow-y-auto">
