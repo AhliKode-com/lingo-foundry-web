@@ -18,6 +18,7 @@ export function useTutorSubject() {
                     Authorization: token ? `Bearer ${token}` : "",
                 },
             });
+            toast.success("Successfully created new subject");
             return response.data.data
         } catch (err) {
             toast.error(err.message)

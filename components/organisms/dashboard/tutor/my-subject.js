@@ -158,7 +158,6 @@ export default function TutorDashboardMySubjectOrganism() {
 
         await postTutorSubject(newSubject)
         await fetchTutorDetails()
-        toast.success("Successfully created new subject");
 
         setShowCreateModal(false)
         setSelectedSubjectForCreate(null)

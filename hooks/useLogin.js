@@ -4,6 +4,7 @@ import api from "@/lib/api"
 import Cookies from "js-cookie"
 import { useAuth } from "@/context/AuthContext";
 import {toast} from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 export function useLogin() {
     const [loading, setLoading] = useState(false)
@@ -18,8 +19,12 @@ export function useLogin() {
             toast.info("logging in...")
             const response = await api.post("/auth/login", { username, password })
             if (!response.data.error) {
+                // Decode the token to get expiration time
+                const decodedToken = jwtDecode(response.data.token);
+                const expirationTime = new Date(decodedToken.exp * 1000); // Convert to milliseconds
+
                 Cookies.set("token", response.data.token, {
-                    expires: 7, // 7 days
+                    expires: expirationTime,
                     secure: true,
                     sameSite: "strict",
                 });
