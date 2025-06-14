@@ -1170,7 +1170,7 @@ export default function TutorProfileForm() {
                     </div>
 
                     {/* Information */}
-                    <div className='flex flex-col gap-2'>
+                    {/* <div className='flex flex-col gap-2'>
                         <div className="flex justify-between items-center">
                             <label className="text-[#E35D33] font-medium">Information</label>
                         </div>
@@ -1188,7 +1188,7 @@ export default function TutorProfileForm() {
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Right side - Profile card and controls */}
