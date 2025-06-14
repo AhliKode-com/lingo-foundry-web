@@ -1113,7 +1113,7 @@ export default function TutorProfileForm() {
 
                                                 {(cvFile || formData.cvFileUrl) && (
                                                     <div className="mt-2 text-green-600 flex items-center">
-                                                        <p>File uploaded: {cvFile ? cvFile.name : formData.cvFileUrl.split('/').pop()}</p>
+                                                        <span className="break-words w-[calc(100%-35px)]">File uploaded: {cvFile ? cvFile.name : formData.cvFileUrl.split('/').pop()}</span>
                                                         <button
                                                             type="button"
                                                             onClick={() => {
@@ -1169,10 +1169,10 @@ export default function TutorProfileForm() {
                         </div>
                     </div>
 
-                    {/* Academic Information */}
+                    {/* Information */}
                     <div className='flex flex-col gap-2'>
                         <div className="flex justify-between items-center">
-                            <label className="text-[#E35D33] font-medium">Academic Information</label>
+                            <label className="text-[#E35D33] font-medium">Information</label>
                         </div>
                         <div className={editClassWrapper}>
                             {loading ? (
@@ -1180,14 +1180,6 @@ export default function TutorProfileForm() {
                             ) : (
                                 <div className={editContent}>
                                     <div className="space-y-2">
-                                        <div className="flex items-center gap-2">
-                                            <FaGraduationCap className="text-[#E35D33]" />
-                                            <span>Degree Level: {formData.academicDegreeLevel || 'Not specified'}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <FaGraduationCap className="text-[#E35D33]" />
-                                            <span>Academic Subject: {formData.academicSubject || 'Not specified'}</span>
-                                        </div>
                                         <div className="flex items-center gap-2">
                                             <FaGlobe className="text-[#E35D33]" />
                                             <span>Country of Birth: {formData.countryOfBirth || 'Not specified'}</span>

@@ -43,7 +43,7 @@ export default function Hero() {
     };
 
     return (
-        <div className="relative lg:h-screen pt-[68px] sm:pt-[100.61px] pb-[100px] sm:pb-[150px] animation-effect">
+        <div className="relative lg:h-screen pt-[68px] sm:pt-[100.61px] pb-[100px] sm:pb-[150px] animation-effect z-30">
             <div
                 className="absolute inset-0 bg-cover bg-center w-full mt-[100px]"
                 style={{ backgroundImage: "url('/assets/hero-tutor-landing.png')" }}
@@ -51,11 +51,11 @@ export default function Hero() {
 
             <div className="gap-[20px] mt-[70px] relative w-full flex flex-col lg:flex-row items-center lingo-container h-full">
                 <h1 className="
-          lg:w-1/2
-          z-10 font-bold text-white
-          text-[32px] lg:text-[40px] xl:text-[56px]
-          lg:leading-[60px] xl:leading-[84px] mt-[70px] drop-shadow-2xl
-          animation-effect"
+                    lg:w-1/2
+                    z-10 font-bold text-white
+                    text-[32px] lg:text-[40px] xl:text-[56px]
+                    lg:leading-[60px] xl:leading-[84px] mt-[70px] drop-shadow-2xl
+                    animation-effect"
                 >
                     Plan Online Lessons from Home – Be Your Own Boss! Tutor With Lingo Foundry
                 </h1>
@@ -66,16 +66,19 @@ export default function Hero() {
                     <div className="relative mb-[16px]">
                         <button
                             className="animation-effect px-[18px] py-[12px] border-[1px] border-[#DDDFE1] w-full flex justify-between items-center"
-                            onClick={() => setShowSubjectDropdown(!showSubjectDropdown)}
+                            onClick={() => {
+                                setShowSubjectDropdown(!showSubjectDropdown);
+                                setShowHoursDropdown(false);
+                            }}
                         >
-              <span className="text-[18px] font-medium text-[#6A6A6A]">
-                {selectedSubject ? selectedSubject.subject : 'Select a subject'}
-              </span>
+                            <span className="text-[18px] font-medium text-[#6A6A6A]">
+                                {selectedSubject ? selectedSubject.subject : 'Select a subject'}
+                            </span>
                             <IoIosArrowDown className={`text-[#6A6A6A] text-[18px] transition-transform ${showSubjectDropdown ? 'rotate-180' : ''}`} />
                         </button>
 
                         {showSubjectDropdown && (
-                            <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg">
+                            <div className="absolute z-20 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg">
                                 {tutorSubjects.map((subject, index) => (
                                     <div
                                         key={index}
@@ -96,7 +99,10 @@ export default function Hero() {
                     <div className="relative mb-[20px] md:mb-[50px]">
                         <button
                             className="animation-effect px-[18px] py-[12px] border-[1px] border-[#DDDFE1] w-full flex justify-between items-center"
-                            onClick={() => setShowHoursDropdown(!showHoursDropdown)}
+                            onClick={() => {
+                                setShowHoursDropdown(!showHoursDropdown);
+                                setShowSubjectDropdown(false);
+                            }}
                         >
                             <span className="text-[18px] font-medium text-[#6A6A6A]">{hoursPerWeek} hours per week</span>
                             <IoIosArrowDown className={`text-[#6A6A6A] text-[18px] transition-transform ${showHoursDropdown ? 'rotate-180' : ''}`} />
