@@ -5,12 +5,16 @@ import Cookies from "js-cookie"
 import { useAuth } from "@/context/AuthContext";
 import {toast} from "react-toastify";
 import { jwtDecode } from "jwt-decode";
+import {useStudentCart} from "@/apis/studentCart";
+import {useStudentWishList} from "@/apis/studentWishList";
 
 export function useLogin() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const router = useRouter()
     const { loginContext } = useAuth()
+    const { getWishList } = useStudentWishList();
+    const { getCart } = useStudentCart();
 
     const login = async (username, password) => {
         setLoading(true)
@@ -30,6 +34,8 @@ export function useLogin() {
                 });
 
                 loginContext(response.data.token)
+                getWishList()
+                getCart()
                 toast.dismiss()
                 toast.success("Logged in successfully.")
                 

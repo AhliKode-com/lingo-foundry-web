@@ -16,6 +16,11 @@ export function useGetUserMe() {
             const token = Cookies.get("token");
 
             try {
+                if (!token) {
+                    setData(null);
+                    setLoading(false);
+                    return;
+                }
                 const response = await api.get("/user/me", {
                     headers: {
                         Authorization: token ? `Bearer ${token}` : "",

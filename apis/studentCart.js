@@ -18,6 +18,10 @@ export function useStudentCart() {
     if (token) {
       headers.Authorization = `Bearer ${token}`;
     }
+    if (!token) {
+      setLoading(false);
+      return;
+    }
     
     try {
       const response = await api({
