@@ -43,7 +43,12 @@ export default function ConfirmPayment() {
         const data = await payOrder(payload)
         toast.dismiss()
         if (data) {
-            window.open(data.invoiceUrl, "_blank")
+            // Try to open popup first, if blocked, redirect in same window
+            const popup = window.open(data.invoiceUrl, "_blank");
+            if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+                // Popup was blocked, redirect in same window
+                window.location.href = data.invoiceUrl;
+            }
         }
     }
 
