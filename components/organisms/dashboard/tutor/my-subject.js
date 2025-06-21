@@ -14,7 +14,7 @@ export default function TutorDashboardMySubjectOrganism() {
     const { user } = useAuth();
     const { data: enums } = getEnums();
     const { getData } = getDetail();
-    const { postTutorSubject, putTutorSubject } = useTutorSubject();
+    const { postTutorSubject, putTutorSubject, deleteTutorSubject } = useTutorSubject();
 
     const [tutorSubjects, setTutorSubjects] = useState([]);
     const [selectedSubjectIndex, setSelectedSubjectIndex] = useState(0);
@@ -165,19 +165,31 @@ export default function TutorDashboardMySubjectOrganism() {
         setSelectedSubjectLevelForCreate(null);
     };
 
-    const deleteCurrentSubject = () => {
-        if (tutorSubjects.length <= 1) return;
-
-        // Todo: add delete api here
-        const updatedSubjects = tutorSubjects.filter((_, index) => index !== selectedSubjectIndex);
-        setTutorSubjects(updatedSubjects);
-
-        setSelectedSubjectIndex(0);
-        if (updatedSubjects.length > 0) {
-            updateFormDataFromSubject(updatedSubjects[0]);
+    const deleteCurrentSubject = async () => {
+        if (tutorSubjects.length <= 1) {
+            toast.error("You must have at least one subject");
+            return;
         }
 
-        setShowDeleteConfirm(false);
+        try {
+            const subjectToDelete = tutorSubjects[selectedSubjectIndex];
+            await deleteTutorSubject(subjectToDelete.id);
+            
+            // Remove the subject from local state
+            const updatedSubjects = tutorSubjects.filter((_, index) => index !== selectedSubjectIndex);
+            setTutorSubjects(updatedSubjects);
+
+            // Update selected index
+            setSelectedSubjectIndex(0);
+            if (updatedSubjects.length > 0) {
+                updateFormDataFromSubject(updatedSubjects[0]);
+            }
+
+            setShowDeleteConfirm(false);
+        } catch (error) {
+            console.error("Error deleting subject:", error);
+            // Error is already handled in the API function with toast
+        }
     };
 
 
@@ -334,12 +346,12 @@ export default function TutorDashboardMySubjectOrganism() {
                 )}
 
                 {/* Delete Confirmation Modal */}
-                {/* {showDeleteConfirm && tutorSubjects.length > 0 && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                <div className="bg-white rounded-lg p-6 w-full max-w-md">
+                {showDeleteConfirm && tutorSubjects.length > 0 && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-white/30">
+                        <div className="bg-white/80 backdrop-blur-md rounded-lg p-6 w-full max-w-md shadow-xl border border-white/20">
                             <div className="flex justify-between items-center mb-4">
                                 <h3 className="text-xl font-bold">Remove Subject</h3>
-                                <button onClick={() => setShowDeleteConfirm(false)} className="text-gray-500 hover:text-gray-700">
+                                <button onClick={() => setShowDeleteConfirm(false)} className="text-gray-500 hover:text-gray-700 cursor-pointer">
                                     <FaTimes />
                                 </button>
                             </div>
@@ -352,20 +364,20 @@ export default function TutorDashboardMySubjectOrganism() {
                             <div className="flex justify-end gap-2">
                                 <button
                                     onClick={() => setShowDeleteConfirm(false)}
-                                    className="px-4 py-2 border rounded-md hover:bg-gray-100"
+                                    className="px-4 py-2 border rounded-md hover:bg-gray-100 cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={deleteCurrentSubject}
-                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 cursor-pointer"
                                 >
                                     Remove
                                 </button>
                             </div>
                         </div>
                     </div>
-                )} */}
+                )}
 
                 {/* Left side - Form fields */}
                 <div className="w-full lg:w-2/3 lg:flex gap-[20px]">
@@ -376,7 +388,7 @@ export default function TutorDashboardMySubjectOrganism() {
                                 visibleSubjects.map((subject, index) => (
                                     <div
                                         key={subject.id}
-                                        className={`flex items-center p-4 justify-between cursor-pointer rounded-[32px] border-[1px] animation-effect ${
+                                        className={`flex items-center p-4 justify-between cursor-pointer rounded-[32px] border-[1px] animation-effect group relative ${
                                             index === selectedSubjectIndex ? 'bg-gray-800 text-white border-gray-800' : 'hover:bg-gray-100 border-[#D9D9D9]'
                                         }`}
                                         onClick={() => selectSubject(index)}
@@ -392,6 +404,19 @@ export default function TutorDashboardMySubjectOrganism() {
                                                 <p className="text-sm text-green-500">active</p>
                                             </div>
                                         </div>
+                                        {tutorSubjects.length > 1 && (
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedSubjectIndex(index);
+                                                    setShowDeleteConfirm(true);
+                                                }}
+                                                className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors cursor-pointer"
+                                                title="Delete subject"
+                                            >
+                                                <FaTrash className="w-4 h-4" />
+                                            </button>
+                                        )}
                                     </div>
                                 ))
                             ): loading ? (

@@ -47,5 +47,21 @@ export function useTutorSubject() {
         }
     }
 
-    return { postTutorSubject, putTutorSubject };
+    const deleteTutorSubject = async (tutorSubjectId) => {
+        const token = Cookies.get("token")
+        try {
+            const response = await api.delete(`/tutor/tutor-subject/${tutorSubjectId}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
+            toast.success("Successfully deleted subject");
+            return response.data.data
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Failed to delete subject");
+            throw err
+        }
+    }
+
+    return { postTutorSubject, putTutorSubject, deleteTutorSubject };
 }
