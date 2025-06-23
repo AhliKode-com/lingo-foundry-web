@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 10:04:12
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-25 16:17:58
+ * @Last Modified time: 2025-06-23 09:38:16
  */
 
 "use client"
@@ -12,7 +12,7 @@ import {getPurchaseHistory} from "@/apis/dashboard/getPurchaseHistory";
 import React from "react";
 
 export default function StudentPurchaseHistory() {
-    const {data, loading} = getPurchaseHistory()
+    const {data, loading, refetch} = getPurchaseHistory()
 
     return (
         <div className="lingo-container flex flex-col mb-[72px]">
@@ -27,6 +27,7 @@ export default function StudentPurchaseHistory() {
                         <PurchaseHistory
                             key={index}
                             data={item}
+                            onRefetch={refetch}
                             defaultOpen={index === 0}
                         />
                     ))}

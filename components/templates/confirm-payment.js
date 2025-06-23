@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-17 23:50:17
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-14 14:54:12
+ * @Last Modified time: 2025-06-23 09:16:27
  */
 "use client"
 import {TitleDashboard, TitlePayment} from "@/components/atoms/title";
@@ -51,8 +51,6 @@ export default function ConfirmPayment() {
             }
         }
     }
-
-    console.log("carts: ", carts)
 
     return (
         <div className="flex flex-col lingo-container pt-[100px] md:pt-[150px]">

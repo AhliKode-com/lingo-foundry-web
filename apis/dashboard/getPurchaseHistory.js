@@ -6,30 +6,30 @@ export function getPurchaseHistory() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const getData = async () => {
-            setLoading(true);
-            setError(null);
-
-            const token = Cookies.get("token");
-
-            try {
-                const response = await api.get("/student/dashboard/purchase-history", {
-                    headers: {
-                        Authorization: token ? `Bearer ${token}` : "",
-                    }
-                });
-                setData(response.data.data);
-            } catch (err) {
-                setError(err.response?.data?.message || "Failed to learning shorts");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        getData();
-    }, []);
-
-    return { data, loading, error };
+    
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+    
+        const token = Cookies.get("token");
+    
+        try {
+          const response = await api.get("/student/dashboard/purchase-history", {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          });
+          setData(response.data.data);
+        } catch (err) {
+          setError(err.response?.data?.message || "Failed to fetch");
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      useEffect(() => {
+        fetchData();
+      }, []);
+    
+      return { data, loading, error, refetch: fetchData };
 }
