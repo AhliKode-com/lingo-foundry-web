@@ -2,7 +2,6 @@ import {toast} from "react-toastify";
 import { useState, useCallback } from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
-import {useLingoContext} from "@/context/LingoContext";
 
 export function useStudentOrder() {
     const [loading, setLoading] = useState(false);
@@ -39,9 +38,14 @@ export function useStudentOrder() {
         return handleRequest("post",'/student/order/pay', payload);
     }, [handleRequest]);
 
+    const cancelOrder = useCallback((payload) => {
+        return handleRequest("post",'/student/order/cancel', payload);
+    }, [handleRequest]);
+
     return {
         loading,
         error,
-        payOrder
+        payOrder,
+        cancelOrder
     };
 }

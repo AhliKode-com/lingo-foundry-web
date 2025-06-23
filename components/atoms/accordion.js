@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:13:24
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-27 11:07:44
+ * @Last Modified time: 2025-06-23 09:42:27
  */
 "use client"
 import React, {useState, useRef, useEffect} from "react";
@@ -180,13 +180,25 @@ function formatDateString(input) {
         .replace(/(.+) (\d{2}) (\d{4}), (.+)/, "$1 $2, $3 at $4")
 }
 
-export function PurchaseHistory({data, defaultOpen = false}) {
+export function PurchaseHistory({data, defaultOpen = false, onRefetch}) {
     const [open, setOpen] = useState(defaultOpen);
     const [height, setHeight] = useState(0);
     const contentRef = useRef(null);
-    const {payOrder} = useStudentOrder();
+    const {payOrder, cancelOrder} = useStudentOrder();
 
     const router = useRouter()
+
+    const handleCancel = async () => {
+        const payload = {
+            orderId: data.orderId,
+        }
+        toast.loading("Cancelling your order...")
+        await cancelOrder(payload)
+        toast.dismiss()
+        toast.success("Order cancelled")
+        toast.dismiss()
+        onRefetch?.();
+    }
 
     const createdAt = formatDateString(data?.transactions[0]?.createdAt);
     let totalAmount = 0;
@@ -265,15 +277,26 @@ export function PurchaseHistory({data, defaultOpen = false}) {
 
                 <div className="flex items-center gap-[15px]">
                     {data.status !== 'PAID' && (
-                        <div
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handlePay();
-                            }}
-                            className="flex items-center justify-center bg-[#E35D33] text-white px-4 py-2 cursor-pointer text-[14px] md:text-[16px] animation-effect h-[38px] md:h-[48px]"
-                        >
-                            Pay
-                        </div>
+                        <>
+                            <div
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleCancel();
+                                }}
+                                className="flex items-center justify-center bg-white border border-[#E35D33] text-[#E35D33] px-4 py-2 cursor-pointer text-[14px] md:text-[16px] animation-effect h-[38px] md:h-[48px]"
+                            >
+                                Cancel
+                            </div>
+                            <div
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handlePay();
+                                }}
+                                className="flex items-center justify-center bg-[#E35D33] text-white px-4 py-2 cursor-pointer text-[14px] md:text-[16px] animation-effect h-[38px] md:h-[48px]"
+                            >
+                                Pay
+                            </div>
+                        </>
                     )}
                     <div
                         className={`
