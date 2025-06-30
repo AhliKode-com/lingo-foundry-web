@@ -5,7 +5,6 @@ import Cookies from "js-cookie"
 import { jwtDecode } from "jwt-decode"
 import { useRouter } from "next/navigation";
 import {toast} from "react-toastify";
-import {useUserController} from "@/apis/userController";
 import {useGetUserMe} from "@/apis/getUserMe";
 import api from "@/lib/api";
 
@@ -68,6 +67,16 @@ export const AuthProvider = ({ children }) => {
     const logoutContext = () => {
         setUser(null)
         Cookies.remove("token")
+        
+        // Clear localStorage data
+        localStorage.removeItem("applyTutorCurrentStep")
+        localStorage.removeItem("applyTutorStep1Data")
+        localStorage.removeItem("applyTutorStep2Data")
+        localStorage.removeItem("applyTutorStep3Data")
+        localStorage.removeItem("applyTutorStep4Data")
+        localStorage.removeItem("applyTutorStep5Data")
+        localStorage.removeItem("redirectAfterLogin")
+        
         toast.success("Logged out")
         router.push("/")
     }
