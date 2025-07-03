@@ -2,14 +2,14 @@
  * @Author: danteclericuzio
  * @Date: 2025-04-21 00:56:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-06-02 22:14:02
+ * @Last Modified time: 2025-07-03 14:45:39
  */
 
 import { TitleStudentDashboard } from "@/components/atoms/title";
 import Image from "next/image";
-import { useState, useEffect, useMemo } from "react";
 import {useAuth} from "@/context/AuthContext";
 import Link from "next/link";
+import React, { useState, useEffect, useMemo } from "react";
 
 export default function Recommended() {
     const { user, loading } = useAuth();
@@ -93,10 +93,9 @@ export default function Recommended() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[12px] mt-[24px]">
                 {recommendedData.map((item, index) => (
                     !closedCards[index] && (
-                        <>
+                        <React.Fragment key={index}>
                             {index === 1 && <div className="col-span-full h-[12px]" />}
                             <div
-                                key={index}
                                 className="min-h-[250px] md:min-h-[300px] lg:min-h-[350px] p-[17px] border-[1px] border-[#DCDCE5] rounded-[4px]"
                             >
                                 <div className="flex flex-col justify-between h-full">
@@ -132,7 +131,7 @@ export default function Recommended() {
                                     </Link>
                                 </div>
                             </div>
-                        </>
+                        </React.Fragment>
                     )
                 ))}
             </div>
