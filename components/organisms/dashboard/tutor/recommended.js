@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-04-21 00:56:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-07-03 14:45:39
+ * @Last Modified time: 2025-07-03 16:01:17
  */
 
 import { TitleStudentDashboard } from "@/components/atoms/title";
@@ -93,6 +93,7 @@ export default function Recommended() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[12px] mt-[24px]">
                 {recommendedData.map((item, index) => (
                     !closedCards[index] && (
+                        
                         <React.Fragment key={index}>
                             {index === 1 && <div className="col-span-full h-[12px]" />}
                             <div
