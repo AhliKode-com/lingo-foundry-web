@@ -293,8 +293,12 @@ export default function TutorProfileForm() {
         if (availabilityData && availabilityData.length > 0) {
             const slots = new Set();
             availabilityData.forEach(item => {
-                if (item.startTime) {
-                    slots.add(item.startTime);
+                if (item.date && item.time && Array.isArray(item.time)) {
+                    item.time.forEach(timeSlot => {
+                        // Convert date and time to Jakarta timezone ISO format
+                        const isoTime = `${item.date}T${timeSlot}.000+07:00`;
+                        slots.add(isoTime);
+                    });
                 }
             });
             setSelectedTimeSlots(slots);
@@ -344,12 +348,12 @@ export default function TutorProfileForm() {
         return { morning, afternoon, evening };
     };
 
-    // Generate ISO date string for API
+    // Generate ISO date string for API in Jakarta timezone
     const generateTimeSlotISO = (day, time) => {
-        const dateObj = new Date(day.rawDate);
-        const [hours, minutes] = time.split(':').map(Number);
-        dateObj.setHours(hours, minutes, 0, 0);
-        return dateObj.toISOString();
+        // Use the fullDate (Jakarta time) and combine with time
+        const timeWithSeconds = `${time}:00`;
+        const isoTime = `${day.fullDate}T${timeWithSeconds}.000+07:00`;
+        return isoTime;
     };
 
     // Handle time slot selection
@@ -386,7 +390,7 @@ export default function TutorProfileForm() {
             const slotsToAdd = Array.from(newSlots).filter(slot => !currentSlots.has(slot));
             const slotsToRemove = Array.from(currentSlots).filter(slot => !newSlots.has(slot));
             
-            // Prepare payload
+            // Prepare payload with Jakarta timezone (already in correct format)
             const payload = {
                 set: slotsToAdd.map(startTime => ({ startTime })),
                 delete: slotsToRemove.map(startTime => ({ startTime }))
