@@ -10,6 +10,7 @@ import {IoIosArrowDown} from "react-icons/io";
 import {getEnums} from "@/apis/getEnum";
 import { useUpdateTutor } from "@/apis/updateTutor";
 import useUploadFile from "@/apis/static-file/postUploadFile";
+import { useTutorAvailability } from "@/apis/tutorAvailability";
 
 export default function TutorProfileForm() {
     const { user } = useAuth();
@@ -18,6 +19,7 @@ export default function TutorProfileForm() {
     const { updateTutor, loading: updateLoading } = useUpdateTutor();
 
     const { uploadFile, error } = useUploadFile()
+    const { loading: availabilityLoading, availabilityData, getAvailability, updateAvailability } = useTutorAvailability()
 
     const [formData, setFormData] = useState({
         bio: '',
@@ -64,6 +66,13 @@ export default function TutorProfileForm() {
 
     const [selectedLanguages, setSelectedLanguages] = useState([]);
     const [selectedLevels, setSelectedLevels] = useState([]);
+
+    // Availability state
+    const [selectedTimeSlots, setSelectedTimeSlots] = useState(new Set());
+    const [tempSelectedSlots, setTempSelectedSlots] = useState(new Set());
+    const [editingAvailability, setEditingAvailability] = useState(false);
+    const [activeDay, setActiveDay] = useState(0);
+    const [availabilitySubmitting, setAvailabilitySubmitting] = useState(false);
 
     useEffect(() => {
         if (prevDropdownOpen && prevDropdownOpen !== dropdownOpen) {
@@ -271,6 +280,147 @@ export default function TutorProfileForm() {
     useEffect(() => {
         fetchTutorDetails();
     }, [user]);
+
+    // Load availability data
+    useEffect(() => {
+        if (user?.tutor?.id) {
+            getAvailability();
+        }
+    }, [user, getAvailability]);
+
+    // Update selected time slots when availability data changes
+    useEffect(() => {
+        if (availabilityData && availabilityData.length > 0) {
+            const slots = new Set();
+            availabilityData.forEach(item => {
+                if (item.startTime) {
+                    slots.add(item.startTime);
+                }
+            });
+            setSelectedTimeSlots(slots);
+            setTempSelectedSlots(new Set(slots));
+        }
+    }, [availabilityData]);
+
+    // Generate days for the next 6 days
+    const generateDays = () => {
+        return Array.from({ length: 6 }, (_, i) => {
+            const date = new Date();
+            date.setDate(date.getDate() + i);
+            const dateJkt = new Date(date.getTime() + 7 * 60 * 60 * 1000);
+            return {
+                name: date.toLocaleDateString('en-US', { weekday: 'short' }),
+                date: String(date.getDate()).padStart(2, '0'),
+                fullDate: dateJkt.toISOString().split('T')[0],
+                rawDate: new Date(date),
+                fullName: date.toLocaleDateString('en-US', { weekday: 'long' }),
+                monthName: date.toLocaleDateString('en-US', { month: 'short' })
+            };
+        });
+    };
+
+    // Generate time slots for each day
+    const generateTimeSlots = () => {
+        return ['06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
+    };
+
+    // Group time slots for better mobile display
+    const groupTimeSlots = (timeSlots) => {
+        const morning = timeSlots.filter(time => {
+            const hour = parseInt(time.split(':')[0]);
+            return hour >= 6 && hour < 12;
+        });
+
+        const afternoon = timeSlots.filter(time => {
+            const hour = parseInt(time.split(':')[0]);
+            return hour >= 12 && hour < 17;
+        });
+
+        const evening = timeSlots.filter(time => {
+            const hour = parseInt(time.split(':')[0]);
+            return hour >= 17 && hour <= 22;
+        });
+
+        return { morning, afternoon, evening };
+    };
+
+    // Generate ISO date string for API
+    const generateTimeSlotISO = (day, time) => {
+        const dateObj = new Date(day.rawDate);
+        const [hours, minutes] = time.split(':').map(Number);
+        dateObj.setHours(hours, minutes, 0, 0);
+        return dateObj.toISOString();
+    };
+
+    // Handle time slot selection
+    const handleTimeSlotClick = (day, time) => {
+        if (!editingAvailability) return;
+        
+        const isoTime = generateTimeSlotISO(day, time);
+        const newTempSlots = new Set(tempSelectedSlots);
+        
+        if (newTempSlots.has(isoTime)) {
+            newTempSlots.delete(isoTime);
+        } else {
+            newTempSlots.add(isoTime);
+        }
+        
+        setTempSelectedSlots(newTempSlots);
+    };
+
+    // Check if a time slot is selected
+    const isTimeSlotSelected = (day, time) => {
+        const isoTime = generateTimeSlotISO(day, time);
+        return editingAvailability ? tempSelectedSlots.has(isoTime) : selectedTimeSlots.has(isoTime);
+    };
+
+    // Handle availability save
+    const handleAvailabilitySave = async () => {
+        setAvailabilitySubmitting(true);
+        
+        try {
+            const currentSlots = selectedTimeSlots;
+            const newSlots = tempSelectedSlots;
+            
+            // Calculate which slots to add and remove
+            const slotsToAdd = Array.from(newSlots).filter(slot => !currentSlots.has(slot));
+            const slotsToRemove = Array.from(currentSlots).filter(slot => !newSlots.has(slot));
+            
+            // Prepare payload
+            const payload = {
+                set: slotsToAdd.map(startTime => ({ startTime })),
+                delete: slotsToRemove.map(startTime => ({ startTime }))
+            };
+            
+            // Only make API call if there are changes
+            if (payload.set.length > 0 || payload.delete.length > 0) {
+                await updateAvailability(payload);
+            }
+            
+            setEditingAvailability(false);
+        } catch (error) {
+            console.error('Error updating availability:', error);
+        } finally {
+            setAvailabilitySubmitting(false);
+        }
+    };
+
+    // Handle availability cancel
+    const handleAvailabilityCancel = () => {
+        setTempSelectedSlots(new Set(selectedTimeSlots));
+        setEditingAvailability(false);
+    };
+
+    // Format time to AM/PM
+    const formatTimeAmPm = (timeStr) => {
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        const period = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+        return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+    };
+
+    const days = generateDays();
+    const timeSlots = generateTimeSlots();
 
     const editClassWrapper = "rounded-[32px] border-[1px] border-[#D9D9D9] p-4";
     const editContent = "border-[1px] border-[#A6A6A6] p-4 rounded-[32px]";
@@ -1161,6 +1311,226 @@ export default function TutorProfileForm() {
                                                 </div>
                                             ) : (
                                                 <span className="text-gray-400">No CV uploaded</span>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Availability Section */}
+                    <div className='flex flex-col gap-2'>
+                        <div className="flex justify-between items-center">
+                            <label className="text-[#E35D33] font-medium">Availability Schedule</label>
+                            <button
+                                onClick={() => {
+                                    if (editingAvailability) {
+                                        handleAvailabilityCancel();
+                                    } else {
+                                        setEditingAvailability(true);
+                                    }
+                                }}
+                                className={`${editingAvailability ? 'text-[#E35D33]' : 'text-gray-500 hover:text-[#E35D33]'} cursor-pointer animation-effect`}
+                            >
+                                <FaPen />
+                            </button>
+                        </div>
+                        <div className={editClassWrapper}>
+                            {loading || availabilityLoading ? (
+                                <div className="w-full h-[200px] bg-gray-300 animate-pulse rounded-[32px]"></div>
+                            ) : (
+                                <div className={editContent}>
+                                    {editingAvailability ? (
+                                        <div className="space-y-6">
+                                            <div className="text-sm text-gray-600 mb-4">
+                                                Click on time slots to set your availability. Green slots are available, gray slots are not available.
+                                            </div>
+                                            
+                                            {/* Desktop Calendar View */}
+                                            <div className="hidden md:block">
+                                                <div className="grid grid-cols-6 gap-2 mb-6">
+                                                    {days.map((day) => (
+                                                        <div key={day.name} className="flex flex-col items-center text-sm">
+                                                            <div className="mb-2 text-gray-600">{day.name}</div>
+                                                            <div className="w-full py-2 text-center border-b-2 border-[#E35D33]">
+                                                                {day.date}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                <div className="grid grid-cols-6 gap-2">
+                                                    {days.map((day) => (
+                                                        <div key={`slots-${day.name}`} className="flex flex-col items-center">
+                                                            {timeSlots.map((time) => (
+                                                                <button
+                                                                    key={`${day.name}-${time}`}
+                                                                    className={`w-full py-2 my-1 rounded cursor-pointer transition-colors ${
+                                                                        isTimeSlotSelected(day, time)
+                                                                            ? 'bg-[#E35D33] text-white'
+                                                                            : 'border border-gray-300 text-gray-700 hover:border-[#E35D33] hover:text-[#E35D33]'
+                                                                    }`}
+                                                                    onClick={() => handleTimeSlotClick(day, time)}
+                                                                >
+                                                                    {time}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Mobile Calendar View */}
+                                            <div className="block md:hidden">
+                                                {/* Date Selector Tabs */}
+                                                <div className="flex overflow-x-auto pb-2 scrollbar-hide mb-4 -mx-4 px-4">
+                                                    {days.map((day, index) => (
+                                                        <button
+                                                            key={`mobile-day-${day.name}`}
+                                                            className={`flex-shrink-0 flex flex-col items-center px-4 py-2 mr-2 rounded-lg ${
+                                                                activeDay === index
+                                                                    ? 'bg-[#E35D33] text-white'
+                                                                    : 'bg-gray-100 text-gray-700'
+                                                            }`}
+                                                            onClick={() => setActiveDay(index)}
+                                                        >
+                                                            <span className="text-xs font-medium">{day.name}</span>
+                                                            <span className="text-lg font-bold">{day.date}</span>
+                                                            <span className="text-xs">{day.monthName}</span>
+                                                        </button>
+                                                    ))}
+                                                </div>
+
+                                                {/* Time Slots for Selected Day */}
+                                                <div className="pb-2">
+                                                    <h3 className="text-lg font-medium mb-3">{days[activeDay].fullName}, {days[activeDay].monthName} {days[activeDay].date}</h3>
+
+                                                    <div className="space-y-6">
+                                                        {/* Morning */}
+                                                        <div>
+                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Morning</h4>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                {groupTimeSlots(timeSlots).morning.map((time) => (
+                                                                    <button
+                                                                        key={`mobile-${days[activeDay].name}-${time}`}
+                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
+                                                                            isTimeSlotSelected(days[activeDay], time)
+                                                                                ? 'bg-[#E35D33] text-white'
+                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
+                                                                        }`}
+                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
+                                                                    >
+                                                                        {formatTimeAmPm(time)}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Afternoon */}
+                                                        <div>
+                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Afternoon</h4>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                {groupTimeSlots(timeSlots).afternoon.map((time) => (
+                                                                    <button
+                                                                        key={`mobile-${days[activeDay].name}-${time}`}
+                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
+                                                                            isTimeSlotSelected(days[activeDay], time)
+                                                                                ? 'bg-[#E35D33] text-white'
+                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
+                                                                        }`}
+                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
+                                                                    >
+                                                                        {formatTimeAmPm(time)}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Evening */}
+                                                        <div>
+                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Evening</h4>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                {groupTimeSlots(timeSlots).evening.map((time) => (
+                                                                    <button
+                                                                        key={`mobile-${days[activeDay].name}-${time}`}
+                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
+                                                                            isTimeSlotSelected(days[activeDay], time)
+                                                                                ? 'bg-[#E35D33] text-white'
+                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
+                                                                        }`}
+                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
+                                                                    >
+                                                                        {formatTimeAmPm(time)}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Save/Cancel Buttons */}
+                                            <div className="flex justify-end gap-3 mt-6">
+                                                <button
+                                                    onClick={handleAvailabilityCancel}
+                                                    className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+                                                    disabled={availabilitySubmitting}
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    onClick={handleAvailabilitySave}
+                                                    className="px-4 py-2 bg-[#E35D33] text-white rounded-lg hover:bg-[#d14e29] disabled:bg-gray-400"
+                                                    disabled={availabilitySubmitting}
+                                                >
+                                                    {availabilitySubmitting ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-4 h-4 border-2 border-t-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                            <span>Saving...</span>
+                                                        </div>
+                                                    ) : (
+                                                        'Save Availability'
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            <div className="text-sm text-gray-600">
+                                                Your current availability for the next 6 days:
+                                            </div>
+                                            
+                                            {selectedTimeSlots.size > 0 ? (
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                    {days.map((day) => {
+                                                        const daySlots = timeSlots.filter(time => {
+                                                            const isoTime = generateTimeSlotISO(day, time);
+                                                            return selectedTimeSlots.has(isoTime);
+                                                        });
+                                                        
+                                                        if (daySlots.length === 0) return null;
+                                                        
+                                                        return (
+                                                            <div key={day.name} className="border rounded-lg p-3">
+                                                                <div className="font-medium text-[#E35D33] mb-2">
+                                                                    {day.fullName}, {day.monthName} {day.date}
+                                                                </div>
+                                                                <div className="space-y-1">
+                                                                    {daySlots.map((time) => (
+                                                                        <div key={time} className="text-sm text-gray-600">
+                                                                            {formatTimeAmPm(time)}
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            ) : (
+                                                <div className="text-gray-400 text-center py-8">
+                                                    No availability set. Click the edit button to set your available time slots.
+                                                </div>
                                             )}
                                         </div>
                                     )}
