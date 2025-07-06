@@ -1,6 +1,6 @@
 # Lingo Foundry Web
 
-This is the web frontend for Lingo Foundry, built with Next.js, new
+This is the web frontend for Lingo Foundry, built with Next.js
 
 ## Prerequisites
 
