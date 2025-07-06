@@ -537,6 +537,226 @@ export default function TutorProfileForm() {
             <div className="w-full flex-col lg:flex-row flex gap-[20px]">
                 {/* Left side - Form fields */}
                 <div className='flex flex-col gap-[16px] lg:w-2/3'>
+                    {/* Availability Section */}
+                    <div className='flex flex-col gap-2'>
+                        <div className="flex justify-between items-center">
+                            <label className="text-[#E35D33] font-medium">Availability Schedule</label>
+                            <button
+                                onClick={() => {
+                                    if (editingAvailability) {
+                                        handleAvailabilityCancel();
+                                    } else {
+                                        setEditingAvailability(true);
+                                    }
+                                }}
+                                className={`${editingAvailability ? 'text-[#E35D33]' : 'text-gray-500 hover:text-[#E35D33]'} cursor-pointer animation-effect`}
+                            >
+                                <FaPen />
+                            </button>
+                        </div>
+                        <div className={editClassWrapper}>
+                            {loading || availabilityLoading ? (
+                                <div className="w-full h-[200px] bg-gray-300 animate-pulse rounded-[32px]"></div>
+                            ) : (
+                                <div className={editContent}>
+                                    {editingAvailability ? (
+                                        <div className="space-y-6">
+                                            <div className="text-sm text-gray-600 mb-4">
+                                                Click on time slots to set your availability. Green slots are available, gray slots are not available.
+                                            </div>
+                                            
+                                            {/* Desktop Calendar View */}
+                                            <div className="hidden md:block">
+                                                <div className="grid grid-cols-6 gap-2 mb-6">
+                                                    {days.map((day) => (
+                                                        <div key={day.name} className="flex flex-col items-center text-sm">
+                                                            <div className="mb-2 text-gray-600">{day.name}</div>
+                                                            <div className="w-full py-2 text-center border-b-2 border-[#E35D33]">
+                                                                {day.date}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                <div className="grid grid-cols-6 gap-2">
+                                                    {days.map((day) => (
+                                                        <div key={`slots-${day.name}`} className="flex flex-col items-center">
+                                                            {timeSlots.map((time) => (
+                                                                <button
+                                                                    key={`${day.name}-${time}`}
+                                                                    className={`w-full py-2 my-1 rounded cursor-pointer transition-colors ${
+                                                                        isTimeSlotSelected(day, time)
+                                                                            ? 'bg-[#E35D33] text-white'
+                                                                            : 'border border-gray-300 text-gray-700 hover:border-[#E35D33] hover:text-[#E35D33]'
+                                                                    }`}
+                                                                    onClick={() => handleTimeSlotClick(day, time)}
+                                                                >
+                                                                    {time}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Mobile Calendar View */}
+                                            <div className="block md:hidden">
+                                                {/* Date Selector Tabs */}
+                                                <div className="flex overflow-x-auto pb-2 scrollbar-hide mb-4 -mx-4 px-4">
+                                                    {days.map((day, index) => (
+                                                        <button
+                                                            key={`mobile-day-${day.name}`}
+                                                            className={`flex-shrink-0 flex flex-col items-center px-4 py-2 mr-2 rounded-lg ${
+                                                                activeDay === index
+                                                                    ? 'bg-[#E35D33] text-white'
+                                                                    : 'bg-gray-100 text-gray-700'
+                                                            }`}
+                                                            onClick={() => setActiveDay(index)}
+                                                        >
+                                                            <span className="text-xs font-medium">{day.name}</span>
+                                                            <span className="text-lg font-bold">{day.date}</span>
+                                                            <span className="text-xs">{day.monthName}</span>
+                                                        </button>
+                                                    ))}
+                                                </div>
+
+                                                {/* Time Slots for Selected Day */}
+                                                <div className="pb-2">
+                                                    <h3 className="text-lg font-medium mb-3">{days[activeDay].fullName}, {days[activeDay].monthName} {days[activeDay].date}</h3>
+
+                                                    <div className="space-y-6">
+                                                        {/* Morning */}
+                                                        <div>
+                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Morning</h4>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                {groupTimeSlots(timeSlots).morning.map((time) => (
+                                                                    <button
+                                                                        key={`mobile-${days[activeDay].name}-${time}`}
+                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
+                                                                            isTimeSlotSelected(days[activeDay], time)
+                                                                                ? 'bg-[#E35D33] text-white'
+                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
+                                                                        }`}
+                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
+                                                                    >
+                                                                        {formatTimeAmPm(time)}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Afternoon */}
+                                                        <div>
+                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Afternoon</h4>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                {groupTimeSlots(timeSlots).afternoon.map((time) => (
+                                                                    <button
+                                                                        key={`mobile-${days[activeDay].name}-${time}`}
+                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
+                                                                            isTimeSlotSelected(days[activeDay], time)
+                                                                                ? 'bg-[#E35D33] text-white'
+                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
+                                                                        }`}
+                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
+                                                                    >
+                                                                        {formatTimeAmPm(time)}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Evening */}
+                                                        <div>
+                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Evening</h4>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                {groupTimeSlots(timeSlots).evening.map((time) => (
+                                                                    <button
+                                                                        key={`mobile-${days[activeDay].name}-${time}`}
+                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
+                                                                            isTimeSlotSelected(days[activeDay], time)
+                                                                                ? 'bg-[#E35D33] text-white'
+                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
+                                                                        }`}
+                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
+                                                                    >
+                                                                        {formatTimeAmPm(time)}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Save/Cancel Buttons */}
+                                            <div className="flex justify-end gap-3 mt-6">
+                                                <button
+                                                    onClick={handleAvailabilityCancel}
+                                                    className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+                                                    disabled={availabilitySubmitting}
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    onClick={handleAvailabilitySave}
+                                                    className="px-4 py-2 bg-[#E35D33] text-white rounded-lg hover:bg-[#d14e29] disabled:bg-gray-400"
+                                                    disabled={availabilitySubmitting}
+                                                >
+                                                    {availabilitySubmitting ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-4 h-4 border-2 border-t-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                            <span>Saving...</span>
+                                                        </div>
+                                                    ) : (
+                                                        'Save Availability'
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            <div className="text-sm text-gray-600">
+                                                Your current availability for the next 6 days:
+                                            </div>
+                                            
+                                            {selectedTimeSlots.size > 0 ? (
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                    {days.map((day) => {
+                                                        const daySlots = timeSlots.filter(time => {
+                                                            const isoTime = generateTimeSlotISO(day, time);
+                                                            return selectedTimeSlots.has(isoTime);
+                                                        });
+                                                        
+                                                        if (daySlots.length === 0) return null;
+                                                        
+                                                        return (
+                                                            <div key={day.name} className="border rounded-lg p-3">
+                                                                <div className="font-medium text-[#E35D33] mb-2">
+                                                                    {day.fullName}, {day.monthName} {day.date}
+                                                                </div>
+                                                                <div className="space-y-1">
+                                                                    {daySlots.map((time) => (
+                                                                        <div key={time} className="text-sm text-gray-600">
+                                                                            {formatTimeAmPm(time)}
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            ) : (
+                                                <div className="text-gray-400 text-center py-8">
+                                                    No availability set. Click the edit button to set your available time slots.
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     {/* Bio Field */}
                     {renderEditField('bio', 'Bio', true)}
 
@@ -1315,226 +1535,6 @@ export default function TutorProfileForm() {
                                                 </div>
                                             ) : (
                                                 <span className="text-gray-400">No CV uploaded</span>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Availability Section */}
-                    <div className='flex flex-col gap-2'>
-                        <div className="flex justify-between items-center">
-                            <label className="text-[#E35D33] font-medium">Availability Schedule</label>
-                            <button
-                                onClick={() => {
-                                    if (editingAvailability) {
-                                        handleAvailabilityCancel();
-                                    } else {
-                                        setEditingAvailability(true);
-                                    }
-                                }}
-                                className={`${editingAvailability ? 'text-[#E35D33]' : 'text-gray-500 hover:text-[#E35D33]'} cursor-pointer animation-effect`}
-                            >
-                                <FaPen />
-                            </button>
-                        </div>
-                        <div className={editClassWrapper}>
-                            {loading || availabilityLoading ? (
-                                <div className="w-full h-[200px] bg-gray-300 animate-pulse rounded-[32px]"></div>
-                            ) : (
-                                <div className={editContent}>
-                                    {editingAvailability ? (
-                                        <div className="space-y-6">
-                                            <div className="text-sm text-gray-600 mb-4">
-                                                Click on time slots to set your availability. Green slots are available, gray slots are not available.
-                                            </div>
-                                            
-                                            {/* Desktop Calendar View */}
-                                            <div className="hidden md:block">
-                                                <div className="grid grid-cols-6 gap-2 mb-6">
-                                                    {days.map((day) => (
-                                                        <div key={day.name} className="flex flex-col items-center text-sm">
-                                                            <div className="mb-2 text-gray-600">{day.name}</div>
-                                                            <div className="w-full py-2 text-center border-b-2 border-[#E35D33]">
-                                                                {day.date}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-
-                                                <div className="grid grid-cols-6 gap-2">
-                                                    {days.map((day) => (
-                                                        <div key={`slots-${day.name}`} className="flex flex-col items-center">
-                                                            {timeSlots.map((time) => (
-                                                                <button
-                                                                    key={`${day.name}-${time}`}
-                                                                    className={`w-full py-2 my-1 rounded cursor-pointer transition-colors ${
-                                                                        isTimeSlotSelected(day, time)
-                                                                            ? 'bg-[#E35D33] text-white'
-                                                                            : 'border border-gray-300 text-gray-700 hover:border-[#E35D33] hover:text-[#E35D33]'
-                                                                    }`}
-                                                                    onClick={() => handleTimeSlotClick(day, time)}
-                                                                >
-                                                                    {time}
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {/* Mobile Calendar View */}
-                                            <div className="block md:hidden">
-                                                {/* Date Selector Tabs */}
-                                                <div className="flex overflow-x-auto pb-2 scrollbar-hide mb-4 -mx-4 px-4">
-                                                    {days.map((day, index) => (
-                                                        <button
-                                                            key={`mobile-day-${day.name}`}
-                                                            className={`flex-shrink-0 flex flex-col items-center px-4 py-2 mr-2 rounded-lg ${
-                                                                activeDay === index
-                                                                    ? 'bg-[#E35D33] text-white'
-                                                                    : 'bg-gray-100 text-gray-700'
-                                                            }`}
-                                                            onClick={() => setActiveDay(index)}
-                                                        >
-                                                            <span className="text-xs font-medium">{day.name}</span>
-                                                            <span className="text-lg font-bold">{day.date}</span>
-                                                            <span className="text-xs">{day.monthName}</span>
-                                                        </button>
-                                                    ))}
-                                                </div>
-
-                                                {/* Time Slots for Selected Day */}
-                                                <div className="pb-2">
-                                                    <h3 className="text-lg font-medium mb-3">{days[activeDay].fullName}, {days[activeDay].monthName} {days[activeDay].date}</h3>
-
-                                                    <div className="space-y-6">
-                                                        {/* Morning */}
-                                                        <div>
-                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Morning</h4>
-                                                            <div className="grid grid-cols-3 gap-2">
-                                                                {groupTimeSlots(timeSlots).morning.map((time) => (
-                                                                    <button
-                                                                        key={`mobile-${days[activeDay].name}-${time}`}
-                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
-                                                                            isTimeSlotSelected(days[activeDay], time)
-                                                                                ? 'bg-[#E35D33] text-white'
-                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
-                                                                        }`}
-                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
-                                                                    >
-                                                                        {formatTimeAmPm(time)}
-                                                                    </button>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Afternoon */}
-                                                        <div>
-                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Afternoon</h4>
-                                                            <div className="grid grid-cols-3 gap-2">
-                                                                {groupTimeSlots(timeSlots).afternoon.map((time) => (
-                                                                    <button
-                                                                        key={`mobile-${days[activeDay].name}-${time}`}
-                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
-                                                                            isTimeSlotSelected(days[activeDay], time)
-                                                                                ? 'bg-[#E35D33] text-white'
-                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
-                                                                        }`}
-                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
-                                                                    >
-                                                                        {formatTimeAmPm(time)}
-                                                                    </button>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Evening */}
-                                                        <div>
-                                                            <h4 className="text-sm font-medium text-gray-500 mb-2">Evening</h4>
-                                                            <div className="grid grid-cols-3 gap-2">
-                                                                {groupTimeSlots(timeSlots).evening.map((time) => (
-                                                                    <button
-                                                                        key={`mobile-${days[activeDay].name}-${time}`}
-                                                                        className={`py-3 rounded-lg text-center text-sm transition-colors ${
-                                                                            isTimeSlotSelected(days[activeDay], time)
-                                                                                ? 'bg-[#E35D33] text-white'
-                                                                                : 'border border-[#E35D33] text-[#E35D33] hover:bg-[#E35D33] hover:text-white'
-                                                                        }`}
-                                                                        onClick={() => handleTimeSlotClick(days[activeDay], time)}
-                                                                    >
-                                                                        {formatTimeAmPm(time)}
-                                                                    </button>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {/* Save/Cancel Buttons */}
-                                            <div className="flex justify-end gap-3 mt-6">
-                                                <button
-                                                    onClick={handleAvailabilityCancel}
-                                                    className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
-                                                    disabled={availabilitySubmitting}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    onClick={handleAvailabilitySave}
-                                                    className="px-4 py-2 bg-[#E35D33] text-white rounded-lg hover:bg-[#d14e29] disabled:bg-gray-400"
-                                                    disabled={availabilitySubmitting}
-                                                >
-                                                    {availabilitySubmitting ? (
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-4 h-4 border-2 border-t-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                                            <span>Saving...</span>
-                                                        </div>
-                                                    ) : (
-                                                        'Save Availability'
-                                                    )}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-4">
-                                            <div className="text-sm text-gray-600">
-                                                Your current availability for the next 6 days:
-                                            </div>
-                                            
-                                            {selectedTimeSlots.size > 0 ? (
-                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                                    {days.map((day) => {
-                                                        const daySlots = timeSlots.filter(time => {
-                                                            const isoTime = generateTimeSlotISO(day, time);
-                                                            return selectedTimeSlots.has(isoTime);
-                                                        });
-                                                        
-                                                        if (daySlots.length === 0) return null;
-                                                        
-                                                        return (
-                                                            <div key={day.name} className="border rounded-lg p-3">
-                                                                <div className="font-medium text-[#E35D33] mb-2">
-                                                                    {day.fullName}, {day.monthName} {day.date}
-                                                                </div>
-                                                                <div className="space-y-1">
-                                                                    {daySlots.map((time) => (
-                                                                        <div key={time} className="text-sm text-gray-600">
-                                                                            {formatTimeAmPm(time)}
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            ) : (
-                                                <div className="text-gray-400 text-center py-8">
-                                                    No availability set. Click the edit button to set your available time slots.
-                                                </div>
                                             )}
                                         </div>
                                     )}
