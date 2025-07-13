@@ -23,6 +23,10 @@ export default function CVCertification({ setCurrentStep }) {
     const [savedCvFileName, setSavedCvFileName] = useState(null)
     const [savedCertificateFiles, setSavedCertificateFiles] = useState([])
 
+    // Refs for scrolling to error fields
+    const certificateCheckboxRef = useRef(null);
+    const certificateFieldRefs = useRef([]);
+
     // Get saved data from localStorage on component mount
     useEffect(() => {
         try {
@@ -155,6 +159,92 @@ export default function CVCertification({ setCurrentStep }) {
         }
     }
 
+    const onError = (errors) => {
+        // This function is called when form validation fails
+        setTimeout(() => {
+            scrollToFirstError();
+        }, 0);
+    }
+
+    // Watch for errors and scroll to first error (for initial error detection)
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            scrollToFirstError();
+        }
+    }, [errors]);
+
+    // Function to scroll to first error field and show toast
+    const scrollToFirstError = () => {
+        const errorFields = [];
+        
+        // Check certificate fields if checkbox is not checked
+        if (!notHasTeachingCertificate) {
+            fields.forEach((field, index) => {
+                if (errors.certificates?.[index]?.subject) {
+                    errorFields.push({ 
+                        error: errors.certificates[index].subject, 
+                        ref: certificateFieldRefs.current[index], 
+                        message: "Subject is required" 
+                    });
+                }
+                if (errors.certificates?.[index]?.certificateType) {
+                    errorFields.push({ 
+                        error: errors.certificates[index].certificateType, 
+                        ref: certificateFieldRefs.current[index], 
+                        message: "Certificate type is required" 
+                    });
+                }
+                if (errors.certificates?.[index]?.description) {
+                    errorFields.push({ 
+                        error: errors.certificates[index].description, 
+                        ref: certificateFieldRefs.current[index], 
+                        message: "Description is required" 
+                    });
+                }
+                if (errors.certificates?.[index]?.issuedBy) {
+                    errorFields.push({ 
+                        error: errors.certificates[index].issuedBy, 
+                        ref: certificateFieldRefs.current[index], 
+                        message: "Issued by is required" 
+                    });
+                }
+                if (errors.certificates?.[index]?.startYear) {
+                    errorFields.push({ 
+                        error: errors.certificates[index].startYear, 
+                        ref: certificateFieldRefs.current[index], 
+                        message: "Start year is required" 
+                    });
+                }
+                if (errors.certificates?.[index]?.endYear) {
+                    errorFields.push({ 
+                        error: errors.certificates[index].endYear, 
+                        ref: certificateFieldRefs.current[index], 
+                        message: "End year is required" 
+                    });
+                }
+                if (errors.certificates?.[index]?.file) {
+                    errorFields.push({ 
+                        error: errors.certificates[index].file, 
+                        ref: certificateFieldRefs.current[index], 
+                        message: "Certificate file is required" 
+                    });
+                }
+            });
+        }
+
+        const firstErrorField = errorFields.find(field => field.error);
+        if (firstErrorField && firstErrorField.ref) {
+            // Scroll to field
+            firstErrorField.ref.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            // Show toast using react-toastify
+            toast.error(firstErrorField.message || 'Please fill in the required field');
+        }
+    }
+
     const onSubmit = async (data) => {
         // add cv file to the data
         toast.loading("save your file...")
@@ -225,7 +315,7 @@ export default function CVCertification({ setCurrentStep }) {
                 Upload your CV and Certification (optional) to enhance your profile credibility and get more students.
             </p>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit, onError)}>
                 {/* CV Upload Section */}
                 <div className="bg-gray-50 p-6 rounded-lg mb-8">
                     <h2 className="text-xl font-bold mb-2">Get a &#34;CV verified&#34; badge</h2>
@@ -269,7 +359,7 @@ export default function CVCertification({ setCurrentStep }) {
                 </div>
 
                 {/* Teaching Certificate Checkbox */}
-                <div className="mb-6">
+                <div className="mb-6" ref={certificateCheckboxRef}>
                     <label className="flex items-center">
                         <input
                             type="checkbox"
@@ -283,7 +373,7 @@ export default function CVCertification({ setCurrentStep }) {
                 {!notHasTeachingCertificate && (
                     <>
                         {fields.map((field, index) => (
-                            <div key={field.id} className="mb-8">
+                            <div key={field.id} className="mb-8" ref={el => certificateFieldRefs.current[index] = el}>
                                 {index > 0 && (
                                     <div className="flex justify-end mb-2">
                                         <button type="button" onClick={() => remove(index)} className="text-red-500 flex items-center">
@@ -300,13 +390,17 @@ export default function CVCertification({ setCurrentStep }) {
                                         <div className="relative w-full">
                                             <input
                                                 type="hidden"
-                                                {...register(`certificates.${index}.subject`, { required: true })}
+                                                {...register(`certificates.${index}.subject`, { 
+                                                    required: !notHasTeachingCertificate ? "Subject is required" : false 
+                                                })}
                                                 value={watch(`certificates.${index}.subject`) || ""}
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setDropdownOpen(dropdownOpen === `certificate-subject-${index}` ? null : `certificate-subject-${index}`)}
-                                                className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                                className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                                    errors.certificates?.[index]?.subject ? 'border-red-500' : 'border-gray-300'
+                                                }`}
                                             >
                                                 <span className="text-left flex-1">
                                                     {enums.subject.find(subject => subject.name === watch(`certificates.${index}.subject`))?.displayName || "Select subject..."}
@@ -346,6 +440,9 @@ export default function CVCertification({ setCurrentStep }) {
                                             </button>
 
                                     </div>
+                                    {errors.certificates?.[index]?.subject && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.certificates[index].subject.message}</p>
+                                    )}
                                 </div>
 
                                 {/* Certificate */}
@@ -354,13 +451,17 @@ export default function CVCertification({ setCurrentStep }) {
                                     <div className="relative w-full">
                                         <input
                                             type="hidden"
-                                            {...register(`certificates.${index}.certificateType`, { required: true })}
+                                            {...register(`certificates.${index}.certificateType`, { 
+                                                required: !notHasTeachingCertificate ? "Certificate type is required" : false 
+                                            })}
                                             value={watch(`certificates.${index}.certificateType`) || ""}
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setDropdownOpen(dropdownOpen === `certificate-type-${index}` ? null : `certificate-type-${index}`)}
-                                            className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                            className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                                errors.certificates?.[index]?.certificateType ? 'border-red-500' : 'border-gray-300'
+                                            }`}
                                         >
                                             <span className="text-left flex-1">
                                                 {enums.level.find(level => level.name === watch(`certificates.${index}.certificateType`))?.displayName || "Select level..."}
@@ -387,6 +488,9 @@ export default function CVCertification({ setCurrentStep }) {
                                             </div>
                                         )}
                                     </div>
+                                    {errors.certificates?.[index]?.certificateType && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.certificates[index].certificateType.message}</p>
+                                    )}
                                 </div>
 
                                 {/* Description */}
@@ -394,9 +498,16 @@ export default function CVCertification({ setCurrentStep }) {
                                     <label className="block text-gray-700 mb-2">Description</label>
                                     <input
                                         type="text"
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                        {...register(`certificates.${index}.description`)}
+                                        className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                            errors.certificates?.[index]?.description ? 'border-red-500' : 'border-gray-300'
+                                        }`}
+                                        {...register(`certificates.${index}.description`, { 
+                                            required: !notHasTeachingCertificate ? "Description is required" : false 
+                                        })}
                                     />
+                                    {errors.certificates?.[index]?.description && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.certificates[index].description.message}</p>
+                                    )}
                                 </div>
 
                                 {/* Issued by */}
@@ -404,9 +515,16 @@ export default function CVCertification({ setCurrentStep }) {
                                     <label className="block text-gray-700 mb-2">Issued by</label>
                                     <input
                                         type="text"
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                                        {...register(`certificates.${index}.issuedBy`)}
+                                        className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                            errors.certificates?.[index]?.issuedBy ? 'border-red-500' : 'border-gray-300'
+                                        }`}
+                                        {...register(`certificates.${index}.issuedBy`, { 
+                                            required: !notHasTeachingCertificate ? "Issued by is required" : false 
+                                        })}
                                     />
+                                    {errors.certificates?.[index]?.issuedBy && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.certificates[index].issuedBy.message}</p>
+                                    )}
                                 </div>
 
                                 {/* Years of study */}
@@ -417,13 +535,17 @@ export default function CVCertification({ setCurrentStep }) {
                                         <div className="relative w-full">
                                             <input
                                                 type="hidden"
-                                                {...register(`certificates.${index}.startYear`)}
+                                                {...register(`certificates.${index}.startYear`, { 
+                                                    required: !notHasTeachingCertificate ? "Start year is required" : false 
+                                                })}
                                                 value={watch(`certificates.${index}.startYear`) || ""}
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setDropdownOpen(dropdownOpen === `startYear-${index}` ? null : `startYear-${index}`)}
-                                                className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] text-left"
+                                                className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] text-left ${
+                                                    errors.certificates?.[index]?.startYear ? 'border-red-500' : 'border-gray-300'
+                                                }`}
                                             >
                                                 <span className="flex-1">
                                                     {watch(`certificates.${index}.startYear`) || "Select"}
@@ -455,13 +577,17 @@ export default function CVCertification({ setCurrentStep }) {
                                         <div className="relative w-full">
                                             <input
                                                 type="hidden"
-                                                {...register(`certificates.${index}.endYear`)}
+                                                {...register(`certificates.${index}.endYear`, { 
+                                                    required: !notHasTeachingCertificate ? "End year is required" : false 
+                                                })}
                                                 value={watch(`certificates.${index}.endYear`) || ""}
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setDropdownOpen(dropdownOpen === `endYear-${index}` ? null : `endYear-${index}`)}
-                                                className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] text-left"
+                                                className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] text-left ${
+                                                    errors.certificates?.[index]?.endYear ? 'border-red-500' : 'border-gray-300'
+                                                }`}
                                             >
                                                 <span className="flex-1">
                                                 {watch(`certificates.${index}.endYear`) || "Select"}
@@ -487,6 +613,20 @@ export default function CVCertification({ setCurrentStep }) {
                                             )}
                                         </div>
                                     </div>
+                                    {(errors.certificates?.[index]?.startYear || errors.certificates?.[index]?.endYear) && (
+                                        <div className="flex gap-4 mt-1">
+                                            <div className="flex-1">
+                                                {errors.certificates?.[index]?.startYear && (
+                                                    <p className="text-red-500 text-sm">{errors.certificates[index].startYear.message}</p>
+                                                )}
+                                            </div>
+                                            <div className="flex-1">
+                                                {errors.certificates?.[index]?.endYear && (
+                                                    <p className="text-red-500 text-sm">{errors.certificates[index].endYear.message}</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
 
@@ -512,6 +652,9 @@ export default function CVCertification({ setCurrentStep }) {
                                         }}
                                         accept="image/jpeg, image/png, application/pdf"
                                         className="hidden"
+                                        {...register(`certificates.${index}.file`, { 
+                                            required: !notHasTeachingCertificate ? "Certificate file is required" : false 
+                                        })}
                                     />
 
                                     <button
@@ -547,6 +690,9 @@ export default function CVCertification({ setCurrentStep }) {
                                                 <FaTrash />
                                             </button>
                                         </div>
+                                    )}
+                                    {errors.certificates?.[index]?.file && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.certificates[index].file.message}</p>
                                     )}
                                 </div>
                             </div>
