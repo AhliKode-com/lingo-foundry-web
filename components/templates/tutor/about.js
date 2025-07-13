@@ -9,16 +9,27 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { useFieldArray, useForm } from "react-hook-form"
 import { TitleTutorRegis, DescTutorRegis, LabelTutorRegis } from "@/components/atoms/title"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import {getLandingSubjects} from "@/apis/getLandingSubjects";
 import {getEnums} from "@/apis/getEnum";
 import {useAuth} from "@/context/AuthContext";
+import {toast} from "react-toastify";
 
 export default function About({ setCurrentStep }) {
     const [savedData, setSavedData] = useState(null)
 
     const { data: enums } = getEnums();
     const { user } = useAuth()
+
+    // Refs for scrolling to error fields
+    const firstNameRef = useRef(null);
+    const lastNameRef = useRef(null);
+    const emailRef = useRef(null);
+    const countryRef = useRef(null);
+    const subjectRef = useRef(null);
+    const expertiseRef = useRef(null);
+    const languageRef = useRef(null);
+    const checkboxRef = useRef(null);
 
     // load data from localStorage on component mount
     useEffect(() => {
@@ -82,6 +93,49 @@ export default function About({ setCurrentStep }) {
         setSavedData(data)
         setCurrentStep(2)
     }
+
+    const onError = (errors) => {
+        // This function is called when form validation fails
+        // Use setTimeout to ensure errors are updated before scrolling
+        setTimeout(() => {
+            scrollToFirstError();
+        }, 0);
+    }
+
+    // Watch for errors and scroll to first error (for initial error detection)
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            scrollToFirstError();
+        }
+    }, [errors]);
+
+    // Function to scroll to first error field and show toast
+    const scrollToFirstError = () => {
+        const errorFields = [
+            { error: errors.firstName, ref: firstNameRef, message: errors.firstName?.message },
+            { error: errors.lastName, ref: lastNameRef, message: errors.lastName?.message },
+            { error: errors.email, ref: emailRef, message: errors.email?.message },
+            { error: errors.countryOfBirth, ref: countryRef, message: errors.countryOfBirth?.message },
+            { error: errors.subjectYouTeach, ref: subjectRef, message: errors.subjectYouTeach?.message },
+            { error: errors.expertise, ref: expertiseRef, message: errors.expertise?.message },
+            { error: errors.languages?.[0], ref: languageRef, message: errors.languages?.[0]?.language?.message || errors.languages?.[0]?.level?.message },
+            { error: errors.isOver18 || errors.check1 || errors.check2 || errors.check3 || errors.check4 || errors.check5 || errors.check6 || errors.check7, ref: checkboxRef, message: "Please check all required boxes to continue" }
+        ];
+
+        const firstErrorField = errorFields.find(field => field.error);
+        if (firstErrorField && firstErrorField.ref.current) {
+            // Scroll to field
+            firstErrorField.ref.current.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            // Show toast using react-toastify
+            toast.error(firstErrorField.message || 'Please fill in the required field');
+        }
+    }
+
+
 
     const [dropdownOpen, setDropdownOpen] = useState(null)
 
@@ -176,53 +230,73 @@ export default function About({ setCurrentStep }) {
                 text="Start creating your public tutor profile. Your progress will be automatically saved as you complete each section. You can return at any time to finish your registration."
                 custom="mb-[10px] md:mb-[25px]"
             />
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-                <div className="space-y-2">
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="mt-8 space-y-6">
+                <div className="space-y-2" ref={firstNameRef}>
                     <LabelTutorRegis text="First name" />
                     <input
                         type="text"
                         placeholder={savedData?.firstName || "First name"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                        {...register("firstName", { required: true })}
+                        className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                            errors.firstName ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        {...register("firstName", { required: "First name is required" })}
                     />
+                    {errors.firstName && (
+                        <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>
+                    )}
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2" ref={lastNameRef}>
                     <LabelTutorRegis text="Last name" />
                     <input
                         type="text"
                         placeholder={savedData?.lastName || "Last name"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
-                        {...register("lastName", { required: true })}
+                        className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                            errors.lastName ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        {...register("lastName", { required: "Last name is required" })}
                     />
+                    {errors.lastName && (
+                        <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>
+                    )}
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2" ref={emailRef}>
                     <LabelTutorRegis text="Email" />
                     <input
                         type="email"
                         placeholder={savedData?.email || "Email"}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] disabled:bg-gray-100"
+                        className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] disabled:bg-gray-100 ${
+                            errors.email ? 'border-red-500' : 'border-gray-300'
+                        }`}
                         disabled={true}
                         {...register("email", {
-                            required: true,
-                            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            required: "Email is required",
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "Invalid email address"
+                            }
                         })}
                     />
+                    {errors.email && (
+                        <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                    )}
                 </div>
 
-                <div className="space-y-2 mt-6">
+                <div className="space-y-2 mt-6" ref={countryRef}>
                     <LabelTutorRegis text="Country of birth" />
                     <div className="relative">
                         <input
                             type="hidden"
-                            {...register("countryOfBirth", { required: true })}
+                            {...register("countryOfBirth", { required: "Country of birth is required" })}
                             value={selectedCountry}
                         />
                         <button
                             type="button"
                             onClick={() => handleDropdownToggle('country')}
-                            className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                            className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                errors.countryOfBirth ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         >
                             <span className="text-left flex-1">
                                 {selectedCountry ? enums.country.find(country => country.name === selectedCountry)?.displayName : "Choose country..."}
@@ -263,20 +337,25 @@ export default function About({ setCurrentStep }) {
                             </div>
                         )}
                     </div>
+                    {errors.countryOfBirth && (
+                        <p className="text-red-500 text-sm mt-1">{errors.countryOfBirth.message}</p>
+                    )}
                 </div>
 
-                <div className="space-y-2 mt-6">
+                <div className="space-y-2 mt-6" ref={subjectRef}>
                     <LabelTutorRegis text="Subject you teach (select subjects)" />
                     <div className="relative">
                         <input
                             type="hidden"
-                            {...register("subjectYouTeach", { required: true })}
+                            {...register("subjectYouTeach", { required: "Subject you teach is required" })}
                             value={selectedSubject}
                         />
                         <button
                             type="button"
                             onClick={() => handleDropdownToggle('subject')}
-                            className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                            className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                errors.subjectYouTeach ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         >
                             <span className="text-left flex-1">
                                 {selectedSubject ? enums.subjectTeach.find(subject => subject.displayName === selectedSubject)?.displayName : "Select subject..."}
@@ -317,11 +396,16 @@ export default function About({ setCurrentStep }) {
                             </div>
                         )}
                     </div>
+                    {errors.subjectYouTeach && (
+                        <p className="text-red-500 text-sm mt-1">{errors.subjectYouTeach.message}</p>
+                    )}
                 </div>
 
-                <div className="space-y-2 mt-6">
+                <div className="space-y-2 mt-6" ref={expertiseRef}>
                     <LabelTutorRegis text={`Expertise (maximum ${MAX_EXPERTISE})`} />
-                    <div className="border border-gray-300 rounded-lg p-4 relative">
+                    <div className={`border rounded-lg p-4 relative ${
+                        errors.expertise ? 'border-red-500' : 'border-gray-300'
+                    }`}>
                         <div className="flex flex-wrap gap-2 mb-4">
                             {expertise.length > 0 ? (
                                 expertise.map((exp, index) => {
@@ -361,7 +445,9 @@ export default function About({ setCurrentStep }) {
                         <div className="relative">
                             <input
                                 type="hidden"
-                                {...register("expertise")}
+                                {...register("expertise", { 
+                                    validate: () => expertise.length > 0 || "At least one expertise is required" 
+                                })}
                                 value=""
                             />
                             <button
@@ -413,9 +499,12 @@ export default function About({ setCurrentStep }) {
                             )}
                         </div>
                     </div>
+                    {errors.expertise && (
+                        <p className="text-red-500 text-sm mt-1">{errors.expertise.message}</p>
+                    )}
                 </div>
 
-                <div className="space-y-2 mt-6">
+                <div className="space-y-2 mt-6" ref={languageRef}>
                     <LabelTutorRegis text="Languages you speak" />
                     {fields.map((field, index) => {
                         const filteredLangs = enums?.subjectTeach?.filter((lang) =>
@@ -439,7 +528,9 @@ export default function About({ setCurrentStep }) {
                                     <button
                                         type="button"
                                         onClick={() => handleDropdownToggle(`language-${index}`)}
-                                        className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33]"
+                                        className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] ${
+                                            errors.languages?.[index]?.language ? 'border-red-500' : 'border-gray-300'
+                                        }`}
                                     >
                                         <span className="text-left flex-1">
                                             {selectedLanguages[index] || "language..."}
@@ -498,7 +589,9 @@ export default function About({ setCurrentStep }) {
                                     <button
                                         type="button"
                                         onClick={() => handleDropdownToggle(`level-${index}`)}
-                                        className="flex items-center w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#E35D33] bg-gray-100"
+                                        className={`flex items-center w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#E35D33] bg-gray-100 ${
+                                            errors.languages?.[index]?.level ? 'border-red-500' : 'border-gray-300'
+                                        }`}
                                     >
                                         <span className="text-left flex-1">
                                             {selectedLevels[index] || "level..."}
@@ -573,6 +666,12 @@ export default function About({ setCurrentStep }) {
                     >
                         Add another language
                     </button>
+                    {errors.languages?.[0]?.language && (
+                        <p className="text-red-500 text-sm mt-1">{errors.languages[0].language.message}</p>
+                    )}
+                    {errors.languages?.[0]?.level && (
+                        <p className="text-red-500 text-sm mt-1">{errors.languages[0].level.message}</p>
+                    )}
                 </div>
 
                 <div className="space-y-2 mt-6">
@@ -591,27 +690,34 @@ export default function About({ setCurrentStep }) {
                     />
                 </div>
 
-                <div className="flex flex-col space-y-4">
+                <div className="flex flex-col space-y-4" ref={checkboxRef}>
                     <span className="font-semibold text-[18px]">LingoFoundry Terms of Service </span>
                     <span>Dear Teacher,</span>
                     <span>Welcome to LingoFoundry. Before you register to become a teacher on LingoFoundry, please read our Terms of Service. By checking each box, you acknowledge that you have read this consent form and agree to abide by the following items:</span>
                 </div>
                 
                 {checkboxFields.map(({ id, label }) => (
-                    <div key={id} className="mt-2 flex items-start">
-                        <div className="flex items-center h-5">
-                            <input
-                                id={id}
-                                type="checkbox"
-                                className="h-4 w-4 rounded border-red-300 text-[#E35D33] focus:ring-[#E35D33]"
-                                {...register(id, { required: true })}
-                            />
+                    <div key={id} className="mt-2">
+                        <div className="flex items-start">
+                            <div className="flex items-center h-5">
+                                <input
+                                    id={id}
+                                    type="checkbox"
+                                    className={`h-4 w-4 rounded border text-[#E35D33] focus:ring-[#E35D33] ${
+                                        errors[id] ? 'border-red-500' : 'border-red-300'
+                                    }`}
+                                    {...register(id, { required: `Please check this box to continue` })}
+                                />
+                            </div>
+                            <div className="ml-3 text-sm">
+                                <label htmlFor={id} className="font-medium text-gray-700">
+                                    {label}
+                                </label>
+                            </div>
                         </div>
-                        <div className="ml-3 text-sm">
-                        <label htmlFor={id} className="font-medium text-gray-700">
-                            {label}
-                        </label>
-                        </div>
+                        {errors[id] && (
+                            <p className="text-red-500 text-sm mt-1 ml-7">{errors[id].message}</p>
+                        )}
                     </div>
                 ))}
 

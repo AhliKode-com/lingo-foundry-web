@@ -53,6 +53,7 @@ export const config = {
         "/student-dashboard/:path*",
         "/tutor-dashboard/:path*",
         "/wishlist",
-        "/shopping-cart"
+        "/shopping-cart",
+        "/tutor-register/:path*"
     ],
 };
