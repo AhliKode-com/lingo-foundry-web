@@ -1,9 +1,17 @@
 import {Certificate} from "@/components/organisms/dashboard/courses/icons";
 import {useState} from "react";
 import Link from "next/link";
+import { useOutstandingReviews, useCertificateDownload } from "@/apis/studentReview";
+import ReviewModal from "@/components/organisms/dashboard/courses/review-modal";
+import CertificateErrorModal from "@/components/organisms/dashboard/courses/certificate-error-modal";
 
 export default function CourseCard({course, isSelected, onClick}) {
     const [isHovered, setIsHovered] = useState(false);
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [outstandingBookingIds, setOutstandingBookingIds] = useState([]);
+    const { checkOutstandingReviews, loading: reviewLoading } = useOutstandingReviews();
+    const { downloadCertificate, loading: certificateLoading } = useCertificateDownload();
 
     const levelColor = {
         "General": "bg-[#D1DDFD] text-[#3051BE]",
@@ -14,6 +22,45 @@ export default function CourseCard({course, isSelected, onClick}) {
 
     const progress = course.attendedCount
     const total = course.sessionCount
+
+    const handleCertificateDownload = async () => {
+        try {
+            const downloadUrl = await downloadCertificate(course.orderItemId);
+            if (downloadUrl) {
+                window.open(downloadUrl, '_blank');
+            }
+        } catch (error) {
+            console.error("Error downloading certificate:", error);
+            setShowErrorModal(true);
+        }
+    };
+
+    const handleCertificateClick = async () => {
+        try {
+            const outstandingReviews = await checkOutstandingReviews(course.orderItemId);
+            
+            if (outstandingReviews && outstandingReviews.length > 0) {
+                // Show review modal if there are outstanding reviews
+                setOutstandingBookingIds(outstandingReviews);
+                setShowReviewModal(true);
+            } else {
+                // Directly download certificate if no outstanding reviews
+                await handleCertificateDownload();
+            }
+        } catch (error) {
+            console.error("Error checking outstanding reviews:", error);
+            // If checking reviews fails, try to download certificate anyway
+            await handleCertificateDownload();
+        }
+    };
+
+    const handleReviewComplete = async (isReviewed = false) => {
+        setShowReviewModal(false);
+        if (isReviewed) {
+            // After reviews are submitted, download the certificate
+            await handleCertificateDownload();
+        }
+    };
 
     return (
         <div
@@ -47,31 +94,33 @@ export default function CourseCard({course, isSelected, onClick}) {
                 ></div>
             </div>
             {progress === total ? (
-                !course.downloadable ? (
-                    <div className="relative">
-                        <button
-                            className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl text-[#E25D33] cursor-pointer flex justify-center items-center text-xs md:text-base relative"
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                        >
-                            <Certificate className="ml-2"/>
-                            <p>Certificate</p>
-                        </button>
+                // !course.downloadable ? (
+                //     <div className="relative">
+                //         <button
+                //             className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl text-[#E25D33] cursor-pointer flex justify-center items-center text-xs md:text-base relative"
+                //             onMouseEnter={() => setIsHovered(true)}
+                //             onMouseLeave={() => setIsHovered(false)}
+                //         >
+                //             <Certificate className="ml-2"/>
+                //             <p>Certificate</p>
+                //         </button>
 
-                        {isHovered && (
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-red-100 text-gray-800 text-sm p-3 rounded-md shadow-md">
-                                Can be downloaded after 1 month from the beginning of the class
-                            </div>
-                        )}
-                    </div>
-                ) : (
-                    <Link href={course.downloadLink} target="_blank" rel="noopener noreferrer" passHref>
-                        <button className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl bg-[#E25D33] hover:bg-orange-600 text-white cursor-pointer flex justify-center items-center text-xs md:text-base">
-                            <Certificate className="ml-2"/>
-                            <p>Certificate</p>
-                        </button>
-                    </Link>
-                )
+                //         {isHovered && (
+                //             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-red-100 text-gray-800 text-sm p-3 rounded-md shadow-md">
+                //                 Can be downloaded after 1 month from the beginning of the class
+                //             </div>
+                //         )}
+                //     </div>
+                // ) : (
+                    <button 
+                         onClick={handleCertificateClick}
+                         disabled={reviewLoading || certificateLoading}
+                         className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl bg-[#E25D33] hover:bg-orange-600 text-white cursor-pointer flex justify-center items-center text-xs md:text-base disabled:opacity-50"
+                     >
+                         <Certificate className="ml-2"/>
+                         <p>{reviewLoading || certificateLoading ? 'Loading...' : 'Certificate'}</p>
+                     </button>
+                // )
             ) : (
                 <>
                 {course.remainingSession > 0 ? (
@@ -95,6 +144,22 @@ export default function CourseCard({course, isSelected, onClick}) {
                     </Link>
                 </>
             )}
+
+            {/* Review Modal */}
+            <ReviewModal 
+                isOpen={showReviewModal}
+                onClose={handleReviewComplete}
+                bookingIds={outstandingBookingIds}
+                courseName={course.subjectName}
+                tutorName={`${course.tutorFirstName} ${course.tutorLastName}`}
+            />
+
+            {/* Certificate Error Modal */}
+            <CertificateErrorModal 
+                isOpen={showErrorModal}
+                onClose={() => setShowErrorModal(false)}
+                orderItemId={course.orderItemId}
+            />
         </div>
     )
 }
