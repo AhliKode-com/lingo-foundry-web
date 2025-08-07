@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-21 21:59:03
+ * @Last Modified time: 2025-08-07 22:02:55
  */
 
 "use client";
@@ -149,7 +149,7 @@ export default function TutorDetail() {
     }, {});
 
     return (
-        <div className="lingo-container flex flex-col lg:flex-row pt-[80px] sm:pt-[103.61px]">
+        <div className="lingo-container flex flex-col-reverse lg:flex-row pt-[80px] sm:pt-[103.61px]">
             {/* cart modal */}
             {openCart && (
                 <div className="fixed inset-0 bg-[#00000070] flex items-center justify-center z-50" onClose={handleOpenCart}>
