@@ -114,29 +114,43 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
         }
     };
 
-    const StarRating = ({ value, onChange, label }) => {
+    const StarRating = ({ value, onChange, label, hint }) => {
         return (
-            <div className="flex items-center justify-between mb-4">
-                <span className="text-gray-700 w-24">{label}</span>
-                <div className="flex space-x-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                            key={star}
-                            type="button"
-                            onClick={() => onChange(star)}
-                            className="focus:outline-none"
-                        >
-                            <svg
-                                className={`w-6 h-6 ${star <= value ? 'text-orange-400' : 'text-gray-300'}`}
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
+            <div className="flex flex-col">
+                <div className="flex items-center justify-between">
+                    <span className="text-gray-700 w-24 font-bold">{label}</span>
+                    <div className="flex space-x-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                                key={star}
+                                type="button"
+                                onClick={() => onChange(star)}
+                                className="focus:outline-none"
                             >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                        </button>
-                    ))}
+                                <svg
+                                    className={`w-6 h-6 ${star <= value ? 'text-orange-400' : 'text-gray-300'}`}
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </button>
+                        ))}
+                    </div>
                 </div>
+                <span className="text-gray-500 mb-4 w-56">{hint}</span>
             </div>
+        );
+    };
+
+    const AchievementBadge = ({ label }) => {
+        return (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 border border-green-200 text-sm font-medium">
+                <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                </svg>
+                {label}
+            </span>
         );
     };
 
@@ -160,15 +174,15 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
                                     <span>Very Easy</span>
                                 </div>
                                 <div className="flex justify-between mb-4">
-                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                                    {[1, 2, 3, 4, 5].map((num) => (
                                         <button
                                             key={num}
                                             type="button"
                                             onClick={() => setFormData(prev => ({ ...prev, difficulty: num }))}
-                                            className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-medium transition-colors ${
+                                            className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-medium transition-colors ${
                                                 formData.difficulty === num
-                                                    ? 'bg-orange-500 text-white border-orange-500'
-                                                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                                                    ? 'bg-[#FEF2E1] text-[#D47C01]'
+                                                    : 'bg-[#EBEDEF]'
                                             }`}
                                         >
                                             {num}
@@ -192,31 +206,46 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
                         <>
                             <h2 className="text-xl font-semibold mb-4">Rate Your Course</h2>
                             <p className="text-gray-600 mb-6">
-                                How was the reliability and quality of work?
+                                How was the overall learning experience?
                             </p>
 
                             <div className="mb-6">
                                 <StarRating
                                     value={formData.communication}
                                     onChange={(value) => setFormData(prev => ({ ...prev, communication: value }))}
-                                    label="Communication"
+                                    label="Engagement"
+                                    hint="Was the lesson interesting and interactive?"
                                 />
                                 <StarRating
                                     value={formData.punctuality}
                                     onChange={(value) => setFormData(prev => ({ ...prev, punctuality: value }))}
-                                    label="Punctuality"
+                                    label="Clarity"
+                                    hint="Were the explanations clear and easy to follow?"
                                 />
                                 <StarRating
                                     value={formData.lesson}
                                     onChange={(value) => setFormData(prev => ({ ...prev, lesson: value }))}
-                                    label="Lessons"
+                                    label="Usefulness"
+                                    hint="Will you apply what you learned?"
                                 />
                                 <StarRating
                                     value={formData.efficiency}
                                     onChange={(value) => setFormData(prev => ({ ...prev, efficiency: value }))}
-                                    label="Efficiency"
+                                    label="Pace"
+                                    hint="Was the speed too fast, too slow, or just right?"
                                 />
                             </div>
+
+                            {(formData.communication === 5 || formData.punctuality === 5 || formData.lesson === 5 || formData.efficiency === 5) && (
+                                <div className="mb-6">
+                                    <div className="flex flex-wrap gap-2">
+                                        {formData.communication === 5 && <AchievementBadge label="Engagement" />}
+                                        {formData.punctuality === 5 && <AchievementBadge label="Clarity" />}
+                                        {formData.lesson === 5 && <AchievementBadge label="Usefulness" />}
+                                        {formData.efficiency === 5 && <AchievementBadge label="Pace" />}
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="mb-6">
                                 <label className="block text-gray-700 mb-2">Can you tell us more?</label>
@@ -233,7 +262,7 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
                     {/* Progress indicator */}
                     {bookingIds.length > 1 && (
                         <div className="text-center text-sm text-gray-500 mb-4">
-                            Review {currentBookingIndex + 1} of {bookingIds.length}
+                            Review course {currentBookingIndex + 1} of {bookingIds.length}
                         </div>
                     )}
 
