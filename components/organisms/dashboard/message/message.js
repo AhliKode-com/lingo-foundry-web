@@ -52,6 +52,13 @@ const MessageApp = () => {
         }
     }, [debouncedQuery, showComposeModal]);
 
+    // Call getUserList when component mounts if userId is present
+    useEffect(() => {
+        if (userId && !listUsers) {
+            getUserList("");
+        }
+    }, [userId]);
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             setDebouncedQuery(searchQuery)
@@ -174,7 +181,7 @@ const MessageApp = () => {
 
                 // Find and update the selected conversation
                 let updatedConversations = transformedConversations.map(conv => {
-                    if (conv.id === selectedConversation) {
+                    if (conv.id.toString() === selectedConversation.toString()) {
                         return {
                             ...conv,
                             messages: [...conv.messages, newMessage],
@@ -203,7 +210,7 @@ const MessageApp = () => {
     }
 
     const handleConversationClick = (id) => {
-        const selected = transformedConversations.find(conv => conv.id === id);
+        const selected = transformedConversations.find(conv => conv.id.toString() === id.toString());
         if (selected) {
             setSelectedConversation(id);
             setSelectedMessages(selected.messages || []);
@@ -221,24 +228,28 @@ const MessageApp = () => {
         getUserList(""); // Initial load of users
     }
 
-    // Handle selecting a user from the compose modal
-    const handleSelectUser = (user) => {
+    // Handle selecting a user from the compose modal or URL parameter
+    const handleSelectUser = (user, fromUrl = false) => {
         if (thisUser && user.id === thisUser.id) {
-            // Close the modal
-            setShowComposeModal(false);
-            setSearchQuery("");
+            if (!fromUrl) {
+                // Close the modal only if not called from URL
+                setShowComposeModal(false);
+                setSearchQuery("");
+            }
             toast.info("you cannot message yourself")
             return
         }
 
-        const exist = transformedConversations.filter((val) => val.id === user.id);
+        const exist = transformedConversations.filter((val) => val.id.toString() === user.id.toString());
         if (exist.length > 0) {
             // Select the conversation
             handleConversationClick(user.id)
 
-            // Close the modal
-            setShowComposeModal(false);
-            setSearchQuery("");
+            if (!fromUrl) {
+                // Close the modal only if not called from URL
+                setShowComposeModal(false);
+                setSearchQuery("");
+            }
             return
         }
 
@@ -267,9 +278,11 @@ const MessageApp = () => {
         setSelectedMessages([]);
         setShowChat(true);
 
-        // Close the modal
-        setShowComposeModal(false);
-        setSearchQuery("");
+        if (!fromUrl) {
+            // Close the modal only if not called from URL
+            setShowComposeModal(false);
+            setSearchQuery("");
+        }
     }
 
     // If no conversation is selected yet, and we have conversations, select the first one
@@ -282,15 +295,31 @@ const MessageApp = () => {
     // Handle userId from URL
     useEffect(() => {
         if (userId && !loadingUsers) {
-            const user = listUsers?.find(u => u.id === userId);
+            // First, try to find the user in existing conversations
+            const existingConversation = transformedConversations.find(conv => conv.id.toString() === userId.toString());
+            if (existingConversation) {
+                handleConversationClick(userId);
+                return;
+            }
+
+            // If not found in conversations, try to find in user list
+            const user = listUsers?.find(u => u.id.toString() === userId.toString());
             if (user) {
-                handleSelectUser(user);
-            } else if (!listUsers) {
-                // Only fetch if we don't have the user list yet
-                getUserList(userId);
+                handleSelectUser(user, true); // Pass true to indicate it's from URL
+            } else {
+                // Fetch all users first, then find the specific user
+                getUserList("").then(() => {
+                    // After fetching, try to find the user again
+                    setTimeout(() => {
+                        const userAfterFetch = listUsers?.find(u => u.id.toString() === userId.toString());
+                        if (userAfterFetch) {
+                            handleSelectUser(userAfterFetch, true); // Pass true to indicate it's from URL
+                        }
+                    }, 100);
+                });
             }
         }
-    }, [userId, listUsers, loadingUsers]);
+    }, [userId, listUsers, loadingUsers, transformedConversations]);
 
     if (loading || data === null) {
         return <MessagingSkeleton />
@@ -298,10 +327,8 @@ const MessageApp = () => {
 
     // Get the selected conversation data
     const selectedConversationData = transformedConversations.find(
-        conv => conv.id === selectedConversation
+        conv => conv.id.toString() === selectedConversation?.toString()
     ) || (transformedConversations.length > 0 ? transformedConversations[0] : null);
-
-    console.log("selectedConversation", selectedConversation)
 
     return (
         <div
@@ -329,7 +356,7 @@ const MessageApp = () => {
                         {transformedConversations.map((conversation) => (
                             <div
                                 key={conversation.id}
-                                className={`flex items-start p-3 hover:bg-gray-50 cursor-pointer ${conversation.id === selectedConversation ? "bg-orange-100" : ""}`}
+                                className={`flex items-start p-3 hover:bg-gray-50 cursor-pointer ${conversation.id.toString() === selectedConversation?.toString() ? "bg-orange-100" : ""}`}
                                 onClick={() => handleConversationClick(conversation.id)}
                             >
                                 <div className="relative mr-3">
@@ -507,7 +534,7 @@ const MessageApp = () => {
                                                 <div
                                                     key={user.id}
                                                     className="flex items-center p-3 hover:bg-gray-50 cursor-pointer rounded-md"
-                                                    onClick={() => handleSelectUser(user)}
+                                                    onClick={() => handleSelectUser(user, false)}
                                                 >
                                                     <div className="relative mr-3">
                                                         <img

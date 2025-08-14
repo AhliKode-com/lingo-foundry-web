@@ -6,7 +6,7 @@ const Skeleton = ({ className = "" }) => (
 
 const TutorDetailSkeleton = () => {
     return (
-        <div className="max-w-6xl mx-auto pt-[100px] sm:pt-[120px] pb-[40px]">
+        <div className="lingo-container max-w-6xl mx-auto pt-[100px] sm:pt-[120px] pb-[40px]">
             <div className="flex flex-col md:flex-row gap-8">
 
                 {/* Left: main skeleton profile */}

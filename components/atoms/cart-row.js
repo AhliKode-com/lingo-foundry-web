@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-19 11:15:09
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-29 15:09:37
+ * @Last Modified time: 2025-08-13 21:05:00
  */
 
 import Image from "next/image";
@@ -43,7 +43,12 @@ export function CartRow({ item, onDelete }) {
       </div>
       <div className="py-[20px] flex items-center gap-[30px] md:gap-0">
         <TitlePayment text={confirmPayment.discount} custom="w-[80px] md:hidden"/>
-        <span className={cellClass}>{item.discount.split(".")[0]}{" "}%</span>
+        <span className={cellClass}>
+          {item.discount.includes(".") && item.discount.split(".")[1] && item.discount.split(".")[1][0] !== "0" 
+            ? `${item.discount.split(".")[0]}.${item.discount.split(".")[1][0]}%`
+            : `${item.discount.split(".")[0]}%`
+          }
+        </span>
       </div>
       <div className="flex items-center gap-[30px] md:gap-0 mb-[30px] md:mb-0">
         <TitlePayment text={confirmPayment.subTotal} custom="w-[80px] md:hidden"/>

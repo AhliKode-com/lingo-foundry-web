@@ -50,6 +50,10 @@ export function useStudentBooking() {
         return handleRequest("get",'/student/booking/list');
     }, [handleRequest]);
 
+    const listBookingTutor = useCallback(() => {
+        return handleRequest("get",'/tutor/booking');
+    }, [handleRequest]);
+
     const getByOrderItemId = useCallback((orderItemId) => {
         return handleRequest("get",`/student/booking/byId?orderItemId=${orderItemId}`);
     }, [handleRequest]);
@@ -61,6 +65,7 @@ export function useStudentBooking() {
         createBooking,
         deleteBooking,
         listBooking,
-        getByOrderItemId
+        getByOrderItemId,
+        listBookingTutor
     };
 }

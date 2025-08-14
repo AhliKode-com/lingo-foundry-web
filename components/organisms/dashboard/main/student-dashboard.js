@@ -2,10 +2,10 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 10:04:12
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-03-27 21:08:15
+ * @Last Modified time: 2025-08-14 09:03:14
  */
 "use client"
-import { TitleStudentDashboard } from "@/components/atoms/title";
+import { TitleSubDashboard } from "@/components/atoms/title";
 import { getStudentDashboard } from '@/apis/dashboard/getStudentDashboard';
 
 export default function StudentDashboard(){
@@ -24,8 +24,8 @@ export default function StudentDashboard(){
     ]
     return(
         <div className="lingo-container flex flex-col mb-[72px]">
-            <TitleStudentDashboard text="Dashboard" />
-            <div className='mt-[15px] md:mt-[35px] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[10px] sm:gap-[18px] md:gap-[24px] animation-effect'>
+            <TitleSubDashboard text="Statistics" custom="w-full border-[#FFBA7D] mb-[15px]"/>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[10px] sm:gap-[18px] md:gap-[24px] animation-effect'>
                 {loading ? (
                      Array.from({ length: 4 }).map((_, index) => (
                         <div key={index} className="bg-gray-200 animate-pulse p-[10px] sm:p-[14px] md:p-[16px] lg:p-[20px] animation-effect flex items-center">

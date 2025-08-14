@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-08-07 22:02:55
+ * @Last Modified time: 2025-08-14 23:24:15
  */
 
 "use client";
@@ -34,8 +34,28 @@ export default function TutorDetail() {
     const router = useRouter();
     const { data: enums } = getEnums();
 
+    // Helper function to format discount percentage
+    const formatDiscountPercentage = (discount) => {
+        const discountStr = discount.toString();
+        if (discountStr.includes(".") && discountStr.split(".")[1] && discountStr.split(".")[1][0] !== "0") {
+            return `${discountStr.split(".")[0]}.${discountStr.split(".")[1][0]}%`;
+        }
+        return `${discountStr.split(".")[0]}%`;
+    };
+
     const toggleExpanded = () => {
         setExpanded(prev => !prev);
+    };
+
+    // Handle send message
+    const handleSendMessage = () => {
+        if (!user) {
+            router.push("/login");
+            return;
+        }
+        
+        // Navigate to message page with tutor ID
+        router.push(`/student-dashboard/message?userId=${data.tutor.userId}`);
     };
 
     // random color
@@ -211,7 +231,7 @@ export default function TutorDetail() {
                                                 </button>
                                             </div>
                                             <div className="flex items-center bg-gray-400 text-white font-semibold rounded">
-                                                <input type="text" value={`${selectedDiscount} %`} readOnly className="w-[85px] text-center outline-none"/>
+                                                <input type="text" value={formatDiscountPercentage(selectedDiscount)} readOnly className="w-[85px] text-center outline-none"/>
                                             </div>
                                         </div>
                                         <span className="text-[16px] font-medium md:block hidden">{data.language}</span>
@@ -234,7 +254,7 @@ export default function TutorDetail() {
                                             </button>
                                         </div>
                                         <div className="hidden md:flex items-center bg-gray-400 text-white font-semibold rounded">
-                                            <input type="text" value={`${selectedDiscount} %`} readOnly className="w-[85px] text-center outline-none"/>
+                                            <input type="text" value={formatDiscountPercentage(selectedDiscount)} readOnly className="w-[85px] text-center outline-none"/>
                                         </div>
                                     </div>
                                 )
@@ -455,26 +475,32 @@ export default function TutorDetail() {
                                 <span className="font-medium">Rp.{Number(data.tutor.averageSubjectPrice).toLocaleString()}</span>
                                 <span className="text-[14px] text-[#4D4C5C]">per hour</span>
                             </div>
+                            
                             <div className="flex flex-col gap-[8px]">
-                                <button
-                                    onClick={handleOpenCart}
-                                    className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]">
-                                    <img src="/assets/lightning.svg" alt="lightning" className="w-[20px] h-[20px]"/>
-                                    Add to cart
-                                </button>
-                                <button
-                                    onClick={handleAddToWishlist}
-                                    className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
-                                    <img src="/assets/heart.svg" alt="heart" className="w-[20px] h-[20px]"/>
-                                    Save to my list
-                                </button>
-                                <button
-                                    className="gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
-                                    <img src="/assets/chat.svg" alt="chat" className="w-[20px] h-[20px]"/>
-                                    Send message
-                                </button>
+                                {user && user.id !== data?.tutor?.id && (
+                                    <>
+                                        <button
+                                            onClick={handleOpenCart}
+                                            className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold text-white justify-center items-center flex py-[10px] w-full bg-[#E35D33]">
+                                            <img src="/assets/lightning.svg" alt="lightning" className="w-[20px] h-[20px]"/>
+                                            Add to cart
+                                        </button>
+                                        <button
+                                            onClick={handleAddToWishlist}
+                                            className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
+                                            <img src="/assets/heart.svg" alt="heart" className="w-[20px] h-[20px]"/>
+                                            Save to my list
+                                        </button>
+                                        <button
+                                            onClick={handleSendMessage}
+                                            className="cursor-pointer gap-[14px] rounded-[8px] text-[18px] font-semibold justify-center items-center flex py-[10px] w-full border-[2px] border-[#DCDCE5]">
+                                            <img src="/assets/chat.svg" alt="chat" className="w-[20px] h-[20px]"/>
+                                            Send message
+                                        </button>
+                                    </>
+                                )}
                             </div>
-                            <div className="mt-[27px] flex flex-col gap-[16px]">
+                            <div className={`flex flex-col gap-[16px] ${user && user.id === data?.tutor?.id ? 'mt-0' : 'mt-[27px]'}`}>
                                 {/* <div className="flex gap-[10px]">
                                     <img src="/assets/stats.svg" alt="stats" className="mb-auto mt-[5px]"/>
                                     <div className="flex flex-col">

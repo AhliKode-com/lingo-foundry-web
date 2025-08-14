@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-04-21 00:56:16
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-07-03 16:01:17
+ * @Last Modified time: 2025-08-13 23:46:03
  */
 
 import { TitleStudentDashboard } from "@/components/atoms/title";
@@ -13,18 +13,15 @@ import React, { useState, useEffect, useMemo } from "react";
 
 export default function Recommended() {
     const { user, loading } = useAuth();
-    console.log("cv", user?.tutor?.cvFileObjectKey)
-    console.log("certificates",user?.tutor?.certificatesJson)
-
     const recommendedData = useMemo(() => {
-        const baseData = [
-            {
-                img: '/assets/enable-grey.svg', 
-                title: 'Enable money withdrawals', 
-                desc: 'Use a copy of your passport or official ID to confirm your identity. Once verified, you can withdraw your funds safely.',
-                buttonText: 'Add bank account',
-                href: '/tutor-dashboard/tutor-profile'
-            },
+        // const baseData = [
+        //     {
+        //         img: '/assets/enable-grey.svg', 
+        //         title: 'Enable money withdrawals', 
+        //         desc: 'Use a copy of your passport or official ID to confirm your identity. Once verified, you can withdraw your funds safely.',
+        //         buttonText: 'Add bank account',
+        //         href: '/tutor-dashboard/tutor-profile'
+        //     },
             // {
             //     img: '/assets/complete-grey.svg', 
             //     title: 'Complete the Welcome to Lingo course', 
@@ -39,7 +36,7 @@ export default function Recommended() {
             //     buttonText: 'Learn more',
             //     href: '/tutor-dashboard/tutor-profile'
             // }
-        ];
+        // ];
 
         const cvCertData = loading ? [] : 
             user?.tutor?.cvFileObjectKey && user?.tutor?.certificatesJson === "" ? [
@@ -69,7 +66,7 @@ export default function Recommended() {
             ] : [];
 
         return [
-            ...baseData,
+            // ...baseData,
             ...cvCertData
         ];
     }, [loading, user?.tutor?.cvFileObjectKey, user?.tutor?.certificatesJson]);
