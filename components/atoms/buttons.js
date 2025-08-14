@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:23
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-15 09:00:21
+ * @Last Modified time: 2025-08-14 09:53:54
  */
 "use client"
 import { IoIosArrowDown } from "react-icons/io";
@@ -60,6 +60,67 @@ export function LastDaysButton({custom, onChange, value = 7}) {
                       onClick={() => {
                           setSelectedDays(index)
                           setShowDaysDropdown(false)
+                          if (onChange) {
+                              onChange(item.value)
+                          }
+                      }}
+                  >
+                      <span className="text-[16px]">{item.text}</span>
+                  </div>
+              ))}
+          </div>
+      )}
+    </div>
+  );
+}
+
+export function LastIntervalButton({custom, onChange, interval = 'monthly'}) {
+  const intervalData = [
+          {text: 'Monthly', value: 'monthly'},
+          {text: 'Daily', value: 'daily'}
+      ]
+      const [showIntervalDropdown, setShowIntervalDropdown] = useState(false);
+      const handleIntervalDropdown = () => {
+          setShowIntervalDropdown(!showIntervalDropdown)
+      }
+      
+      // Find the index based on the interval prop
+      const selectedIndex = intervalData.findIndex(item => item.value === interval);
+      const [selectedInterval, setSelectedInterval] = useState(selectedIndex);
+
+      // Update selectedInterval when interval prop changes
+      useEffect(() => {
+          const newIndex = intervalData.findIndex(item => item.value === interval);
+          if (newIndex !== -1) {
+              setSelectedInterval(newIndex);
+          }
+      }, [interval]);
+
+  return (
+    <div className={`relative max-w-[250px] ${custom}`}>
+      <button 
+        onClick={handleIntervalDropdown}
+        className='whitespace-nowrap gap-[20px] w-full cursor-pointer flex justify-between items-center px-[21px] py-[15px] bg-white border-[2px] border-[#DCDCE5] rounded-[8px]'
+      >
+        <Image
+            src="/assets/tutor-dashboard/calendar.svg"
+            height={17}
+            width={18}
+            className=""
+            alt="logo"
+        />
+        {intervalData[selectedInterval].text}
+        <IoIosArrowDown/>
+      </button>
+      {showIntervalDropdown && (
+          <div className="absolute z-10 w-full mt-1 bg-white border border-[#DDDFE1] rounded-md shadow-lg">
+              {intervalData.map((item, index) => (
+                  <div
+                      key={index}
+                      className="px-[18px] py-[12px] hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                          setSelectedInterval(index)
+                          setShowIntervalDropdown(false)
                           if (onChange) {
                               onChange(item.value)
                           }

@@ -2,11 +2,11 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 10:04:12
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-19 20:56:53
+ * @Last Modified time: 2025-08-14 11:22:04
  */
 "use client"
 import {useState, useEffect} from "react";
-import { TitleSubDashboard, OrangeTextDashboard } from "@/components/atoms/title";
+import { TitleSubDashboard, OrangeTextDashboard, TitleStudentDashboard } from "@/components/atoms/title";
 import MyCourses from "@/components/organisms/dashboard/my-courses";
 import UpcomingGmeet from "@/components/organisms/dashboard/upcoming-gmeet";
 import EducationalMetricsChart from "@/components/organisms/dashboard/productivity";
@@ -16,7 +16,7 @@ import Link from "next/link";
 
 export default function StudentDashboardCoursesGmeet(){
     const { data: {activeCourses, dailyCourseStatistics}, loading } = getStudentDashboard();
-    const {listBooking, } = useStudentBooking()
+    const {listBooking} = useStudentBooking()
     const [bookings, setBookings] = useState([]);
     const [showAllBookings, setShowAllBookings] = useState(false);
     const toggleShowAll = () => setShowAllBookings(prev => !prev);
@@ -35,8 +35,6 @@ export default function StudentDashboardCoursesGmeet(){
                 time: `${new Date(item.startTimeLocale).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(item.endTimeLocale).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
                 link: item.meetingLink
             }));
-    
-            console.log("Transformed Bookings:", transformed);
             setBookings(transformed);
         };
     
@@ -46,8 +44,9 @@ export default function StudentDashboardCoursesGmeet(){
     
     return(
         <div className="lingo-container flex flex-col mb-[80px]">
+            <TitleStudentDashboard text="Dashboard" custom="mb-[30px]"/>
             <div className="flex lg:flex-row flex-col gap-[30px]">
-                <div className="lg:w-3/5">
+                <div className="lg:w-1/2">
                     <div className="w-full flex justify-between items-center mb-[15px]">
                         <TitleSubDashboard text="My Courses" custom="w-full border-[#FFBA7D]"/>
                         <Link href="student-dashboard/courses" className="w-full">
@@ -60,9 +59,11 @@ export default function StudentDashboardCoursesGmeet(){
                                     <div className="h-[70px] w-full bg-gray-300 animate-pulse rounded-lg"></div>
                                     <div className="h-[70px] w-full bg-gray-300 animate-pulse rounded-lg"></div>
                                     <div className="h-[70px] w-full bg-gray-300 animate-pulse rounded-lg"></div>
+                                    <div className="h-[70px] w-full bg-gray-300 animate-pulse rounded-lg"></div>
+                                    <div className="h-[70px] w-full bg-gray-300 animate-pulse rounded-lg"></div>
                                 </div>
                             ) : activeCourses?.length > 0 ? (
-                                    activeCourses?.map((item, index) => {
+                                    activeCourses?.slice(0, 5).map((item, index) => {
                                         return (
                                             <MyCourses key={index} data={item}/>
                                         )
@@ -72,7 +73,7 @@ export default function StudentDashboardCoursesGmeet(){
                             )}
                     </div>
                 </div>
-                <div className="lg:w-2/5 flex flex-col">
+                <div className="lg:w-1/2 flex flex-col">
                     <div className="w-full flex justify-between items-center mb-[15px]">
                         <TitleSubDashboard text="Upcoming Google meet Class" custom="w-full border-[#FFBA7D]"/>
                         <button onClick={toggleShowAll} className="w-full">

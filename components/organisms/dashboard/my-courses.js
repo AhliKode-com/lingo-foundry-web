@@ -2,14 +2,14 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-24 14:40:42
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-18 20:45:24
+ * @Last Modified time: 2025-08-14 08:56:40
  */
 
 export default function MyCourses({data}) {
     return (
-        <div className=" bg-[#F9F9F9] border-[1px] border-[#E0E0E0] rounded-[16px] flex justify-between items-center py-[8px] px-[8px] md:px-[16px] animation-effect">
+        <div className="bg-[#F9F9F9] border-[1px] border-[#E0E0E0] rounded-[16px] flex justify-between items-center py-[8px] px-[8px] md:px-[16px] animation-effect">
             <div className="flex items-center gap-[16px]">
-                <img src={data.tutorProfileUrl || "/placeholder.svg"} alt={data.tutorFirstName} className="w-[40px] h-[40px] md:w-[52px] md:h-[52px] rounded-[8px] md:rounded-[16px] animation-effect object-cover"/>
+                <img src={data.tutorProfileUrl || "/placeholder.svg"} alt={data.tutorFirstName} className="w-[45px] h-[45px] md:w-[60px] md:h-[60px] rounded-[8px] animation-effect object-cover"/>
                 <div className="flex flex-col gap-[4px]">
                     <span className="text-[12px] md:text-[14px] font-bold animation-effect">{data.subjectName}{" "}{data.subjectLevel}</span>
                     <span className="text-[10px] md:text-[12px] text-[#E35D33] font-bold animation-effect">Sessions completed{" "}{data.attendedCount}/{data.sessionCount}</span>

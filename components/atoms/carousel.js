@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:48:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-13 00:22:46
+ * @Last Modified time: 2025-08-13 23:02:45
  */
 
 "use client"
@@ -83,23 +83,26 @@ export function Carousel() {
                         style={{scrollbarWidth: "none", msOverflowStyle: "none"}}
                     >
                         {tutorSubjects.map((tutor, index) => (
-                            <div key={index} className="flex-shrink-0 w-[255px] overflow-hidden bg-white">
+                            <Link 
+                                key={index} 
+                                className="flex-shrink-0 w-[255px] overflow-hidden bg-white"
+                                href={`/find-tutor?q=${encodeURIComponent(tutor.subject.split(' ')[0])}#search`}
+                            >
                                 <div className="relative">
                                     <img src={tutor.thumbnailUrl || "/placeholder.svg"} alt={tutor.subject} className="w-[255px] h-[290px] object-cover"/>
                                     <div
                                         className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent h-full"></div>
                                     <div
                                         className="justify-center items-center flex flex-col whitespace-nowrap absolute bottom-[20px] left-1/2 -translate-x-1/2 text-white">
-                                        <span
-                                            className="font-semibold text-[18px] md:text-[22px] lg:text-[24px] mb-[5px] animation-effect">
-                                        {tutor.subject}
+                                        <span className="font-semibold text-[18px] md:text-[20px] mb-[5px] animation-effect">
+                                            {tutor.subject}
                                         </span>
-                                        <span className="font-medium text-[14px] md:text-[16px] animation-effect">
-                                        Rp.{tutor.averagePrice.toLocaleString()}/Lesson
+                                        <span className="font-medium text-[14px] animation-effect">
+                                            Rp.{tutor.averagePrice.toLocaleString()}/Lesson
                                         </span>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 ) : (
