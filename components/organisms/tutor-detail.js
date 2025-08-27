@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:17:29
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-08-14 23:24:15
+ * @Last Modified time: 2025-08-27 16:55:27
  */
 
 "use client";
@@ -477,7 +477,7 @@ export default function TutorDetail() {
                             </div>
                             
                             <div className="flex flex-col gap-[8px]">
-                                {user && user.id !== data?.tutor?.id && (
+                                {user && user?.tutor?.idid !== data?.tutor?.id && (
                                     <>
                                         <button
                                             onClick={handleOpenCart}
