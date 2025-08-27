@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-27 23:40:15
+ * @Last Modified time: 2025-08-27 17:10:30
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
@@ -441,7 +441,7 @@ export const multiStepPayment = {
     },
     confirmPayment: {
         title: "Shopping cart",
-        product: "Product",
+        product: "Tutor",
         subject: "Subject",
         category: "Category",
         duration: "Duration",
