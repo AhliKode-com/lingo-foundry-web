@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 11:10:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-28 16:00:17
+ * @Last Modified time: 2025-09-13 23:02:41
  */
 "use client"
 import { FindTutor } from "@/constants/en"
@@ -44,8 +44,7 @@ export default function Hero() {
           <h1 className="
                 z-10
                 font-bold 
-                text-[32px] lg:text-[40px] xl:text-[56px] 
-                lg:leading-[60px] xl:leading-[84px]
+                text-[22px] lg:text-[30px] xl:text-[40px] lg:leading-[60px] xl:leading-[84px] 
                 md:w-[520px] mt-[70px] 
                 animation-effect">
             {hero.title1}
@@ -57,9 +56,9 @@ export default function Hero() {
                 height={365}
                 className="
                 absolute 
-                w-[205px] lg:w-[250px] xl:w-[365px] 
-                top-[0px]
-                left-[-10px]
+                w-[110px] lg:w-[150px] xl:w-[210px] 
+                top-[-30px] lg:top-[-50px] xl:top-[-70px]
+                left-[45px] lg:left-[65px] xl:left-[85px]
                 animation-effect"
                 priority/>
               {hero.title2}

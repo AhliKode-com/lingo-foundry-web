@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-18 15:31:42
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-28 16:03:11
+ * @Last Modified time: 2025-09-13 11:41:38
  */
 
 "use client"
@@ -38,7 +38,7 @@ export default function SearchNow({placeholder, buttonSearch, onSearch}) {
     };
 
     return (
-        <div className="relative items-center flex md:w-[550px] lg:w-[614px] bg-[#FF723A10] rounded-[40px] border-[1px] border-[#C9C9C9] px-[31px] h-[50px] lg:h-[65px] animation-effect">
+        <div className="relative items-center flex md:w-[550px] lg:w-[614px] bg-[#FF723A10] rounded-[40px] border-[1px] border-[#C9C9C9] px-[15px] md:px-[31px] h-[50px] lg:h-[65px] animation-effect">
             <Image 
               src="/assets/check.svg" 
               alt="Search" 
@@ -48,7 +48,7 @@ export default function SearchNow({placeholder, buttonSearch, onSearch}) {
               priority
             />
             <input
-                className="animation-effect text-[14px] md:text-[16px] focus:outline-none"
+                className="animation-effect text-[10px] sm:text-[14px] md:text-[12px] focus:outline-none w-full"
                 placeholder={placeholder}
                 value={value}
                 onChange={handleChange}
