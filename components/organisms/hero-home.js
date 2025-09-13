@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 01:06:46
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-28 15:59:02
+ * @Last Modified time: 2025-09-13 11:37:19
  */
 "use client"
 import { Home } from '@/constants/en';
@@ -47,7 +47,7 @@ export default function Hero() {
             height={150}
             className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"
           />
-          <h1 className="z-10 font-bold text-[32px] lg:text-[40px] xl:text-[56px] lg:leading-[60px] xl:leading-[84px] md:w-[520px] mt-[70px] animation-effect">
+          <h1 className="z-10 font-bold text-[22px] lg:text-[30px] xl:text-[40px] lg:leading-[60px] xl:leading-[84px] md:w-[520px] mt-[70px] animation-effect">
             {hero.title1}
             <span className="relative flex">
               <Image 
@@ -55,12 +55,12 @@ export default function Hero() {
                 alt="Circle" 
                 width={365}
                 height={365}
-                className="absolute w-[205px] lg:w-[250px] xl:w-[365px] top-[0px] left-[-10px] animation-effect"
+                className="absolute w-[230px] lg:w-[350px] xl:w-[400px] top-[-10px] left-[-10px] animation-effect"
               />
               {hero.title2}
             </span>
           </h1>
-          <h1 className="animation-effect font-semibold text-[14px] md:text-[16px] lg:text-[20px] leading-[34px] md:w-[480px] mt-[20px] md:mt-[40px] mb-[27px]">{hero.subtitle}</h1>
+          <h1 className="animation-effect font-semibold text-[14px] md:text-[16px] lg:text-[20px] leading-[20px] md:leading-[30px] md:w-[480px] mt-[20px] md:mt-[40px] mb-[27px]">{hero.subtitle}</h1>
           <SearchNow 
             placeholder={hero.placeholder} 
             buttonSearch={hero.buttonSearch} 

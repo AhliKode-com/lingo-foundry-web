@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 13:09:33
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-22 00:53:07
+ * @Last Modified time: 2025-09-13 12:17:02
  */
 
 export function NavText({text, position}) {
@@ -35,6 +35,23 @@ export function TitleText({text,custom, marginBottom, marginX}) {
             className={`
                 z-20
                 text-[26px] sm:text-[34px] md:text-[44px]
+                font-bold
+                ${marginX}
+                ${marginBottom}
+                ${custom}
+                animation-effect
+            `}>
+            {text}
+        </span>
+    )
+}
+
+export function TitleHeroBottom({text,custom, marginBottom, marginX}) {
+    return (
+        <span 
+            className={`
+                z-20
+                text-[26px] lg:text-[20px] xl:text-[23px]
                 font-bold
                 ${marginX}
                 ${marginBottom}

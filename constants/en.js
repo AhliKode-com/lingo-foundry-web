@@ -2,18 +2,18 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-08-27 17:10:30
+ * @Last Modified time: 2025-09-13 23:03:21
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
 
 export const Home = {
     hero: {
-        title1: 'Learn Everyday & Any New Language Online with Top',
-        title2: 'Instructors.',
-        subtitle: 'Language learning made easy and fun Personalized just for you!',
-        placeholder: 'Try “Learn English”',
-        buttonSearch: 'Search Now'
+        title1: 'Learn Languages Live, With Expert Instructors –',
+        title2: 'Anytime, Anywhere.',
+        subtitle: 'Move beyond boring apps. Join a community where you learn by doing—practice languages, build skills, and achieve your goals with real people.',
+        placeholder: 'Try Language exam preparation (IELTS/TOEFL/TOEIC)',
+        buttonSearch: 'Search Tutors'
     },
     carousel: {
         title: 'Our Language Tutors',
@@ -44,7 +44,7 @@ export const Home = {
         }
     },
     looking: {
-        title: 'Teachers & Students',
+        title: 'Instructors & Students',
         subtitle: 'What are you waiting for?',
         teachTitle: 'Apply as Instructors',
         learnTitle: 'Apply as Students',
@@ -119,32 +119,33 @@ export const Home = {
     whyChooseUs: {
         title: 'Why Choose Lingo Foundry?',
         flexibleTitle: 'Flexible scheduling',
-        flexibleDesc: 'Book and attend classes on your schedule',
-        lessonsTitle: 'Lessons made for you',
-        lessonsDesc: 'Customized lessons for your specific needs',
+        flexibleDesc: 'Learn when it suits you after work, on weekends, or at night.',
+        lessonsTitle: 'Customized Lessons',
+        lessonsDesc: 'Lessons tailored to your goals—exam prep, study-abroad readiness, or fun conversation practice.',
         payTitle: 'Pay as you go',
-        payDesc: 'No contracts - buy lessons only when you need them',
-        whyButton: 'Start Finding Tutors'
+        payDesc: "Zero contracts—just pay for lessons when you're ready.",
+        liveTitle: "Live Instructors + Community",
+        liveDesc: "Join live classes with expert instructors in a supportive global learning community.",
+        whyButton: 'Start Your First Class Now'
     },
     how: {
         title: "How it works",
-        oneHeadingBefore: "Find a tutor",
+        oneHeadingBefore: "Find Your Tutor",
         oneHeadingHighlight: "",
         oneHeadingAfter: "",
-        oneDesc: "Browse tutors and see their backgrounds, experiences, and student's feedback. And book your class.",
-        twoHeadingBefore: "Choose a time and book a class",
+        oneDesc: "Browse certified language tutors, check their experience, and read student feedback. Choose the tutor who matches your goals — whether it's IELTS prep, career advancement, or hobby learning — and book your first live lesson.",
+        twoHeadingBefore: "Book at Your Convenience",
         twoHeadingHighlight: "",
         twoHeadingAfter: "",
-        twoDescBefore: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to",
+        twoDescBefore: "Pick a time that works for your schedule and book instantly. With flexible online tutoring, you can reschedule or cancel up to",
         twoDescHighlight: " 12 hours ",
-        twoDescAfter: "before your class.",
-        threeHeadingBefore: "Learn when you want, from where you want",
+        twoDescAfter: "before class.",
+        threeHeadingBefore: "Learn Anywhere, Anytime",
         threeHeadingHighlight: "",
         threeHeadingAfter: "",
-        threeDescBefore: "Take the lesson anywhere you want with your mobile device or computer. When it's time for your lesson, load your class via ",
+        threeDescBefore: "Join your live language lesson from your laptop or mobile device via ",
         threeDescHighlight: "Google Meet",
-        threeDescAfter: " and start learning!",
-        threeDesc: "Once you’ve bought a lesson, choose a time slot and book your class. Cancel or reschedule up to 12 hours before your class."
+        threeDescAfter: " Learn from real tutors, practice speaking, and enjoy interactive online sessions that fit your lifestyle."
     },
     review: {
         title: 'Hear What They Said',
@@ -163,24 +164,25 @@ export const Home = {
         teacherThree: 'Kevin Duncan- IELTS Specialist',
     },
     heroBottom: {
-        title: 'Be a Great Tutor At Lingo Foundry',
+        title: 'Teach Languages Online with Lingo Foundry – Flexible, Rewarding, Global',
+        desc: 'Join our global community of online language tutors and connect with learners from across the world. At Lingo Foundry, you decide when and how you teach.',
         list: [
-            {title: 'Global Reach', desc: 'Connect with students from all over the world'},
-            {title: 'Flexible Work Hours', desc: 'Work from home and on your schedule'},
-            {title: 'Competitive Earnings', desc: 'Set your own prices and be your own boss'},
+            {title: 'Global Reach', desc: 'Reach students preparing for exams, study abroad, or language learning as a hobby.'},
+            {title: 'Flexible Online Teaching', desc: 'Work from home and schedule lessons that match your lifestyle.'},
+            {title: 'Competitive Earnings', desc: 'Set your own rates, earn fairly, and build a sustainable tutoring career.'},
         ],
-        button: 'Apply to teach'
+        button: 'Apply as an Online Tutor'
     }
 }
 
 export const FindTutor = {
     hero: {
-        title1: 'Online Tutoring,',
-        title2: 'Tutors Near Me,',
-        title3: 'and Classes',
-        subtitle: 'Your dedicated language teacher, your path to fluency.',
-        placeholder: 'Try “Learn English”',
-        buttonSearch: 'Search Now'
+        title1: 'Find Certified –',
+        title2: 'Online Language Tutors',
+        title3: 'Learn Anytime, Anywhere.',
+        subtitle: 'Learn with real tutors online. Flexible schedules, instant booking, no contracts.',
+        placeholder: 'HSK JLPT exam prep tutor',
+        buttonSearch: 'Book Your Lesson'
     },
     faq: {
         title: 'Online Tutoring FAQ',
@@ -229,7 +231,7 @@ export const FooterData = {
         quickLinks: 'Quick Links',
         followUs: 'Follow Us',
         feature: 'Features',
-        desc: 'Language learning platform made easy & fun Connecting Top Instructors with students',
+        desc: 'Learn languages. Build skills. Connecting Top Instructors with Students.',
         address: 'Gedung Jaya Lantai 5 unit A.6 JL. M.H Thamrin No.12 , RT.002/RW.001, Kb. Sirih, Kec. Menteng, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10340',
         phone: '+6221-3106663'
     },
@@ -351,8 +353,8 @@ export const FooterData = {
     ],
     contactUs: [
         {
-            href: 'mailto:info@lingofoundry.com',
-            title: 'info@lingofoundry.com'
+            href: 'mailto:admin@lingofoundry.com',
+            title: 'admin@lingofoundry.com'
         },
         {
             href: 'https://whatsapp.com/channel/0029Vb7T6qH3wtb9qe7Mol2w',
@@ -382,11 +384,11 @@ export const FooterData = {
         },
         {
             href: '/find-tutor',
-            title: 'Explore our Tutors'
+            title: 'Explore our Instructors'
         },
         {
             href: '/find-tutor#faqStudent',
-            title: 'Online Tutoring FAQ'
+            title: 'FAQ'
         },
         {
             href: '/find-tutor#hearWhatTheySaid',

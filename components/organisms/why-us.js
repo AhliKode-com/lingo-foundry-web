@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 08:16:49
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-08-13 21:36:24
+ * @Last Modified time: 2025-09-13 11:54:54
  */
 
 import Image from "next/image";
@@ -17,12 +17,14 @@ export default function Why() {
     const bgColors = {
         flexible: '#8E66FF',
         lessons: '#E35D33',
-        pay: '#1E419D'
+        pay: '#1E419D',
+        live: '#8E66FF'
     }
     const point = [
         { id: 1, bg: "flexible", title: whyChooseUs.flexibleTitle, desc: whyChooseUs.flexibleDesc },
         { id: 2, bg: "lessons", title: whyChooseUs.lessonsTitle, desc: whyChooseUs.lessonsDesc },
-        { id: 3, bg: "pay", title: whyChooseUs.payTitle, desc: whyChooseUs.payDesc }
+        { id: 3, bg: "pay", title: whyChooseUs.payTitle, desc: whyChooseUs.payDesc },
+        { id: 4, bg: "live", title: whyChooseUs.liveTitle, desc: whyChooseUs.liveDesc },
     ]
 
     return (
@@ -36,23 +38,23 @@ export default function Why() {
                     className="min-[900px]:hidden absolute w-[150px] right-[28px] top-[50px] animation-effect"
                     priority
                 />
-                <div className="flex flex-col md:flex-row items-center gap-[10px] md:gap-[15px] xl:gap-[50px] w-full justify-center">
+                <div className="flex flex-col md:flex-row items-center gap-[10px] md:gap-[15px] xl:gap-[50px] w-full">
                     <Image 
                         src='/assets/hero-why.png' 
                         alt='why-us' 
                         width={750}
                         height={750}
-                        className='hidden md:flex md:w-[490px] xl:w-[750px] animation-effect'
+                        className='hidden md:flex shrink-0 md:w-[490px] xl:w-1/2 animation-effect'
                         priority
                     />
-                    <div className="flex flex-col md:w-[350px]">
+                    <div className="flex flex-col md:w-1/2">
                         <TitleText text={whyChooseUs.title}/>
-                        <div className="flex flex-col gap-[30px] my-[30px]">
+                        <div className="flex flex-1 shrink-0 flex-col gap-[30px] my-[30px]">
                             {point.map((item, index) => (
                                 <div className="flex items-center gap-[10px]" key={index}>
                                     <div 
                                         style={{ backgroundColor: bgColors[item.bg] }} 
-                                        className="rounded-full h-[25px] w-[25px]">
+                                        className="rounded-full flex shrink-0 h-[25px] w-[25px]">
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="font-bold text-[14px] md:text-[16px] animation-effect">{item.title}</span>

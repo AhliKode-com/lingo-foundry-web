@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-05 22:07:59
+ * @Last Modified time: 2025-09-13 23:29:45
  */
 
 import { TitleText } from "@/components/atoms/title";
@@ -18,8 +18,8 @@ export default function HowTutor() {
             altImage: "one-pic",
             icon: "/assets/how/one.svg",
             altIcon: "one-num",
-            title: "Set your prices. Earn from Home Rp. 100.000 per hour or More",
-            desc: "You can choose your hourly rate, from Rp. 100,000 to Rp. 400,000 or more based on your expertise and experiences. Courses are divided into 30 minutes trial lessons and 60 minutes standard lessons."
+            title: "Maximize Your Earning Potential from Home",
+            desc: "You’re in control. Set a competitive hourly rate that reflects your expertise, typically ranging from Rp. 100,000 to Rp. 400,000 or more."
         },
         {
             id: 2,
@@ -27,8 +27,8 @@ export default function HowTutor() {
             altImage: "two-pic",
             icon: "/assets/how/two.svg",
             altIcon: "two-num",
-            title: "Be your own boss. Grow professionaly",
-            desc: "Design your ideal teaching week. Simply input your availability, and students can select their preferred class times. No set minimum commitment.",
+            title: "Build a Fulfilling Teaching Career on Your Terms",
+            desc: "Design your ideal teaching week. Just set your availability and let students book your open slots—with no minimum hours required.",
             notes: "Top 10 tutors’ teaching hours: 16 - 81 hours / week"
         },
         {
@@ -94,16 +94,14 @@ export default function HowTutor() {
                 ))}
             </div>
             <div className="animation-effect mt-[45px] flex flex-col z-10 gap-[5px] md:gap-[10px]">
-                <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px] font-bold">Note:</span>
+                <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px] font-bold">Set Your Price for Success</span>
+                <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px] font-bold">Your expertise is valuable. Here&#39;s how to price it competitively:</span>
                 <ul className="animation-effect list-inside list-disc pl-2 text-[14px] sm:text-[16px] md:text-[18px]">
-                    <li>Native speakers with teaching certifications command higher rates.</li>
-                    <li>Years of experience and specialized knowledge (e.g., business Mandarin) also increase prices</li>
-                    <li>Individual lessons are more expensive than group lessons.</li>
-                    <li>Specialized courses (e.g., exam preparation) may have premium pricing</li>
-                    <li>Tutors can use this as reference, but can also set their own price based on personal experiences to attract students.</li>
-                    <li>As tutors accumulate teaching hours and receive positive reviews, tutors could also consider increasing the pricing for the class.</li>
+                    <li><strong>Boost Your Rates:</strong> Being a certified native speaker or having specialized knowledge (e.g., Business English, exam prep) allows you to command a higher price.</li>
+                    <li><strong>Start Strong & Grow:</strong> Set a competitive starting price to attract your first students. As you collect positive reviews and teaching hours, you can confidently increase your rates.</li>
+                    <li><strong>You're in Control:</strong> These are just guidelines. The final decision is always yours based on your unique value.</li>
                 </ul>
-                <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px]">See our <Link href="#FAQ" className="text-[#E15C31] font-bold">FAQ’s</Link> for more information.</span>
+                <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px] italic">Find more pricing strategies in our <Link href="#FAQ" className="text-[#E15C31] font-bold">FAQ</Link>.</span>
             </div>
         </div>
     )

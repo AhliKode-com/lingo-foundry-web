@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 14:21:25
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-06 16:41:32
+ * @Last Modified time: 2025-09-13 23:31:12
  */
 
 import { TitleText } from "@/components/atoms/title";
@@ -45,7 +45,7 @@ export default function BecomeTutor() {
       
     return (
         <div className="lingo-container py-[50px] flex flex-col justify-center relative pt-[75px] sm:pt-[100px] md:pt-[150px]">
-            <TitleText text="How I'll become tutor on Lingo Foundry?" marginX='mx-auto'/>
+            <TitleText text="Launch Your Online Teaching Career with Lingo Foundry" marginX='mx-auto'/>
             <div className='my-[20px] md:my-[40px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[24px] animation-effect'>
                 {steps.map((item, index) => (
                     <div key={index} className="animation-effect">
