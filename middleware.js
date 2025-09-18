@@ -16,14 +16,27 @@ export function middleware(req) {
         if (!token) {
             // Store the intended destination in a cookie
             const response = NextResponse.redirect(new URL("/login", req.url));
-            response.cookies.set("redirectAfterLogin", "/tutor-register");
+            response.cookies.set("redirectAfterLogin", "/tutor-register", {
+                httpOnly: false,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                path: '/'
+            });
             return response;
         }
     }
 
     // Check for protected routes
     if (!token) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        // Store the intended destination in a cookie for redirect after login
+        const response = NextResponse.redirect(new URL("/login", req.url));
+        response.cookies.set("redirectAfterLogin", url.pathname, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/'
+        });
+        return response;
     }
 
     // Check if token is expired

@@ -152,7 +152,7 @@ export default function TutorDashboard(){
             {/* Greetings */}
             <div className="flex flex-col">
                 <TitleStudentDashboard text={`Good afternoon, ${user?.firstName} ${user?.lastName}`} />
-                <span className="text-[#4D4C5C]">It's great having you here 🎉</span>
+                <span className="text-[#4D4C5C]">It&#39;s great having you here 🎉</span>
                 {(!user?.tutor?.cvFileObjectKey || !user?.tutor?.certificatesJson) &&
                     <div className="bg-[#F4F4F8] flex justify-between items-center p-[24px] md:pb-[40px] mt-[48px] rounded-[8px]">
                         <div className="flex flex-col">

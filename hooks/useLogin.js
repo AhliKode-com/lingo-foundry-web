@@ -40,10 +40,25 @@ export function useLogin() {
                 toast.success("Logged in successfully.")
                 
                 // Check for redirect cookie
+                const cookieOptions = {
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    path: '/'
+                };
+                
                 const redirectPath = Cookies.get("redirectAfterLogin");
+                console.log("Redirect path from cookie:", redirectPath); // Debug log
+                
                 if (redirectPath) {
-                    Cookies.remove("redirectAfterLogin"); // Clear the cookie
-                    router.push(redirectPath);
+                    Cookies.remove("redirectAfterLogin", cookieOptions); // Clear the cookie
+                    console.log("Redirecting to:", redirectPath); // Debug log
+                    
+                    // Use window.location for production redirect to avoid caching issues
+                    if (process.env.NODE_ENV === 'production') {
+                        window.location.href = redirectPath;
+                    } else {
+                        router.push(redirectPath);
+                    }
                 } else {
                     router.push("/");
                 }
