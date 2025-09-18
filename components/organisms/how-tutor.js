@@ -99,7 +99,7 @@ export default function HowTutor() {
                 <ul className="animation-effect list-inside list-disc pl-2 text-[14px] sm:text-[16px] md:text-[18px]">
                     <li><strong>Boost Your Rates:</strong> Being a certified native speaker or having specialized knowledge (e.g., Business English, exam prep) allows you to command a higher price.</li>
                     <li><strong>Start Strong & Grow:</strong> Set a competitive starting price to attract your first students. As you collect positive reviews and teaching hours, you can confidently increase your rates.</li>
-                    <li><strong>You're in Control:</strong> These are just guidelines. The final decision is always yours based on your unique value.</li>
+                    <li><strong>You&#39;re in Control:</strong> These are just guidelines. The final decision is always yours based on your unique value.</li>
                 </ul>
                 <span className="animation-effect text-[14px] sm:text-[16px] md:text-[18px] italic">Find more pricing strategies in our <Link href="#FAQ" className="text-[#E15C31] font-bold">FAQ</Link>.</span>
             </div>
