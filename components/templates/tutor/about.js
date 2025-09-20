@@ -4,7 +4,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-31 10:48:52
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-05-28 15:51:25
+ * @Last Modified time: 2025-09-20 12:11:55
  */
 import { IoIosArrowDown } from "react-icons/io";
 import { useFieldArray, useForm } from "react-hook-form"
@@ -181,13 +181,13 @@ export default function About({ setCurrentStep }) {
     //checkbox
     const checkboxFields = [
         { id: "isOver18", label: "I confirm I'm over 18" },
-        { id: "check1", label: "Teachers must enter the designated online Gmeet meeting room on time to start the scheduled lesson(s);" },
-        { id: "check2", label: "Teachers can request salary withdrawal before the 30th of each month, and their salary payment will be received by the range of 5th to 10th of that month;" },
-        { id: "check3", label: `Active teachers will be listed on a "teacher's wall" for each subject. Each teacher's position on the wall (ranking) is calculated using comprehensive performance data from all teachers that is updated dynamically. A teacher will receive greater exposure and appear higher on the teacher's wall if our system detects an improvement in overall performance. For example, some factors that can raise your profile on the teacher's wall include: adding more time slots to teach, increasing the number of lessons you've sold, teaching more lessons;` },
-        { id: "check4", label: "If a student reports any misconduct or inappropriate behavior by the teacher (e.g. arriving late to class, skipping the lesson, leaving the lesson early), Lingo Foundry reserves the right to terminate all cooperation with the teacher should LingoFoundry deem it necessary;" },
-        { id: "check5", label: "If LingoFoundry discovers that a teacher is found to have attempted to teach LingoFoundry users outside the platform or circumvent LingoFoundry, LingoFoundry reserves the right to pursue appropriate legal action;" },
-        { id: "check6", label: "Teachers agree to abide by and support marketing and promotional activities organized by LingoFoundry as needed (such activities aim to increase teachers' income);" },
-        { id: "check7", label: "If LingoFoundry finds that a teacher is involved in any act of inappropriate behavior or slander (including but not limited to misrepresentations and scams) and deems the teacher's actions to have damaged the LingoFoundry brand or reputation, LingoFoundry reserves the right to pursue appropriate legal action." }
+        { id: "check1", label: "Tutors must enter the designated online Gmeet meeting room on time to start the scheduled lesson(s);" },
+        { id: "check2", label: "Tutors can request salary withdrawal latest by the 30th/ 31st of each month, and their payment will be received by the range of 5th to 10th of that month;" },
+        { id: "check3", label: `Active tutors will be listed on a "tutor's wall" for each subject. Each tutor's position on the wall (ranking) is calculated using comprehensive performance data from all tutors that is updated dynamically. A tutor will receive greater exposure and appear higher on the tutor's wall if our system detects an improvement in overall performance. For example, some factors that can raise your profile on the tutor's wall include: adding more time slots to teach, increasing the number of lessons you've sold, teaching more lessons;` },
+        { id: "check4", label: "If a student reports any misconduct or inappropriate behavior by the tutor (e.g. arriving late to class, skipping the lesson, leaving the lesson early), Lingo Foundry reserves the right to terminate all cooperation with the tutor should Lingo Foundry deem it necessary;" },
+        { id: "check5", label: "If Lingo Foundry discovers that a tutor is found to have attempted to teach Lingo Foundry users outside the platform or circumvent Lingo Foundry, Lingo Foundry reserves the right to pursue appropriate legal action;" },
+        { id: "check6", label: "Tutors agree to abide by and support marketing and promotional activities organized by Lingo Foundry as needed (such activities aim to increase tutors' income);" },
+        { id: "check7", label: "If Lingo Foundry finds that a tutor is involved in any act of inappropriate behavior or slander (including but not limited to misrepresentations and scams) and deems the tutor's actions to have damaged the Lingo Foundry brand or reputation, Lingo Foundry reserves the right to pursue appropriate legal action." }
     ];
 
     const [searchTerm, setSearchTerm] = useState({});
@@ -691,9 +691,9 @@ export default function About({ setCurrentStep }) {
                 </div>
 
                 <div className="flex flex-col space-y-4" ref={checkboxRef}>
-                    <span className="font-semibold text-[18px]">LingoFoundry Terms of Service </span>
-                    <span>Dear Teacher,</span>
-                    <span>Welcome to LingoFoundry. Before you register to become a teacher on LingoFoundry, please read our Terms of Service. By checking each box, you acknowledge that you have read this consent form and agree to abide by the following items:</span>
+                    <span className="font-semibold text-[18px]">Lingo Foundry Terms of Service </span>
+                    <span>Dear Tutor,</span>
+                    <span>Welcome to Lingo Foundry. Before you register to become a Tutor on LingoFoundry, please read our Terms of Service. By checking each box, you acknowledge that you have read this consent form and agree to abide by the following items:</span>
                 </div>
                 
                 {checkboxFields.map(({ id, label }) => (
