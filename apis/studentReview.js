@@ -81,9 +81,8 @@ export function useCertificateDownload() {
                 }
             });
             
-            // The response should be a string containing the download URL
-            const downloadUrl = response.data;
-            return downloadUrl;
+            // Return the full response data
+            return response.data;
         } catch (err) {
             setError(err.response?.data?.message || "Failed to download certificate");
             throw err;
