@@ -28,16 +28,21 @@ export default function CourseCard({course, isSelected, onClick}) {
                (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform));
     };
 
+    const isSafari = () => {
+        return /^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
+               /iPad|iPhone|iPod/.test(navigator.userAgent);
+    };
+
     const createAndDownloadPDF = async (htmlContent, filename) => {
-        // Check if mobile device
-        if (isMobile()) {
-            // Mobile: Show certificate with download options
+        // Check if mobile device or Safari
+        if (isMobile() || isSafari()) {
+            // Mobile/Safari: Show certificate with print dialog
             showMobileCertificate(htmlContent, filename);
             return;
         }
 
         try {
-            // Desktop: Generate PDF
+            // Desktop (non-Safari): Generate PDF
             const jsPDF = (await import('jspdf')).jsPDF;
             
             const pdf = new jsPDF({
@@ -82,9 +87,65 @@ export default function CourseCard({course, isSelected, onClick}) {
     };
 
     const showMobileCertificate = (htmlContent, filename) => {
+        // Add Safari-specific print styles and instructions
+        const safariOptimizedHtml = htmlContent.replace('</head>', `
+            <style>
+                /* Safari-specific print optimizations */
+                @media print {
+                    @page {
+                        size: A4 landscape;
+                        margin: 0;
+                    }
+                    
+                    body {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                        color-adjust: exact !important;
+                    }
+                    
+                    .certificate {
+                        page-break-inside: avoid;
+                        width: 100% !important;
+                        height: 100% !important;
+                    }
+                }
+                
+                /* Safari print instruction overlay */
+                .safari-print-instruction {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 15px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    z-index: 10000;
+                    max-width: 300px;
+                    display: ${isSafari() ? 'block' : 'none'};
+                }
+                
+                @media print {
+                    .safari-print-instruction {
+                        display: none !important;
+                    }
+                }
+            </style>
+        </head>`);
+
+        const finalHtml = safariOptimizedHtml.replace('</body>', `
+            ${isSafari() ? `
+                <div class="safari-print-instruction">
+                    <strong>Safari Users:</strong><br>
+                    In the print dialog, click "Show Details" then select "Save as PDF" from the PDF dropdown.
+                    <button onclick="this.parentElement.style.display='none'" style="float: right; background: none; border: none; color: white; cursor: pointer; font-size: 16px;">×</button>
+                </div>
+            ` : ''}
+        </body>`);
+
         // Open certificate in same tab and auto-trigger print dialog
         const newWindow = window.open('', '_self');
-        newWindow.document.write(htmlContent);
+        newWindow.document.write(finalHtml);
         newWindow.document.close();
         
         // Auto-trigger print dialog after page loads
