@@ -23,7 +23,7 @@ export default function CourseCard({course, isSelected, onClick}) {
     const progress = course.attendedCount
     const total = course.sessionCount
 
-    const handleCertificateDownload = async (certificateWindow = null) => {
+    const handleCertificateDownload = async () => {
         try {
             const response = await downloadCertificate(course.orderItemId);
             
@@ -45,36 +45,45 @@ export default function CourseCard({course, isSelected, onClick}) {
             
             if (certificateData && certificateData.name) {
                 // Generate certificate HTML with the response data
-                generateCertificateHTML(certificateData, certificateWindow);
+                await generateCertificateHTML(certificateData);
             } else {
-                if (certificateWindow) {
-                    certificateWindow.close();
-                }
                 setShowErrorModal(true);
             }
         } catch (error) {
-            if (certificateWindow) {
-                certificateWindow.close();
-            }
             setShowErrorModal(true);
         }
     };
 
-    const generateCertificateHTML = (certificateData, certificateWindow = null) => {
+    const generateCertificateHTML = async (certificateData) => {
         console.log("Generating certificate with data:", certificateData); // Debug log
         
         // Validate certificate data
         if (!certificateData || !certificateData.name) {
             console.error("Invalid certificate data:", certificateData);
-            if (certificateWindow) {
-                certificateWindow.close();
-            }
             setShowErrorModal(true);
             return;
         }
-        
-        // Use provided window or create a new one
-        const windowToUse = certificateWindow || window.open('', '_blank', 'width=1200,height=850');
+
+        // Convert images to base64 for embedding
+        const convertImageToBase64 = async (url) => {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(blob);
+                });
+            } catch (error) {
+                console.error('Error converting image to base64:', error);
+                return '';
+            }
+        };
+
+        // Get base64 versions of images
+        const logoBase64 = await convertImageToBase64('/assets/logo.png');
+        const sealBase64 = await convertImageToBase64('/assets/seal.svg');
+        const sideBlueBase64 = await convertImageToBase64('/assets/side-blue.svg');
         
         // Generate the HTML content with dynamic data
         const certificateHTML = `
@@ -206,7 +215,7 @@ export default function CourseCard({course, isSelected, onClick}) {
 <body>
   <div class="certificate">
     <div class="blue-border">
-      <img src="/assets/side-blue.svg" alt="" class="side-blue-image" />
+      <img src="${sideBlueBase64}" alt="" class="side-blue-image" />
     </div>
 
     <div class="decorative-circles">
@@ -216,12 +225,12 @@ export default function CourseCard({course, isSelected, onClick}) {
     </div>
 
     <div class="watermark-logo">
-      <img src="/assets/logo.png" alt="Lingo Foundry" class="watermark-image" />
+      <img src="${logoBase64}" alt="Lingo Foundry" class="watermark-image" />
     </div>
 
     <div class="content">
       <div class="logo">
-        <img src="/assets/logo.png" alt="Lingo Foundry" class="logo-image" />
+        <img src="${logoBase64}" alt="Lingo Foundry" class="logo-image" />
       </div>
 
       <h1 class="certificate-title">CERTIFICATE</h1>
@@ -252,7 +261,7 @@ export default function CourseCard({course, isSelected, onClick}) {
     </div>
 
     <div class="seal">
-      <img src="/assets/seal.svg" alt="Course Completion Seal" class="seal-image" />
+      <img src="${sealBase64}" alt="Course Completion Seal" class="seal-image" />
     </div>
 
     ${certificateData.qrBase64 ? `
@@ -264,10 +273,12 @@ export default function CourseCard({course, isSelected, onClick}) {
 </body>
 </html>`;
 
-        if (windowToUse) {
-            windowToUse.document.write(certificateHTML);
-            windowToUse.document.close();
-        }
+        // Create a blob with the HTML content
+        const blob = new Blob([certificateHTML], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        
+        // Open in the same tab
+        window.location.href = url;
     };
 
     const handleCertificateClick = async () => {
@@ -279,76 +290,21 @@ export default function CourseCard({course, isSelected, onClick}) {
                 setOutstandingBookingIds(outstandingReviews);
                 setShowReviewModal(true);
             } else {
-                // For mobile browsers, open window immediately in user event
-                const certificateWindow = window.open('', '_blank', 'width=1200,height=850');
-                
-                if (certificateWindow) {
-                    // Show loading message in the new window
-                    certificateWindow.document.write(`
-                        <html>
-                            <head><title>Loading Certificate...</title></head>
-                            <body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
-                                <div style="text-align: center;">
-                                    <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #E25D33; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                                    <p>Loading your certificate...</p>
-                                    <style>
-                                        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-                                    </style>
-                                </div>
-                            </body>
-                        </html>
-                    `);
-                    certificateWindow.document.close();
-                    
-                    // Now download certificate and update the window
-                    await handleCertificateDownload(certificateWindow);
-                } else {
-                    // Fallback if popup is blocked
-                    await handleCertificateDownload();
-                }
+                // Directly download certificate in same tab
+                await handleCertificateDownload();
             }
         } catch (error) {
             console.error("Error checking outstanding reviews:", error);
             // If checking reviews fails, try to download certificate anyway
-            const certificateWindow = window.open('', '_blank', 'width=1200,height=850');
-            if (certificateWindow) {
-                await handleCertificateDownload(certificateWindow);
-            } else {
-                await handleCertificateDownload();
-            }
+            await handleCertificateDownload();
         }
     };
 
     const handleReviewComplete = async (isReviewed = false) => {
         setShowReviewModal(false);
         if (isReviewed) {
-            // After reviews are submitted, download the certificate
-            // Open window immediately for mobile compatibility
-            const certificateWindow = window.open('', '_blank', 'width=1200,height=850');
-            
-            if (certificateWindow) {
-                // Show loading message
-                certificateWindow.document.write(`
-                    <html>
-                        <head><title>Loading Certificate...</title></head>
-                        <body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
-                            <div style="text-align: center;">
-                                <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #E25D33; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                                <p>Loading your certificate...</p>
-                                <style>
-                                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-                                </style>
-                            </div>
-                        </body>
-                    </html>
-                `);
-                certificateWindow.document.close();
-                
-                await handleCertificateDownload(certificateWindow);
-            } else {
-                // Fallback if popup is blocked
-                await handleCertificateDownload();
-            }
+            // After reviews are submitted, download the certificate in same tab
+            await handleCertificateDownload();
         }
     };
 
