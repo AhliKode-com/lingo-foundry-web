@@ -23,19 +23,29 @@ export default function CourseCard({course, isSelected, onClick}) {
     const progress = course.attendedCount
     const total = course.sessionCount
 
+    const isMobile = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform));
+    };
+
     const createAndDownloadPDF = async (htmlContent, filename) => {
+        // Check if mobile device
+        if (isMobile()) {
+            // Mobile: Show certificate with download options
+            showMobileCertificate(htmlContent, filename);
+            return;
+        }
+
         try {
-            // Import jsPDF
+            // Desktop: Generate PDF
             const jsPDF = (await import('jspdf')).jsPDF;
             
-            // Create PDF instance
             const pdf = new jsPDF({
                 orientation: 'landscape',
                 unit: 'mm',
                 format: 'a4'
             });
 
-            // Create a temporary iframe to render HTML
             const iframe = document.createElement('iframe');
             iframe.style.position = 'absolute';
             iframe.style.left = '-9999px';
@@ -43,42 +53,44 @@ export default function CourseCard({course, isSelected, onClick}) {
             iframe.style.height = '210mm';
             document.body.appendChild(iframe);
 
-            // Write HTML to iframe
             iframe.contentDocument.open();
             iframe.contentDocument.write(htmlContent);
             iframe.contentDocument.close();
 
-            // Wait for content to load
             await new Promise(resolve => setTimeout(resolve, 2000));
 
-            // Use html2canvas to convert to image
             const html2canvas = (await import('html2canvas')).default;
             const canvas = await html2canvas(iframe.contentDocument.body, {
-                width: 1240, // A4 landscape width in pixels at 96 DPI
-                height: 888,  // A4 landscape height in pixels at 96 DPI
+                width: 1240,
+                height: 888,
                 scale: 2,
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: '#f5f5f5'
             });
 
-            // Remove iframe
             document.body.removeChild(iframe);
 
-            // Add image to PDF
             const imgData = canvas.toDataURL('image/png');
             pdf.addImage(imgData, 'PNG', 0, 0, 297, 210);
-
-            // Auto-download the PDF
             pdf.save(filename);
 
         } catch (error) {
             console.error('Error creating PDF:', error);
-            // Fallback: show HTML in new tab
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
+            showMobileCertificate(htmlContent, filename);
         }
+    };
+
+    const showMobileCertificate = (htmlContent, filename) => {
+        // Open certificate in same tab and auto-trigger print dialog
+        const newWindow = window.open('', '_self');
+        newWindow.document.write(htmlContent);
+        newWindow.document.close();
+        
+        // Auto-trigger print dialog after page loads
+        setTimeout(() => {
+            newWindow.print();
+        }, 1000);
     };
 
     const handleCertificateDownload = async () => {
