@@ -23,6 +23,64 @@ export default function CourseCard({course, isSelected, onClick}) {
     const progress = course.attendedCount
     const total = course.sessionCount
 
+    const createAndDownloadPDF = async (htmlContent, filename) => {
+        try {
+            // Import jsPDF
+            const jsPDF = (await import('jspdf')).jsPDF;
+            
+            // Create PDF instance
+            const pdf = new jsPDF({
+                orientation: 'landscape',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            // Create a temporary iframe to render HTML
+            const iframe = document.createElement('iframe');
+            iframe.style.position = 'absolute';
+            iframe.style.left = '-9999px';
+            iframe.style.width = '297mm';
+            iframe.style.height = '210mm';
+            document.body.appendChild(iframe);
+
+            // Write HTML to iframe
+            iframe.contentDocument.open();
+            iframe.contentDocument.write(htmlContent);
+            iframe.contentDocument.close();
+
+            // Wait for content to load
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Use html2canvas to convert to image
+            const html2canvas = (await import('html2canvas')).default;
+            const canvas = await html2canvas(iframe.contentDocument.body, {
+                width: 1240, // A4 landscape width in pixels at 96 DPI
+                height: 888,  // A4 landscape height in pixels at 96 DPI
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#f5f5f5'
+            });
+
+            // Remove iframe
+            document.body.removeChild(iframe);
+
+            // Add image to PDF
+            const imgData = canvas.toDataURL('image/png');
+            pdf.addImage(imgData, 'PNG', 0, 0, 297, 210);
+
+            // Auto-download the PDF
+            pdf.save(filename);
+
+        } catch (error) {
+            console.error('Error creating PDF:', error);
+            // Fallback: show HTML in new tab
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        }
+    };
+
     const handleCertificateDownload = async () => {
         try {
             const response = await downloadCertificate(course.orderItemId);
@@ -273,12 +331,8 @@ export default function CourseCard({course, isSelected, onClick}) {
 </body>
 </html>`;
 
-        // Create a blob with the HTML content
-        const blob = new Blob([certificateHTML], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        
-        // Open in the same tab
-        window.location.href = url;
+        // Create and auto-download PDF
+        await createAndDownloadPDF(certificateHTML, `${certificateData.name}_${certificateData.subjectName}_Certificate.pdf`);
     };
 
     const handleCertificateClick = async () => {
