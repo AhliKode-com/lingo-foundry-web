@@ -23,7 +23,7 @@ export default function CourseCard({course, isSelected, onClick}) {
     const progress = course.attendedCount
     const total = course.sessionCount
 
-    const handleCertificateDownload = async () => {
+    const handleCertificateDownload = async (certificateWindow = null) => {
         try {
             const response = await downloadCertificate(course.orderItemId);
             
@@ -45,27 +45,36 @@ export default function CourseCard({course, isSelected, onClick}) {
             
             if (certificateData && certificateData.name) {
                 // Generate certificate HTML with the response data
-                generateCertificateHTML(certificateData);
+                generateCertificateHTML(certificateData, certificateWindow);
             } else {
+                if (certificateWindow) {
+                    certificateWindow.close();
+                }
                 setShowErrorModal(true);
             }
         } catch (error) {
+            if (certificateWindow) {
+                certificateWindow.close();
+            }
             setShowErrorModal(true);
         }
     };
 
-    const generateCertificateHTML = (certificateData) => {
+    const generateCertificateHTML = (certificateData, certificateWindow = null) => {
         console.log("Generating certificate with data:", certificateData); // Debug log
         
         // Validate certificate data
         if (!certificateData || !certificateData.name) {
             console.error("Invalid certificate data:", certificateData);
+            if (certificateWindow) {
+                certificateWindow.close();
+            }
             setShowErrorModal(true);
             return;
         }
         
-        // Create a new window with the certificate
-        const certificateWindow = window.open('', '_blank', 'width=1200,height=850');
+        // Use provided window or create a new one
+        const windowToUse = certificateWindow || window.open('', '_blank', 'width=1200,height=850');
         
         // Generate the HTML content with dynamic data
         const certificateHTML = `
@@ -255,8 +264,10 @@ export default function CourseCard({course, isSelected, onClick}) {
 </body>
 </html>`;
 
-        certificateWindow.document.write(certificateHTML);
-        certificateWindow.document.close();
+        if (windowToUse) {
+            windowToUse.document.write(certificateHTML);
+            windowToUse.document.close();
+        }
     };
 
     const handleCertificateClick = async () => {
@@ -268,13 +279,43 @@ export default function CourseCard({course, isSelected, onClick}) {
                 setOutstandingBookingIds(outstandingReviews);
                 setShowReviewModal(true);
             } else {
-                // Directly download certificate if no outstanding reviews
-                await handleCertificateDownload();
+                // For mobile browsers, open window immediately in user event
+                const certificateWindow = window.open('', '_blank', 'width=1200,height=850');
+                
+                if (certificateWindow) {
+                    // Show loading message in the new window
+                    certificateWindow.document.write(`
+                        <html>
+                            <head><title>Loading Certificate...</title></head>
+                            <body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+                                <div style="text-align: center;">
+                                    <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #E25D33; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                                    <p>Loading your certificate...</p>
+                                    <style>
+                                        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                                    </style>
+                                </div>
+                            </body>
+                        </html>
+                    `);
+                    certificateWindow.document.close();
+                    
+                    // Now download certificate and update the window
+                    await handleCertificateDownload(certificateWindow);
+                } else {
+                    // Fallback if popup is blocked
+                    await handleCertificateDownload();
+                }
             }
         } catch (error) {
             console.error("Error checking outstanding reviews:", error);
             // If checking reviews fails, try to download certificate anyway
-            await handleCertificateDownload();
+            const certificateWindow = window.open('', '_blank', 'width=1200,height=850');
+            if (certificateWindow) {
+                await handleCertificateDownload(certificateWindow);
+            } else {
+                await handleCertificateDownload();
+            }
         }
     };
 
@@ -282,92 +323,126 @@ export default function CourseCard({course, isSelected, onClick}) {
         setShowReviewModal(false);
         if (isReviewed) {
             // After reviews are submitted, download the certificate
-            await handleCertificateDownload();
+            // Open window immediately for mobile compatibility
+            const certificateWindow = window.open('', '_blank', 'width=1200,height=850');
+            
+            if (certificateWindow) {
+                // Show loading message
+                certificateWindow.document.write(`
+                    <html>
+                        <head><title>Loading Certificate...</title></head>
+                        <body style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+                            <div style="text-align: center;">
+                                <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #E25D33; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                                <p>Loading your certificate...</p>
+                                <style>
+                                    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+                                </style>
+                            </div>
+                        </body>
+                    </html>
+                `);
+                certificateWindow.document.close();
+                
+                await handleCertificateDownload(certificateWindow);
+            } else {
+                // Fallback if popup is blocked
+                await handleCertificateDownload();
+            }
         }
     };
 
     return (
         <div
-            className={`border rounded-2xl p-4 shadow-sm cursor-pointer transition-all border-gray-200 ${
+            className={`justify-between flex flex-col border rounded-2xl p-4 shadow-sm cursor-pointer transition-all border-gray-200 ${
                 isSelected ? "border-[#D6DFFC] shadow-md" : "border-[#E0E0E0]"
             } focus:outline-none focus:ring-2 focus:ring-blue-400`}
             onClick={onClick}
             tabIndex={0}
         >
-      <span
-          className={`px-2 py-1 text-xs md:text-sm rounded-md ${levelColor[course.subjectLevel]}`}
-      >
-        {course.subjectLevel}
-      </span>
-            <p className="text-[#8D8D8D] mt-2 text-xs md:text-base">A Course by <span
-                className="text-[#E35D33]">{course.tutorFirstName}{" "}{course.tutorLastName}</span></p>
-            <h3 className="font-semibold text-base md:text-lg my-3 truncate"
-                style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
-                {course.subjectName}
-            </h3>
-            <p className="text-[#8D8D8D] text-xs md:text-sm mt-1">
-                Sessions completed {progress}/{total}
-            </p>
-            <div className="w-full bg-gray-200 h-1.5 rounded-full mt-2">
-                <div
-                    className="h-1.5 rounded-full"
-                    style={{
-                        width: `${progress === 0 ? "2" : (progress / total) * 100}%`,
-                        backgroundColor: "#E35D33"
-                    }}
-                ></div>
-            </div>
-            {progress === total ? (
-                // !course.downloadable ? (
-                //     <div className="relative">
-                //         <button
-                //             className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl text-[#E25D33] cursor-pointer flex justify-center items-center text-xs md:text-base relative"
-                //             onMouseEnter={() => setIsHovered(true)}
-                //             onMouseLeave={() => setIsHovered(false)}
-                //         >
-                //             <Certificate className="ml-2"/>
-                //             <p>Certificate</p>
-                //         </button>
+            <span
+                className={`px-2 py-1 text-xs md:text-sm w-fit rounded-md ${levelColor[course.subjectLevel]}`}
+            >
+                {course.subjectLevel}
+            </span>
 
-                //         {isHovered && (
-                //             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-red-100 text-gray-800 text-sm p-3 rounded-md shadow-md">
-                //                 Can be downloaded after 1 month from the beginning of the class
-                //             </div>
-                //         )}
-                //     </div>
-                // ) : (
-                    <button 
-                         onClick={handleCertificateClick}
-                         disabled={reviewLoading || certificateLoading}
-                         className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl bg-[#E25D33] hover:bg-orange-600 text-white cursor-pointer flex justify-center items-center text-xs md:text-base disabled:opacity-50"
-                     >
-                         <Certificate className="ml-2"/>
-                         <p>{reviewLoading || certificateLoading ? 'Loading...' : 'Certificate'}</p>
-                     </button>
-                // )
-            ) : (
-                <>
-                {course.remainingSession > 0 ? (
-                    <Link href={'/student-dashboard/purchase-history'} passHref>
-                        <button
-                            className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
-                            Set Schedule
+                <p className="text-[#8D8D8D] mt-2 text-xs md:text-base">A Course by <span
+                    className="text-[#E35D33]">{course.tutorFirstName}{" "}{course.tutorLastName}</span></p>
+                <h3 className="font-semibold text-base md:text-lg my-3 truncate"
+                    style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
+                    {course.subjectName}
+                </h3>
+                <p className="text-[#8D8D8D] text-xs md:text-sm mt-1">
+                    Sessions completed {progress}/{total}
+                </p>
+                <div className="w-full bg-gray-200 h-1.5 rounded-full mt-2">
+                    <div
+                        className="h-1.5 rounded-full"
+                        style={{
+                            width: `${progress === 0 ? "2" : (progress / total) * 100}%`,
+                            backgroundColor: "#E35D33"
+                        }}
+                    ></div>
+                </div>
+                {progress === total ? (
+                    // !course.downloadable ? (
+                    //     <div className="relative">
+                    //         <button
+                    //             className="mt-4 py-2 px-3 space-x-2 border border-[#E25D33] rounded-xl text-[#E25D33] cursor-pointer flex justify-center items-center text-xs md:text-base relative"
+                    //             onMouseEnter={() => setIsHovered(true)}
+                    //             onMouseLeave={() => setIsHovered(false)}
+                    //         >
+                    //             <Certificate className="ml-2"/>
+                    //             <p>Certificate</p>
+                    //         </button>
+
+                    //         {isHovered && (
+                    //             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-red-100 text-gray-800 text-sm p-3 rounded-md shadow-md">
+                    //                 Can be downloaded after 1 month from the beginning of the class
+                    //             </div>
+                    //         )}
+                    //     </div>
+                    // ) : (
+                        <button 
+                            onClick={handleCertificateClick}
+                            disabled={reviewLoading || certificateLoading}
+                            className="mt-4 py-2 px-3 w-full space-x-2 border border-[#E25D33] rounded-xl bg-[#E25D33] hover:bg-orange-600 text-white cursor-pointer flex justify-center items-center text-xs md:text-base disabled:opacity-50"
+                        >  
+                            {reviewLoading || certificateLoading ? (
+                                <div className="w-[24px] h-[24px] relative">
+                                    <div className="w-full h-full border-4 border-gray-200 rounded-full"></div>
+                                    <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-[#E25D33] rounded-full animate-spin"></div>
+                                </div>
+                            ) : (
+                                <Certificate className="ml-2"/>
+                            )}
+                            <p>{reviewLoading || certificateLoading ? 'Downloading...' : 'Download Certificate'}</p>
                         </button>
-                    </Link>
-                    
+                    // )
                 ) : (
-                    <></>
+                    <>
+                    {course.remainingSession > 0 ? (
+                        <Link href={'/student-dashboard/purchase-history'} passHref>
+                            <button
+                                className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
+                                Set Schedule
+                            </button>
+                        </Link>
+                        
+                    ) : (
+                        <></>
+                    )}
+                        <Link
+                            href={`/student-dashboard/reschedule?orderItemId=${course.orderItemId}&tutorSubjectId=${course.tutorSubjectId}&tutorId=${course.tutorId}`} passHref
+                        >
+                            <button
+                                className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
+                                Reschedule
+                            </button>
+                        </Link>
+                    </>
                 )}
-                    <Link
-                        href={`/student-dashboard/reschedule?orderItemId=${course.orderItemId}&tutorSubjectId=${course.tutorSubjectId}&tutorId=${course.tutorId}`} passHref
-                    >
-                        <button
-                            className="mt-4 w-full py-2 border border-[#ACACAC] rounded-xl text-[#161616] hover:bg-gray-100 cursor-pointer text-xs md:text-base">
-                            Reschedule
-                        </button>
-                    </Link>
-                </>
-            )}
+
 
             {/* Review Modal */}
             <ReviewModal 
