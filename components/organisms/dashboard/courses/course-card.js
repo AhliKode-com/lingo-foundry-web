@@ -87,7 +87,7 @@ export default function CourseCard({course, isSelected, onClick}) {
     };
 
     const showMobileCertificate = (htmlContent, filename) => {
-        // Add Safari-specific print styles and instructions
+        // Add Safari-specific print styles and auto-print script
         const safariOptimizedHtml = htmlContent.replace('</head>', `
             <style>
                 /* Safari-specific print optimizations */
@@ -109,49 +109,30 @@ export default function CourseCard({course, isSelected, onClick}) {
                         height: 100% !important;
                     }
                 }
-                
-                /* Safari print instruction overlay */
-                .safari-print-instruction {
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: rgba(0, 0, 0, 0.8);
-                    color: white;
-                    padding: 15px;
-                    border-radius: 8px;
-                    font-size: 14px;
-                    z-index: 10000;
-                    max-width: 300px;
-                    display: ${isSafari() ? 'block' : 'none'};
-                }
-                
-                @media print {
-                    .safari-print-instruction {
-                        display: none !important;
-                    }
-                }
             </style>
-        </head>`);
-
-        const finalHtml = safariOptimizedHtml.replace('</body>', `
-            ${isSafari() ? `
-                <div class="safari-print-instruction">
-                    <strong>Safari Users:</strong><br>
-                    In the print dialog, click "Show Details" then select "Save as PDF" from the PDF dropdown.
-                    <button onclick="this.parentElement.style.display='none'" style="float: right; background: none; border: none; color: white; cursor: pointer; font-size: 16px;">×</button>
-                </div>
-            ` : ''}
+        </head>`).replace('</body>', `
+            <script>
+                // Auto-trigger print dialog when page loads
+                window.addEventListener('load', function() {
+                    setTimeout(function() {
+                        window.print();
+                    }, 1000);
+                });
+                
+                // Clean up blob URL after print (if possible)
+                window.addEventListener('afterprint', function() {
+                    // Note: We can't easily navigate back from blob URL, 
+                    // but browser back button will work
+                });
+            </script>
         </body>`);
 
-        // Open certificate in same tab and auto-trigger print dialog
-        const newWindow = window.open('', '_self');
-        newWindow.document.write(finalHtml);
-        newWindow.document.close();
+        // Create blob URL for certificate
+        const blob = new Blob([safariOptimizedHtml], { type: 'text/html' });
+        const certificateUrl = URL.createObjectURL(blob);
         
-        // Auto-trigger print dialog after page loads
-        setTimeout(() => {
-            newWindow.print();
-        }, 1000);
+        // Navigate to certificate - this will trigger the print dialog automatically
+        window.open(certificateUrl, '_self');
     };
 
     const handleCertificateDownload = async () => {
