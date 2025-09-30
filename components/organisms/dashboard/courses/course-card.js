@@ -196,6 +196,7 @@ export default function CourseCard({course, isSelected, onClick}) {
         const logoBase64 = await convertImageToBase64('/assets/logo.png');
         const sealBase64 = await convertImageToBase64('/assets/seal.svg');
         const sideBlueBase64 = await convertImageToBase64('/assets/side-blue.svg');
+        const signatureBase64 = await convertImageToBase64('/assets/sign-jess.png');
         
         // Generate the HTML content with dynamic data
         const certificateHTML = `
@@ -273,8 +274,10 @@ export default function CourseCard({course, isSelected, onClick}) {
     .course-title { font-family: 'Playfair Display', serif; font-size: 42px; color: #333; margin-bottom: 30px; font-style: italic; }
     .description { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 60px; max-width: 600px; }
 
-    .signature-section { display: flex; justify-content: space-between; margin-top: auto; max-width: 500px; z-index: 2; }
-    .signature-line { text-align: center; }
+    .signature-section { display: flex; justify-content: space-between; max-width: 500px; z-index: 2; }
+    .signature-line { position: relative; text-align: center; display: flex; flex-direction: row; }
+    .signature-image { width: 125%; object-fit: contain; position: absolute; right: -115px; top: -60px; }
+    .signature-name { font-size: 14px; color: #666; font-weight: 600; letter-spacing: 1px; position: absolute; right: -130px; top: 50px; }
     .line { width: 200px; height: 2px; background: #333; margin-bottom: 10px; }
     .signature-label { font-size: 14px; color: #666; font-weight: 600; letter-spacing: 1px; }
 
@@ -364,10 +367,12 @@ export default function CourseCard({course, isSelected, onClick}) {
       <div class="signature-section">
         <div class="signature-line">
           <p class="signature-label">DATE</p>
-          <p style="font-size: 12px; color: #666; margin-top: 5px;">${new Date(certificateData.date).toLocaleDateString()}</p>
+          <p style="font-size: 14px; color: #666; margin-left: 10px;">${new Date(certificateData.date).toLocaleDateString()}</p>
         </div>
         <div class="signature-line">
           <p class="signature-label">SIGNATURE</p>
+            <img src="${signatureBase64}" alt="Signature" class="signature-image" />
+            <p class="signature-name">Jessika Budiman</p>
         </div>
       </div>
     </div>
