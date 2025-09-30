@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
 
@@ -92,4 +92,36 @@ export function useCertificateDownload() {
     };
 
     return { loading, error, downloadCertificate };
+}
+
+// Check certificate validity
+export function useCertificateValidity() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const checkCertificateValidity = useCallback(async (orderItemId) => {
+        setLoading(true);
+        setError(null);
+
+        const token = Cookies.get("token");
+
+        try {
+            const response = await api.get(`/student/order/certificate/${orderItemId}`, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                }
+            });
+            
+            setData(response.data.data);
+            return response.data;
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to check certificate validity");
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    return { data, loading, error, checkCertificateValidity };
 } 
