@@ -7,8 +7,8 @@
 
 import CheckCertificateValidityPage from '@/components/pages/check-certificate-validity';
 
-export default function Hero() {
+export default function Hero({ params }) {
     return (
-        <CheckCertificateValidityPage/>
+        <CheckCertificateValidityPage unique={params.unique} />
     )
 }
