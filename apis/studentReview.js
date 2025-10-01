@@ -104,8 +104,6 @@ export function useCertificateValidity() {
         setLoading(true);
         setError(null);
 
-        const token = Cookies.get("token");
-
         try {
             const response = await api.get(`/student/order/certificate/${unique}`);
             
