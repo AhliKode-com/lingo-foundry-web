@@ -100,18 +100,14 @@ export function useCertificateValidity() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const checkCertificateValidity = useCallback(async (orderItemId) => {
+    const checkCertificateValidity = useCallback(async (unique) => {
         setLoading(true);
         setError(null);
 
         const token = Cookies.get("token");
 
         try {
-            const response = await api.get(`/student/order/certificate/${orderItemId}`, {
-                headers: {
-                    Authorization: token ? `Bearer ${token}` : "",
-                }
-            });
+            const response = await api.get(`/student/order/certificate/${unique}`);
             
             setData(response.data.data);
             return response.data;

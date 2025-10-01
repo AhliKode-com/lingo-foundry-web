@@ -2,51 +2,129 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-15 16:47:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-09-30 19:08:20
+ * @Last Modified time: 2025-10-01 15:12:50
  */
 
 "use client"
 
 import { useState, useEffect } from "react";
 import { useCertificateValidity } from "@/apis/studentReview";
-import { useSearchParams } from "next/navigation";
 
 // Certificate Display Component
-function CertificateDisplay({ pdfUrl }) {
+function CertificateDisplay({ pdfUrl, certificateData, onDownload }) {
     const [iframeLoading, setIframeLoading] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+    const [showDownloadOption, setShowDownloadOption] = useState(false);
 
+    useEffect(() => {
+        // Detect mobile device
+        const checkMobile = () => {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+            const isSmallScreen = window.innerWidth < 768;
+            setIsMobile(isMobileDevice || isSmallScreen);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    const handleIframeError = () => {
+        setIframeLoading(false);
+        setShowDownloadOption(true);
+    };
+
+    // For mobile devices, show download option instead of iframe
+    if (isMobile) {
+        return (
+            <div className="w-full h-full relative flex flex-col items-center justify-center p-8 bg-gray-50">
+                <div className="text-center mb-8">
+                    <div className="w-24 h-24 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                        <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Certificate Ready</h3>
+                    <p className="text-gray-600 mb-6">
+                        Your certificate has been generated successfully. 
+                        Download it to view on your device.
+                    </p>
+                    <button
+                        onClick={onDownload}
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center mx-auto"
+                    >
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download Certificate
+                    </button>
+                </div>
+                
+                {/* Certificate Preview for Mobile */}
+                {certificateData && (
+                    <div className="w-full bg-white rounded-lg shadow-md p-6 border">
+                        <div className="text-center">
+                            <h4 className="text-lg font-bold text-blue-600 mb-2">CERTIFICATE</h4>
+                            <p className="text-sm text-blue-600 mb-4">OF APPRECIATION</p>
+                            <div className="border-t border-b py-4 my-4">
+                                <p className="text-sm text-gray-600 mb-2">Presented to</p>
+                                <h5 className="text-xl font-semibold text-gray-800 mb-2">{certificateData.name}</h5>
+                                <p className="text-sm text-gray-600 mb-1">For completing</p>
+                                <p className="text-lg font-medium text-orange-600">{certificateData.subjectName}</p>
+                            </div>
+                            <p className="text-xs text-gray-500">
+                                Date: {new Date(certificateData.date).toLocaleDateString()}
+                            </p>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    // For desktop, use iframe with better error handling
     return (
         <div className="w-full h-full relative">
             {iframeLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
                     <div className="text-center">
-                        <div className="w-[24px] h-[24px] relative mx-auto mb-2">
-                            <div className="w-full h-full border-4 border-gray-200 rounded-full"></div>
-                            <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-[#E35D33] rounded-full animate-spin"></div>
-                        </div>
-                        <p className="text-sm text-gray-600">Loading Certificate...</p>
+                        <div className="w-8 h-8 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-2"></div>
+                        <p className="text-sm text-gray-600">Loading PDF...</p>
                     </div>
                 </div>
             )}
+            
             <iframe
-                src={pdfUrl}
+                src={`${pdfUrl}#toolbar=0`}
                 className="w-full h-full border-0"
                 style={{ minHeight: '600px' }}
                 title="Certificate PDF"
                 onLoad={() => {
-                    console.log('PDF iframe loaded successfully');
                     setIframeLoading(false);
                 }}
-                onError={(e) => {
-                    console.error('PDF iframe failed to load:', e);
-                    setIframeLoading(false);
-                }}
+                onError={handleIframeError}
             />
+            
+            {showDownloadOption && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-95 z-20">
+                    <div className="text-center p-6">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">PDF Viewer Not Available</h3>
+                        <p className="text-gray-600 mb-4">Your browser doesn&apos;t support PDF viewing. Please download the certificate.</p>
+                        <button
+                            onClick={onDownload}
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                        >
+                            Download Certificate
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
 
-export default function HeroCheckCertificateValidity() {
+export default function HeroCheckCertificateValidity({ unique }) {
     const [certificateData, setCertificateData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -54,21 +132,30 @@ export default function HeroCheckCertificateValidity() {
     const [pdfLoading, setPdfLoading] = useState(false);
     const [pdfError, setPdfError] = useState(null);
     const [progress, setProgress] = useState(0);
-    const searchParams = useSearchParams();
-    const orderItemId = searchParams.get('orderItemId');
     const { checkCertificateValidity } = useCertificateValidity();
+
+    const handleDownload = () => {
+        if (pdfUrl) {
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = `certificate-${certificateData?.name?.replace(/\s+/g, '-').toLowerCase() || 'certificate'}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    };
 
     useEffect(() => {
         const fetchCertificate = async () => {
-            if (!orderItemId) {
-                setError("No order item ID provided");
+            if (!unique) {
+                setError("No unique identifier provided");
                 setLoading(false);
                 return;
             }
 
             try {
                 setProgress(20); // Start progress
-                const response = await checkCertificateValidity(orderItemId);
+                const response = await checkCertificateValidity(unique);
                 setProgress(50); // API call completed
                 
                 if (response && response.data) {
@@ -85,7 +172,7 @@ export default function HeroCheckCertificateValidity() {
         };
 
         fetchCertificate();
-    }, [orderItemId, checkCertificateValidity]);
+    }, [unique, checkCertificateValidity]);
 
     // Generate PDF when certificate data is available
     useEffect(() => {
@@ -119,7 +206,7 @@ export default function HeroCheckCertificateValidity() {
                 tempContainer.innerHTML = certificateHTML;
                 setProgress(40); // HTML generated
 
-                // Wait for images to load with a more efficient approach
+                // Wait for images to load
                 const images = tempContainer.querySelectorAll('img');
                 const imagePromises = Array.from(images).map(img => {
                     return new Promise((resolve) => {
@@ -127,8 +214,7 @@ export default function HeroCheckCertificateValidity() {
                             resolve();
                         } else {
                             img.onload = resolve;
-                            img.onerror = resolve; // Resolve even on error to not block
-                            // Timeout after 1 second
+                            img.onerror = resolve;
                             setTimeout(resolve, 1000);
                         }
                     });
@@ -148,13 +234,13 @@ export default function HeroCheckCertificateValidity() {
                 const canvas = await html2canvas(tempContainer, {
                     width: 1200,
                     height: 850,
-                    scale: 1.5, // Reduced from 2 to 1.5 for faster rendering
+                    scale: 1.5,
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: '#f5f5f5',
-                    logging: false, // Disable console logging
-                    removeContainer: false, // Don't remove container automatically
-                    imageTimeout: 5000 // 5 second timeout for images
+                    logging: false,
+                    removeContainer: false,
+                    imageTimeout: 5000
                 });
                 setProgress(80); // Canvas generated
 
@@ -166,15 +252,34 @@ export default function HeroCheckCertificateValidity() {
                 const pdfBlob = pdf.output('blob');
                 const pdfUrl = URL.createObjectURL(pdfBlob);
                 
-                // Small delay to ensure blob is ready (reduced from 100ms to 50ms)
                 await new Promise(resolve => setTimeout(resolve, 50));
                 
                 setPdfUrl(pdfUrl);
-                setProgress(100); // PDF ready
 
                 // Clean up
                 document.body.removeChild(tempContainer);
-                setPdfLoading(false);
+                
+                // Animate progress to 100% over 3 seconds
+                const startProgress = 90;
+                const endProgress = 100;
+                const duration = 3000; // 3 seconds
+                const startTime = Date.now();
+                
+                const animateProgress = () => {
+                    const elapsed = Date.now() - startTime;
+                    const progressRatio = Math.min(elapsed / duration, 1);
+                    const currentProgress = startProgress + (endProgress - startProgress) * progressRatio;
+                    
+                    setProgress(Math.round(currentProgress));
+                    
+                    if (progressRatio < 1) {
+                        requestAnimationFrame(animateProgress);
+                    } else {
+                        setPdfLoading(false);
+                    }
+                };
+                
+                requestAnimationFrame(animateProgress);
 
             } catch (error) {
                 console.error('Error generating PDF:', error);
@@ -190,9 +295,9 @@ export default function HeroCheckCertificateValidity() {
         const convertImageToBase64 = async (url) => {
             try {
                 const response = await fetch(url, { 
-                    cache: 'force-cache', // Use cached version if available
+                    cache: 'force-cache',
                     headers: {
-                        'Cache-Control': 'max-age=31536000' // 1 year cache
+                        'Cache-Control': 'max-age=31536000'
                     }
                 });
                 const blob = await response.blob();
@@ -366,23 +471,23 @@ export default function HeroCheckCertificateValidity() {
     ` : ''}
   </div>
 </body>
-</html>`;
+        </html>`;
     };
 
-    if (loading || pdfLoading) {
+    if (loading || pdfLoading || progress < 100) {
         return (
             <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
-                <div className="text-center">
+                <div className="text-center flex flex-col items-center mx-6">
                     <div className="w-[48px] h-[48px] relative mx-auto mb-6">
                         <div className="w-full h-full border-4 border-gray-200 rounded-full"></div>
                         <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-[#E35D33] rounded-full animate-spin"></div>
                     </div>
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-3">
-                        {loading ? 'Loading Certificate Data...' : 'Generating Certificate...'}
-                    </h3>
-                    <p className="text-gray-600 text-lg">
-                        {loading ? 'Please wait while we fetch your certificate information' : 'Please wait while we prepare your certificate PDF'}
-                    </p>
+                    <span className="text-2xl font-semibold text-gray-800 mb-3">
+                        Loading Certificate Data...
+                    </span>
+                    <span className="text-gray-600 text-lg">
+                        Please wait while we prepare your certificate information
+                    </span>
                     <div className="mt-6 w-64 bg-gray-200 rounded-full h-2 mx-auto">
                         <div 
                             className="bg-[#E35D33] h-2 rounded-full transition-all duration-500 ease-out" 
@@ -423,24 +528,36 @@ export default function HeroCheckCertificateValidity() {
 
         return (
             <div className="lingo-container py-[115px]">
-                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                <div className="flex flex-col-reverse lg:flex-row gap-8 items-start">
                     {/* Certificate Display - Center */}
-                    <div className="flex-1 flex justify-center">
-                        <div className="w-full max-w-4xl">
-                            <div className="w-full border border-gray-200 rounded-lg overflow-auto shadow-lg bg-white" style={{maxHeight: '80vh'}}>
+                    <div className="flex-1 flex w-full">
+                        <div className="w-full">
+                            <div className="w-full border border-gray-200 rounded-lg bg-white md:max-h-[80vh]">
                                 <CertificateDisplay 
                                     certificateData={certificateData} 
                                     pdfUrl={pdfUrl}
-                                    pdfLoading={pdfLoading}
-                                    pdfError={pdfError}
+                                    onDownload={handleDownload}
                                 />
                             </div>
                         </div>
                     </div>
 
                     {/* Certificate Details - Right Side */}
-                    <div className="w-full lg:w-80 space-y-6">
-                        <div className="bg-white rounded-lg p-6 shadow-md">
+                    <div className="w-full lg:w-fit space-y-6 flex-col flex">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div className="flex items-center">
+                                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                    <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-semibold text-green-800">Certificate Valid</h4>
+                                    <p className="text-xs text-green-600">This certificate has been verified and is authentic.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-lg p-6 border border-gray-200">
                             <h3 className="text-xl font-semibold text-gray-800 mb-4">Certificate Details</h3>
                             
                             <div className="space-y-4">
@@ -462,19 +579,17 @@ export default function HeroCheckCertificateValidity() {
                                         day: 'numeric' 
                                     })}</p>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                            <div className="flex items-center">
-                                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                    <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 className="text-sm font-semibold text-green-800">Certificate Valid</h4>
-                                    <p className="text-xs text-green-600">This certificate has been verified and is authentic.</p>
+                                
+                                <div className="pt-4 md:block hidden">
+                                    <button
+                                        onClick={handleDownload}
+                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                                    >
+                                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        Download Certificate
+                                    </button>
                                 </div>
                             </div>
                         </div>

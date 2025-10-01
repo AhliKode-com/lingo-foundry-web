@@ -8,11 +8,11 @@
 import HeroCheckValidity from "@/components/organisms/hero-check-certificate-validity";
 import {Suspense} from "react";
 
-export default function FindTutor() {
+export default function CheckCertificateValidityPage({ unique }) {
     return (
         <>
         <Suspense fallback={null}>
-            <HeroCheckValidity/>
+            <HeroCheckValidity unique={unique} />
         </Suspense>
         </>
     )
