@@ -123,9 +123,8 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
                         {[1, 2, 3, 4, 5].map((star) => (
                             <button
                                 key={star}
-                                type="button"
                                 onClick={() => onChange(star)}
-                                className="focus:outline-none"
+                                className="focus:outline-none cursor-pointer"
                             >
                                 <svg
                                     className={`w-6 h-6 ${star <= value ? 'text-orange-400' : 'text-gray-300'}`}
@@ -177,9 +176,8 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
                                     {[1, 2, 3, 4, 5].map((num) => (
                                         <button
                                             key={num}
-                                            type="button"
                                             onClick={() => setFormData(prev => ({ ...prev, difficulty: num }))}
-                                            className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-medium transition-colors ${
+                                            className={`cursor-pointer w-12 h-12 rounded-full flex items-center justify-center text-xl font-medium transition-colors ${
                                                 formData.difficulty === num
                                                     ? 'bg-[#FEF2E1] text-[#D47C01]'
                                                     : 'bg-[#EBEDEF]'
