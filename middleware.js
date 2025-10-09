@@ -16,24 +16,6 @@ export function middleware(req) {
         return NextResponse.next();
     }
 
-    // If user has a valid token and tries to access login page, redirect to dashboard
-    if (token && url.pathname === "/login") {
-        try {
-            const decodedToken = jwtDecode(token);
-            const currentTime = Math.floor(Date.now() / 1000);
-            
-            if (decodedToken.exp >= currentTime) {
-                // Token is valid, redirect to appropriate dashboard based on user role
-                const userRole = decodedToken.role || 'student'; // Default to student if role not found
-                const dashboardPath = userRole === 'tutor' ? '/tutor-dashboard' : '/student-dashboard';
-                return NextResponse.redirect(new URL(dashboardPath, req.url));
-            }
-        } catch (error) {
-            // If token is invalid, let the user proceed to login
-            // The existing token validation logic below will handle this
-        }
-    }
-
     // If user is trying to access tutor-register from tutor page
     if (url.pathname === "/tutor-register" && referer?.includes("/tutor")) {
         if (!token) {
@@ -86,7 +68,7 @@ export function middleware(req) {
 // protect specific routes
 export const config = {
     matcher: [
-        "/login",
+        "/student-dashboard/:path*",
         "/tutor-dashboard/:path*",
         "/wishlist",
         "/shopping-cart",
