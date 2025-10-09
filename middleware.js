@@ -12,7 +12,7 @@ export function middleware(req) {
     }
 
     // Allow access to purchase history page (backend redirects here after payment)
-    if (url.pathname === "/student-dashboard/purchase-history") {
+    if (url.pathname === "/student-dashboard") {
         return NextResponse.next();
     }
 
