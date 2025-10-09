@@ -87,7 +87,6 @@ export function middleware(req) {
 export const config = {
     matcher: [
         "/login",
-        "/student-dashboard/:path*",
         "/tutor-dashboard/:path*",
         "/wishlist",
         "/shopping-cart",
