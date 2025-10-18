@@ -144,27 +144,34 @@ export default function TutorDetail() {
         )
     }
 
-    const subjects = data?.tutorSubjects.map((val) => {
-        return val.subject.name
-    })
+    // Additional safety checks
+    if (!data.tutor || !data.tutorSubjects) {
+        return (
+            <TutorDetailSkeleton />
+        )
+    }
+
+    const subjects = data?.tutorSubjects?.map((val) => {
+        return val?.subject?.name
+    }).filter(Boolean) || []
 
 
-    const languageLevel = data?.tutorSubjects.map((val) => {
+    const languageLevel = data?.tutorSubjects?.map((val) => {
         return {
-            language: val.subject.name,
-            level: val.subjectLevel.name,
-            tutorSubjectId: val.id,
-            maxSession: val.maximumSession,
-            minSession: val.minimumSession,
-            discounts: val.subjectDiscounts?.map((discount) => ({
-                sessionQuantity: discount.sessionQuantity,
-                discountPercentage: discount.discountPercentage,
+            language: val?.subject?.name || '',
+            level: val?.subjectLevel?.name || '',
+            tutorSubjectId: val?.id,
+            maxSession: val?.maximumSession || 0,
+            minSession: val?.minimumSession || 0,
+            discounts: val?.subjectDiscounts?.map((discount) => ({
+                sessionQuantity: discount?.sessionQuantity || 0,
+                discountPercentage: discount?.discountPercentage || 0,
             })) || []
         }
-    })
+    }).filter(val => val.tutorSubjectId) || []
 
     const ratingCounts = [1, 2, 3, 4, 5].reduce((acc, rating) => {
-        acc[rating] = data?.tutorReviewData?.ratingCount?.[rating] || 0;
+        acc[rating] = data?.tutorReviewData?.ratingCount?.[rating.toString()] || 0;
         return acc;
     }, {});
 
@@ -310,7 +317,7 @@ export default function TutorDetail() {
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-2">
                                     <span
-                                        className="text-[28px] font-medium">{data.tutor.firstName}{" "}{data.tutor.lastName}</span>
+                                        className="text-[28px] font-medium">{data.tutor?.firstName || ''}{" "}{data.tutor?.lastName || ''}</span>
                                     <img
                                         src="/assets/tag.svg"
                                         alt="tag"
@@ -322,7 +329,7 @@ export default function TutorDetail() {
                                         className="h-[12.5px] w-[16px] object-cover"
                                     />
                                 </div>
-                                <span className="text-[#121117] my-[10px]">{data.tutor.bio}</span>
+                                <span className="text-[#121117] my-[10px]">{data.tutor?.bio || ''}</span>
                                 <div className="flex flex-col gap-[15px]">
                                     {Array.isArray(data.tutor?.certificates) && data.tutor.certificates.length > 0  && (
                                         <div className="flex gap-[10px]">
@@ -330,7 +337,7 @@ export default function TutorDetail() {
                                                 className="w-[16px] h-[16px] mt-[5px]"/>
                                             <div className="flex flex-col gap-[5px]">
                                                 <span className="font-semibold text-[#0450B4]">Professional Tutor</span>
-                                                <span>{data.tutor.firstName}{" "}{data.tutor.lastName} is a highly qualified tutor with a verified teaching certificate</span>
+                                                <span>{data.tutor?.firstName || ''}{" "}{data.tutor?.lastName || ''} is a highly qualified tutor with a verified teaching certificate</span>
                                             </div>
                                         </div>
                                     )}
@@ -340,7 +347,7 @@ export default function TutorDetail() {
                                                 className="w-[16px] h-[16px] mt-[5px]"/>
                                             <div className="flex flex-col gap-[5px]">
                                                 <span className="font-semibold text-[#E35D33]">Super Tutor</span>
-                                                <span>{data.tutor.firstName}{" "}{data.tutor.lastName} is a highly rated and experienced tutor.</span>
+                                                <span>{data.tutor?.firstName || ''}{" "}{data.tutor?.lastName || ''} is a highly rated and experienced tutor.</span>
                                             </div>
                                         </div>
                                     )}
@@ -365,13 +372,13 @@ export default function TutorDetail() {
                             {expanded ? (
                                 <>
                                     <p className="whitespace-pre-line">
-                                        {`${data.tutor.introduction}\n\n${data.tutor.teachingExperience}\n\n${data.tutor.courseMotivation}`}
+                                        {`${data.tutor?.introduction || ''}\n\n${data.tutor?.teachingExperience || ''}\n\n${data.tutor?.courseMotivation || ''}`}
                                     </p>
                                 </>
                             ) : (
                                 <>
                                     <p className="line-clamp-2 whitespace-pre-line">
-                                    {`${data.tutor.introduction}\n\n${data.tutor.teachingExperience}\n\n${data.tutor.courseMotivation}`}
+                                    {`${data.tutor?.introduction || ''}\n\n${data.tutor?.teachingExperience || ''}\n\n${data.tutor?.courseMotivation || ''}`}
                                     </p>
                                 </>
                             )}
@@ -408,9 +415,9 @@ export default function TutorDetail() {
                             <img src="/assets/warning.svg" alt="warning" className="w-[20px] h-[20px] mt-[5px]"/>
                         </div>
                         <RatingSummary
-                            dataReview={data?.tutorReviewData?.userReviews?.content}
+                            dataReview={data?.tutorReviewData?.userReviews?.content || []}
                             averageRating={data?.tutorReviewData?.averageRating || 0}
-                            totalReviews={data?.tutorReviewData?.userReviews?.content.length || 0}
+                            totalReviews={data?.tutorReviewData?.userReviews?.content?.length || 0}
                             ratingCounts={ratingCounts}
                         />
                     </div>
@@ -419,8 +426,8 @@ export default function TutorDetail() {
                     <div className="flex flex-col mb-[80px]">
                         <span className="text-[23px] font-medium mb-[20px]">Resume</span>
                         <ResumeTabs 
-                            data={data?.tutor?.certificates}
-                            dataCv={data?.tutor?.cvFileUrl}    
+                            data={data?.tutor?.certificates || []}
+                            dataCv={data?.tutor?.cvFileUrl || ''}    
                         />
                     </div>
 
@@ -428,12 +435,12 @@ export default function TutorDetail() {
                     <div className="flex flex-col mb-[48px]">
                         <span className="text-[23px] font-medium mb-[20px]">My specialties</span>
                         {data?.tutor?.expertises?.map((item, index) => {
-                            const expMatch = enums.expertise.find(expertiseItem => expertiseItem.name === item)?.displayName;
+                            const expMatch = enums?.expertise?.find(expertiseItem => expertiseItem.name === item)?.displayName;
                             return (
                                 <Speciality
                                     key={index}
-                                    data={expMatch}
-                                    isLast={index === data?.tutor?.expertises.length - 1}
+                                    data={expMatch || item}
+                                    isLast={index === (data?.tutor?.expertises?.length || 0) - 1}
                                     // defaultOpen={index === 0}
                                 />
                             )
@@ -462,22 +469,22 @@ export default function TutorDetail() {
                                 <div className="flex flex-col">
                                     <div className="flex gap-[4px] items-center">
                                         <img src="/assets/star-review.svg" alt="star" className="w-[16px] h-[16px]"/>
-                                        <span className="font-medium">{data.tutor.averageRating}</span>
+                                        <span className="font-medium">{data.tutor?.averageRating || 0}</span>
                                     </div>
-                                    <span className="text-[14px] text-[#4D4C5C]">{data.tutor.reviewCount} reviews</span>
+                                    <span className="text-[14px] text-[#4D4C5C]">{data.tutor?.reviewCount || 0} reviews</span>
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="font-medium">{data.tutorSubjects.length}</span>
+                                    <span className="font-medium">{data.tutorSubjects?.length || 0}</span>
                                     <span className="text-[14px] text-[#4D4C5C]">lessons</span>
                                 </div>
                             </div>
                             <div className="flex mb-[24px] flex-col">
-                                <span className="font-medium">Rp.{Number(data.tutor.averageSubjectPrice).toLocaleString()}</span>
+                                <span className="font-medium">Rp.{Number(data.tutor?.averageSubjectPrice || 0).toLocaleString()}</span>
                                 <span className="text-[14px] text-[#4D4C5C]">per hour</span>
                             </div>
                             
                             <div className="flex flex-col gap-[8px]">
-                                {user && user?.tutor?.idid !== data?.tutor?.id && (
+                                {user && user?.tutor?.id !== data?.tutor?.id && (
                                     <>
                                         <button
                                             onClick={handleOpenCart}
@@ -500,7 +507,7 @@ export default function TutorDetail() {
                                     </>
                                 )}
                             </div>
-                            <div className={`flex flex-col gap-[16px] ${user && user.id === data?.tutor?.id ? 'mt-0' : 'mt-[27px]'}`}>
+                            <div className={`flex flex-col gap-[16px] ${user && user?.id === data?.tutor?.id ? 'mt-0' : 'mt-[27px]'}`}>
                                 {/* <div className="flex gap-[10px]">
                                     <img src="/assets/stats.svg" alt="stats" className="mb-auto mt-[5px]"/>
                                     <div className="flex flex-col">
