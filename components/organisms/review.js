@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-14 17:29:13
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-04-28 22:02:30
+ * @Last Modified time: 2025-10-18 23:59:57
  */
 "use client"
 import { usePathname } from 'next/navigation';
@@ -55,9 +55,9 @@ export default function Review({authorType}) {
                                 `}
                             >
                                 <img
-                                    src={item.photoObjectKey}
+                                    src={item.photoUrl || "/placeholder.svg"}
                                     alt={item.author}
-                                    className="absolute top-[-40px] w-[75px] h-[75px] rounded-full"
+                                    className="absolute top-[-40px] w-[75px] h-[75px] rounded-full object-cover"
                                 />
                                 <div className="absolute right-[25px] top-[25px] flex gap-[4px]">
                                     {Array.from({ length: item.rating }).map((_, i) => (
