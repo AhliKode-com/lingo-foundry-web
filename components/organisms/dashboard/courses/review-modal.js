@@ -15,7 +15,7 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
     const currentBookingId = bookingIds[currentBookingIndex];
 
     const [formData, setFormData] = useState({
-        difficulty: 6,
+        difficulty: 3,
         difficultyRemark: "",
         communication: 0,
         punctuality: 0,
@@ -26,7 +26,7 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
 
     const resetForm = () => {
         setFormData({
-            difficulty: 6,
+            difficulty: 3,
             difficultyRemark: "",
             communication: 0,
             punctuality: 0,
@@ -97,7 +97,7 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
             for (const [bookingId, reviewData] of Object.entries(allReviews)) {
                 await submitReview({
                     bookingId: parseInt(bookingId),
-                    dificulty: reviewData.difficulty,
+                    dificulty: reviewData.difficulty * 2,
                     dificultyRemark: reviewData.difficultyRemark,
                     communication: reviewData.communication,
                     punctuality: reviewData.punctuality,
