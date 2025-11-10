@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-16 19:13:24
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-06-23 09:42:27
+ * @Last Modified time: 2025-11-10 14:09:17
  */
 "use client"
 import React, {useState, useRef, useEffect} from "react";
@@ -201,10 +201,7 @@ export function PurchaseHistory({data, defaultOpen = false, onRefetch}) {
     }
 
     const createdAt = formatDateString(data?.transactions[0]?.createdAt);
-    let totalAmount = 0;
-    for (const transaction of data.transactions) {
-        totalAmount += transaction.orderAmount;
-    }
+    const totalAmount = data?.transactions[0]?.orderAmount || 0;
 
     const handlePay = async () => {
         const payload = {
