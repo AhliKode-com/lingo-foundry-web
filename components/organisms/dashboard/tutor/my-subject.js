@@ -14,7 +14,7 @@ export default function TutorDashboardMySubjectOrganism() {
     const { user } = useAuth();
     const { data: enums } = getEnums();
     const { getData } = getDetail();
-    const { postTutorSubject, putTutorSubject, deleteTutorSubject } = useTutorSubject();
+    const { postTutorSubject, putTutorSubject, deleteTutorSubject, enableTutorSubject, disableTutorSubject } = useTutorSubject();
 
     const [tutorSubjects, setTutorSubjects] = useState([]);
     const [selectedSubjectIndex, setSelectedSubjectIndex] = useState(0);
@@ -188,6 +188,23 @@ export default function TutorDashboardMySubjectOrganism() {
             setShowDeleteConfirm(false);
         } catch (error) {
             console.error("Error deleting subject:", error);
+            // Error is already handled in the API function with toast
+        }
+    };
+
+    const toggleSubjectStatus = async (subjectId, currentStatus) => {
+        try {
+            if (currentStatus === false) {
+                // Enable if currently disabled or null (assuming null means disabled)
+                await enableTutorSubject(subjectId);
+            } else {
+                // Disable if currently enabled
+                await disableTutorSubject(subjectId);
+            }
+            // Refresh the data to get updated status
+            await fetchTutorDetails();
+        } catch (error) {
+            console.error("Error toggling subject status:", error);
             // Error is already handled in the API function with toast
         }
     };
@@ -400,8 +417,10 @@ export default function TutorDashboardMySubjectOrganism() {
                                                 className="w-12 h-12 rounded-full object-cover"
                                             />
                                             <div className='flex flex-col'>
-                                                <p className="font-semibold line-clamp-1">{subject.subject?.name} - {enums?.subjectLevelTeach?.find(item => item.name === formData.level)?.displayName || formData.level}</p>
-                                                <p className="text-sm text-green-500">active</p>
+                                                <p className="font-semibold line-clamp-1">{subject.subject?.name} - {enums?.subjectLevelTeach?.find(item => item.id === subject.subjectLevel?.id)?.displayName || subject.subjectLevel?.name || 'General'}</p>
+                                                <p className={`text-sm ${subject.enabled === false ? 'text-red-500' : 'text-green-500'}`}>
+                                                    {subject.enabled === false ? 'disabled' : 'active'}
+                                                </p>
                                             </div>
                                         </div>
                                         {tutorSubjects.length > 1 && (
@@ -441,6 +460,33 @@ export default function TutorDashboardMySubjectOrganism() {
                     <div className='flex flex-col lg:w-2/3 gap-[16px]'>
                         {tutorSubjects.length > 0 ? (
                             <>
+                                {/* Status Field */}
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <label className="text-[#E35D33] font-medium">Status</label>
+                                    </div>
+                                    <div className={editClassWrapper}>
+                                        <div className={`${editContent} flex items-center justify-between`}>
+                                            <div className="flex items-center gap-2">
+                                                <span className={`w-3 h-3 rounded-full ${tutorSubjects[selectedSubjectIndex]?.enabled === false ? 'bg-red-500' : 'bg-green-500'}`}></span>
+                                                <span className="font-semibold">
+                                                    {tutorSubjects[selectedSubjectIndex]?.enabled === false ? 'Disabled' : 'Active'}
+                                                </span>
+                                            </div>
+                                            <button
+                                                onClick={() => toggleSubjectStatus(tutorSubjects[selectedSubjectIndex]?.id, tutorSubjects[selectedSubjectIndex]?.enabled)}
+                                                className={`px-4 py-2 rounded-lg font-semibold transition-colors cursor-pointer ${
+                                                    tutorSubjects[selectedSubjectIndex]?.enabled === false
+                                                        ? 'bg-green-500 text-white hover:bg-green-600'
+                                                        : 'bg-orange-500 text-white hover:bg-orange-600'
+                                                }`}
+                                            >
+                                                {tutorSubjects[selectedSubjectIndex]?.enabled === false ? 'Enable' : 'Disable'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* Price / Hour Field */}
                                 <div className="flex flex-col gap-2">
                                     <div className="flex justify-between items-center">
