@@ -63,5 +63,37 @@ export function useTutorSubject() {
         }
     }
 
-    return { postTutorSubject, putTutorSubject, deleteTutorSubject };
+    const enableTutorSubject = async (tutorSubjectId) => {
+        const token = Cookies.get("token")
+        try {
+            const response = await api.patch(`/tutor/tutor-subject/enable/${tutorSubjectId}`, {}, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
+            toast.success("Successfully enabled subject");
+            return response.data.data
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Failed to enable subject");
+            throw err
+        }
+    }
+
+    const disableTutorSubject = async (tutorSubjectId) => {
+        const token = Cookies.get("token")
+        try {
+            const response = await api.patch(`/tutor/tutor-subject/disable/${tutorSubjectId}`, {}, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                },
+            });
+            toast.success("Successfully disabled subject");
+            return response.data.data
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Failed to disable subject");
+            throw err
+        }
+    }
+
+    return { postTutorSubject, putTutorSubject, deleteTutorSubject, enableTutorSubject, disableTutorSubject };
 }
