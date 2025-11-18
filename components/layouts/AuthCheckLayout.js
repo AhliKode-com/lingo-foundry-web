@@ -19,8 +19,16 @@ export default function AuthCheckLayout({ children }) {
             toast.info('Your session has expired. Please login again.');
             
             // Store current path for redirect after login
+            // Filter out asset files (images, fonts, etc.)
             const currentPath = window.location.pathname;
-            if (currentPath !== '/login') {
+            const assetExtensions = ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico', '.woff', '.woff2', '.ttf', '.eot', '.css', '.js', '.json'];
+            const isAssetFile = assetExtensions.some(ext => currentPath.toLowerCase().endsWith(ext));
+            const isValidPath = currentPath !== '/login' && 
+                !isAssetFile && 
+                !currentPath.includes('/assets/') && 
+                !currentPath.includes('/_next/');
+            
+            if (isValidPath) {
                 document.cookie = `redirectAfterLogin=${currentPath}; path=/`;
             }
             
