@@ -49,7 +49,15 @@ export function useLogin() {
                 const redirectPath = Cookies.get("redirectAfterLogin");
                 console.log("Redirect path from cookie:", redirectPath); // Debug log
                 
-                if (redirectPath) {
+                // Validate redirect path - filter out asset files and invalid paths
+                const assetExtensions = ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico', '.woff', '.woff2', '.ttf', '.eot', '.css', '.js', '.json'];
+                const isValidPath = redirectPath && 
+                    !assetExtensions.some(ext => redirectPath.toLowerCase().endsWith(ext)) &&
+                    redirectPath.startsWith('/') &&
+                    !redirectPath.includes('/assets/') &&
+                    !redirectPath.includes('/_next/');
+                
+                if (isValidPath) {
                     Cookies.remove("redirectAfterLogin", cookieOptions); // Clear the cookie
                     console.log("Redirecting to:", redirectPath); // Debug log
                     
@@ -60,6 +68,10 @@ export function useLogin() {
                         router.push(redirectPath);
                     }
                 } else {
+                    // Clear invalid redirect cookie
+                    if (redirectPath) {
+                        Cookies.remove("redirectAfterLogin", cookieOptions);
+                    }
                     router.push("/");
                 }
             } else {

@@ -34,13 +34,22 @@ export function middleware(req) {
     // Check for protected routes
     if (!token) {
         // Store the intended destination in a cookie for redirect after login
+        // Filter out asset files (images, fonts, etc.)
+        const assetExtensions = ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico', '.woff', '.woff2', '.ttf', '.eot', '.css', '.js', '.json'];
+        const isAssetFile = assetExtensions.some(ext => url.pathname.toLowerCase().endsWith(ext));
+        
+        // Only set redirect cookie for valid routes, not asset files
+        const redirectPath = isAssetFile ? null : url.pathname;
+        
         const response = NextResponse.redirect(new URL("/login", req.url));
-        response.cookies.set("redirectAfterLogin", url.pathname, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            path: '/'
-        });
+        if (redirectPath) {
+            response.cookies.set("redirectAfterLogin", redirectPath, {
+                httpOnly: false,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                path: '/'
+            });
+        }
         return response;
     }
 
