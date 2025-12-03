@@ -19,7 +19,7 @@ export default function BookClass() {
 
     const {data, loading} = getPurchaseHistory();
     const {createBooking, tutorUnavailableTime, loading: studentBookingLoading, error} = useStudentBooking()
-    const [availableTimes, setAvailableTimes] = useState([]);
+    const [unavailableTimes, setUnavailableTimes] = useState([]);
 
     const [selectedTime, setSelectedTime] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -98,15 +98,13 @@ export default function BookClass() {
     };
 
     // Check if a time slot is unavailable based on the API response
-    // The API returns available times, so a time slot is unavailable if it's NOT in the available times
     const isTimeSlotUnavailable = (fullDate, time) => {
-        const availableDay = availableTimes.find(item => item.date === fullDate);
-        if (!availableDay) return true; // If no data for this day, all times are unavailable
+        const unavailableDay = unavailableTimes.find(item => item.date === fullDate);
+        if (!unavailableDay) return false;
 
         // Convert time format from "HH:MM" to "HH:MM:00" to match API format
         const formattedTime = `${time}:00`;
-        // Time is unavailable if it's NOT in the available times array
-        return !availableDay.time.includes(formattedTime);
+        return unavailableDay.time.includes(formattedTime);
     };
 
     const addOneHour = (timeStr) => {
@@ -204,8 +202,8 @@ export default function BookClass() {
     useEffect(() => {
         async function getTime() {
             if (course && course.tutorId) {
-                const availableTime = await tutorUnavailableTime(course.tutorId);
-                setAvailableTimes(availableTime);
+                const unavailableTime = await tutorUnavailableTime(course.tutorId);
+                setUnavailableTimes(unavailableTime);
             }
         }
         getTime();

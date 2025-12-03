@@ -540,7 +540,7 @@ export default function TutorProfileForm() {
                     {/* Availability Section */}
                     <div className='flex flex-col gap-2'>
                         <div className="flex justify-between items-center">
-                            <label className="text-[#E35D33] font-medium">Availability Schedule</label>
+                            <label className="text-[#E35D33] font-medium">Unavailability Schedule</label>
                             <button
                                 onClick={() => {
                                     if (editingAvailability) {
@@ -562,7 +562,7 @@ export default function TutorProfileForm() {
                                     {editingAvailability ? (
                                         <div className="space-y-6">
                                             <div className="text-sm text-gray-600 mb-4">
-                                                Click on time slots to set your availability. Green slots are available, gray slots are not available.
+                                                Click on time slots to set your unavailability. White slots are available, orange slots are not available.
                                             </div>
                                             
                                             {/* Desktop Calendar View */}
@@ -586,7 +586,7 @@ export default function TutorProfileForm() {
                                                                     key={`${day.name}-${time}`}
                                                                     className={`w-full py-2 my-1 rounded cursor-pointer transition-colors ${
                                                                         isTimeSlotSelected(day, time)
-                                                                            ? 'bg-[#E35D33] text-white'
+                                                                            ? 'bg-[#E35D33] text-white border border-[#E35D33]'
                                                                             : 'border border-gray-300 text-gray-700 hover:border-[#E35D33] hover:text-[#E35D33]'
                                                                     }`}
                                                                     onClick={() => handleTimeSlotClick(day, time)}
@@ -708,7 +708,7 @@ export default function TutorProfileForm() {
                                                             <span>Saving...</span>
                                                         </div>
                                                     ) : (
-                                                        'Save Availability'
+                                                        'Save Unavailability'
                                                     )}
                                                 </button>
                                             </div>
@@ -716,7 +716,7 @@ export default function TutorProfileForm() {
                                     ) : (
                                         <div className="space-y-4">
                                             <div className="text-sm text-gray-600">
-                                                Your current availability for the next 6 days:
+                                                Your current unavailability for the next 6 days:
                                             </div>
                                             
                                             {selectedTimeSlots.size > 0 ? (
