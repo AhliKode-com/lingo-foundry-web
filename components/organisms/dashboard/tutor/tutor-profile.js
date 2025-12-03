@@ -730,7 +730,7 @@ export default function TutorProfileForm() {
                                                         if (daySlots.length === 0) return null;
                                                         
                                                         return (
-                                                            <div key={day.name} className="border rounded-lg p-3">
+                                                            <div key={day.name} className="border border-gray-400 rounded-3xl p-3">
                                                                 <div className="font-medium text-[#E35D33] mb-2">
                                                                     {day.fullName}, {day.monthName} {day.date}
                                                                 </div>

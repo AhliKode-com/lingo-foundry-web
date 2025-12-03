@@ -19,7 +19,7 @@ export default function BookClass() {
 
     const {data, loading} = getPurchaseHistory();
     const {createBooking, tutorUnavailableTime, loading: studentBookingLoading, error} = useStudentBooking()
-    const [unavailableTimes, setUnavailableTimes] = useState([]);
+    const [availableTimes, setAvailableTimes] = useState([]);
 
     const [selectedTime, setSelectedTime] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -98,13 +98,15 @@ export default function BookClass() {
     };
 
     // Check if a time slot is unavailable based on the API response
+    // The API returns available times, so a time slot is unavailable if it's NOT in the available times
     const isTimeSlotUnavailable = (fullDate, time) => {
-        const unavailableDay = unavailableTimes.find(item => item.date === fullDate);
-        if (!unavailableDay) return false;
+        const availableDay = availableTimes.find(item => item.date === fullDate);
+        if (!availableDay) return true; // If no data for this day, all times are unavailable
 
         // Convert time format from "HH:MM" to "HH:MM:00" to match API format
         const formattedTime = `${time}:00`;
-        return unavailableDay.time.includes(formattedTime);
+        // Time is unavailable if it's NOT in the available times array
+        return !availableDay.time.includes(formattedTime);
     };
 
     const addOneHour = (timeStr) => {
@@ -202,8 +204,8 @@ export default function BookClass() {
     useEffect(() => {
         async function getTime() {
             if (course && course.tutorId) {
-                const unavailableTime = await tutorUnavailableTime(course.tutorId);
-                setUnavailableTimes(unavailableTime);
+                const availableTime = await tutorUnavailableTime(course.tutorId);
+                setAvailableTimes(availableTime);
             }
         }
         getTime();
@@ -288,10 +290,10 @@ export default function BookClass() {
                                             key={`${day.name}-${time}`}
                                             className={`w-full py-2 my-1 rounded relative ${
                                                 isUnavailable
-                                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed border border-gray-200'
                                                     : isActiveTimeSlot(day.name, time)
-                                                        ? 'bg-[#E35D33] text-white cursor-pointer'
-                                                        : 'text-[#E35D33] cursor-pointer'
+                                                        ? 'bg-[#E35D33] text-white cursor-pointer border border-[#E35D33]'
+                                                        : 'text-[#E35D33] cursor-pointer border border-[#E35D33]'
                                             }`}
                                             onClick={() => {
                                                 if (!isUnavailable) {
