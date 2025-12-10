@@ -276,16 +276,11 @@ export function RupiahChart({ data, interval, loading, label1, label2, totalEarn
 
 // ================== COMMISSION CHART ==================
 
-const BRACKETS = [
-  { min: 0, max: 4_999_999, maxPct: 30, minPct: 26 },
-  { min: 5_000_000, max: 8_999_999, maxPct: 25, minPct: 21 },
-  { min: 9_000_000, max: 12_999_999, maxPct: 20, minPct: 16 },
-  { min: 13_000_000, max: 16_999_999, maxPct: 15, minPct: 11 },
-  { min: 17_000_000, max: 21_999_999, maxPct: 10, minPct: 6 },
-  { min: 22_000_000, max: 28_000_000, maxPct: 5, minPct: 0 },
-];
+const COMMISSION_START_PCT = 30;
+const COMMISSION_STEP_INCOME = 1_000_000;
+const COMMISSION_ZERO_AT = 30_000_000;
 
-const DOMAIN_MAX = BRACKETS[BRACKETS.length - 1].max;
+const DOMAIN_MAX = COMMISSION_ZERO_AT;
 
 const formatAxisIDR = (n = 0) => {
   if (n >= 1_000_000) return `Rp${Math.round(n / 1_000_000)}M`;
@@ -293,28 +288,30 @@ const formatAxisIDR = (n = 0) => {
   return `Rp${n}`;
 };
 
-// Build line data: two lines (Max% and Min%) across bracket edges
-const bandData = BRACKETS.flatMap((b) => [
-  { income: b.min, maxPct: b.maxPct, minPct: b.minPct },
-  // max line slopes down to minPct at bracket end
-  { income: b.max, maxPct: b.minPct, minPct: b.minPct },
-]);
-
-// Linear interpolation of percentage within a bracket
+// Commission ladder: start at 30%, drop 1% per Rp1,000,000 after the first million, floor at 0% from Rp30,000,000
 function commissionPctFor(income) {
-  if (income <= BRACKETS[0].min) return BRACKETS[0].maxPct;
-  if (income >= BRACKETS[BRACKETS.length - 1].max)
-    return BRACKETS[BRACKETS.length - 1].minPct;
+  const revenue = Number(income) || 0;
+  if (revenue >= COMMISSION_ZERO_AT) return 0;
+  if (revenue <= COMMISSION_STEP_INCOME) return COMMISSION_START_PCT;
 
-  const b = BRACKETS.find((bb) => income >= bb.min && income <= bb.max);
-  if (!b) return 0;
-
-  if (income <= b.min) return b.maxPct;
-  if (income >= b.max) return b.minPct;
-
-  const t = (income - b.min) / (b.max - b.min);
-  return b.maxPct + (b.minPct - b.maxPct) * t; // linear decrease
+  const stepsAboveFirstMillion = Math.floor(
+    (revenue - COMMISSION_STEP_INCOME) / COMMISSION_STEP_INCOME
+  );
+  const pct = COMMISSION_START_PCT - stepsAboveFirstMillion;
+  return pct > 0 ? pct : 0;
 }
+
+// Build line data in Rp1,000,000 steps to visualize the ladder
+const bandData = Array.from(
+  { length: DOMAIN_MAX / COMMISSION_STEP_INCOME + 1 },
+  (_, idx) => {
+    const income = idx * COMMISSION_STEP_INCOME;
+    return {
+      income,
+      pct: commissionPctFor(income),
+    };
+  }
+);
 
 export function CommissionChart({ data, label1, label2 }) {
   const totalIncome = Number(data) || 0;
@@ -381,35 +378,24 @@ export function CommissionChart({ data, label1, label2 }) {
               tick={{ fontSize: 12 }}
             />
             <YAxis
-              domain={[0, 32]}
+              domain={[0, COMMISSION_START_PCT + 2]}
               tickFormatter={(v) => `${v}%`}
               tick={{ fontSize: 12 }}
             />
             <Tooltip
-              formatter={(value, name) =>
-                name === "maxPct" || name === "minPct"
-                  ? [
-                      `${Number(value).toFixed(1)}%`,
-                      name === "maxPct" ? "Max %" : "Min %",
-                    ]
-                  : [value, name]
-              }
+              formatter={(value) => [
+                `${Number(value).toFixed(0)}%`,
+                "Commission %",
+              ]}
               labelFormatter={(label) => `Income: Rp${formatIDR(label)}`}
             />
 
-            {/* Two guide lines for the bracket band */}
+            {/* Commission ladder */}
             <Line
-              type="monotone"
-              dataKey="maxPct"
-              name="Max %"
+              type="stepAfter"
+              dataKey="pct"
+              name="Commission %"
               stroke="#E35D33"
-              dot={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="minPct"
-              name="Min %"
-              stroke="#94a3b8"
               dot={false}
             />
 
