@@ -97,7 +97,7 @@ export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, t
             for (const [bookingId, reviewData] of Object.entries(allReviews)) {
                 await submitReview({
                     bookingId: parseInt(bookingId),
-                    dificulty: reviewData.difficulty * 2,
+                    dificulty: reviewData.difficulty,
                     dificultyRemark: reviewData.difficultyRemark,
                     communication: reviewData.communication,
                     punctuality: reviewData.punctuality,
