@@ -1,6 +1,6 @@
 "use client"
 
-import {useState, useEffect} from "react"
+import {useState, useEffect, useRef} from "react"
 import {FiSearch, FiMoreVertical, FiSend, FiVideo, FiCalendar, FiEdit, FiPlus, FiArrowLeft, FiX} from "react-icons/fi"
 import {BsCircleFill} from "react-icons/bs"
 import {useGetMessageList} from "@/apis/dashboard/message/getMessageList";
@@ -18,6 +18,9 @@ const MessageApp = () => {
     const { user: thisUser } = useAuth();
     const searchParams = useSearchParams();
     const userId = searchParams.get('userId');
+    
+    // Ref for chat messages container
+    const messagesContainerRef = useRef(null);
 
     // apis
     const { data, loading } = useGetMessageList();
@@ -44,6 +47,17 @@ const MessageApp = () => {
         handleSendMessage(data.message);
         reset(); // Clear the input after sending
     };
+
+    // Auto-scroll to bottom when messages change
+    const scrollToBottom = () => {
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [selectedMessages]);
 
     // Call getUserList when search query changes
     useEffect(() => {
@@ -389,11 +403,11 @@ const MessageApp = () => {
                 </div>
 
                 {/* Right side - Chat area */}
-                <div className={`flex-1 flex flex-col ${!showChat ? "hidden md:flex" : "flex"}`}>
+                <div className={`flex-1 flex flex-col ${!showChat ? "hidden md:flex" : "flex"} h-full`}>
                     {/* Chat header */}
                     {selectedConversationData && (
                         <>
-                            <div className="border-b border-gray-200 p-3 md:p-[14px] flex items-center">
+                            <div className="border-b border-gray-200 p-3 md:p-[14px] flex items-center flex-shrink-0">
                                 <button onClick={handleBackToList} className="mr-2 md:hidden text-gray-500 cursor-pointer">
                                     <FiArrowLeft size={20}/>
                                 </button>
@@ -410,7 +424,7 @@ const MessageApp = () => {
                             </div>
 
                             {/* Chat messages */}
-                            <div className="flex-1 overflow-y-auto p-3 md:p-4 bg-gray-50">
+                            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 md:p-4 bg-gray-50">
                                 {selectedMessages.length > 0 ? (
                                     <>
                                         {selectedMessages.map((msg, index) => {
@@ -462,13 +476,13 @@ const MessageApp = () => {
                             </div>
 
                             {/* Message input */}
-                            <form className="border-t border-gray-200 p-2 md:p-3 flex items-center" onSubmit={handleSubmit(onSubmit)}>
-                                <FiEdit className="text-[#E15C31] mr-2 flex-shrink-0"/>
+                            <form className="border-t border-gray-200 p-3 flex items-center gap-2 bg-white flex-shrink-0" onSubmit={handleSubmit(onSubmit)}>
+                                <FiEdit className="text-[#E15C31] flex-shrink-0 w-5 h-5"/>
                                 <input
                                     type="text"
                                     {...register('message')}
                                     placeholder="Type your message"
-                                    className="flex-1 border-0 focus:ring-0 focus:outline-none text-sm"
+                                    className="flex-1 border-0 focus:ring-0 focus:outline-none text-sm py-2"
                                     onKeyDown={(e) => {
                                         if (e.key === 'Enter' && !e.shiftKey) {
                                             e.preventDefault();
@@ -478,9 +492,10 @@ const MessageApp = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className="bg-[#E15C31] text-white rounded-md px-3 md:px-4 py-1 md:py-2 flex items-center text-xs md:text-sm flex-shrink-0 cursor-pointer"
+                                    className="bg-[#E15C31] text-white rounded-md px-4 py-2 flex items-center text-sm flex-shrink-0 cursor-pointer whitespace-nowrap"
                                 >
-                                    Send <FiSend className="ml-1 md:ml-2" />
+                                    <span className="hidden sm:inline">Send</span>
+                                    <FiSend className="sm:ml-2" />
                                 </button>
                             </form>
                         </>
