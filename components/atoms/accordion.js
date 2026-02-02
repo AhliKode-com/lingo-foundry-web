@@ -85,6 +85,149 @@ export function Speciality({data, isLast}) {
     );
 }
 
+// Helper function to format answer text with links and lists
+function formatAnswer(text) {
+    if (!text) return null;
+    
+    // Split by line breaks or steps
+    const parts = text.split(/(?:Step \d+[:\s—]+|^\d+\.\s+)/gm);
+    const stepMatches = text.match(/Step \d+[:\s—]+|\d+\.\s+/g);
+    
+    // Check if content has steps
+    const hasSteps = stepMatches && stepMatches.length > 0;
+    
+    if (hasSteps) {
+        return (
+            <ol className="list-decimal list-inside space-y-3">
+                {parts.slice(1).map((part, index) => {
+                    const lines = part.trim().split('\n');
+                    const mainText = [];
+                    const subItems = [];
+                    
+                    lines.forEach((line) => {
+                        if (line.trim().startsWith('-')) {
+                            subItems.push(line.trim().substring(1).trim());
+                        } else if (line.trim()) {
+                            mainText.push(line.trim());
+                        }
+                    });
+                    
+                    return (
+                        <li key={index} className="text-[#4E5566] leading-relaxed">
+                            <div>
+                                {mainText.map((line, i) => (
+                                    <div key={i}>{formatTextWithLinks(line)}</div>
+                                ))}
+                                {subItems.length > 0 && (
+                                    <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
+                                        {subItems.map((item, i) => (
+                                            <li key={i} className="text-[#4E5566]">
+                                                {formatTextWithLinks(item)}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        </li>
+                    );
+                })}
+            </ol>
+        );
+    }
+    
+    // Check for simple numbered list (1. 2. 3.)
+    const simpleList = text.match(/^\d+\.\s+.+$/gm);
+    if (simpleList && simpleList.length > 1) {
+        return (
+            <ol className="list-decimal list-inside space-y-2">
+                {simpleList.map((item, index) => (
+                    <li key={index} className="text-[#4E5566] leading-relaxed">
+                        {formatTextWithLinks(item.replace(/^\d+\.\s+/, ''))}
+                    </li>
+                ))}
+            </ol>
+        );
+    }
+    
+    // Regular text with potential links
+    return <div className="space-y-2">{formatTextWithLinks(text)}</div>;
+}
+
+// Helper to convert URLs and email to clickable links
+function formatTextWithLinks(text) {
+    if (!text) return null;
+    
+    // Pattern to match URLs, emails, and phone numbers
+    const urlPattern = /(https?:\/\/[^\s,]+|wa\.me\/[^\s,]+|www\.[^\s,]+|\S+@\S+\.\S+|@\w+|\+?\d{1,3}[\s-]?\d{3,4}[\s-]?\d{3,4}[\s-]?\d{3,4})/g;
+    
+    const parts = text.split(urlPattern);
+    const matches = text.match(urlPattern) || [];
+    
+    return parts.map((part, index) => {
+        if (matches.includes(part)) {
+            // Email
+            if (part.includes('@') && part.includes('.')) {
+                return (
+                    <a 
+                        key={index}
+                        href={`mailto:${part}`}
+                        className="text-[#E15C31] hover:underline font-medium"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {part}
+                    </a>
+                );
+            }
+            // Instagram handle
+            if (part.startsWith('@')) {
+                return (
+                    <a 
+                        key={index}
+                        href={`https://instagram.com/${part.substring(1)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#E15C31] hover:underline font-medium"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {part}
+                    </a>
+                );
+            }
+            // WhatsApp
+            if (part.includes('wa.me') || part.startsWith('+')) {
+                const number = part.replace(/[^\d]/g, '');
+                return (
+                    <a 
+                        key={index}
+                        href={`https://wa.me/${number}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#E15C31] hover:underline font-medium"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {part}
+                    </a>
+                );
+            }
+            // Regular URL
+            const href = part.startsWith('http') ? part : `https://${part}`;
+            return (
+                <a 
+                    key={index}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#E15C31] hover:underline font-medium"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    {part}
+                </a>
+            );
+        }
+        return <span key={index}>{part}</span>;
+    });
+}
+
 export function Question({title, answer, defaultOpen = false}) {
     const [open, setOpen] = useState(defaultOpen);
     const [height, setHeight] = useState(0);
@@ -104,36 +247,38 @@ export function Question({title, answer, defaultOpen = false}) {
         <div className="w-full gap-0">
             <button
                 onClick={() => setOpen((prev) => !prev)}
-                className={`
-                    ${open ? "bg-[#E35D33]" : "bg-[#FFFFFF]"}
-                    border-[1px] border-[#E9EAF0] 
+                className="
+                    bg-[#FFFFFF]
                     flex 
                     w-full 
                     items-center 
                     justify-between
-                    py-[10px] px-[12px] md:py-[20px] md:px-[24px] 
+                    py-[20px] px-[24px] md:py-[24px] md:px-[32px] 
                     cursor-pointer
-                    gap-[5px]
-                    animation-effect`}
+                    gap-[16px]
+                    hover:bg-[#F7F7F7]
+                    transition-all
+                    duration-200
+                "
             >
                 <span
-                    className={`
+                    className="
                         text-left font-medium
-                        animation-effect
-                        text-[14px] sm:text-[16px]
-                        ${open ? "text-[#FFFFFF]" : "text-[#E35D33]"}
-                    `}
+                        text-[16px] md:text-[18px]
+                        text-[#3C3C3C]
+                    "
                 >
                     {title}
                 </span>
 
-                <div>
+                <div className="flex-shrink-0">
                     <FiChevronDown
                         className={`
-                            text-[18px] sm:text-[24px]
-                            animation-effect
+                            text-[20px] md:text-[24px]
+                            text-[#AFAFAF]
+                            transition-transform
                             duration-300
-                            ${open ? "rotate-180 text-[#FFFFFF]" : "rotate-0 text-[#E35D33]"}
+                            ${open ? "rotate-180" : "rotate-0"}
                         `}
                     />
                 </div>
@@ -141,11 +286,12 @@ export function Question({title, answer, defaultOpen = false}) {
 
             <div
                 className="
-                    text-[12px] sm:text-[14px]
+                    text-[14px] md:text-[16px]
                     overflow-hidden
-                    animation-effect
+                    transition-all
+                    duration-300
                     text-[#4E5566]
-                    shadow-lg
+                    bg-[#FAFAFA]
                 "
                 style={{
                     height: height
@@ -153,9 +299,9 @@ export function Question({title, answer, defaultOpen = false}) {
             >
                 <div
                     ref={contentRef}
-                    className="py-[20px] px-[24px] bg-[#F9F9F9] border-[1px] border-[#E9EAF0]"
+                    className="py-[24px] px-[24px] md:px-[32px] leading-relaxed"
                 >
-                    {answer}
+                    {formatAnswer(answer)}
                 </div>
             </div>
         </div>
