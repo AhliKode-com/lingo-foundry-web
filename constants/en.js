@@ -210,6 +210,10 @@ export const NavbarData = {
         {
             href: '/review',
             title: 'Review'
+        },
+        {
+            href: '/help',
+            title: 'Help'
         }
     ],
     auth: [
@@ -387,11 +391,11 @@ export const FooterData = {
             title: 'Explore our Instructors'
         },
         {
-            href: '/find-tutor#faqStudent',
-            title: 'FAQ'
+            href: '/help',
+            title: 'Help Center'
         },
         {
-            href: '/find-tutor#hearWhatTheySaid',
+            href: '/review',
             title: 'Hear What They Said'
         },
         {
