@@ -359,7 +359,7 @@ export default function ReviewModalDemo() {
                         Open browser DevTools (F12) → Console tab to see the API calls when you submit reviews.
                     </p>
                     <div className="mt-4 text-sm font-mono">
-                        <p className="text-purple-400">// Course Review</p>
+                        <p className="text-purple-400">{/* Course Review */}Course Review</p>
                         <pre className="text-gray-300">{`POST /api/student/user-review
 {
   "rating": 4,
@@ -367,7 +367,7 @@ export default function ReviewModalDemo() {
   "description": "...",
   "orderItemId": 12345
 }`}</pre>
-                        <p className="text-blue-400 mt-4">// Platform Review</p>
+                        <p className="text-blue-400 mt-4">{/* Platform Review */}Platform Review</p>
                         <pre className="text-gray-300">{`POST /api/student/user-review
 {
   "rating": 5,
