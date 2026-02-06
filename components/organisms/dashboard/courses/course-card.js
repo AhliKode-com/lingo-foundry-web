@@ -1,16 +1,18 @@
 import {Certificate} from "@/components/organisms/dashboard/courses/icons";
 import {useState} from "react";
 import Link from "next/link";
-import { useOutstandingReviews, useCertificateDownload } from "@/apis/studentReview";
-import ReviewModal from "@/components/organisms/dashboard/courses/review-modal";
+import { useCertificateDownload } from "@/apis/studentReview";
+import CoursePlatformReviewModal from "@/components/organisms/dashboard/courses/course-platform-review-modal";
 import CertificateErrorModal from "@/components/organisms/dashboard/courses/certificate-error-modal";
 
 export default function CourseCard({course, isSelected, onClick}) {
     const [isHovered, setIsHovered] = useState(false);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
-    const [outstandingBookingIds, setOutstandingBookingIds] = useState([]);
-    const { checkOutstandingReviews, loading: reviewLoading } = useOutstandingReviews();
+    // Review status from certificate API
+    const [needsCourseReview, setNeedsCourseReview] = useState(false);
+    const [needsPlatformReview, setNeedsPlatformReview] = useState(false);
+    const [pendingCertificateData, setPendingCertificateData] = useState(null);
     const { downloadCertificate, loading: certificateLoading } = useCertificateDownload();
 
     const levelColor = {
@@ -396,29 +398,67 @@ export default function CourseCard({course, isSelected, onClick}) {
 
     const handleCertificateClick = async () => {
         try {
-            const outstandingReviews = await checkOutstandingReviews(course.orderItemId);
+            const response = await downloadCertificate(course.orderItemId);
             
-            if (outstandingReviews && outstandingReviews.length > 0) {
-                // Show review modal if there are outstanding reviews
-                setOutstandingBookingIds(outstandingReviews);
+            let certificateData = null;
+            let courseReviewed = true;
+            let platformReviewed = true;
+            
+            // Handle different response structures and extract review status
+            if (response && typeof response === 'object') {
+                if (response.data && response.data.name) {
+                    certificateData = response.data;
+                    courseReviewed = response.data.courseReviewed ?? true;
+                    platformReviewed = response.data.platformReviewed ?? true;
+                } else if (response.name) {
+                    certificateData = response;
+                    courseReviewed = response.courseReviewed ?? true;
+                    platformReviewed = response.platformReviewed ?? true;
+                } else if (response.error === false && response.data) {
+                    certificateData = response.data;
+                    courseReviewed = response.data.courseReviewed ?? true;
+                    platformReviewed = response.data.platformReviewed ?? true;
+                }
+            }
+            
+            // Check if reviews are needed
+            if (!courseReviewed || !platformReviewed) {
+                setNeedsCourseReview(!courseReviewed);
+                setNeedsPlatformReview(!platformReviewed);
+                setPendingCertificateData(certificateData);
                 setShowReviewModal(true);
+            } else if (certificateData && certificateData.name) {
+                // All reviews completed, generate certificate
+                await generateCertificateHTML(certificateData);
             } else {
-                // Directly download certificate in same tab
-                await handleCertificateDownload();
+                setShowErrorModal(true);
             }
         } catch (error) {
-            console.error("Error checking outstanding reviews:", error);
-            // If checking reviews fails, try to download certificate anyway
-            await handleCertificateDownload();
+            console.error("Error downloading certificate:", error);
+            setShowErrorModal(true);
         }
     };
 
     const handleReviewComplete = async (isReviewed = false) => {
         setShowReviewModal(false);
-        if (isReviewed) {
-            // After reviews are submitted, download the certificate in same tab
-            await handleCertificateDownload();
+        setNeedsCourseReview(false);
+        setNeedsPlatformReview(false);
+        
+        if (isReviewed && pendingCertificateData && pendingCertificateData.name) {
+            // After reviews are submitted, generate the certificate
+            await generateCertificateHTML(pendingCertificateData);
+            setPendingCertificateData(null);
+        } else if (isReviewed) {
+            // Re-fetch certificate if we don't have valid data
+            await handleCertificateClick();
         }
+    };
+
+    const handleReviewCancel = () => {
+        setShowReviewModal(false);
+        setNeedsCourseReview(false);
+        setNeedsPlatformReview(false);
+        setPendingCertificateData(null);
     };
 
     return (
@@ -474,10 +514,10 @@ export default function CourseCard({course, isSelected, onClick}) {
                     // ) : (
                         <button 
                             onClick={handleCertificateClick}
-                            disabled={reviewLoading || certificateLoading}
+                            disabled={certificateLoading}
                             className="mt-4 py-2 px-3 w-full space-x-2 border border-[#E25D33] rounded-xl bg-[#E25D33] hover:bg-orange-600 text-white cursor-pointer flex justify-center items-center text-xs md:text-base disabled:opacity-50"
                         >  
-                            {reviewLoading || certificateLoading ? (
+                            {certificateLoading ? (
                                 <div className="w-[24px] h-[24px] relative">
                                     <div className="w-full h-full border-4 border-gray-200 rounded-full"></div>
                                     <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-[#E25D33] rounded-full animate-spin"></div>
@@ -485,7 +525,7 @@ export default function CourseCard({course, isSelected, onClick}) {
                             ) : (
                                 <Certificate className="ml-2"/>
                             )}
-                            <p>{reviewLoading || certificateLoading ? 'Downloading...' : 'Download Certificate'}</p>
+                            <p>{certificateLoading ? 'Loading...' : 'Download Certificate'}</p>
                         </button>
                     // )
                 ) : (
@@ -513,11 +553,15 @@ export default function CourseCard({course, isSelected, onClick}) {
                 )}
 
 
-            {/* Review Modal */}
-            <ReviewModal 
+            {/* Course & Platform Review Modal */}
+            <CoursePlatformReviewModal 
                 isOpen={showReviewModal}
-                onClose={handleReviewComplete}
-                bookingIds={outstandingBookingIds}
+                onComplete={handleReviewComplete}
+                onCancel={handleReviewCancel}
+                needsCourseReview={needsCourseReview}
+                needsPlatformReview={needsPlatformReview}
+                orderItemId={course.orderItemId}
+                tutorSubjectId={course.tutorSubjectId}
                 courseName={course.subjectName}
                 tutorName={`${course.tutorFirstName} ${course.tutorLastName}`}
             />

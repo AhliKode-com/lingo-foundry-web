@@ -1,10 +1,27 @@
 "use client"
 
+/**
+ * @deprecated This component is deprecated and will be removed in a future version.
+ * Use CoursePlatformReviewModal instead, which handles both course and platform reviews
+ * in a single modal with a simpler rating system (1-5 stars + description).
+ * 
+ * The old flow reviewed individual bookings with multiple rating categories.
+ * The new flow reviews the course as a whole and the platform experience.
+ * 
+ * @see CoursePlatformReviewModal
+ */
+
 import { useState } from "react";
 import { useSubmitReview } from "@/apis/studentReview";
 import ReviewWarningModal from "@/components/organisms/dashboard/courses/review-warning-modal";
 
+/**
+ * @deprecated Use CoursePlatformReviewModal instead
+ */
 export default function ReviewModal({ isOpen, onClose, bookingIds, courseName, tutorName }) {
+    console.warn(
+        'ReviewModal is deprecated. Use CoursePlatformReviewModal instead.'
+    );
     const [currentStep, setCurrentStep] = useState(0);
     const [currentBookingIndex, setCurrentBookingIndex] = useState(0);
     const [reviews, setReviews] = useState({});

@@ -2,7 +2,13 @@ import { useState, useCallback } from "react";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
 
-// Check outstanding reviews for an order item
+/**
+ * @deprecated This hook is deprecated. Use useCertificateDownload instead which returns
+ * courseReviewed and platformReviewed flags. The new flow no longer checks outstanding
+ * booking reviews - instead it checks course and platform review status.
+ * 
+ * Check outstanding reviews for an order item
+ */
 export function useOutstandingReviews() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -33,7 +39,12 @@ export function useOutstandingReviews() {
     return { data, loading, error, checkOutstandingReviews };
 }
 
-// Submit review for a booking
+/**
+ * @deprecated This hook is deprecated. The new review flow uses useSubmitUserReview
+ * for both course and platform reviews via POST /api/student/user-review.
+ * 
+ * Submit review for a booking
+ */
 export function useSubmitReview() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -61,6 +72,59 @@ export function useSubmitReview() {
     };
 
     return { loading, error, submitReview };
+}
+
+/**
+ * Submit user review for course or platform
+ * 
+ * @description
+ * For course review: include tutorSubjectId
+ * For platform review: omit tutorSubjectId
+ * 
+ * @example
+ * // Course review
+ * submitUserReview({
+ *   rating: 4.5,
+ *   tutorSubjectId: 123,
+ *   description: "Great course!",
+ *   orderItemId: 1
+ * });
+ * 
+ * // Platform review
+ * submitUserReview({
+ *   rating: 5,
+ *   description: "Love the platform!",
+ *   orderItemId: 1
+ * });
+ */
+export function useSubmitUserReview() {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const submitUserReview = async (reviewData) => {
+        setLoading(true);
+        setError(null);
+
+        const token = Cookies.get("token");
+
+        try {
+            const response = await api.post("/student/user-review", reviewData, {
+                headers: {
+                    Authorization: token ? `Bearer ${token}` : "",
+                    "Content-Type": "application/json",
+                }
+            });
+            return response.data;
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || "Failed to submit review";
+            setError(errorMessage);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { loading, error, submitUserReview };
 }
 
 // Download certificate for an order item
