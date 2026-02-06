@@ -76,6 +76,7 @@ export default function CVCertification({ setCurrentStep }) {
         } catch (error) {
             console.error("Error loading saved data:", error)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const {
@@ -171,6 +172,7 @@ export default function CVCertification({ setCurrentStep }) {
         if (Object.keys(errors).length > 0) {
             scrollToFirstError();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [errors]);
 
     // Function to scroll to first error field and show toast

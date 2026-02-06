@@ -27,6 +27,7 @@ export default function ProfileDescription({ setCurrentStep }) {
                 title: parsedData.title || "",
             })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const { user, refreshUser } = useAuth()

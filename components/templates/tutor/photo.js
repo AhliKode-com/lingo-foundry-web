@@ -93,6 +93,7 @@ export default function Photo({ setCurrentStep }) {
                     onClick={handleUploadClick}
                 >
                     {previewUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
                         <img
                             src={previewUrl || "/placeholder.svg"}
                             alt="Profile preview"

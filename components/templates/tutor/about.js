@@ -107,6 +107,7 @@ export default function About({ setCurrentStep }) {
         if (Object.keys(errors).length > 0) {
             scrollToFirstError();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [errors]);
 
     // Function to scroll to first error field and show toast
@@ -217,6 +218,7 @@ export default function About({ setCurrentStep }) {
         }
       
         setPrevDropdownOpen(dropdownOpen);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dropdownOpen]);
 
     const handleDropdownToggle = (type) => {

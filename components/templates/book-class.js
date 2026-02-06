@@ -207,6 +207,7 @@ export default function BookClass() {
             }
         }
         getTime();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [course]);
 
     if (!data || loading) {
@@ -230,6 +231,7 @@ export default function BookClass() {
                         <div
                             className="border border-gray-300 rounded-lg p-4 flex items-center gap-3 shadow-md h-[96px]">
                             <div className="w-12 h-12 flex items-center justify-center">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img src={course.tutorProfileUrl || "/placeholder.svg"} alt={"tutor-img"} className="w-[45px] h-[45px] object-cover rounded-lg"/>
                             </div>
                             <div>
