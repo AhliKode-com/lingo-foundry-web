@@ -10,7 +10,15 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals")
+  ...compat.extends("next/core-web-vitals"),
+  {
+    rules: {
+      // Disable img element warning - using native img for dynamic external URLs
+      "@next/next/no-img-element": "off",
+      // Disable exhaustive-deps warning - many intentional omissions in codebase
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
 ];
 
 export default eslintConfig;
