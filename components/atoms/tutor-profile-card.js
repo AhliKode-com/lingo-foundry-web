@@ -84,14 +84,16 @@ export default function TeacherProfileCard({ teacher, isOpen, onHover, onClick }
                 <div className="flex flex-col md:flex-row gap-6">
                     {/* Profile Image */}
                     <div className="flex flex-col items-center gap-4">
-                        <Image
-                            src={teacher.tutorProfilePhotoUrl || "/placeholder.svg"}
-                            alt="Teacher profile picture"
-                            width={100}
-                            height={100}
-                            className="rounded-full object-cover"
-                            unoptimized={!teacher.tutorProfilePhotoUrl}
-                        />
+                        <div className="w-[100px] h-[100px] relative">
+                            <Image
+                                src={teacher.tutorProfilePhotoUrl || "/placeholder.svg"}
+                                alt="Teacher profile picture"
+                                fill
+                                sizes="100px"
+                                className="rounded-full object-cover"
+                                unoptimized={!teacher.tutorProfilePhotoUrl}
+                            />
+                        </div>
                     </div>
 
                     {/* Profile Info */}
