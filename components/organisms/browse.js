@@ -45,9 +45,11 @@ export default function Browse() {
                                         <div style={{ backgroundColor: randomColor }} className="p-[10px] sm:p-[14px] md:p-[16px] lg:p-[20px] animation-effect flex items-center" key={index}>
                                             <div className='flex items-center'>
                                                 {/* <div className='flex justify-center items-center bg-[#FFFFFF] drop-shadow-lg w-[45px] h-[45px] md:w-[56px] md:h-[56px] lg:w-[64px] lg:h-[64px] animation-effect'> */}
-                                                    <img 
+                                                    <Image 
                                                         src={subject.iconUrl} 
                                                         alt={subject.name} 
+                                                        width={64}
+                                                        height={64}
                                                         className='w-[45px] h-[45px] md:w-[56px] md:h-[56px] lg:w-[64px] lg:h-[64px] animation-effect'
                                                     />
                                                 {/* </div> */}
