@@ -94,6 +94,7 @@ export default function CoursePlatformReviewModal({
                 tutorSubjectId: tutorSubjectId,
                 description: courseFormData.description,
                 orderItemId: orderItemId,
+                authorType: "STUDENT",
             });
             
             setCourseReviewSubmitted(true);
@@ -119,6 +120,7 @@ export default function CoursePlatformReviewModal({
                 rating: platformFormData.rating,
                 description: platformFormData.description,
                 orderItemId: orderItemId,
+                authorType: "STUDENT",
             });
             
             setPlatformReviewSubmitted(true);

@@ -199,6 +199,7 @@ describe('CoursePlatformReviewModal', () => {
         tutorSubjectId: 123,
         description: 'Great course!',
         orderItemId: 1,
+        authorType: 'STUDENT',
       });
     });
 
@@ -277,6 +278,7 @@ describe('CoursePlatformReviewModal', () => {
         rating: 5,
         description: 'Love it!',
         orderItemId: 1,
+        authorType: 'STUDENT',
       });
     });
   });
