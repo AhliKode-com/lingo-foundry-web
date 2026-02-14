@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSubmitUserReview } from "@/apis/studentReview";
 
 /**
@@ -51,6 +51,17 @@ export default function CoursePlatformReviewModal({
     const [platformReviewSubmitted, setPlatformReviewSubmitted] = useState(!needsPlatformReview);
     
     const { loading, error, submitUserReview } = useSubmitUserReview();
+
+    // Sync currentStep when the modal opens or review requirements change
+    useEffect(() => {
+        if (isOpen) {
+            setCurrentStep(getInitialStep());
+            setCourseReviewSubmitted(!needsCourseReview);
+            setPlatformReviewSubmitted(!needsPlatformReview);
+            setCourseFormData({ rating: 0, description: "" });
+            setPlatformFormData({ rating: 0, description: "" });
+        }
+    }, [isOpen, needsCourseReview, needsPlatformReview]);
 
     // Course review form state
     const [courseFormData, setCourseFormData] = useState({
