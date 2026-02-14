@@ -197,7 +197,7 @@ describe('CoursePlatformReviewModal', () => {
       expect(mockSubmitUserReview).toHaveBeenCalledWith({
         rating: 4,
         tutorSubjectId: 123,
-        title: 'English 101 Review',
+        title: expect.stringContaining('English 101'),
         description: 'Great course!',
         orderItemId: 1,
         authorType: 'STUDENT',
@@ -277,7 +277,7 @@ describe('CoursePlatformReviewModal', () => {
       
       expect(mockSubmitUserReview).toHaveBeenCalledWith({
         rating: 5,
-        title: 'Platform Review',
+        title: expect.stringContaining('Platform Review'),
         description: 'Love it!',
         orderItemId: 1,
         authorType: 'STUDENT',

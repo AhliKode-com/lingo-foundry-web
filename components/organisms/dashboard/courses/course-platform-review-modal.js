@@ -92,7 +92,7 @@ export default function CoursePlatformReviewModal({
             await submitUserReview({
                 rating: courseFormData.rating,
                 tutorSubjectId: tutorSubjectId,
-                title: `${courseName} Review`,
+                title: `${courseName} - ${new Date().toLocaleDateString()}`,
                 description: courseFormData.description,
                 orderItemId: orderItemId,
                 authorType: "STUDENT",
@@ -119,7 +119,7 @@ export default function CoursePlatformReviewModal({
         try {
             await submitUserReview({
                 rating: platformFormData.rating,
-                title: "Platform Review",
+                title: `Platform Review - ${new Date().toLocaleDateString()}`,
                 description: platformFormData.description,
                 orderItemId: orderItemId,
                 authorType: "STUDENT",
