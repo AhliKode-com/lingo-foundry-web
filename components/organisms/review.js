@@ -72,6 +72,20 @@ export default function Review({authorType}) {
                                     />
                                     ))}
                                 </div>
+                                {(item.subjectName || item.createdAt) && (
+                                    <div className="flex items-center gap-[8px] mb-[12px] flex-wrap">
+                                        {item.subjectName && (
+                                            <span className="text-[12px] font-semibold text-[#E35D33] bg-[#FFF0EC] px-[10px] py-[4px] rounded-full">
+                                                {item.subjectName}{item.subjectLevel ? ` · ${item.subjectLevel}` : ''}
+                                            </span>
+                                        )}
+                                        {item.createdAt && (
+                                            <span className="text-[11px] text-gray-400">
+                                                {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                                 <span className="animation-effect text-[16px] sm:text-[20px] mb-[30px] lg:mb-[50px]">
                                     {item.description}
                                 </span>
@@ -80,7 +94,7 @@ export default function Review({authorType}) {
                                     <span className="text-[14px] font-extrabold">{item.author}</span>
                                     <span className="text-[10px]">{item.authorType}</span>
                                     </div>
-                                    <div className="flex w-[120px] gap-[10px]">
+                                    <div className="flex items-center gap-[10px]">
                                     <Image
                                         src="./assets/thumb-up.svg"
                                         alt="thumb-up"
