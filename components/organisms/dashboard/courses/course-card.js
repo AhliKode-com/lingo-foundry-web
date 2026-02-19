@@ -13,6 +13,8 @@ export default function CourseCard({course, isSelected, onClick}) {
     const [needsCourseReview, setNeedsCourseReview] = useState(false);
     const [needsPlatformReview, setNeedsPlatformReview] = useState(false);
     const [pendingCertificateData, setPendingCertificateData] = useState(null);
+    // Keeps button disabled until full flow is done (API + PDF gen), preventing spam clicks
+    const [certificateDownloadInProgress, setCertificateDownloadInProgress] = useState(false);
     const { downloadCertificate, loading: certificateLoading } = useCertificateDownload();
 
     const levelColor = {
@@ -397,6 +399,7 @@ export default function CourseCard({course, isSelected, onClick}) {
     };
 
     const handleCertificateClick = async () => {
+        setCertificateDownloadInProgress(true);
         try {
             const response = await downloadCertificate(course.orderItemId);
             
@@ -428,7 +431,7 @@ export default function CourseCard({course, isSelected, onClick}) {
                 setPendingCertificateData(certificateData);
                 setShowReviewModal(true);
             } else if (certificateData && certificateData.name) {
-                // All reviews completed, generate certificate
+                // All reviews completed, generate certificate (PDF gen can take a few seconds)
                 await generateCertificateHTML(certificateData);
             } else {
                 setShowErrorModal(true);
@@ -436,6 +439,8 @@ export default function CourseCard({course, isSelected, onClick}) {
         } catch (error) {
             console.error("Error downloading certificate:", error);
             setShowErrorModal(true);
+        } finally {
+            setCertificateDownloadInProgress(false);
         }
     };
 
@@ -445,11 +450,14 @@ export default function CourseCard({course, isSelected, onClick}) {
         setNeedsPlatformReview(false);
         
         if (isReviewed && pendingCertificateData && pendingCertificateData.name) {
-            // After reviews are submitted, generate the certificate
-            await generateCertificateHTML(pendingCertificateData);
-            setPendingCertificateData(null);
+            setCertificateDownloadInProgress(true);
+            try {
+                await generateCertificateHTML(pendingCertificateData);
+                setPendingCertificateData(null);
+            } finally {
+                setCertificateDownloadInProgress(false);
+            }
         } else if (isReviewed) {
-            // Re-fetch certificate if we don't have valid data
             await handleCertificateClick();
         }
     };
@@ -514,10 +522,10 @@ export default function CourseCard({course, isSelected, onClick}) {
                     // ) : (
                         <button 
                             onClick={handleCertificateClick}
-                            disabled={certificateLoading}
+                            disabled={certificateLoading || certificateDownloadInProgress}
                             className="mt-4 py-2 px-3 w-full space-x-2 border border-[#E25D33] rounded-xl bg-[#E25D33] hover:bg-orange-600 text-white cursor-pointer flex justify-center items-center text-xs md:text-base disabled:opacity-50"
                         >  
-                            {certificateLoading ? (
+                            {(certificateLoading || certificateDownloadInProgress) ? (
                                 <div className="w-[24px] h-[24px] relative">
                                     <div className="w-full h-full border-4 border-gray-200 rounded-full"></div>
                                     <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent border-t-[#E25D33] rounded-full animate-spin"></div>
@@ -525,7 +533,7 @@ export default function CourseCard({course, isSelected, onClick}) {
                             ) : (
                                 <Certificate className="ml-2"/>
                             )}
-                            <p>{certificateLoading ? 'Loading...' : 'Download Certificate'}</p>
+                            <p>{(certificateLoading || certificateDownloadInProgress) ? 'Loading...' : 'Download Certificate'}</p>
                         </button>
                     // )
                 ) : (
