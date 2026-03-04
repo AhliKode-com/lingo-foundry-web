@@ -2,7 +2,7 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-13 01:06:46
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-09-13 11:37:19
+ * @Last Modified time: 2026-03-04 11:06:32
  */
 "use client"
 import { Home } from '@/constants/en';
@@ -49,16 +49,16 @@ export default function Hero() {
           />
           <h1 className="z-10 font-bold text-[22px] lg:text-[30px] xl:text-[40px] lg:leading-[60px] xl:leading-[84px] md:w-[520px] mt-[70px] animation-effect">
             {hero.title1}
-            <span className="relative flex">
+            {/* <span className="relative flex">
               <Image 
                 src="./assets/circle.svg" 
                 alt="Circle" 
                 width={365}
                 height={365}
-                className="absolute w-[230px] lg:w-[350px] xl:w-[400px] top-[-10px] left-[-10px] animation-effect"
+                className="absolute w-[150px] lg:w-[200px] xl:w-[280px] top-[-35px] lg:top-[-58px] xl:top-[-80px] lg:left-[270px] xl:left-[-10px] animation-effect"
               />
               {hero.title2}
-            </span>
+            </span> */}
           </h1>
           <h1 className="animation-effect font-semibold text-[14px] md:text-[16px] lg:text-[20px] leading-[20px] md:leading-[30px] md:w-[480px] mt-[20px] md:mt-[40px] mb-[27px]">{hero.subtitle}</h1>
           <SearchNow 

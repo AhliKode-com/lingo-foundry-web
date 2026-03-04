@@ -17,7 +17,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 
 export const metadata = {
-    title: "Lingo Foundry",
+    title: "Lingo Foundry | Affordable Private Language Course",
     description: "Online language learning platform",
 };
 

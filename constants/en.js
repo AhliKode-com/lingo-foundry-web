@@ -2,17 +2,17 @@
  * @Author: danteclericuzio
  * @Date: 2025-03-11 13:47:53
  * @Last Modified by: danteclericuzio
- * @Last Modified time: 2025-09-13 23:03:21
+ * @Last Modified time: 2026-03-04 11:08:18
  */
 
 import {FaFacebookF, FaInstagram, FaWhatsapp} from "react-icons/fa";
 
 export const Home = {
     hero: {
-        title1: 'Learn Languages Live, With Expert Instructors –',
+        title1: 'Private – Personal – Affordable.',
         title2: 'Anytime, Anywhere.',
-        subtitle: 'Move beyond boring apps. Join a community where you learn by doing—practice languages, build skills, and achieve your goals with real people.',
-        placeholder: 'Try Language exam preparation (IELTS/TOEFL/TOEIC)',
+        subtitle: 'Learn exclusively in 1-on-1 sessions with professional tutors and a curriculum specially designed for your goals, without stretching your budget.',
+        placeholder: 'Find your personal tutor',
         buttonSearch: 'Search Tutors'
     },
     carousel: {
@@ -181,7 +181,7 @@ export const FindTutor = {
         title2: 'Online Language Tutors',
         title3: 'Learn Anytime, Anywhere.',
         subtitle: 'Learn with real tutors online. Flexible schedules, instant booking, no contracts.',
-        placeholder: 'HSK JLPT exam prep tutor',
+        placeholder: 'Find your perfect tutor',
         buttonSearch: 'Book Your Lesson'
     },
     faq: {
