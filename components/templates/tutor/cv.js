@@ -167,6 +167,16 @@ export default function CVCertification({ setCurrentStep }) {
         }, 0);
     }
 
+    // Register file fields for validation without attaching to DOM
+    // (spreading register() on file inputs overrides custom ref/onChange)
+    useEffect(() => {
+        fields.forEach((_, index) => {
+            register(`certificates.${index}.file`, {
+                required: !notHasTeachingCertificate ? "Certificate file is required" : false
+            });
+        });
+    }, [fields, notHasTeachingCertificate, register]);
+
     // Watch for errors and scroll to first error (for initial error detection)
     useEffect(() => {
         if (Object.keys(errors).length > 0) {
@@ -648,15 +658,11 @@ export default function CVCertification({ setCurrentStep }) {
                                             const file = e.target.files[0];
                                             handleCertificateUpload(index, e);
                                             if (file) {
-                                                // manually set the file into form state
-                                                setValue(`certificates.${index}.file`, file);
+                                                setValue(`certificates.${index}.file`, file, { shouldValidate: true });
                                             }
                                         }}
                                         accept="image/jpeg, image/png, application/pdf"
                                         className="hidden"
-                                        {...register(`certificates.${index}.file`, { 
-                                            required: !notHasTeachingCertificate ? "Certificate file is required" : false 
-                                        })}
                                     />
 
                                     <button
