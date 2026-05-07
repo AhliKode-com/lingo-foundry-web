@@ -74,6 +74,22 @@ export default function TutorProfileForm() {
     const [activeDay, setActiveDay] = useState(0);
     const [availabilitySubmitting, setAvailabilitySubmitting] = useState(false);
 
+    const formatLocalDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const buildSlotInstantKey = (dateStr, timeStr) => {
+        const [year, month, day] = dateStr.split('-').map(Number);
+        const timeParts = timeStr.split(':').map(Number);
+        const hours = timeParts[0] ?? 0;
+        const minutes = timeParts[1] ?? 0;
+        const localDateTime = new Date(year, month - 1, day, hours, minutes, 0, 0);
+        return localDateTime.toISOString();
+    };
+
     useEffect(() => {
         if (prevDropdownOpen && prevDropdownOpen !== dropdownOpen) {
             setSearchTerm((prevSearch) => ({
@@ -295,9 +311,7 @@ export default function TutorProfileForm() {
             availabilityData.forEach(item => {
                 if (item.date && item.time && Array.isArray(item.time)) {
                     item.time.forEach(timeSlot => {
-                        // Convert date and time to Jakarta timezone ISO format
-                        const isoTime = `${item.date}T${timeSlot}.000+07:00`;
-                        slots.add(isoTime);
+                        slots.add(buildSlotInstantKey(item.date, timeSlot));
                     });
                 }
             });
@@ -310,12 +324,12 @@ export default function TutorProfileForm() {
     const generateDays = () => {
         return Array.from({ length: 6 }, (_, i) => {
             const date = new Date();
+            date.setHours(0, 0, 0, 0);
             date.setDate(date.getDate() + i);
-            const dateJkt = new Date(date.getTime() + 7 * 60 * 60 * 1000);
             return {
                 name: date.toLocaleDateString('en-US', { weekday: 'short' }),
                 date: String(date.getDate()).padStart(2, '0'),
-                fullDate: dateJkt.toISOString().split('T')[0],
+                fullDate: formatLocalDate(date),
                 rawDate: new Date(date),
                 fullName: date.toLocaleDateString('en-US', { weekday: 'long' }),
                 monthName: date.toLocaleDateString('en-US', { month: 'short' })
@@ -348,12 +362,9 @@ export default function TutorProfileForm() {
         return { morning, afternoon, evening };
     };
 
-    // Generate ISO date string for API in Jakarta timezone
+    // Generate stable UTC instant key based on the user's local timezone selection
     const generateTimeSlotISO = (day, time) => {
-        // Use the fullDate (Jakarta time) and combine with time
-        const timeWithSeconds = `${time}:00`;
-        const isoTime = `${day.fullDate}T${timeWithSeconds}.000+07:00`;
-        return isoTime;
+        return buildSlotInstantKey(day.fullDate, time);
     };
 
     // Handle time slot selection
@@ -380,6 +391,7 @@ export default function TutorProfileForm() {
 
     // Handle availability save
     const handleAvailabilitySave = async () => {
+        if (availabilitySubmitting) return;
         setAvailabilitySubmitting(true);
         
         try {
@@ -390,7 +402,7 @@ export default function TutorProfileForm() {
             const slotsToAdd = Array.from(newSlots).filter(slot => !currentSlots.has(slot));
             const slotsToRemove = Array.from(currentSlots).filter(slot => !newSlots.has(slot));
             
-            // Prepare payload with Jakarta timezone (already in correct format)
+            // Prepare payload as UTC instants derived from the user's selected local slots
             const payload = {
                 set: slotsToAdd.map(startTime => ({ startTime })),
                 delete: slotsToRemove.map(startTime => ({ startTime }))
